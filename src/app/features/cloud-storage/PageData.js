@@ -53,8 +53,8 @@ const AnimatedLibrarySearch = ({ hovering }) => {
   }, [hovering]);
 
   return (
-    <div style={{ position: 'relative', width: '320px', background: '#0f172a', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', overflow: 'hidden' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#1e293b', padding: '12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', marginBottom: '16px' }}>
+    <div style={{ position: 'relative', width: '320px', background: '#0d0d0d', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', overflow: 'hidden' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#1a1a1a', padding: '12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', marginBottom: '16px' }}>
         <Search size={16} color="#64748b" />
         <span style={{ fontSize: '13px', color: '#fff', fontFamily: 'monospace' }}>
           {step >= 1 ? 'hook' : <span style={{ opacity: 0.5 }}>Search 4,200 transcripts...</span>}
@@ -64,14 +64,14 @@ const AnimatedLibrarySearch = ({ hovering }) => {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)', opacity: step >= 2 ? 1 : 0.4, transform: step >= 2 ? 'translateY(0)' : 'translateY(10px)', transition: 'all 0.3s ease' }}>
-          <div style={{ fontSize: '10px', color: '#94a3b8', marginBottom: '8px' }}>@creator_name • 2 days ago</div>
-          <div style={{ fontSize: '11px', color: '#e2e8f0', lineHeight: 1.5 }}>
+          <div style={{ fontSize: '10px', color: '#7a7a7a', marginBottom: '8px' }}>@creator_name • 2 days ago</div>
+          <div style={{ fontSize: '11px', color: '#e6e6e6', lineHeight: 1.5 }}>
             "This is the best <span style={{ background: 'rgba(59, 130, 246, 0.3)', color: '#93c5fd', padding: '2px 4px', borderRadius: '4px' }}>hook</span> I've ever tested..."
           </div>
         </div>
         <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)', opacity: step >= 2 ? 1 : 0.4, transform: step >= 2 ? 'translateY(0)' : 'translateY(10px)', transition: 'all 0.3s ease 0.1s' }}>
-          <div style={{ fontSize: '10px', color: '#94a3b8', marginBottom: '8px' }}>@another_creator • 1 week ago</div>
-          <div style={{ fontSize: '11px', color: '#e2e8f0', lineHeight: 1.5 }}>
+          <div style={{ fontSize: '10px', color: '#7a7a7a', marginBottom: '8px' }}>@another_creator • 1 week ago</div>
+          <div style={{ fontSize: '11px', color: '#e6e6e6', lineHeight: 1.5 }}>
             "Stop using that <span style={{ background: 'rgba(59, 130, 246, 0.3)', color: '#93c5fd', padding: '2px 4px', borderRadius: '4px' }}>hook</span> format, try this instead..."
           </div>
         </div>
@@ -83,12 +83,12 @@ const AnimatedLibrarySearch = ({ hovering }) => {
 
 const AnimatedFolderStructure = ({ hovering }) => {
   return (
-    <div style={{ width: '240px', background: '#0f172a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '16px', fontFamily: 'monospace', fontSize: '12px', color: '#94a3b8' }}>
+    <div style={{ width: '240px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '16px', fontFamily: 'monospace', fontSize: '12px', color: '#7a7a7a' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', color: '#fff' }}>
         <FolderOpen size={14} color="#3b82f6" /> Clients
       </div>
       <div style={{ paddingLeft: '16px', borderLeft: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: hovering ? '#fff' : '#94a3b8', transition: 'color 0.3s' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: hovering ? '#fff' : '#7a7a7a', transition: 'color 0.3s' }}>
           <FolderOpen size={12} color={hovering ? "#22c55e" : "#64748b"} /> Brand A
         </div>
         <div style={{ paddingLeft: '16px', display: 'flex', flexDirection: 'column', gap: '8px', height: hovering ? '40px' : '0', overflow: 'hidden', transition: 'height 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
@@ -106,13 +106,13 @@ const AnimatedFolderStructure = ({ hovering }) => {
 const AnimatedDevices = ({ hovering }) => {
   return (
     <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: '16px', height: '140px' }}>
-      <div style={{ width: '120px', height: '80px', background: '#1e293b', borderRadius: '8px 8px 0 0', border: '2px solid #334155', borderBottom: 'none', position: 'relative', display: 'flex', justifyContent: 'center', transform: hovering ? 'translateY(-5px)' : 'none', transition: 'all 0.4s' }}>
-        <div style={{ width: '90%', height: '100%', background: '#0f172a', borderTop: '2px solid rgba(255,255,255,0.1)' }}>
+      <div style={{ width: '120px', height: '80px', background: '#1a1a1a', borderRadius: '8px 8px 0 0', border: '2px solid #2a2a2a', borderBottom: 'none', position: 'relative', display: 'flex', justifyContent: 'center', transform: hovering ? 'translateY(-5px)' : 'none', transition: 'all 0.4s' }}>
+        <div style={{ width: '90%', height: '100%', background: '#0d0d0d', borderTop: '2px solid rgba(255,255,255,0.1)' }}>
           <div style={{ width: '100%', height: '8px', background: '#3b82f6', opacity: hovering ? 1 : 0.5 }}></div>
         </div>
       </div>
-      <div style={{ width: '40px', height: '80px', background: '#1e293b', borderRadius: '6px', border: '2px solid #334155', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', transform: hovering ? 'translateY(-10px)' : 'none', transition: 'all 0.4s 0.1s' }}>
-        <div style={{ width: '80%', height: '90%', background: '#0f172a', borderRadius: '2px' }}>
+      <div style={{ width: '40px', height: '80px', background: '#1a1a1a', borderRadius: '6px', border: '2px solid #2a2a2a', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', transform: hovering ? 'translateY(-10px)' : 'none', transition: 'all 0.4s 0.1s' }}>
+        <div style={{ width: '80%', height: '90%', background: '#0d0d0d', borderRadius: '2px' }}>
           <div style={{ width: '100%', height: '6px', background: '#3b82f6', opacity: hovering ? 1 : 0.5 }}></div>
         </div>
       </div>
@@ -122,18 +122,18 @@ const AnimatedDevices = ({ hovering }) => {
 
 const AnimatedGlobalSearch = ({ hovering }) => {
   return (
-    <div style={{ position: 'relative', width: '120px', height: '140px', background: '#0f172a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', overflow: 'hidden' }}>
-      <div style={{ background: '#1e293b', borderRadius: '6px', height: '24px', display: 'flex', alignItems: 'center', padding: '0 8px', gap: '6px', marginBottom: '12px' }}>
+    <div style={{ position: 'relative', width: '120px', height: '140px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', overflow: 'hidden' }}>
+      <div style={{ background: '#1a1a1a', borderRadius: '6px', height: '24px', display: 'flex', alignItems: 'center', padding: '0 8px', gap: '6px', marginBottom: '12px' }}>
         <Search size={10} color="#60a5fa" />
         <motion.div style={{ width: '2px', height: '10px', background: '#60a5fa' }} animate={{ opacity: [1, 0, 1] }} transition={{ repeat: Infinity, duration: 1 }} />
       </div>
       
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} style={{ background: '#1e293b', borderRadius: '4px', height: '36px', padding: '4px', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ width: '80%', height: '4px', background: '#334155', borderRadius: '2px', marginBottom: '4px' }} />
-            <div style={{ width: '60%', height: '4px', background: '#334155', borderRadius: '2px', marginBottom: '4px' }} />
-            <div style={{ width: '90%', height: '4px', background: '#334155', borderRadius: '2px' }} />
+          <div key={i} style={{ background: '#1a1a1a', borderRadius: '4px', height: '36px', padding: '4px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ width: '80%', height: '4px', background: '#2a2a2a', borderRadius: '2px', marginBottom: '4px' }} />
+            <div style={{ width: '60%', height: '4px', background: '#2a2a2a', borderRadius: '2px', marginBottom: '4px' }} />
+            <div style={{ width: '90%', height: '4px', background: '#2a2a2a', borderRadius: '2px' }} />
             
             {i === 3 && (
               <motion.div 
@@ -167,10 +167,10 @@ const AnimatedContext = ({ hovering }) => {
         initial={{ x: -20, opacity: 0 }}
         animate={hovering ? { x: 0, opacity: 1 } : { x: -20, opacity: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        style={{ background: '#1e293b', border: '1px solid #334155', borderRadius: '6px', padding: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}
+        style={{ background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: '6px', padding: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}
       >
         <FileText size={14} color="#a855f7" />
-        <div style={{ width: '60px', height: '4px', background: '#334155', borderRadius: '2px' }} />
+        <div style={{ width: '60px', height: '4px', background: '#2a2a2a', borderRadius: '2px' }} />
       </motion.div>
       
       {/* Context Metrics sliding in */}
@@ -179,9 +179,9 @@ const AnimatedContext = ({ hovering }) => {
           initial={{ x: -20, opacity: 0 }}
           animate={hovering ? { x: 0, opacity: 1 } : { x: -20, opacity: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          style={{ flex: 1, background: '#1e293b', border: '1px solid rgba(168, 85, 247, 0.3)', borderRadius: '6px', padding: '6px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
+          style={{ flex: 1, background: '#1a1a1a', border: '1px solid rgba(168, 85, 247, 0.3)', borderRadius: '6px', padding: '6px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
         >
-          <div style={{ fontSize: '8px', color: '#94a3b8' }}>VIEWS</div>
+          <div style={{ fontSize: '8px', color: '#7a7a7a' }}>VIEWS</div>
           <div style={{ width: '80%', height: '4px', background: '#a855f7', borderRadius: '2px' }} />
         </motion.div>
         
@@ -189,9 +189,9 @@ const AnimatedContext = ({ hovering }) => {
           initial={{ x: -20, opacity: 0 }}
           animate={hovering ? { x: 0, opacity: 1 } : { x: -20, opacity: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          style={{ flex: 1, background: '#1e293b', border: '1px solid rgba(168, 85, 247, 0.3)', borderRadius: '6px', padding: '6px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
+          style={{ flex: 1, background: '#1a1a1a', border: '1px solid rgba(168, 85, 247, 0.3)', borderRadius: '6px', padding: '6px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
         >
-          <div style={{ fontSize: '8px', color: '#94a3b8' }}>DATE</div>
+          <div style={{ fontSize: '8px', color: '#7a7a7a' }}>DATE</div>
           <div style={{ width: '60%', height: '4px', background: '#a855f7', borderRadius: '2px' }} />
         </motion.div>
       </div>
@@ -273,7 +273,7 @@ export default function CloudStoragePage() {
                   <div className="ts-cv-graphic-wrap">
                     <div className="ts-faux-ui-panel" style={{ width: '100%', maxWidth: '280px', padding: '24px', opacity: 0.8 }}>
                       <div style={{ fontSize: '11px', color: '#fca5a5', fontWeight: 'bold', letterSpacing: '0.1em', marginBottom: '16px', textTransform: 'uppercase' }}>The Manual Slog</div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: '#94a3b8' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: '#7a7a7a' }}>
                         <div style={{ padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px dashed rgba(255,255,255,0.1)' }}>📁 Downloads Folder</div>
                         <div style={{ padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px dashed rgba(255,255,255,0.1)' }}>📄 Untitled Document.txt</div>
                         <div style={{ padding: '8px', background: 'rgba(239, 68, 68, 0.1)', color: '#fca5a5', borderRadius: '4px', border: '1px dashed rgba(239, 68, 68, 0.3)' }}>🔍 Search: "hook" (0 results)</div>

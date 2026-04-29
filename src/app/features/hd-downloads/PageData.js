@@ -40,7 +40,7 @@ const AnimatedQualityComparison = ({ hovering }) => {
   return (
     <div style={{ position: 'relative', width: '360px', height: '200px', display: 'flex', gap: '16px' }}>
       {/* Other Downloaders */}
-      <div style={{ flex: 1, background: '#1e293b', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden', position: 'relative' }}>
+      <div style={{ flex: 1, background: '#1a1a1a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden', position: 'relative' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(239, 68, 68, 0.05)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', filter: 'blur(1px)' }}>
           <div style={{ width: '40px', height: '40px', background: 'rgba(255,255,255,0.2)', borderRadius: '8px', marginBottom: '12px' }}></div>
           <div style={{ fontSize: '14px', fontWeight: '900', color: 'rgba(255,255,255,0.5)', transform: 'rotate(-15deg)', letterSpacing: '2px' }}>@TIKTOK</div>
@@ -49,7 +49,7 @@ const AnimatedQualityComparison = ({ hovering }) => {
       </div>
 
       {/* TokScript */}
-      <div style={{ flex: 1, background: 'linear-gradient(to bottom, #0f172a, #1e293b)', borderRadius: '12px', border: '1px solid rgba(59, 130, 246, 0.4)', overflow: 'hidden', position: 'relative', boxShadow: hovering ? '0 10px 30px rgba(59, 130, 246, 0.3)' : 'none', transform: hovering ? 'scale(1.05)' : 'scale(1)', transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
+      <div style={{ flex: 1, background: 'linear-gradient(to bottom, #0d0d0d, #1a1a1a)', borderRadius: '12px', border: '1px solid rgba(59, 130, 246, 0.4)', overflow: 'hidden', position: 'relative', boxShadow: hovering ? '0 10px 30px rgba(59, 130, 246, 0.3)' : 'none', transform: hovering ? 'scale(1.05)' : 'scale(1)', transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
         <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ width: '40px', height: '40px', background: 'linear-gradient(135deg, #3b82f6, #0ea5e9)', borderRadius: '8px', marginBottom: '12px', boxShadow: '0 4px 12px rgba(59, 130, 246, 0.5)' }}></div>
           <div style={{ fontSize: '10px', color: '#60a5fa', fontWeight: 'bold' }}>1080p HD</div>
@@ -63,17 +63,17 @@ const AnimatedQualityComparison = ({ hovering }) => {
 const AnimatedCoverImagePair = ({ hovering }) => {
   return (
     <div style={{ display: 'flex', gap: '16px', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ width: '100px', height: '160px', background: '#0f172a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', padding: '8px', boxShadow: hovering ? '0 10px 20px rgba(0,0,0,0.5)' : 'none', transform: hovering ? 'translateY(-10px)' : 'none', transition: 'all 0.4s ease' }}>
-        <div style={{ flex: 1, background: '#1e293b', borderRadius: '6px', marginBottom: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ width: '100px', height: '160px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', padding: '8px', boxShadow: hovering ? '0 10px 20px rgba(0,0,0,0.5)' : 'none', transform: hovering ? 'translateY(-10px)' : 'none', transition: 'all 0.4s ease' }}>
+        <div style={{ flex: 1, background: '#1a1a1a', borderRadius: '6px', marginBottom: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Video size={24} color="rgba(255,255,255,0.2)" />
         </div>
-        <div style={{ fontSize: '9px', color: '#94a3b8', textAlign: 'center', fontFamily: 'monospace' }}>video.mp4</div>
+        <div style={{ fontSize: '9px', color: '#7a7a7a', textAlign: 'center', fontFamily: 'monospace' }}>video.mp4</div>
       </div>
 
-      <div style={{ fontSize: '24px', color: '#334155', fontWeight: '900', opacity: hovering ? 1 : 0.5, transform: hovering ? 'scale(1.2)' : 'scale(1)', transition: 'all 0.4s ease' }}>+</div>
+      <div style={{ fontSize: '24px', color: '#2a2a2a', fontWeight: '900', opacity: hovering ? 1 : 0.5, transform: hovering ? 'scale(1.2)' : 'scale(1)', transition: 'all 0.4s ease' }}>+</div>
 
-      <div style={{ width: '100px', height: '160px', background: '#0f172a', borderRadius: '12px', border: '1px dashed rgba(59, 130, 246, 0.4)', display: 'flex', flexDirection: 'column', padding: '8px', boxShadow: hovering ? '0 10px 30px rgba(59, 130, 246, 0.2)' : 'none', transform: hovering ? 'translateY(10px)' : 'none', transition: 'all 0.4s ease 0.1s' }}>
-        <div style={{ flex: 1, background: 'linear-gradient(45deg, #1e293b, #0f172a)', borderRadius: '6px', marginBottom: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ width: '100px', height: '160px', background: '#0d0d0d', borderRadius: '12px', border: '1px dashed rgba(59, 130, 246, 0.4)', display: 'flex', flexDirection: 'column', padding: '8px', boxShadow: hovering ? '0 10px 30px rgba(59, 130, 246, 0.2)' : 'none', transform: hovering ? 'translateY(10px)' : 'none', transition: 'all 0.4s ease 0.1s' }}>
+        <div style={{ flex: 1, background: 'linear-gradient(45deg, #1a1a1a, #0d0d0d)', borderRadius: '6px', marginBottom: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <ImageIcon size={24} color="#60a5fa" />
         </div>
         <div style={{ fontSize: '9px', color: '#60a5fa', textAlign: 'center', fontFamily: 'monospace' }}>cover.jpg</div>
@@ -87,10 +87,10 @@ const AnimatedResolution = ({ hovering }) => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', maxWidth: '200px' }}>
       {[
         { label: "480p SD", color: "#64748b", active: false },
-        { label: "720p HD", color: "#94a3b8", active: false },
+        { label: "720p HD", color: "#7a7a7a", active: false },
         { label: "1080p Original", color: "#3b82f6", active: true }
       ].map((res, i) => (
-        <div key={i} style={{ padding: '12px', borderRadius: '8px', border: '1px solid', borderColor: res.active && hovering ? res.color : 'rgba(255,255,255,0.05)', background: res.active && hovering ? 'rgba(59, 130, 246, 0.1)' : '#1e293b', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: res.active && hovering ? '#fff' : res.color, transform: res.active && hovering ? 'scale(1.05)' : 'scale(1)', transition: 'all 0.3s ease', boxShadow: res.active && hovering ? `0 0 20px rgba(59, 130, 246, 0.3)` : 'none' }}>
+        <div key={i} style={{ padding: '12px', borderRadius: '8px', border: '1px solid', borderColor: res.active && hovering ? res.color : 'rgba(255,255,255,0.05)', background: res.active && hovering ? 'rgba(59, 130, 246, 0.1)' : '#1a1a1a', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: res.active && hovering ? '#fff' : res.color, transform: res.active && hovering ? 'scale(1.05)' : 'scale(1)', transition: 'all 0.3s ease', boxShadow: res.active && hovering ? `0 0 20px rgba(59, 130, 246, 0.3)` : 'none' }}>
           <span style={{ fontSize: '13px', fontWeight: 'bold' }}>{res.label}</span>
           {res.active && hovering && <Check size={14} color="#60a5fa" />}
         </div>
@@ -101,7 +101,7 @@ const AnimatedResolution = ({ hovering }) => {
 
 const AnimatedNoBranding = ({ hovering }) => {
   return (
-    <div style={{ position: 'relative', width: '100px', height: '140px', background: '#0f172a', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+    <div style={{ position: 'relative', width: '100px', height: '140px', background: '#0d0d0d', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
       {/* Base video layer with watermark */}
       <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', opacity: 0.6 }}>
@@ -111,7 +111,7 @@ const AnimatedNoBranding = ({ hovering }) => {
       
       {/* Clean video layer (revealed by scanner) */}
       <motion.div 
-        style={{ position: 'absolute', inset: 0, background: '#1e293b', overflow: 'hidden', borderRight: '2px solid #3b82f6', boxShadow: '2px 0 10px rgba(59, 130, 246, 0.5)' }}
+        style={{ position: 'absolute', inset: 0, background: '#1a1a1a', overflow: 'hidden', borderRight: '2px solid #3b82f6', boxShadow: '2px 0 10px rgba(59, 130, 246, 0.5)' }}
         initial={{ width: '0%' }}
         animate={hovering ? { width: ['0%', '100%', '0%'] } : { width: '0%' }}
         transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
@@ -229,7 +229,7 @@ export default function HDVideoDownloaderPage() {
                   <div className="ts-cv-graphic-wrap">
                     <div className="ts-faux-ui-panel" style={{ width: '100%', maxWidth: '280px', padding: '24px', opacity: 0.8 }}>
                       <div style={{ fontSize: '11px', color: '#fca5a5', fontWeight: 'bold', letterSpacing: '0.1em', marginBottom: '16px', textTransform: 'uppercase' }}>Other Downloaders</div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px', color: '#94a3b8' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px', color: '#7a7a7a' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><div style={{ width: '6px', height: '6px', background: '#ef4444', borderRadius: '50%' }}/> Watermark Burned In</div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><div style={{ width: '6px', height: '6px', background: '#ef4444', borderRadius: '50%' }}/> Compressed to 480p</div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#fca5a5' }}><div style={{ width: '6px', height: '6px', background: '#ef4444', borderRadius: '50%' }}/> No Cover Image</div>

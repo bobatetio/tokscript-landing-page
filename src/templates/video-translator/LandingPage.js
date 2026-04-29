@@ -105,7 +105,7 @@ const Feature = ({ text, excluded = false, bold = false, sub = "" }) => (
         <div
           style={{
             fontSize: "0.75rem",
-            color: "#94a3b8",
+            color: "#7a7a7a",
             marginTop: "0.25rem",
             lineHeight: "1.2",
           }}
@@ -1150,7 +1150,7 @@ export default function YouTubeLandingPage() {
                           <div style={{ marginBottom: "0.5rem" }}>
                             <h3
                               className="card-title"
-                              style={{ color: "#e2e8f0" }}
+                              style={{ color: "#e6e6e6" }}
                             >
                               Free
                             </h3>
@@ -1159,7 +1159,7 @@ export default function YouTubeLandingPage() {
                           <div className="price-row">
                             <span
                               className="price-val"
-                              style={{ color: "#e2e8f0" }}
+                              style={{ color: "#e6e6e6" }}
                             >
                               $0
                             </span>
@@ -1329,7 +1329,7 @@ export default function YouTubeLandingPage() {
                               <span
                                 style={{
                                   fontSize: "0.625rem",
-                                  color: "#94a3b8",
+                                  color: "#7a7a7a",
                                   fontWeight: 500,
                                   textTransform: "uppercase",
                                   letterSpacing: "0.05em",
@@ -1456,7 +1456,7 @@ export default function YouTubeLandingPage() {
                           <div style={{ marginBottom: "0.5rem" }}>
                             <h3
                               className="card-title"
-                              style={{ color: "#e2e8f0" }}
+                              style={{ color: "#e6e6e6" }}
                             >
                               Monthly
                             </h3>
@@ -1467,7 +1467,7 @@ export default function YouTubeLandingPage() {
                           <div className="price-row">
                             <span
                               className="price-val"
-                              style={{ color: "#e2e8f0" }}
+                              style={{ color: "#e6e6e6" }}
                             >
                               $10
                             </span>
@@ -1482,7 +1482,7 @@ export default function YouTubeLandingPage() {
                             }}
                           >
                             <div
-                              style={{ color: "#94a3b8", fontSize: "0.75rem" }}
+                              style={{ color: "#7a7a7a", fontSize: "0.75rem" }}
                             >
                               = $120/year
                             </div>

@@ -53,27 +53,27 @@ const AnimatedWorkspaceSwitcher = ({ hovering }) => {
   }, [hovering]);
 
   return (
-    <div style={{ width: '260px', background: '#0f172a', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
+    <div style={{ width: '260px', background: '#0d0d0d', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
       <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#64748b', marginBottom: '12px', letterSpacing: '0.05em' }}>SELECT WORKSPACE</div>
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <div style={{ padding: '12px', borderRadius: '10px', background: active === 0 ? 'rgba(20, 184, 166, 0.1)' : '#1e293b', border: '1px solid', borderColor: active === 0 ? 'rgba(20, 184, 166, 0.4)' : 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'all 0.3s' }}>
+        <div style={{ padding: '12px', borderRadius: '10px', background: active === 0 ? 'rgba(20, 184, 166, 0.1)' : '#1a1a1a', border: '1px solid', borderColor: active === 0 ? 'rgba(20, 184, 166, 0.4)' : 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'all 0.3s' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ width: '28px', height: '28px', borderRadius: '6px', background: 'linear-gradient(135deg, #14b8a6, #0ea5e9)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '12px', fontWeight: 'bold' }}>A</div>
             <div>
               <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#fff' }}>Acme Agency</div>
-              <div style={{ fontSize: '10px', color: '#94a3b8' }}>14 members • 4.2k videos</div>
+              <div style={{ fontSize: '10px', color: '#7a7a7a' }}>14 members • 4.2k videos</div>
             </div>
           </div>
           {active === 0 && <Check size={14} color="#14b8a6" />}
         </div>
 
-        <div style={{ padding: '12px', borderRadius: '10px', background: active === 1 ? 'rgba(168, 85, 247, 0.1)' : '#1e293b', border: '1px solid', borderColor: active === 1 ? 'rgba(168, 85, 247, 0.4)' : 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'all 0.3s' }}>
+        <div style={{ padding: '12px', borderRadius: '10px', background: active === 1 ? 'rgba(168, 85, 247, 0.1)' : '#1a1a1a', border: '1px solid', borderColor: active === 1 ? 'rgba(168, 85, 247, 0.4)' : 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'all 0.3s' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ width: '28px', height: '28px', borderRadius: '6px', background: 'linear-gradient(135deg, #a855f7, #ec4899)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '12px', fontWeight: 'bold' }}>S</div>
             <div>
               <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#fff' }}>Stark Fitness</div>
-              <div style={{ fontSize: '10px', color: '#94a3b8' }}>3 members • 840 videos</div>
+              <div style={{ fontSize: '10px', color: '#7a7a7a' }}>3 members • 840 videos</div>
             </div>
           </div>
           {active === 1 && <Check size={14} color="#a855f7" />}
@@ -85,8 +85,8 @@ const AnimatedWorkspaceSwitcher = ({ hovering }) => {
 
 const AnimatedTeamActivity = ({ hovering }) => {
   return (
-    <div style={{ width: '280px', background: '#0f172a', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '20px', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#94a3b8', marginBottom: '16px', letterSpacing: '0.05em' }}>TEAM ACTIVITY</div>
+    <div style={{ width: '280px', background: '#0d0d0d', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '20px', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#7a7a7a', marginBottom: '16px', letterSpacing: '0.05em' }}>TEAM ACTIVITY</div>
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {[
@@ -99,7 +99,7 @@ const AnimatedTeamActivity = ({ hovering }) => {
               {item.name.charAt(0)}
             </div>
             <div style={{ fontSize: '12px', lineHeight: 1.4 }}>
-              <span style={{ color: '#fff', fontWeight: 'bold' }}>{item.name}</span> <span style={{ color: '#94a3b8' }}>{item.action}</span> <span style={{ color: item.color }}>{item.target}</span>
+              <span style={{ color: '#fff', fontWeight: 'bold' }}>{item.name}</span> <span style={{ color: '#7a7a7a' }}>{item.action}</span> <span style={{ color: item.color }}>{item.target}</span>
               <div style={{ fontSize: '10px', color: '#64748b', marginTop: '4px' }}>{item.time}</div>
             </div>
           </div>
@@ -111,24 +111,24 @@ const AnimatedTeamActivity = ({ hovering }) => {
 
 const AnimatedPermissions = ({ hovering }) => {
   return (
-    <div style={{ position: 'relative', width: '160px', height: '140px', background: '#0f172a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', width: '160px', height: '140px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px', overflow: 'hidden' }}>
       {[
         { role: 'Admin', color: '#f43f5e', delay: 0 },
         { role: 'Editor', color: '#3b82f6', delay: 1 },
         { role: 'Viewer', color: '#22c55e', delay: 2 },
       ].map((item, i) => (
-        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#1e293b', padding: '6px 8px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.05)' }}>
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#1a1a1a', padding: '6px 8px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.05)' }}>
           <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Users size={10} color="#94a3b8" />
+            <Users size={10} color="#7a7a7a" />
           </div>
-          <div style={{ flex: 1, height: '4px', background: '#334155', borderRadius: '2px' }} />
+          <div style={{ flex: 1, height: '4px', background: '#2a2a2a', borderRadius: '2px' }} />
           <motion.div
-            initial={{ background: '#334155', color: '#64748b' }}
+            initial={{ background: '#2a2a2a', color: '#64748b' }}
             animate={hovering ? { 
-              background: ['#334155', item.color, item.color, '#334155'], 
+              background: ['#2a2a2a', item.color, item.color, '#2a2a2a'], 
               color: ['#64748b', '#fff', '#fff', '#64748b'],
               boxShadow: ['none', `0 0 10px ${item.color}`, `0 0 10px ${item.color}`, 'none']
-            } : { background: '#334155', color: '#64748b', boxShadow: 'none' }}
+            } : { background: '#2a2a2a', color: '#64748b', boxShadow: 'none' }}
             transition={{ duration: 3, repeat: Infinity, delay: item.delay }}
             style={{ fontSize: '8px', fontWeight: 'bold', padding: '2px 6px', borderRadius: '4px' }}
           >
@@ -150,11 +150,11 @@ const AnimatedBilling = ({ hovering }) => {
           initial={{ x: (i - 1) * 40, y: 10, scale: 0.8, opacity: 0.5 }}
           animate={hovering ? { x: 0, y: 0, scale: 0, opacity: 0 } : { x: (i - 1) * 40, y: 10, scale: 0.8, opacity: 0.5 }}
           transition={{ duration: 1, delay: 0.5, type: 'spring' }}
-          style={{ position: 'absolute', width: '50px', height: '70px', background: '#1e293b', border: '1px solid #334155', borderRadius: '6px', padding: '6px', display: 'flex', flexDirection: 'column', gap: '4px' }}
+          style={{ position: 'absolute', width: '50px', height: '70px', background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: '6px', padding: '6px', display: 'flex', flexDirection: 'column', gap: '4px' }}
         >
-          <div style={{ width: '100%', height: '4px', background: '#334155', borderRadius: '2px' }} />
-          <div style={{ width: '60%', height: '4px', background: '#334155', borderRadius: '2px' }} />
-          <div style={{ width: '80%', height: '4px', background: '#334155', borderRadius: '2px', marginTop: 'auto' }} />
+          <div style={{ width: '100%', height: '4px', background: '#2a2a2a', borderRadius: '2px' }} />
+          <div style={{ width: '60%', height: '4px', background: '#2a2a2a', borderRadius: '2px' }} />
+          <div style={{ width: '80%', height: '4px', background: '#2a2a2a', borderRadius: '2px', marginTop: 'auto' }} />
         </motion.div>
       ))}
 
@@ -163,7 +163,7 @@ const AnimatedBilling = ({ hovering }) => {
         initial={{ scale: 0.5, opacity: 0, y: 20 }}
         animate={hovering ? { scale: 1, opacity: 1, y: 0 } : { scale: 0.5, opacity: 0, y: 20 }}
         transition={{ duration: 0.8, delay: 1, type: 'spring' }}
-        style={{ position: 'absolute', width: '120px', height: '80px', background: 'linear-gradient(135deg, #1e293b, #0f172a)', border: '1px solid rgba(96, 165, 250, 0.4)', borderRadius: '12px', padding: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 10px 30px rgba(96, 165, 250, 0.3)' }}
+        style={{ position: 'absolute', width: '120px', height: '80px', background: 'linear-gradient(135deg, #1a1a1a, #0d0d0d)', border: '1px solid rgba(96, 165, 250, 0.4)', borderRadius: '12px', padding: '12px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 10px 30px rgba(96, 165, 250, 0.3)' }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', gap: '4px' }}>
@@ -173,8 +173,8 @@ const AnimatedBilling = ({ hovering }) => {
           <CreditCard size={14} color="#60a5fa" />
         </div>
         <div>
-          <div style={{ width: '100%', height: '4px', background: '#334155', borderRadius: '2px', marginBottom: '4px' }} />
-          <div style={{ width: '60%', height: '4px', background: '#334155', borderRadius: '2px' }} />
+          <div style={{ width: '100%', height: '4px', background: '#2a2a2a', borderRadius: '2px', marginBottom: '4px' }} />
+          <div style={{ width: '60%', height: '4px', background: '#2a2a2a', borderRadius: '2px' }} />
         </div>
       </motion.div>
     </div>
@@ -255,7 +255,7 @@ export default function TeamCollaborationPage() {
                   <div className="ts-cv-graphic-wrap">
                     <div className="ts-faux-ui-panel" style={{ width: '100%', maxWidth: '280px', padding: '24px', opacity: 0.8 }}>
                       <div style={{ fontSize: '11px', color: '#fca5a5', fontWeight: 'bold', letterSpacing: '0.1em', marginBottom: '16px', textTransform: 'uppercase' }}>Without Workspaces</div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px', color: '#94a3b8' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px', color: '#7a7a7a' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><div style={{ width: '6px', height: '6px', background: '#ef4444', borderRadius: '50%' }}/> Fragmented libraries</div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><div style={{ width: '6px', height: '6px', background: '#ef4444', borderRadius: '50%' }}/> Duplicated transcriptions</div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#fca5a5' }}><div style={{ width: '6px', height: '6px', background: '#ef4444', borderRadius: '50%' }}/> Research lost when staff leaves</div>

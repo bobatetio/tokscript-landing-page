@@ -85,7 +85,7 @@ const AnimatedExtensionVisual = ({ hovering }) => {
         position: "relative",
         width: "320px",
         height: "240px",
-        background: "#0f172a",
+        background: "#0d0d0d",
         borderRadius: "12px",
         border: "1px solid rgba(255,255,255,0.1)",
         overflow: "hidden",
@@ -96,7 +96,7 @@ const AnimatedExtensionVisual = ({ hovering }) => {
       <div
         style={{
           padding: "8px 12px",
-          background: "#1e293b",
+          background: "#1a1a1a",
           borderBottom: "1px solid rgba(255,255,255,0.05)",
           display: "flex",
           alignItems: "center",
@@ -132,14 +132,14 @@ const AnimatedExtensionVisual = ({ hovering }) => {
         <div
           style={{
             flex: 1,
-            background: "#0f172a",
+            background: "#0d0d0d",
             borderRadius: "4px",
             height: "20px",
             display: "flex",
             alignItems: "center",
             padding: "0 8px",
             fontSize: "10px",
-            color: "#94a3b8",
+            color: "#7a7a7a",
           }}
         >
           tiktok.com/@creator/video
@@ -148,7 +148,7 @@ const AnimatedExtensionVisual = ({ hovering }) => {
           animate={
             step >= 1
               ? { scale: 1.2, color: "#3b82f6" }
-              : { scale: 1, color: "#94a3b8" }
+              : { scale: 1, color: "#7a7a7a" }
           }
         >
           <Chrome size={14} />
@@ -172,7 +172,7 @@ const AnimatedExtensionVisual = ({ hovering }) => {
             height: "180px",
             border: "1px solid rgba(255,255,255,0.1)",
             borderRadius: "8px",
-            background: "linear-gradient(to bottom, #1e293b, #0f172a)",
+            background: "linear-gradient(to bottom, #1a1a1a, #0d0d0d)",
             position: "relative",
           }}
         >
@@ -238,7 +238,7 @@ const AnimatedExtensionVisual = ({ hovering }) => {
               <div
                 style={{
                   fontSize: "11px",
-                  color: "#94a3b8",
+                  color: "#7a7a7a",
                   textAlign: "center",
                   padding: "12px 0",
                 }}
@@ -341,7 +341,7 @@ const AnimatedWorkflowCard = ({ hovering }) => {
             background:
               hovering && activeStep === i
                 ? "rgba(59, 130, 246, 0.1)"
-                : "#1e293b",
+                : "#1a1a1a",
             border: "1px solid",
             borderColor:
               hovering && activeStep === i
@@ -349,7 +349,7 @@ const AnimatedWorkflowCard = ({ hovering }) => {
                 : "rgba(255,255,255,0.05)",
             borderRadius: "8px",
             fontSize: "13px",
-            color: hovering && activeStep === i ? "#fff" : "#94a3b8",
+            color: hovering && activeStep === i ? "#fff" : "#7a7a7a",
             display: "flex",
             alignItems: "center",
             gap: "12px",
@@ -385,7 +385,7 @@ const AnimatedKeyboardShortcut = ({ hovering }) => {
         alignItems: "center",
         justifyContent: "center",
         gap: "8px",
-        background: "#0f172a",
+        background: "#0d0d0d",
         borderRadius: "12px",
         border: "1px solid rgba(255,255,255,0.1)",
       }}
@@ -402,8 +402,8 @@ const AnimatedKeyboardShortcut = ({ hovering }) => {
               }
             : {
                 y: 0,
-                background: "#1e293b",
-                color: "#94a3b8",
+                background: "#1a1a1a",
+                color: "#7a7a7a",
                 boxShadow: "none",
               }
         }
@@ -440,8 +440,8 @@ const AnimatedKeyboardShortcut = ({ hovering }) => {
               }
             : {
                 y: 0,
-                background: "#1e293b",
-                color: "#94a3b8",
+                background: "#1a1a1a",
+                color: "#7a7a7a",
                 boxShadow: "none",
               }
         }
@@ -550,8 +550,8 @@ const AnimatedCloudSync = ({ hovering }) => {
         style={{
           width: "32px",
           height: "40px",
-          background: "#1e293b",
-          border: "1px solid #334155",
+          background: "#1a1a1a",
+          border: "1px solid #2a2a2a",
           borderRadius: "4px",
           display: "flex",
           flexDirection: "column",
@@ -559,9 +559,9 @@ const AnimatedCloudSync = ({ hovering }) => {
           padding: "6px",
         }}
       >
-        <div style={{ width: "100%", height: "2px", background: "#334155" }} />
-        <div style={{ width: "60%", height: "2px", background: "#334155" }} />
-        <div style={{ width: "80%", height: "2px", background: "#334155" }} />
+        <div style={{ width: "100%", height: "2px", background: "#2a2a2a" }} />
+        <div style={{ width: "60%", height: "2px", background: "#2a2a2a" }} />
+        <div style={{ width: "80%", height: "2px", background: "#2a2a2a" }} />
       </div>
 
       <div
@@ -569,7 +569,7 @@ const AnimatedCloudSync = ({ hovering }) => {
           flex: 1,
           position: "relative",
           height: "2px",
-          background: "#334155",
+          background: "#2a2a2a",
           overflow: "hidden",
         }}
       >
@@ -611,9 +611,9 @@ const AnimatedSidebarMode = ({ hovering }) => {
         position: "relative",
         width: "160px",
         height: "100px",
-        background: "#0f172a",
+        background: "#0d0d0d",
         borderRadius: "8px",
-        border: "1px solid #334155",
+        border: "1px solid #2a2a2a",
         overflow: "hidden",
         display: "flex",
       }}
@@ -631,7 +631,7 @@ const AnimatedSidebarMode = ({ hovering }) => {
           style={{
             width: "100%",
             height: "8px",
-            background: "#1e293b",
+            background: "#1a1a1a",
             borderRadius: "4px",
           }}
         />
@@ -639,7 +639,7 @@ const AnimatedSidebarMode = ({ hovering }) => {
           style={{
             width: "100%",
             flex: 1,
-            background: "#1e293b",
+            background: "#1a1a1a",
             borderRadius: "4px",
           }}
         />
@@ -649,7 +649,7 @@ const AnimatedSidebarMode = ({ hovering }) => {
         animate={hovering ? { width: "40px" } : { width: "0px" }}
         transition={{ duration: 0.5, type: "spring" }}
         style={{
-          background: "#1e293b",
+          background: "#1a1a1a",
           borderLeft: "1px solid #3b82f6",
           display: "flex",
           flexDirection: "column",
@@ -669,7 +669,7 @@ const AnimatedSidebarMode = ({ hovering }) => {
           style={{
             width: "80%",
             height: "4px",
-            background: "#334155",
+            background: "#2a2a2a",
             borderRadius: "2px",
           }}
         />
@@ -677,7 +677,7 @@ const AnimatedSidebarMode = ({ hovering }) => {
           style={{
             width: "60%",
             height: "4px",
-            background: "#334155",
+            background: "#2a2a2a",
             borderRadius: "2px",
           }}
         />
@@ -693,9 +693,9 @@ const AnimatedContextMenu = ({ hovering }) => {
         position: "relative",
         width: "140px",
         height: "120px",
-        background: "#0f172a",
+        background: "#0d0d0d",
         borderRadius: "8px",
-        border: "1px solid #334155",
+        border: "1px solid #2a2a2a",
         overflow: "hidden",
         padding: "12px",
       }}
@@ -704,7 +704,7 @@ const AnimatedContextMenu = ({ hovering }) => {
         style={{
           width: "60px",
           height: "12px",
-          background: "#1e293b",
+          background: "#1a1a1a",
           borderRadius: "4px",
           marginBottom: "12px",
         }}
@@ -713,7 +713,7 @@ const AnimatedContextMenu = ({ hovering }) => {
         style={{
           width: "100%",
           height: "40px",
-          background: "#1e293b",
+          background: "#1a1a1a",
           borderRadius: "4px",
         }}
       />
@@ -731,7 +731,7 @@ const AnimatedContextMenu = ({ hovering }) => {
           top: "40px",
           left: "40px",
           width: "80px",
-          background: "#1e293b",
+          background: "#1a1a1a",
           border: "1px solid #3b82f6",
           borderRadius: "6px",
           boxShadow: "0 4px 12px rgba(0,0,0,0.5)",
@@ -740,10 +740,10 @@ const AnimatedContextMenu = ({ hovering }) => {
           overflow: "hidden",
         }}
       >
-        <div style={{ padding: "6px", fontSize: "6px", color: "#94a3b8" }}>
+        <div style={{ padding: "6px", fontSize: "6px", color: "#7a7a7a" }}>
           Open Link
         </div>
-        <div style={{ padding: "6px", fontSize: "6px", color: "#94a3b8" }}>
+        <div style={{ padding: "6px", fontSize: "6px", color: "#7a7a7a" }}>
           Copy Address
         </div>
         <motion.div
@@ -929,7 +929,7 @@ export default function ChromeExtensionPage() {
                           flexDirection: "column",
                           gap: "12px",
                           fontSize: "13px",
-                          color: "#94a3b8",
+                          color: "#7a7a7a",
                         }}
                       >
                         <div
@@ -1263,7 +1263,7 @@ export default function ChromeExtensionPage() {
         {/* FINAL CTA */}
         <section
           className="ts-section ts-final-cta"
-          style={{ background: "#09090b" }}
+          style={{ background: "#0a0a0a" }}
         >
           <div className="ts-container ts-container-narrow">
             <div className="ts-cta-box">

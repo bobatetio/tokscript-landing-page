@@ -104,7 +104,7 @@ const Feature = ({ text, excluded = false, bold = false, sub = "" }) => (
         <div
           style={{
             fontSize: "0.75rem",
-            color: "#94a3b8",
+            color: "#7a7a7a",
             marginTop: "0.25rem",
             lineHeight: "1.2",
           }}
@@ -1558,7 +1558,7 @@ export default function LandingPage() {
                           <div style={{ marginBottom: "0.5rem" }}>
                             <h3
                               className="card-title"
-                              style={{ color: "#e2e8f0" }}
+                              style={{ color: "#e6e6e6" }}
                             >
                               Free
                             </h3>
@@ -1567,7 +1567,7 @@ export default function LandingPage() {
                           <div className="price-row">
                             <span
                               className="price-val"
-                              style={{ color: "#e2e8f0" }}
+                              style={{ color: "#e6e6e6" }}
                             >
                               $0
                             </span>
@@ -1687,7 +1687,7 @@ export default function LandingPage() {
                             <div className="calc-box-highlight"></div>
                             <div
                               style={{
-                                color: "#22d3ee",
+                                color: "#00D9B4",
                                 fontWeight: 700,
                                 fontSize: "12px",
                                 lineHeight: "17px",
@@ -1740,7 +1740,7 @@ export default function LandingPage() {
                               <Layers
                                 size={12}
                                 className="text-cyan-400"
-                                style={{ color: "#22d3ee" }}
+                                style={{ color: "#00D9B4" }}
                               />{" "}
                               BULK PROCESSING
                             </div>
@@ -1773,7 +1773,7 @@ export default function LandingPage() {
                               <span
                                 style={{
                                   fontSize: "0.625rem",
-                                  color: "#94a3b8",
+                                  color: "#7a7a7a",
                                   fontWeight: 500,
                                   textTransform: "uppercase",
                                   letterSpacing: "0.05em",
@@ -1923,7 +1923,7 @@ export default function LandingPage() {
                           <div style={{ marginBottom: "0.5rem" }}>
                             <h3
                               className="card-title"
-                              style={{ color: "#e2e8f0" }}
+                              style={{ color: "#e6e6e6" }}
                             >
                               Monthly
                             </h3>
@@ -1934,7 +1934,7 @@ export default function LandingPage() {
                           <div className="price-row">
                             <span
                               className="price-val"
-                              style={{ color: "#e2e8f0" }}
+                              style={{ color: "#e6e6e6" }}
                             >
                               $10
                             </span>
@@ -1949,7 +1949,7 @@ export default function LandingPage() {
                             }}
                           >
                             <div
-                              style={{ color: "#94a3b8", fontSize: "0.75rem" }}
+                              style={{ color: "#7a7a7a", fontSize: "0.75rem" }}
                             >
                               = $120/year
                             </div>
@@ -2069,7 +2069,7 @@ export default function LandingPage() {
                                     }}
                                     style={{
                                       background: "rgba(15, 23, 42, 0.5)",
-                                      border: "1px solid #334155",
+                                      border: "1px solid #2a2a2a",
                                     }}
                                   >
                                     Get Monthly
@@ -2080,7 +2080,7 @@ export default function LandingPage() {
                                     className="btn btn-outline d-flex d-md-none"
                                     style={{
                                       background: "rgba(15, 23, 42, 0.5)",
-                                      border: "1px solid #334155",
+                                      border: "1px solid #2a2a2a",
                                     }}
                                   >
                                     Get Monthly
@@ -2104,7 +2104,7 @@ export default function LandingPage() {
                                   }}
                                   style={{
                                     background: "rgba(15, 23, 42, 0.5)",
-                                    border: "1px solid #334155",
+                                    border: "1px solid #2a2a2a",
                                   }}
                                 >
                                   Get Monthly
@@ -2115,7 +2115,7 @@ export default function LandingPage() {
                                   className="btn btn-outline d-flex d-md-none"
                                   style={{
                                     background: "rgba(15, 23, 42, 0.5)",
-                                    border: "1px solid #334155",
+                                    border: "1px solid #2a2a2a",
                                   }}
                                 >
                                   Get Monthly
@@ -2159,14 +2159,14 @@ export default function LandingPage() {
                   your TikTok,{" "}
                   <Link
                     href="/instagram-transcript-generator"
-                    style={{ color: "#22d3ee" }}
+                    style={{ color: "#00D9B4" }}
                   >
                     Instagram Reels
                   </Link>
                   , and{" "}
                   <Link
                     href="/youtube-transcript-generator"
-                    style={{ color: "#22d3ee" }}
+                    style={{ color: "#00D9B4" }}
                   >
                     YouTube Shorts
                   </Link>{" "}
@@ -2182,23 +2182,23 @@ export default function LandingPage() {
                   favorite TikTok,{" "}
                   <Link
                     href="/youtube-transcript-generator"
-                    style={{ color: "#22d3ee" }}
+                    style={{ color: "#00D9B4" }}
                   >
                     YouTube Shorts
                   </Link>
                   , and{" "}
                   <Link
                     href="/instagram-transcript-generator"
-                    style={{ color: "#22d3ee" }}
+                    style={{ color: "#00D9B4" }}
                   >
                     Instagram Reels
                   </Link>{" "}
                   videos instantly! See our{" "}
-                  <Link href="/pricing" style={{ color: "#22d3ee" }}>
+                  <Link href="/pricing" style={{ color: "#00D9B4" }}>
                     pricing plans
                   </Link>{" "}
                   or learn more{" "}
-                  <Link href="/about-us" style={{ color: "#22d3ee" }}>
+                  <Link href="/about-us" style={{ color: "#00D9B4" }}>
                     about us
                   </Link>
                   .

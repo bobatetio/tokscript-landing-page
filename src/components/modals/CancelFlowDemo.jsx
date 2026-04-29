@@ -47,7 +47,7 @@ export default function CancelFlowDemo() {
         >
           Cancellation Flow Demo
         </h1>
-        <p style={{ color: "#94a3b8" }}>
+        <p style={{ color: "#7a7a7a" }}>
           Trigger the cancellation modal in different plan states.
         </p>
       </div>

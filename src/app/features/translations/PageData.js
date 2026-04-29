@@ -54,10 +54,10 @@ const AnimatedLanguageSwitcher = ({ hovering }) => {
   }, [hovering]);
 
   return (
-    <div style={{ position: 'relative', width: '320px', background: '#0f172a', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', width: '320px', background: '#0d0d0d', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', overflow: 'hidden' }}>
       {/* Top Bar: Language Select */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#1e293b', padding: '8px 12px', borderRadius: '8px', border: '1px solid rgba(99, 102, 241, 0.3)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#1a1a1a', padding: '8px 12px', borderRadius: '8px', border: '1px solid rgba(99, 102, 241, 0.3)' }}>
           <Globe2 size={14} color="#818cf8" />
           <span style={{ fontSize: '12px', color: '#c7d2fe', fontWeight: '500' }}>
             {step < 2 ? "English (US)" : "Spanish (ES)"}
@@ -69,9 +69,9 @@ const AnimatedLanguageSwitcher = ({ hovering }) => {
           </motion.div>
         </div>
         <div style={{ display: 'flex', gap: '4px' }}>
-          <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#334155' }}></div>
-          <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#334155' }}></div>
-          <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#334155' }}></div>
+          <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#2a2a2a' }}></div>
+          <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#2a2a2a' }}></div>
+          <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#2a2a2a' }}></div>
         </div>
       </div>
 
@@ -82,11 +82,11 @@ const AnimatedLanguageSwitcher = ({ hovering }) => {
             initial={{ opacity: 0, y: -10 }} 
             animate={{ opacity: 1, y: 0 }} 
             exit={{ opacity: 0, y: -10 }}
-            style={{ position: 'absolute', top: '56px', left: '16px', width: '140px', background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', zIndex: 10, boxShadow: '0 10px 25px rgba(0,0,0,0.5)', overflow: 'hidden' }}
+            style={{ position: 'absolute', top: '56px', left: '16px', width: '140px', background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', zIndex: 10, boxShadow: '0 10px 25px rgba(0,0,0,0.5)', overflow: 'hidden' }}
           >
-            <div style={{ padding: '8px 12px', fontSize: '12px', color: '#94a3b8', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>English (US)</div>
+            <div style={{ padding: '8px 12px', fontSize: '12px', color: '#7a7a7a', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>English (US)</div>
             <div style={{ padding: '8px 12px', fontSize: '12px', color: '#fff', background: 'rgba(99, 102, 241, 0.2)' }}>Spanish (ES)</div>
-            <div style={{ padding: '8px 12px', fontSize: '12px', color: '#94a3b8' }}>French (FR)</div>
+            <div style={{ padding: '8px 12px', fontSize: '12px', color: '#7a7a7a' }}>French (FR)</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -95,7 +95,7 @@ const AnimatedLanguageSwitcher = ({ hovering }) => {
       <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
           <div style={{ fontSize: '10px', color: '#818cf8', marginBottom: '8px', fontWeight: 'bold' }}>00:00 - 00:05</div>
-          <div style={{ fontSize: '12px', color: '#e2e8f0', lineHeight: 1.5, position: 'relative' }}>
+          <div style={{ fontSize: '12px', color: '#e6e6e6', lineHeight: 1.5, position: 'relative' }}>
             {step < 3 ? "This hook works every single time for my videos." : "Este gancho funciona todas las veces en mis videos."}
             {step === 2 && (
               <motion.div 
@@ -110,7 +110,7 @@ const AnimatedLanguageSwitcher = ({ hovering }) => {
         
         <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
           <div style={{ fontSize: '10px', color: '#818cf8', marginBottom: '8px', fontWeight: 'bold' }}>00:05 - 00:08</div>
-          <div style={{ fontSize: '12px', color: '#e2e8f0', lineHeight: 1.5, position: 'relative' }}>
+          <div style={{ fontSize: '12px', color: '#e6e6e6', lineHeight: 1.5, position: 'relative' }}>
             {step < 3 ? "Watch carefully what I do next." : "Observa atentamente lo que hago a continuación."}
           </div>
         </div>
@@ -121,12 +121,12 @@ const AnimatedLanguageSwitcher = ({ hovering }) => {
 
 const AnimatedReTranslate = ({ hovering }) => {
   return (
-    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0f172a 0%, #020617 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
+    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0d0d0d 0%, #020617 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '8px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <div style={{ background: '#1e293b', padding: '4px', borderRadius: '4px' }}><MessageSquare size={10} color="#818cf8" /></div>
-          <span style={{ fontSize: '10px', color: '#e2e8f0', fontWeight: '500' }}>Transcript Library</span>
+          <div style={{ background: '#1a1a1a', padding: '4px', borderRadius: '4px' }}><MessageSquare size={10} color="#818cf8" /></div>
+          <span style={{ fontSize: '10px', color: '#e6e6e6', fontWeight: '500' }}>Transcript Library</span>
         </div>
         <div style={{ fontSize: '9px', color: '#64748b' }}>42 Items</div>
       </div>
@@ -138,22 +138,22 @@ const AnimatedReTranslate = ({ hovering }) => {
             <div style={{ fontSize: '11px', color: '#fff', fontWeight: '600', marginBottom: '2px' }}>Viral Hook Format #4</div>
             <div style={{ fontSize: '9px', color: '#64748b' }}>Added Oct 12 • 45s audio</div>
           </div>
-          <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '4px', fontSize: '8px', color: '#94a3b8' }}>EN</div>
+          <div style={{ background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '4px', fontSize: '8px', color: '#7a7a7a' }}>EN</div>
         </div>
         
         {/* Action Bar */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px', paddingTop: '8px', borderTop: '1px dashed rgba(255,255,255,0.05)' }}>
           <div style={{ display: 'flex', gap: '4px' }}>
-             <div style={{ width: '16px', height: '4px', background: '#334155', borderRadius: '2px' }} />
-             <div style={{ width: '24px', height: '4px', background: '#334155', borderRadius: '2px' }} />
+             <div style={{ width: '16px', height: '4px', background: '#2a2a2a', borderRadius: '2px' }} />
+             <div style={{ width: '24px', height: '4px', background: '#2a2a2a', borderRadius: '2px' }} />
           </div>
           <motion.div 
-            style={{ display: 'flex', alignItems: 'center', gap: '4px', background: hovering ? 'rgba(99, 102, 241, 0.15)' : '#1e293b', border: hovering ? '1px solid rgba(99, 102, 241, 0.4)' : '1px solid rgba(255,255,255,0.1)', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '4px', background: hovering ? 'rgba(99, 102, 241, 0.15)' : '#1a1a1a', border: hovering ? '1px solid rgba(99, 102, 241, 0.4)' : '1px solid rgba(255,255,255,0.1)', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer' }}
           >
             <motion.div animate={{ rotate: hovering ? 180 : 0 }} transition={{ duration: 0.5 }}>
-              <RefreshCw size={10} color={hovering ? "#818cf8" : "#94a3b8"} />
+              <RefreshCw size={10} color={hovering ? "#818cf8" : "#7a7a7a"} />
             </motion.div>
-            <span style={{ fontSize: '9px', color: hovering ? '#818cf8' : '#94a3b8', fontWeight: '500' }}>Translate</span>
+            <span style={{ fontSize: '9px', color: hovering ? '#818cf8' : '#7a7a7a', fontWeight: '500' }}>Translate</span>
           </motion.div>
         </div>
         
@@ -179,11 +179,11 @@ const AnimatedReTranslate = ({ hovering }) => {
 
 const AnimatedCrossPlatform = ({ hovering }) => {
   return (
-    <div style={{ width: '280px', height: '180px', background: '#0f172a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
+    <div style={{ width: '280px', height: '180px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
       {/* Search Input Simulation */}
-      <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '8px 12px', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+      <div style={{ background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '8px 12px', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
         <Globe2 size={12} color="#64748b" />
-        <span style={{ fontSize: '10px', color: '#94a3b8', fontFamily: 'monospace' }}>Paste TikTok, IG Reel, or YT Link...</span>
+        <span style={{ fontSize: '10px', color: '#7a7a7a', fontFamily: 'monospace' }}>Paste TikTok, IG Reel, or YT Link...</span>
       </div>
       
       {/* Platform grid */}
@@ -194,11 +194,11 @@ const AnimatedCrossPlatform = ({ hovering }) => {
           { icon: <ListVideo size={12} color="#a855f7" />, name: 'IG Reels', count: '890K views', bg: 'rgba(168,85,247,0.1)' },
           { icon: <CheckCircle2 size={12} color="#34d399" />, name: 'Auto-Detect', count: 'Native Support', bg: 'rgba(52,211,153,0.1)' }
         ].map((item, i) => (
-          <div key={i} style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '6px', padding: '10px', position: 'relative', overflow: 'hidden' }}>
+          <div key={i} style={{ background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '6px', padding: '10px', position: 'relative', overflow: 'hidden' }}>
             {hovering && <motion.div initial={{ left: '-100%' }} animate={{ left: '100%' }} transition={{ duration: 1.5, delay: i * 0.2, repeat: Infinity, ease: 'linear' }} style={{ position: 'absolute', top: 0, bottom: 0, width: '20px', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)', transform: 'skewX(-20deg)' }} />}
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
               <div style={{ padding: '4px', background: item.bg, borderRadius: '4px' }}>{item.icon}</div>
-              <span style={{ fontSize: '10px', color: '#e2e8f0', fontWeight: '500' }}>{item.name}</span>
+              <span style={{ fontSize: '10px', color: '#e6e6e6', fontWeight: '500' }}>{item.name}</span>
             </div>
             <div style={{ fontSize: '8px', color: '#64748b' }}>{item.count}</div>
           </div>
@@ -210,21 +210,21 @@ const AnimatedCrossPlatform = ({ hovering }) => {
 
 const AnimatedClientNative = ({ hovering }) => {
   return (
-    <div style={{ width: '280px', height: '180px', background: '#0f172a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', gap: '16px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
+    <div style={{ width: '280px', height: '180px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', gap: '16px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
       {/* Sidebar */}
       <div style={{ width: '80px', borderRight: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', gap: '8px', paddingRight: '12px' }}>
         <div style={{ fontSize: '9px', color: '#64748b', fontWeight: '600', textTransform: 'uppercase', marginBottom: '4px' }}>Export As</div>
-        <div style={{ padding: '6px', background: '#1e293b', border: '1px solid rgba(99,102,241,0.4)', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <div style={{ padding: '6px', background: '#1a1a1a', border: '1px solid rgba(99,102,241,0.4)', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
           <div style={{ width: '4px', height: '4px', background: '#818cf8', borderRadius: '50%' }} />
           <span style={{ fontSize: '9px', color: '#c7d2fe' }}>.TXT</span>
         </div>
         <div style={{ padding: '6px', background: 'transparent', border: '1px solid transparent', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <div style={{ width: '4px', height: '4px', background: '#334155', borderRadius: '50%' }} />
-          <span style={{ fontSize: '9px', color: '#94a3b8' }}>.PDF</span>
+          <div style={{ width: '4px', height: '4px', background: '#2a2a2a', borderRadius: '50%' }} />
+          <span style={{ fontSize: '9px', color: '#7a7a7a' }}>.PDF</span>
         </div>
         <div style={{ padding: '6px', background: 'transparent', border: '1px solid transparent', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <div style={{ width: '4px', height: '4px', background: '#334155', borderRadius: '50%' }} />
-          <span style={{ fontSize: '9px', color: '#94a3b8' }}>.DOCX</span>
+          <div style={{ width: '4px', height: '4px', background: '#2a2a2a', borderRadius: '50%' }} />
+          <span style={{ fontSize: '9px', color: '#7a7a7a' }}>.DOCX</span>
         </div>
       </div>
       
@@ -236,19 +236,19 @@ const AnimatedClientNative = ({ hovering }) => {
         </div>
         
         {/* Document Simulation */}
-        <div style={{ background: '#1e293b', borderRadius: '6px', padding: '12px', flex: 1, border: '1px solid rgba(255,255,255,0.05)', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ background: '#1a1a1a', borderRadius: '6px', padding: '12px', flex: 1, border: '1px solid rgba(255,255,255,0.05)', position: 'relative', overflow: 'hidden' }}>
           <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
             <div style={{ width: '30px', fontSize: '8px', color: '#818cf8', fontFamily: 'monospace' }}>00:00</div>
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <div style={{ width: '100%', height: '3px', background: '#e2e8f0', borderRadius: '2px' }} />
-              <div style={{ width: '80%', height: '3px', background: '#e2e8f0', borderRadius: '2px' }} />
+              <div style={{ width: '100%', height: '3px', background: '#e6e6e6', borderRadius: '2px' }} />
+              <div style={{ width: '80%', height: '3px', background: '#e6e6e6', borderRadius: '2px' }} />
             </div>
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
             <div style={{ width: '30px', fontSize: '8px', color: '#818cf8', fontFamily: 'monospace' }}>00:15</div>
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <div style={{ width: '90%', height: '3px', background: '#e2e8f0', borderRadius: '2px' }} />
-              <div style={{ width: '40%', height: '3px', background: '#e2e8f0', borderRadius: '2px' }} />
+              <div style={{ width: '90%', height: '3px', background: '#e6e6e6', borderRadius: '2px' }} />
+              <div style={{ width: '40%', height: '3px', background: '#e6e6e6', borderRadius: '2px' }} />
             </div>
           </div>
           
@@ -339,7 +339,7 @@ export default function TranslationsPage() {
                   <div className="ts-cv-graphic-wrap">
                     <div className="ts-faux-ui-panel" style={{ width: '100%', maxWidth: '280px', padding: '24px', opacity: 0.8 }}>
                       <div style={{ fontSize: '11px', color: '#fca5a5', fontWeight: 'bold', letterSpacing: '0.1em', marginBottom: '16px', textTransform: 'uppercase' }}>The Manual Slog</div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: '#94a3b8' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: '#7a7a7a' }}>
                         <div style={{ padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px dashed rgba(255,255,255,0.1)' }}>📄 Copy English text</div>
                         <div style={{ padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px dashed rgba(255,255,255,0.1)' }}>🌐 Open external translator app</div>
                         <div style={{ padding: '8px', background: 'rgba(239, 68, 68, 0.1)', color: '#fca5a5', borderRadius: '4px', border: '1px dashed rgba(239, 68, 68, 0.3)' }}>⚠️ Formatting and timestamps lost</div>

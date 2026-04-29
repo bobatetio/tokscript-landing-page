@@ -460,7 +460,7 @@ export default function LandingPage() {
                     <div className="desktop-content">
                       <strong>
                         <FaLink
-                          color="#22D3EE"
+                          color="#00D9B4"
                           style={{ width: "16px", height: "16px" }}
                         />
                         Quick URL Method

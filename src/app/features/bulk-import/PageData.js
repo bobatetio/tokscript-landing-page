@@ -82,15 +82,15 @@ const AnimatedBulkProcessing = ({ hovering }) => {
   }, [hovering]);
 
   return (
-    <div style={{ position: 'relative', width: '300px', background: '#0f172a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
-      <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#94a3b8', marginBottom: '12px', display: 'flex', justifyContent: 'space-between' }}>
+    <div style={{ position: 'relative', width: '300px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
+      <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#7a7a7a', marginBottom: '12px', display: 'flex', justifyContent: 'space-between' }}>
         <span>BATCH IMPORT</span>
         <span style={{ color: '#38bdf8' }}>50 URLs Detected</span>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {items.map((item, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: item.status === 'done' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(255,255,255,0.03)', borderRadius: '6px', border: '1px solid', borderColor: item.status === 'done' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(255,255,255,0.05)', transition: 'all 0.3s' }}>
-            <div style={{ fontSize: '11px', color: '#cbd5e1', fontFamily: 'monospace' }}>tiktok.com/@user/vid{i}</div>
+            <div style={{ fontSize: '11px', color: '#d4d4d4', fontFamily: 'monospace' }}>tiktok.com/@user/vid{i}</div>
             <div>
               {item.status === 'pending' && <span style={{ color: '#64748b', fontSize: '10px' }}>Waiting...</span>}
               {item.status === 'processing' && <span style={{ color: '#eab308', fontSize: '10px', display: 'flex', alignItems: 'center', gap: '4px' }}><div style={{ width: '8px', height: '8px', border: '2px solid #eab308', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} /> Processing</span>}
@@ -126,11 +126,11 @@ const AnimatedBatchAudit = ({ hovering }) => {
   return (
     <div style={{ width: '100%', maxWidth: '280px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <div style={{ padding: '12px', background: '#1e293b', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)', fontSize: '12px', color: '#94a3b8', display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ padding: '12px', background: '#1a1a1a', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)', fontSize: '12px', color: '#7a7a7a', display: 'flex', justifyContent: 'space-between' }}>
           <span>1. Paste URL list</span>
           <span style={{ color: '#38bdf8' }}><Check size={14} /></span>
         </div>
-        <div style={{ padding: '12px', background: '#1e293b', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)', fontSize: '12px', color: '#94a3b8', display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ padding: '12px', background: '#1a1a1a', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)', fontSize: '12px', color: '#7a7a7a', display: 'flex', justifyContent: 'space-between' }}>
           <span>2. Click Import</span>
           <span style={{ color: '#38bdf8' }}><Check size={14} /></span>
         </div>
@@ -151,11 +151,11 @@ const AnimatedBatchAudit = ({ hovering }) => {
 
 const AnimatedErrorHandling = ({ hovering }) => {
   return (
-    <div style={{ width: '260px', background: '#0f172a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <div style={{ width: '260px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {[0, 1, 2].map((i) => (
-        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', background: '#1e293b', padding: '8px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.05)' }}>
-          <div style={{ fontSize: '10px', color: '#94a3b8', fontFamily: 'monospace' }}>vid_{i}.mp4</div>
-          <div style={{ flex: 1, height: '4px', background: '#334155', borderRadius: '2px', overflow: 'hidden' }}>
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', background: '#1a1a1a', padding: '8px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.05)' }}>
+          <div style={{ fontSize: '10px', color: '#7a7a7a', fontFamily: 'monospace' }}>vid_{i}.mp4</div>
+          <div style={{ flex: 1, height: '4px', background: '#2a2a2a', borderRadius: '2px', overflow: 'hidden' }}>
             <motion.div
               initial={{ width: '0%' }}
               animate={hovering ? { width: i === 1 ? '40%' : '100%' } : { width: '0%' }}
@@ -200,7 +200,7 @@ const AnimatedMultiPlatformBatch = ({ hovering }) => {
 const AnimatedEmailNotify = ({ hovering }) => {
   return (
     <div style={{ position: 'relative', width: '140px', height: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ width: '100%', height: '6px', background: '#1e293b', borderRadius: '3px', overflow: 'hidden', marginBottom: '20px' }}>
+      <div style={{ width: '100%', height: '6px', background: '#1a1a1a', borderRadius: '3px', overflow: 'hidden', marginBottom: '20px' }}>
         <motion.div
           initial={{ width: '0%' }}
           animate={hovering ? { width: '100%' } : { width: '0%' }}
@@ -212,7 +212,7 @@ const AnimatedEmailNotify = ({ hovering }) => {
         initial={{ y: 20, opacity: 0 }}
         animate={hovering ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
         transition={{ duration: 0.5, delay: 1, type: 'spring' }}
-        style={{ position: 'absolute', top: '50px', background: '#0f172a', border: '1px solid #818cf8', borderRadius: '8px', padding: '8px 12px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 10px 20px rgba(129, 140, 248, 0.3)' }}
+        style={{ position: 'absolute', top: '50px', background: '#0d0d0d', border: '1px solid #818cf8', borderRadius: '8px', padding: '8px 12px', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 10px 20px rgba(129, 140, 248, 0.3)' }}
       >
         <Mail size={16} color="#818cf8" />
         <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#fff' }}>Batch Ready</span>
@@ -227,8 +227,8 @@ const AnimatedTrendHunting = ({ hovering }) => {
       {[20, 30, 25, 45, 60, 80].map((h, i) => (
         <motion.div
           key={i}
-          initial={{ height: '10px', background: '#1e293b' }}
-          animate={hovering ? { height: `${h}px`, background: i > 3 ? '#2dd4bf' : '#334155' } : { height: '10px', background: '#1e293b' }}
+          initial={{ height: '10px', background: '#1a1a1a' }}
+          animate={hovering ? { height: `${h}px`, background: i > 3 ? '#2dd4bf' : '#2a2a2a' } : { height: '10px', background: '#1a1a1a' }}
           transition={{ duration: 0.5, delay: i * 0.1 }}
           style={{ flex: 1, borderRadius: '4px 4px 0 0' }}
         />
@@ -253,9 +253,9 @@ const AnimatedAgencyWorkflow = ({ hovering }) => {
         { name: 'Client B', color: '#38bdf8' },
         { name: 'Client C', color: '#4ade80' }
       ].map((client, i) => (
-        <div key={i} style={{ background: '#1e293b', borderRadius: '6px', padding: '6px 8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-          <div style={{ fontSize: '9px', color: '#94a3b8', marginBottom: '4px' }}>{client.name}</div>
-          <div style={{ width: '100%', height: '4px', background: '#0f172a', borderRadius: '2px', overflow: 'hidden' }}>
+        <div key={i} style={{ background: '#1a1a1a', borderRadius: '6px', padding: '6px 8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+          <div style={{ fontSize: '9px', color: '#7a7a7a', marginBottom: '4px' }}>{client.name}</div>
+          <div style={{ width: '100%', height: '4px', background: '#0d0d0d', borderRadius: '2px', overflow: 'hidden' }}>
             <motion.div
               initial={{ width: '0%' }}
               animate={hovering ? { width: '100%' } : { width: '0%' }}
@@ -342,7 +342,7 @@ export default function BulkImportPage() {
                   <div className="ts-cv-graphic-wrap">
                     <div className="ts-faux-ui-panel" style={{ width: '100%', maxWidth: '300px', padding: '24px' }}>
                       <div style={{ fontSize: '11px', color: '#fca5a5', fontWeight: 'bold', letterSpacing: '0.1em', marginBottom: '16px', textTransform: 'uppercase' }}>The Manual Slog (50 URLs)</div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px', color: '#94a3b8' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px', color: '#7a7a7a' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><div style={{ width: '6px', height: '6px', background: '#ef4444', borderRadius: '50%', boxShadow: '0 0 10px #ef4444' }}/> Video 1: Copy, paste, save, rename</div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><div style={{ width: '6px', height: '6px', background: '#ef4444', borderRadius: '50%', boxShadow: '0 0 10px #ef4444' }}/> Video 2: Copy, paste, save, rename</div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#fca5a5' }}><div style={{ width: '6px', height: '6px', background: '#ef4444', borderRadius: '50%', boxShadow: '0 0 10px #ef4444' }}/> Video 3: Error. Reload. Copy, paste.</div>

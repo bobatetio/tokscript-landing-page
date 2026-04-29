@@ -50,13 +50,13 @@ const AnimatedSpeedTest = ({ hovering }) => {
   }, [hovering]);
 
   return (
-    <div style={{ position: 'relative', width: '320px', background: '#0f172a', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
+    <div style={{ position: 'relative', width: '320px', background: '#0d0d0d', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
       {/* Input */}
       <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', opacity: step >= 2 ? 0.5 : 1, transition: 'opacity 0.3s' }}>
-        <div style={{ flex: 1, background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 12px', fontSize: '12px', color: '#cbd5e1', display: 'flex', alignItems: 'center' }}>
+        <div style={{ flex: 1, background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 12px', fontSize: '12px', color: '#d4d4d4', display: 'flex', alignItems: 'center' }}>
           {step >= 1 ? 'https://tiktok.com/@user/vid' : <span style={{ color: '#64748b' }}>Paste URL</span>}
         </div>
-        <div style={{ background: step >= 1 ? '#eab308' : '#334155', color: step >= 1 ? '#000' : '#fff', padding: '10px 16px', borderRadius: '8px', fontSize: '12px', fontWeight: 'bold', display: 'flex', alignItems: 'center', transition: 'all 0.3s' }}>
+        <div style={{ background: step >= 1 ? '#eab308' : '#2a2a2a', color: step >= 1 ? '#000' : '#fff', padding: '10px 16px', borderRadius: '8px', fontSize: '12px', fontWeight: 'bold', display: 'flex', alignItems: 'center', transition: 'all 0.3s' }}>
           Extract
         </div>
       </div>
@@ -94,9 +94,9 @@ const AnimatedSpeedTest = ({ hovering }) => {
 
 const AnimatedOneClickCopy = ({ hovering }) => {
   return (
-    <div style={{ width: '200px', background: '#0f172a', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
+    <div style={{ width: '200px', background: '#0d0d0d', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
       <div style={{ position: 'relative' }}>
-        <div style={{ width: '64px', height: '64px', background: hovering ? '#eab308' : '#1e293b', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease', transform: hovering ? 'scale(1.1)' : 'scale(1)', boxShadow: hovering ? '0 10px 20px rgba(234, 179, 8, 0.4)' : 'none' }}>
+        <div style={{ width: '64px', height: '64px', background: hovering ? '#eab308' : '#1a1a1a', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease', transform: hovering ? 'scale(1.1)' : 'scale(1)', boxShadow: hovering ? '0 10px 20px rgba(234, 179, 8, 0.4)' : 'none' }}>
           <Copy size={32} color={hovering ? '#000' : '#64748b'} />
         </div>
         <div style={{ position: 'absolute', top: '-10px', right: '-10px', background: '#22c55e', color: '#fff', padding: '4px 8px', borderRadius: '12px', fontSize: '10px', fontWeight: 'bold', opacity: hovering ? 1 : 0, transform: hovering ? 'scale(1)' : 'scale(0.8)', transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s', boxShadow: '0 4px 10px rgba(34, 197, 94, 0.4)' }}>
@@ -109,13 +109,13 @@ const AnimatedOneClickCopy = ({ hovering }) => {
 
 const AnimatedNoAccount = ({ hovering }) => {
   return (
-    <div style={{ position: 'relative', width: '140px', height: '120px', background: '#0f172a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+    <div style={{ position: 'relative', width: '140px', height: '120px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       {/* Login form */}
-      <div style={{ width: '80px', height: '60px', background: '#1e293b', borderRadius: '6px', border: '1px dashed #334155', padding: '6px', display: 'flex', flexDirection: 'column', gap: '4px', opacity: hovering ? 0.3 : 1, transition: 'opacity 0.4s' }}>
-        <div style={{ width: '40%', height: '4px', background: '#334155', borderRadius: '2px', alignSelf: 'center', marginBottom: '4px' }} />
-        <div style={{ width: '100%', height: '10px', background: '#0f172a', borderRadius: '2px' }} />
-        <div style={{ width: '100%', height: '10px', background: '#0f172a', borderRadius: '2px' }} />
-        <div style={{ width: '100%', height: '12px', background: '#334155', borderRadius: '2px', marginTop: 'auto' }} />
+      <div style={{ width: '80px', height: '60px', background: '#1a1a1a', borderRadius: '6px', border: '1px dashed #2a2a2a', padding: '6px', display: 'flex', flexDirection: 'column', gap: '4px', opacity: hovering ? 0.3 : 1, transition: 'opacity 0.4s' }}>
+        <div style={{ width: '40%', height: '4px', background: '#2a2a2a', borderRadius: '2px', alignSelf: 'center', marginBottom: '4px' }} />
+        <div style={{ width: '100%', height: '10px', background: '#0d0d0d', borderRadius: '2px' }} />
+        <div style={{ width: '100%', height: '10px', background: '#0d0d0d', borderRadius: '2px' }} />
+        <div style={{ width: '100%', height: '12px', background: '#2a2a2a', borderRadius: '2px', marginTop: 'auto' }} />
       </div>
       
       {/* Glowing bypass line */}
@@ -154,16 +154,16 @@ const AnimatedNoAccount = ({ hovering }) => {
 
 const AnimatedEvaluate = ({ hovering }) => {
   return (
-    <div style={{ position: 'relative', width: '140px', height: '100px', background: '#0f172a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', width: '140px', height: '100px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden' }}>
       <motion.div 
         animate={hovering ? { filter: ['blur(4px)', 'blur(0px)', 'blur(0px)'] } : { filter: 'blur(4px)' }}
         transition={{ duration: 2, times: [0, 0.2, 1], repeat: Infinity, repeatDelay: 1 }}
         style={{ position: 'absolute', inset: 0, padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}
       >
         <div style={{ width: '100%', height: '8px', background: '#3b82f6', borderRadius: '4px' }} />
-        <div style={{ width: '80%', height: '6px', background: '#94a3b8', borderRadius: '3px' }} />
-        <div style={{ width: '90%', height: '6px', background: '#94a3b8', borderRadius: '3px' }} />
-        <div style={{ width: '70%', height: '6px', background: '#94a3b8', borderRadius: '3px' }} />
+        <div style={{ width: '80%', height: '6px', background: '#7a7a7a', borderRadius: '3px' }} />
+        <div style={{ width: '90%', height: '6px', background: '#7a7a7a', borderRadius: '3px' }} />
+        <div style={{ width: '70%', height: '6px', background: '#7a7a7a', borderRadius: '3px' }} />
       </motion.div>
       
       {/* Click indicator */}
@@ -249,7 +249,7 @@ export default function QuickDownloadPage() {
                   <div className="ts-cv-graphic-wrap">
                     <div className="ts-faux-ui-panel" style={{ width: '100%', maxWidth: '280px', padding: '24px', opacity: 0.8 }}>
                       <div style={{ fontSize: '11px', color: '#fca5a5', fontWeight: 'bold', letterSpacing: '0.1em', marginBottom: '16px', textTransform: 'uppercase' }}>Other Tools</div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: '#94a3b8' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: '#7a7a7a' }}>
                         <div style={{ padding: '8px', background: 'rgba(239, 68, 68, 0.1)', color: '#fca5a5', borderRadius: '4px', border: '1px dashed rgba(239, 68, 68, 0.3)' }}>1. Create Account</div>
                         <div style={{ padding: '8px', background: 'rgba(239, 68, 68, 0.1)', color: '#fca5a5', borderRadius: '4px', border: '1px dashed rgba(239, 68, 68, 0.3)' }}>2. Verify Email</div>
                         <div style={{ padding: '8px', background: 'rgba(239, 68, 68, 0.1)', color: '#fca5a5', borderRadius: '4px', border: '1px dashed rgba(239, 68, 68, 0.3)' }}>3. Skip Onboarding</div>

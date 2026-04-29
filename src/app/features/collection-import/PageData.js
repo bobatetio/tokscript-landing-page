@@ -63,7 +63,7 @@ const AnimatedCollectionVisual = ({ hovering }) => {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px', opacity: step >= 1 ? 1 : 0.5, transition: 'opacity 0.4s' }}>
         {Array.from({ length: 8 }).map((_, i) => (
           <motion.div key={i} initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: step >= 2 ? 1 : 0.8, opacity: step >= 2 ? 1 : 0 }} transition={{ delay: i * 0.05 }}
-            style={{ width: '100%', aspectRatio: '9/16', background: '#1e293b', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.05)', position: 'relative', overflow: 'hidden' }} 
+            style={{ width: '100%', aspectRatio: '9/16', background: '#1a1a1a', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.05)', position: 'relative', overflow: 'hidden' }} 
           >
             {step >= 3 && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 + i * 0.05 }} style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '30%', background: 'linear-gradient(transparent, rgba(168, 85, 247, 0.4))' }} />}
           </motion.div>
@@ -93,13 +93,13 @@ const AnimatedFolderTree = ({ hovering }) => {
   }, [hovering]);
 
   return (
-    <div style={{ width: '100%', maxWidth: '280px', display: 'flex', flexDirection: 'column', gap: '12px', background: '#0f172a', padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+    <div style={{ width: '100%', maxWidth: '280px', display: 'flex', flexDirection: 'column', gap: '12px', background: '#0d0d0d', padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
       <div style={{ fontSize: '12px', color: '#d8b4fe', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}>
         <Database size={14} /> /creator_archives/
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '12px', borderLeft: '1px solid rgba(255,255,255,0.1)', marginLeft: '6px' }}>
         {['Q1_viral_hits.csv', 'hook_patterns_2023.json', 'all_transcripts.txt', 'cover_thumbnails/'].map((file, i) => (
-          <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: nodes >= i + 1 ? 1 : 0, x: nodes >= i + 1 ? 0 : -10 }} style={{ fontSize: '11px', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: nodes >= i + 1 ? 1 : 0, x: nodes >= i + 1 ? 0 : -10 }} style={{ fontSize: '11px', color: '#7a7a7a', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <div style={{ width: '12px', height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
             {file}
           </motion.div>
@@ -111,18 +111,18 @@ const AnimatedFolderTree = ({ hovering }) => {
 
 const AnimatedProfileCard = ({ hovering }) => {
   return (
-    <div style={{ width: '100%', maxWidth: '260px', background: '#1e293b', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '20px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', transform: hovering ? 'scale(1.05)' : 'scale(1)', transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
+    <div style={{ width: '100%', maxWidth: '260px', background: '#1a1a1a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '20px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', transform: hovering ? 'scale(1.05)' : 'scale(1)', transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
       <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '16px' }}>
         <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'linear-gradient(135deg, #a855f7, #3b82f6)' }}></div>
         <div>
           <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#fff' }}>@creator_name</div>
-          <div style={{ fontSize: '11px', color: '#94a3b8' }}>1.2M Followers</div>
+          <div style={{ fontSize: '11px', color: '#7a7a7a' }}>1.2M Followers</div>
         </div>
       </div>
-      <div style={{ background: '#0f172a', padding: '12px', borderRadius: '8px', marginBottom: '12px' }}>
+      <div style={{ background: '#0d0d0d', padding: '12px', borderRadius: '8px', marginBottom: '12px' }}>
         <div style={{ fontSize: '10px', color: '#64748b', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Collection Stats</div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#e2e8f0' }}><span>Videos Mapped</span> <strong>342</strong></div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#e2e8f0', marginTop: '4px' }}><span>Total Words</span> <strong>47,000</strong></div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#e6e6e6' }}><span>Videos Mapped</span> <strong>342</strong></div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#e6e6e6', marginTop: '4px' }}><span>Total Words</span> <strong>47,000</strong></div>
       </div>
       <div style={{ width: '100%', padding: '8px', background: 'rgba(168, 85, 247, 0.1)', color: '#d8b4fe', textAlign: 'center', borderRadius: '6px', fontSize: '12px', fontWeight: 'bold', border: '1px solid rgba(168, 85, 247, 0.2)' }}>Profile Synced</div>
     </div>
@@ -131,19 +131,19 @@ const AnimatedProfileCard = ({ hovering }) => {
 
 const AnimatedHistorySearch = ({ hovering }) => {
   return (
-    <div style={{ position: 'relative', width: '120px', height: 'auto', minHeight: '120px', background: '#0f172a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', overflow: 'hidden' }}>
-      <div style={{ background: '#1e293b', borderRadius: '6px', height: '20px', display: 'flex', alignItems: 'center', padding: '0 8px', gap: '6px', marginBottom: '8px' }}>
+    <div style={{ position: 'relative', width: '120px', height: 'auto', minHeight: '120px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', overflow: 'hidden' }}>
+      <div style={{ background: '#1a1a1a', borderRadius: '6px', height: '20px', display: 'flex', alignItems: 'center', padding: '0 8px', gap: '6px', marginBottom: '8px' }}>
         <Search size={10} color="#60a5fa" />
-        <div style={{ width: '40px', height: '4px', background: '#334155', borderRadius: '2px' }} />
+        <div style={{ width: '40px', height: '4px', background: '#2a2a2a', borderRadius: '2px' }} />
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
         {Array.from({ length: 6 }).map((_, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 1, scale: 1 }}
-            animate={hovering ? { opacity: i === 4 ? 1 : 0.2, scale: i === 4 ? 1.1 : 0.9, background: i === 4 ? '#60a5fa' : '#1e293b' } : { opacity: 1, scale: 1, background: '#1e293b' }}
+            animate={hovering ? { opacity: i === 4 ? 1 : 0.2, scale: i === 4 ? 1.1 : 0.9, background: i === 4 ? '#60a5fa' : '#1a1a1a' } : { opacity: 1, scale: 1, background: '#1a1a1a' }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            style={{ width: '100%', aspectRatio: '1/1', background: '#1e293b', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.05)' }}
+            style={{ width: '100%', aspectRatio: '1/1', background: '#1a1a1a', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.05)' }}
           />
         ))}
       </div>
@@ -153,17 +153,17 @@ const AnimatedHistorySearch = ({ hovering }) => {
 
 const AnimatedDateFilter = ({ hovering }) => {
   return (
-    <div style={{ position: 'relative', width: '120px', height: 'auto', minHeight: '120px', background: '#0f172a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ position: 'relative', width: '120px', height: 'auto', minHeight: '120px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
         <Calendar size={12} color="#a855f7" />
-        <div style={{ fontSize: '8px', color: '#94a3b8' }}>NOV 2023</div>
+        <div style={{ fontSize: '8px', color: '#7a7a7a' }}>NOV 2023</div>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', flex: 1 }}>
         {Array.from({ length: 28 }).map((_, i) => (
           <motion.div
             key={i}
-            initial={{ background: '#1e293b' }}
-            animate={hovering ? { background: i >= 10 && i <= 18 ? 'rgba(168, 85, 247, 0.4)' : '#1e293b', boxShadow: i >= 10 && i <= 18 ? '0 0 5px rgba(168, 85, 247, 0.5)' : 'none' } : { background: '#1e293b' }}
+            initial={{ background: '#1a1a1a' }}
+            animate={hovering ? { background: i >= 10 && i <= 18 ? 'rgba(168, 85, 247, 0.4)' : '#1a1a1a', boxShadow: i >= 10 && i <= 18 ? '0 0 5px rgba(168, 85, 247, 0.5)' : 'none' } : { background: '#1a1a1a' }}
             transition={{ duration: 0.5, delay: 0.2 }}
             style={{ width: '100%', aspectRatio: '1/1', borderRadius: '2px', border: '1px solid rgba(255,255,255,0.05)' }}
           />
@@ -175,15 +175,15 @@ const AnimatedDateFilter = ({ hovering }) => {
 
 const AnimatedPlaylistSupport = ({ hovering }) => {
   return (
-    <div style={{ position: 'relative', width: '140px', height: 'auto', minHeight: '120px', background: '#0f172a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+    <div style={{ position: 'relative', width: '140px', height: 'auto', minHeight: '120px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
         <PlaySquare size={12} color="#f43f5e" />
         <div style={{ fontSize: '9px', color: '#f43f5e', fontWeight: 'bold' }}>HOW TO GO VIRAL SERIES</div>
       </div>
       {[1, 2, 3].map((part, i) => (
-        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#1e293b', padding: '6px', borderRadius: '6px' }}>
-          <div style={{ width: '20px', height: '20px', background: '#334155', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '8px', color: '#fff' }}>Pt {part}</div>
-          <div style={{ flex: 1, height: '4px', background: '#334155', borderRadius: '2px', overflow: 'hidden' }}>
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#1a1a1a', padding: '6px', borderRadius: '6px' }}>
+          <div style={{ width: '20px', height: '20px', background: '#2a2a2a', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '8px', color: '#fff' }}>Pt {part}</div>
+          <div style={{ flex: 1, height: '4px', background: '#2a2a2a', borderRadius: '2px', overflow: 'hidden' }}>
             <motion.div
               initial={{ width: '0%' }}
               animate={hovering ? { width: '100%' } : { width: '0%' }}
@@ -204,7 +204,7 @@ const AnimatedExportReady = ({ hovering }) => {
         initial={{ opacity: 1, scale: 1 }}
         animate={hovering ? { opacity: 0, scale: 0.8 } : { opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        style={{ position: 'absolute', width: '100px', height: '100px', background: '#0f172a', border: '1px solid #334155', borderRadius: '8px', padding: '12px', fontFamily: 'monospace', fontSize: '8px', color: '#60a5fa', display: 'flex', flexDirection: 'column', gap: '4px' }}
+        style={{ position: 'absolute', width: '100px', height: '100px', background: '#0d0d0d', border: '1px solid #2a2a2a', borderRadius: '8px', padding: '12px', fontFamily: 'monospace', fontSize: '8px', color: '#60a5fa', display: 'flex', flexDirection: 'column', gap: '4px' }}
       >
         <div>{`{`}</div>
         <div style={{ paddingLeft: '8px' }}>"id": "123",</div>
@@ -217,18 +217,18 @@ const AnimatedExportReady = ({ hovering }) => {
         initial={{ opacity: 0, scale: 1.2 }}
         animate={hovering ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.2 }}
         transition={{ duration: 0.6, delay: 0.5, type: 'spring' }}
-        style={{ position: 'absolute', width: '140px', height: '80px', background: '#0f172a', border: '1px solid #22c55e', borderRadius: '8px', padding: '8px', display: 'flex', flexDirection: 'column', gap: '4px', boxShadow: '0 10px 20px rgba(34,197,94,0.2)' }}
+        style={{ position: 'absolute', width: '140px', height: '80px', background: '#0d0d0d', border: '1px solid #22c55e', borderRadius: '8px', padding: '8px', display: 'flex', flexDirection: 'column', gap: '4px', boxShadow: '0 10px 20px rgba(34,197,94,0.2)' }}
       >
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 2fr', gap: '4px', borderBottom: '1px solid #334155', paddingBottom: '4px', marginBottom: '4px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 2fr', gap: '4px', borderBottom: '1px solid #2a2a2a', paddingBottom: '4px', marginBottom: '4px' }}>
           <div style={{ width: '100%', height: '4px', background: '#22c55e', borderRadius: '2px' }} />
           <div style={{ width: '100%', height: '4px', background: '#22c55e', borderRadius: '2px' }} />
           <div style={{ width: '100%', height: '4px', background: '#22c55e', borderRadius: '2px' }} />
         </div>
         {[1, 2, 3].map((r) => (
           <div key={r} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 2fr', gap: '4px' }}>
-            <div style={{ width: '80%', height: '4px', background: '#334155', borderRadius: '2px' }} />
-            <div style={{ width: '60%', height: '4px', background: '#334155', borderRadius: '2px' }} />
-            <div style={{ width: '90%', height: '4px', background: '#334155', borderRadius: '2px' }} />
+            <div style={{ width: '80%', height: '4px', background: '#2a2a2a', borderRadius: '2px' }} />
+            <div style={{ width: '60%', height: '4px', background: '#2a2a2a', borderRadius: '2px' }} />
+            <div style={{ width: '90%', height: '4px', background: '#2a2a2a', borderRadius: '2px' }} />
           </div>
         ))}
       </motion.div>
@@ -309,7 +309,7 @@ export default function PageData() {
                   <div className="ts-cv-graphic-wrap">
                     <div className="ts-faux-ui-panel" style={{ width: '100%', maxWidth: '300px', padding: '24px' }}>
                       <div style={{ fontSize: '11px', color: '#fca5a5', fontWeight: 'bold', letterSpacing: '0.1em', marginBottom: '16px', textTransform: 'uppercase' }}>The Manual Slog</div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px', color: '#94a3b8' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px', color: '#7a7a7a' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><div style={{ width: '6px', height: '6px', background: '#ef4444', borderRadius: '50%', boxShadow: '0 0 10px #ef4444' }}/> Open profile in browser</div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><div style={{ width: '6px', height: '6px', background: '#ef4444', borderRadius: '50%', boxShadow: '0 0 10px #ef4444' }}/> Right click video 1, Copy Link</div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><div style={{ width: '6px', height: '6px', background: '#ef4444', borderRadius: '50%', boxShadow: '0 0 10px #ef4444' }}/> Paste into spreadsheet</div>
@@ -484,7 +484,7 @@ export default function PageData() {
         </section>
 
         {/* FINAL CTA */}
-        <section className="ts-section ts-final-cta" style={{ background: '#09090b' }}>
+        <section className="ts-section ts-final-cta" style={{ background: '#0a0a0a' }}>
           <div className="ts-container ts-container-narrow">
             <div className="ts-cta-box">
               <div className="ts-cta-glow" style={{ background: 'radial-gradient(ellipse at top, rgba(168, 85, 247, 0.4) 0%, transparent 70%)' }}></div>

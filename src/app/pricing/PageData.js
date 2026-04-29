@@ -124,7 +124,7 @@ const Feature = ({ text, excluded, bold, sub }) => (
       <div
         className="feat-text"
         style={{
-          color: bold ? "white" : "#cbd5e1",
+          color: bold ? "white" : "#d4d4d4",
           fontWeight: bold ? 600 : 500,
         }}
       >
@@ -146,8 +146,8 @@ const FAQItem = ({ q, a }) => {
           style={{
             transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
             transition: "transform 0.3s",
-            backgroundColor: isOpen ? "#22d3ee" : "#1e293b",
-            color: isOpen ? "#020617" : "#94a3b8",
+            backgroundColor: isOpen ? "#00D9B4" : "#1a1a1a",
+            color: isOpen ? "#020617" : "#7a7a7a",
           }}
         >
           <ChevronDown size={16} strokeWidth={2.5} />
@@ -263,7 +263,7 @@ export default function PricingPage({ initialProductsData }) {
     },
     {
       q: "Which platforms are supported?",
-      a: 'We currently support <a href="/" style="color:#22d3ee;text-decoration:underline">TikTok</a>, <a href="/instagram-transcript-generator" style="color:#22d3ee;text-decoration:underline">Instagram Reels</a>, and <a href="/youtube-transcript-generator" style="color:#22d3ee;text-decoration:underline">YouTube Shorts</a>. You can paste a link from any of these platforms to extract data.',
+      a: 'We currently support <a href="/" style="color:#00D9B4;text-decoration:underline">TikTok</a>, <a href="/instagram-transcript-generator" style="color:#00D9B4;text-decoration:underline">Instagram Reels</a>, and <a href="/youtube-transcript-generator" style="color:#00D9B4;text-decoration:underline">YouTube Shorts</a>. You can paste a link from any of these platforms to extract data.',
     },
     {
       q: "Is the transcript download unlimited?",
@@ -279,11 +279,11 @@ export default function PricingPage({ initialProductsData }) {
     },
     {
       q: "Can I use TokScript for my agency clients?",
-      a: 'Absolutely. Many agencies use TokScript to speed up research and scriptwriting for multiple clients. We do not charge extra for commercial use. You can also <a href="/affiliate" style="color:#22d3ee;text-decoration:underline">join our affiliate program</a> to earn 40% recurring commissions.',
+      a: 'Absolutely. Many agencies use TokScript to speed up research and scriptwriting for multiple clients. We do not charge extra for commercial use. You can also <a href="/affiliate" style="color:#00D9B4;text-decoration:underline">join our affiliate program</a> to earn 40% recurring commissions.',
     },
     {
       q: "Is there a Chrome Extension?",
-      a: 'Yes. The <a href="/features/chrome-extension" style="color:#22d3ee;text-decoration:underline">TokScript Chrome Extension</a> allows you to view transcripts and analytics directly on TikTok and Instagram while you scroll. It is included in all Paid plans.',
+      a: 'Yes. The <a href="/features/chrome-extension" style="color:#00D9B4;text-decoration:underline">TokScript Chrome Extension</a> allows you to view transcripts and analytics directly on TikTok and Instagram while you scroll. It is included in all Paid plans.',
     },
     {
       q: "What is the refund policy?",
@@ -491,7 +491,7 @@ export default function PricingPage({ initialProductsData }) {
 
           <p className="hero-sub">
             Reverse-engineer viral videos into your own scripts.{" "}
-            <span style={{ color: "#cbd5e1" }}>
+            <span style={{ color: "#d4d4d4" }}>
               Start for free. Upgrade for power.
             </span>
           </p>
@@ -570,13 +570,13 @@ export default function PricingPage({ initialProductsData }) {
                     }}
                   >
                     <div style={{ marginBottom: "0.5rem" }}>
-                      <h3 className="card-title" style={{ color: "#e2e8f0" }}>
+                      <h3 className="card-title" style={{ color: "#e6e6e6" }}>
                         Free
                       </h3>
                       <p className="card-desc">Test the basics</p>
                     </div>
                     <div className="price-row">
-                      <span className="price-val" style={{ color: "#e2e8f0" }}>
+                      <span className="price-val" style={{ color: "#e6e6e6" }}>
                         $0
                       </span>
                       <span className="price-period">forever</span>
@@ -685,7 +685,7 @@ export default function PricingPage({ initialProductsData }) {
                       <div className="calc-box-highlight"></div>
                       <div
                         style={{
-                          color: "#22d3ee",
+                          color: "#00D9B4",
                           fontWeight: 700,
                           fontSize: "12px",
                           lineHeight: "17px",
@@ -738,7 +738,7 @@ export default function PricingPage({ initialProductsData }) {
                         <Layers
                           size={12}
                           className="text-cyan-400"
-                          style={{ color: "#22d3ee" }}
+                          style={{ color: "#00D9B4" }}
                         />{" "}
                         BULK PROCESSING
                       </div>
@@ -771,7 +771,7 @@ export default function PricingPage({ initialProductsData }) {
                         <span
                           style={{
                             fontSize: "0.625rem",
-                            color: "#94a3b8",
+                            color: "#7a7a7a",
                             fontWeight: 500,
                             textTransform: "uppercase",
                             letterSpacing: "0.05em",
@@ -894,13 +894,13 @@ export default function PricingPage({ initialProductsData }) {
                     }}
                   >
                     <div style={{ marginBottom: "0.5rem" }}>
-                      <h3 className="card-title" style={{ color: "#e2e8f0" }}>
+                      <h3 className="card-title" style={{ color: "#e6e6e6" }}>
                         Monthly
                       </h3>
                       <p className="card-desc">Full power, flexible billing</p>
                     </div>
                     <div className="price-row">
-                      <span className="price-val" style={{ color: "#e2e8f0" }}>
+                      <span className="price-val" style={{ color: "#e6e6e6" }}>
                         $10
                       </span>
                       <span className="price-period">per month</span>
@@ -913,7 +913,7 @@ export default function PricingPage({ initialProductsData }) {
                         border: "1px solid var(--border-color)",
                       }}
                     >
-                      <div style={{ color: "#94a3b8", fontSize: "0.75rem" }}>
+                      <div style={{ color: "#7a7a7a", fontSize: "0.75rem" }}>
                         = $120/year
                       </div>
                       <div style={{ color: "#64748b", fontSize: "0.625rem" }}>
@@ -1009,7 +1009,7 @@ export default function PricingPage({ initialProductsData }) {
                             }
                             style={{
                               background: "rgba(15, 23, 42, 0.5)",
-                              border: "1px solid #334155",
+                              border: "1px solid #2a2a2a",
                             }}
                           >
                             Get Monthly
@@ -1021,7 +1021,7 @@ export default function PricingPage({ initialProductsData }) {
                               className="btn btn-outline d-flex d-md-none"
                               style={{
                                 background: "rgba(15, 23, 42, 0.5)",
-                                border: "1px solid #334155",
+                                border: "1px solid #2a2a2a",
                               }}
                             >
                               Get Monthly
@@ -1043,7 +1043,7 @@ export default function PricingPage({ initialProductsData }) {
                               }}
                               style={{
                                 background: "rgba(15, 23, 42, 0.5)",
-                                border: "1px solid #334155",
+                                border: "1px solid #2a2a2a",
                               }}
                             >
                               Get Monthly
@@ -1081,7 +1081,7 @@ export default function PricingPage({ initialProductsData }) {
             style={{ marginBottom: "3rem", position: "relative", zIndex: 10 }}
           >
             <h2>Real Results from Real Users</h2>
-            <p style={{ color: "#94a3b8", fontSize: "16px" }}>
+            <p style={{ color: "#7a7a7a", fontSize: "16px" }}>
               We track our users' success. The data doesn't lie.
             </p>
           </div>
@@ -1144,11 +1144,11 @@ export default function PricingPage({ initialProductsData }) {
                   width: 40,
                   height: 40,
                   borderRadius: "50%",
-                  background: "#1e293b",
+                  background: "#1a1a1a",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  color: "#94a3b8",
+                  color: "#7a7a7a",
                 }}
               >
                 <ShieldCheck size={20} />
@@ -1169,7 +1169,7 @@ export default function PricingPage({ initialProductsData }) {
                   style={{
                     fontSize: "10px",
                     lineHeight: "14px",
-                    color: "#22d3ee",
+                    color: "#00D9B4",
                     fontWeight: 700,
                     textTransform: "uppercase",
                   }}

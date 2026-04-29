@@ -60,7 +60,7 @@ const AnimatedHookGen = ({ hovering }) => {
   }, [hovering]);
 
   return (
-    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0f172a 0%, #020617 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
+    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0d0d0d 0%, #020617 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
         <Sparkles size={14} color="#f43f5e" />
         <span style={{ fontSize: '11px', color: '#fff', fontWeight: '500' }}>Hook Generator</span>
@@ -78,7 +78,7 @@ const AnimatedHookGen = ({ hovering }) => {
               borderRadius: '6px',
               padding: '8px 10px',
               fontSize: '10px',
-              color: step > i ? '#fda4af' : '#475569',
+              color: step > i ? '#fda4af' : '#3a3a3a',
               display: 'flex',
               alignItems: 'center',
               gap: '6px'
@@ -116,7 +116,7 @@ const AnimatedScriptGen = ({ hovering }) => {
   ];
 
   return (
-    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0f172a 0%, #020617 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
+    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0d0d0d 0%, #020617 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <ScrollText size={14} color="#f43f5e" />
@@ -132,7 +132,7 @@ const AnimatedScriptGen = ({ hovering }) => {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8px', justifyContent: 'center' }}>
         {sections.map((sec, i) => (
           <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <span style={{ fontSize: '8px', fontWeight: 'bold', letterSpacing: '0.1em', color: progress > i ? sec.color : '#334155', transition: 'color 0.3s' }}>{sec.label}</span>
+            <span style={{ fontSize: '8px', fontWeight: 'bold', letterSpacing: '0.1em', color: progress > i ? sec.color : '#2a2a2a', transition: 'color 0.3s' }}>{sec.label}</span>
             <div style={{ height: '3px', background: 'rgba(255,255,255,0.05)', borderRadius: '2px', overflow: 'hidden' }}>
               <motion.div
                 initial={{ width: '0%' }}
@@ -143,8 +143,8 @@ const AnimatedScriptGen = ({ hovering }) => {
             </div>
             {progress > i && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
-                <div style={{ width: '80%', height: '3px', background: '#334155', borderRadius: '2px' }} />
-                <div style={{ width: '60%', height: '3px', background: '#334155', borderRadius: '2px' }} />
+                <div style={{ width: '80%', height: '3px', background: '#2a2a2a', borderRadius: '2px' }} />
+                <div style={{ width: '60%', height: '3px', background: '#2a2a2a', borderRadius: '2px' }} />
               </motion.div>
             )}
           </div>
@@ -177,7 +177,7 @@ const AnimatedFrameworkExtract = ({ hovering }) => {
   ];
 
   return (
-    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0f172a 0%, #020617 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0d0d0d 0%, #020617 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)', position: 'relative', overflow: 'hidden' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
         <GitFork size={14} color="#f43f5e" />
         <span style={{ fontSize: '11px', color: '#fff', fontWeight: '500' }}>Framework Extractor</span>
@@ -191,7 +191,7 @@ const AnimatedFrameworkExtract = ({ hovering }) => {
           style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', gap: '4px', justifyContent: 'center' }}
         >
           {[...Array(5)].map((_, i) => (
-            <div key={i} style={{ width: `${85 - i * 8}%`, height: '3px', background: phase >= 1 ? 'rgba(244, 63, 94, 0.3)' : '#1e293b', borderRadius: '2px', transition: 'background 0.3s' }} />
+            <div key={i} style={{ width: `${85 - i * 8}%`, height: '3px', background: phase >= 1 ? 'rgba(244, 63, 94, 0.3)' : '#1a1a1a', borderRadius: '2px', transition: 'background 0.3s' }} />
           ))}
           {phase >= 1 && (
             <motion.div initial={{ width: 0 }} animate={{ width: '100%' }} transition={{ duration: 0.5 }} style={{ height: '1px', background: 'linear-gradient(90deg, #f43f5e, transparent)', marginTop: '4px' }} />
@@ -212,7 +212,7 @@ const AnimatedFrameworkExtract = ({ hovering }) => {
               transition={{ delay: i * 0.1, duration: 0.2 }}
               style={{
                 fontSize: '9px',
-                color: '#e2e8f0',
+                color: '#e6e6e6',
                 padding: '4px 8px',
                 background: 'rgba(244, 63, 94, 0.08)',
                 border: '1px solid rgba(244, 63, 94, 0.2)',
@@ -316,7 +316,7 @@ export default function AIAgentsPage() {
                   <div className="ts-cv-graphic-wrap">
                     <div className="ts-faux-ui-panel" style={{ width: '100%', maxWidth: '280px', padding: '24px', opacity: 0.8 }}>
                       <div style={{ fontSize: '11px', color: '#fca5a5', fontWeight: 'bold', letterSpacing: '0.1em', marginBottom: '16px', textTransform: 'uppercase' }}>The Research Spiral</div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: '#94a3b8' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: '#7a7a7a' }}>
                         <div style={{ padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px dashed rgba(255,255,255,0.1)' }}>Watch viral video 15 times</div>
                         <div style={{ padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px dashed rgba(255,255,255,0.1)' }}>Open blank doc and stare</div>
                         <div style={{ padding: '8px', background: 'rgba(239, 68, 68, 0.1)', color: '#fca5a5', borderRadius: '4px', border: '1px dashed rgba(239, 68, 68, 0.3)' }}>Write one mediocre hook in 2 hours</div>

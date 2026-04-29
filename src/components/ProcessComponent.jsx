@@ -154,7 +154,7 @@ export default function ProcessComponent({
         );
       default:
         return (
-          <span className="ex-small" style={{ color: "#94a3b8" }}>
+          <span className="ex-small" style={{ color: "#7a7a7a" }}>
             Pending
           </span>
         );

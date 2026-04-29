@@ -124,7 +124,7 @@ const Feature = ({ text, excluded, bold, sub }) => (
       <div
         className="feat-text"
         style={{
-          color: bold ? "white" : "#cbd5e1",
+          color: bold ? "white" : "#d4d4d4",
           fontWeight: bold ? 600 : 500,
         }}
       >
@@ -146,8 +146,8 @@ const FAQItem = ({ q, a }) => {
           style={{
             transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
             transition: "transform 0.3s",
-            backgroundColor: isOpen ? "#22d3ee" : "#1e293b",
-            color: isOpen ? "#020617" : "#94a3b8",
+            backgroundColor: isOpen ? "#00D9B4" : "#1a1a1a",
+            color: isOpen ? "#020617" : "#7a7a7a",
           }}
         >
           <ChevronDown size={16} strokeWidth={2.5} />
@@ -488,7 +488,7 @@ export default function PricingPage() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: "#94a3b8",
+            color: "#7a7a7a",
           }}
         >
           <div style={{ textAlign: "center" }}>
@@ -496,8 +496,8 @@ export default function PricingPage() {
               style={{
                 width: "48px",
                 height: "48px",
-                border: "3px solid #1e293b",
-                borderTop: "3px solid #22d3ee",
+                border: "3px solid #1a1a1a",
+                borderTop: "3px solid #00D9B4",
                 borderRadius: "50%",
                 animation: "spin 1s linear infinite",
                 margin: "0 auto 1rem",
@@ -559,7 +559,7 @@ export default function PricingPage() {
 
           <p className="hero-sub">
             Reverse-engineer viral videos into your own scripts.{" "}
-            <span style={{ color: "#cbd5e1" }}>
+            <span style={{ color: "#d4d4d4" }}>
               Start for free. Upgrade for power.
             </span>
           </p>
@@ -652,7 +652,7 @@ export default function PricingPage() {
                       <div className="calc-box-highlight"></div>
                       <div
                         style={{
-                          color: "#22d3ee",
+                          color: "#00D9B4",
                           fontWeight: 700,
                           fontSize: "12px",
                           lineHeight: "17px",
@@ -705,7 +705,7 @@ export default function PricingPage() {
                         <Layers
                           size={12}
                           className="text-cyan-400"
-                          style={{ color: "#22d3ee" }}
+                          style={{ color: "#00D9B4" }}
                         />{" "}
                         BULK PROCESSING
                       </div>
@@ -738,7 +738,7 @@ export default function PricingPage() {
                         <span
                           style={{
                             fontSize: "0.625rem",
-                            color: "#94a3b8",
+                            color: "#7a7a7a",
                             fontWeight: 500,
                             textTransform: "uppercase",
                             letterSpacing: "0.05em",
@@ -856,13 +856,13 @@ export default function PricingPage() {
                     }}
                   >
                     <div style={{ marginBottom: "0.5rem" }}>
-                      <h3 className="card-title" style={{ color: "#e2e8f0" }}>
+                      <h3 className="card-title" style={{ color: "#e6e6e6" }}>
                         Monthly
                       </h3>
                       <p className="card-desc">Full power, flexible billing</p>
                     </div>
                     <div className="price-row">
-                      <span className="price-val" style={{ color: "#e2e8f0" }}>
+                      <span className="price-val" style={{ color: "#e6e6e6" }}>
                         $10
                       </span>
                       <span className="price-period">per month</span>
@@ -875,7 +875,7 @@ export default function PricingPage() {
                         border: "1px solid var(--border-color)",
                       }}
                     >
-                      <div style={{ color: "#94a3b8", fontSize: "0.75rem" }}>
+                      <div style={{ color: "#7a7a7a", fontSize: "0.75rem" }}>
                         = $120/year
                       </div>
                       <div style={{ color: "#64748b", fontSize: "0.625rem" }}>
@@ -971,7 +971,7 @@ export default function PricingPage() {
                             }
                             style={{
                               background: "rgba(15, 23, 42, 0.5)",
-                              border: "1px solid #334155",
+                              border: "1px solid #2a2a2a",
                             }}
                           >
                             Get Monthly
@@ -982,7 +982,7 @@ export default function PricingPage() {
                             className="btn btn-outline d-flex d-md-none"
                             style={{
                               background: "rgba(15, 23, 42, 0.5)",
-                              border: "1px solid #334155",
+                              border: "1px solid #2a2a2a",
                             }}
                           >
                             Get Monthly
@@ -1036,7 +1036,7 @@ export default function PricingPage() {
             style={{ marginBottom: "3rem", position: "relative", zIndex: 10 }}
           >
             <h2>Real Results from Real Users</h2>
-            <p style={{ color: "#94a3b8", fontSize: "16px" }}>
+            <p style={{ color: "#7a7a7a", fontSize: "16px" }}>
               We track our users' success. The data doesn't lie.
             </p>
           </div>
@@ -1099,11 +1099,11 @@ export default function PricingPage() {
                   width: 40,
                   height: 40,
                   borderRadius: "50%",
-                  background: "#1e293b",
+                  background: "#1a1a1a",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  color: "#94a3b8",
+                  color: "#7a7a7a",
                 }}
               >
                 <ShieldCheck size={20} />
@@ -1124,7 +1124,7 @@ export default function PricingPage() {
                   style={{
                     fontSize: "10px",
                     lineHeight: "14px",
-                    color: "#22d3ee",
+                    color: "#00D9B4",
                     fontWeight: 700,
                     textTransform: "uppercase",
                   }}

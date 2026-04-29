@@ -52,11 +52,11 @@ const AnimatedUrlImport = ({ hovering }) => {
   }, [hovering]);
 
   return (
-    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0f172a 0%, #020617 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
+    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0d0d0d 0%, #020617 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
       {/* Input Bar */}
-      <div style={{ background: '#1e293b', border: step >= 1 ? '1px solid #00f2ea' : '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 12px', display: 'flex', alignItems: 'center', gap: '8px', transition: 'all 0.3s' }}>
+      <div style={{ background: '#1a1a1a', border: step >= 1 ? '1px solid #00f2ea' : '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 12px', display: 'flex', alignItems: 'center', gap: '8px', transition: 'all 0.3s' }}>
         <LinkIcon size={14} color={step >= 1 ? "#00f2ea" : "#64748b"} />
-        <span style={{ fontSize: '11px', color: step >= 1 ? '#e2e8f0' : '#64748b', fontFamily: 'monospace', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <span style={{ fontSize: '11px', color: step >= 1 ? '#e6e6e6' : '#64748b', fontFamily: 'monospace', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {step >= 1 ? "tiktok.com/@creator/video/1234..." : "Paste video URL here..."}
         </span>
       </div>
@@ -71,16 +71,16 @@ const AnimatedUrlImport = ({ hovering }) => {
               style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}
             >
               <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <PlaySquare size={16} color="#334155" />
+                <PlaySquare size={16} color="#2a2a2a" />
               </div>
-              <span style={{ fontSize: '9px', color: '#475569' }}>Waiting for link...</span>
+              <span style={{ fontSize: '9px', color: '#3a3a3a' }}>Waiting for link...</span>
             </motion.div>
           ) : (
             <motion.div
               key="loaded"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              style={{ width: '100%', height: '100%', background: '#1e293b', borderRadius: '8px', border: '1px solid rgba(0, 242, 234, 0.3)', display: 'flex', alignItems: 'center', padding: '12px', gap: '12px' }}
+              style={{ width: '100%', height: '100%', background: '#1a1a1a', borderRadius: '8px', border: '1px solid rgba(0, 242, 234, 0.3)', display: 'flex', alignItems: 'center', padding: '12px', gap: '12px' }}
             >
               <div style={{ width: '48px', height: '72px', background: 'linear-gradient(135deg, #00f2ea 0%, #0284c7 100%)', borderRadius: '6px', position: 'relative' }}>
                 <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -88,8 +88,8 @@ const AnimatedUrlImport = ({ hovering }) => {
                 </div>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flex: 1 }}>
-                <div style={{ width: '80%', height: '6px', background: '#e2e8f0', borderRadius: '3px' }} />
-                <div style={{ width: '60%', height: '6px', background: '#94a3b8', borderRadius: '3px' }} />
+                <div style={{ width: '80%', height: '6px', background: '#e6e6e6', borderRadius: '3px' }} />
+                <div style={{ width: '60%', height: '6px', background: '#7a7a7a', borderRadius: '3px' }} />
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
                   <CheckCircle2 size={10} color="#00f2ea" />
                   <span style={{ fontSize: '8px', color: '#00f2ea' }}>Ready to extract</span>
@@ -105,7 +105,7 @@ const AnimatedUrlImport = ({ hovering }) => {
 
 const AnimatedExtractionSpeed = ({ hovering }) => {
   return (
-    <div style={{ width: '280px', height: '180px', background: '#0f172a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: '12px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
+    <div style={{ width: '280px', height: '180px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: '12px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -116,7 +116,7 @@ const AnimatedExtractionSpeed = ({ hovering }) => {
       </div>
 
       {/* Waveform to Text Area */}
-      <div style={{ flex: 1, background: '#1e293b', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)', padding: '12px', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      <div style={{ flex: 1, background: '#1a1a1a', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)', padding: '12px', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         
         {/* Animated Scanner Line */}
         <motion.div 
@@ -140,9 +140,9 @@ const AnimatedExtractionSpeed = ({ hovering }) => {
 
         {/* Emerging Text */}
         <div style={{ position: 'absolute', inset: '12px', display: 'flex', flexDirection: 'column', gap: '6px', justifyContent: 'center', opacity: hovering ? 1 : 0, transition: 'opacity 0.5s' }}>
-          <div style={{ width: '90%', height: '4px', background: '#e2e8f0', borderRadius: '2px' }} />
-          <div style={{ width: '100%', height: '4px', background: '#e2e8f0', borderRadius: '2px' }} />
-          <div style={{ width: '75%', height: '4px', background: '#e2e8f0', borderRadius: '2px' }} />
+          <div style={{ width: '90%', height: '4px', background: '#e6e6e6', borderRadius: '2px' }} />
+          <div style={{ width: '100%', height: '4px', background: '#e6e6e6', borderRadius: '2px' }} />
+          <div style={{ width: '75%', height: '4px', background: '#e6e6e6', borderRadius: '2px' }} />
         </div>
       </div>
     </div>
@@ -151,12 +151,12 @@ const AnimatedExtractionSpeed = ({ hovering }) => {
 
 const AnimatedCopyPaste = ({ hovering }) => {
   return (
-    <div style={{ width: '280px', height: '180px', background: '#0f172a', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', gap: '16px', flexDirection: 'column', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
+    <div style={{ width: '280px', height: '180px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', gap: '16px', flexDirection: 'column', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
       {/* Transcript Block */}
-      <div style={{ flex: 1, background: '#1e293b', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', padding: '12px', position: 'relative' }}>
+      <div style={{ flex: 1, background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', padding: '12px', position: 'relative' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
-          <MessageSquare size={12} color="#94a3b8" />
-          <span style={{ fontSize: '10px', color: '#94a3b8', fontWeight: '500' }}>Final Transcript</span>
+          <MessageSquare size={12} color="#7a7a7a" />
+          <span style={{ fontSize: '10px', color: '#7a7a7a', fontWeight: '500' }}>Final Transcript</span>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
           <div style={{ width: '100%', height: '4px', background: '#64748b', borderRadius: '2px' }} />
@@ -269,7 +269,7 @@ export default function TranscriptGeneratorPage() {
                   <div className="ts-cv-graphic-wrap">
                     <div className="ts-faux-ui-panel" style={{ width: '100%', maxWidth: '280px', padding: '24px', opacity: 0.8 }}>
                       <div style={{ fontSize: '11px', color: '#fca5a5', fontWeight: 'bold', letterSpacing: '0.1em', marginBottom: '16px', textTransform: 'uppercase' }}>The Manual Slog</div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: '#94a3b8' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: '#7a7a7a' }}>
                         <div style={{ padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px dashed rgba(255,255,255,0.1)' }}>⏯ Pause the video</div>
                         <div style={{ padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', border: '1px dashed rgba(255,255,255,0.1)' }}>⌨️ Type a sentence</div>
                         <div style={{ padding: '8px', background: 'rgba(239, 68, 68, 0.1)', color: '#fca5a5', borderRadius: '4px', border: '1px dashed rgba(239, 68, 68, 0.3)' }}>⏪ Rewind because you missed it</div>
