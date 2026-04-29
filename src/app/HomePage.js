@@ -1141,6 +1141,7 @@ export default function LandingPage() {
           <div className="container">
             <div className="inner-section">
               <div className="title-section">
+                <span className="how-it-works-pill">How It Works</span>
                 <h2>
                   #1 Video Transcript <br /> & Download Platform
                 </h2>
@@ -1167,7 +1168,7 @@ export default function LandingPage() {
                         <li>Individual or batch processing options</li>
                       </ul>
                       <Link href="/pricing" className="start-now">
-                        Start now
+                        Get Started Now
                       </Link>
                     </div>
                   </div>
@@ -1213,7 +1214,7 @@ export default function LandingPage() {
                         <li>Automatic metadata preservation</li>
                       </ul>
                       <Link href="/pricing" className="start-now">
-                        Start now
+                        Get Started Now
                       </Link>
                     </div>
                   </div>
@@ -1238,7 +1239,7 @@ export default function LandingPage() {
                         <li>Enterprise-grade reliability</li>
                       </ul>
                       <Link href="/pricing" className="start-now">
-                        Start now
+                        Get Started Now
                       </Link>
                     </div>
                   </div>
@@ -1287,7 +1288,7 @@ export default function LandingPage() {
                         <li>Bulk export and sharing capabilities</li>
                       </ul>
                       <Link href="/pricing" className="start-now">
-                        Start now
+                        Get Started Now
                       </Link>
                     </div>
                   </div>
@@ -1311,7 +1312,7 @@ export default function LandingPage() {
                         <li>Original quality preservation</li>
                       </ul>
                       <Link href="/pricing" className="start-now">
-                        Start now
+                        Get Started Now
                       </Link>
                     </div>
                   </div>
@@ -1355,7 +1356,7 @@ export default function LandingPage() {
                         <li>Automatic redirect and processing</li>
                       </ul>
                       <Link href="/pricing" className="start-now">
-                        Start now
+                        Get Started Now
                       </Link>
                     </div>
                   </div>
@@ -1380,7 +1381,7 @@ export default function LandingPage() {
                         <li>No URL copying required</li>
                       </ul>
                       <Link href="/pricing" className="start-now">
-                        Start now
+                        Get Started Now
                       </Link>
                     </div>
                   </div>
@@ -1423,7 +1424,7 @@ export default function LandingPage() {
                         <li>Manage workspace permissions</li>
                       </ul>
                       <Link href="/pricing" className="start-now">
-                        Start now
+                        Get Started Now
                       </Link>
                     </div>
                   </div>
@@ -1476,7 +1477,7 @@ export default function LandingPage() {
                         <li>One-click content transformation</li>
                       </ul>
                       <Link href="/pricing" className="start-now">
-                        Start now
+                        Get Started Now
                       </Link>
                     </div>
                   </div>
