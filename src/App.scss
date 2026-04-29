@@ -17103,43 +17103,40 @@ section h2 + p,
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: clamp(28px, 3vw, 40px);
     max-width: 540px;
   }
-  .vt-text > * { margin: 0; }
-  .vt-text-head { display: flex; flex-direction: column; gap: 18px; }
   .vt-row-title {
-    font: 600 clamp(28px, 3.4vw, 40px)/1.15 Inter, system-ui, sans-serif !important;
+    font: 600 clamp(26px, 3.2vw, 36px)/1.2 Inter, system-ui, sans-serif !important;
     color: #fff !important;
-    letter-spacing: -0.6px;
-    margin: 0 !important;
+    letter-spacing: -0.5px;
+    margin: 0 0 12px !important;
   }
   .vt-row-body {
-    font: 500 clamp(15px, 1.4vw, 18px)/1.55 Inter, system-ui, sans-serif !important;
-    color: rgba(255, 255, 255, 0.7) !important;
-    margin: 0 !important;
+    font: 500 clamp(14.5px, 1.3vw, 16.5px)/1.55 Inter, system-ui, sans-serif !important;
+    color: rgba(255, 255, 255, 0.65) !important;
+    margin: 0 0 24px !important;
     max-width: 480px;
   }
   .vt-list {
     list-style: none;
-    margin: 0 !important;
+    margin: 0 0 28px !important;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
     li {
       position: relative;
-      padding-left: 36px;
-      font: 500 clamp(14.5px, 1.3vw, 16px)/1.5 Inter, system-ui, sans-serif !important;
-      color: rgba(255, 255, 255, 0.8) !important;
+      padding-left: 30px;
+      font: 500 clamp(13.5px, 1.2vw, 15px)/1.5 Inter, system-ui, sans-serif !important;
+      color: rgba(255, 255, 255, 0.78) !important;
       &::before {
         content: "";
         position: absolute;
         left: 0;
         top: 50%;
         transform: translateY(-50%);
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         border-radius: 50%;
         background-color: #00b8b2;
         background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2.5 6l2.5 2.5 4.5-5' stroke='%23fff' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>");
@@ -17151,9 +17148,9 @@ section h2 + p,
   .vt-cta {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    height: 42px;
-    padding: 0 26px;
+    gap: 6px;
+    height: 38px;
+    padding: 0 22px;
     background: #00b8b2 !important;
     color: #fff !important;
     font: 500 15px/1.2 Inter, system-ui, sans-serif !important;
@@ -17252,8 +17249,7 @@ section h2 + p,
     .vt-platform-header { gap: 16px; margin-bottom: 8px; }
     .vt-h2 { font-size: clamp(28px, 8vw, 36px) !important; letter-spacing: -1px; }
     .vt-sub { font-size: 14.5px; }
-    .vt-text { gap: 24px; }
-    .vt-text-head { gap: 14px; }
+
     .vt-row-title { font-size: clamp(24px, 7vw, 28px) !important; letter-spacing: -0.4px; }
     .vt-row-body { font-size: 15px !important; line-height: 1.6 !important; }
     .vt-list { gap: 14px; }
