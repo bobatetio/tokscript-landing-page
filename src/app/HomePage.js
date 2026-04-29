@@ -1137,361 +1137,130 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-        <section className="about-platform-section" id="how-it-works">
-          <div className="container">
-            <div className="inner-section">
-              <div className="title-section">
-                <span className="how-it-works-pill">How It Works</span>
-                <h2>
-                  #1 Video Transcript <br /> & Download Platform
-                </h2>
-                <p className="">
-                  The best tool for video transcription, bulk <br /> downloads,
-                  and AI content
-                </p>
+        <section id="vt-platform" className="vt-platform-section">
+          <div className="vt-platform-inner">
+            <div className="vt-platform-header">
+              <span className="vt-pill">How It Works</span>
+              <h2 className="vt-h2">#1 Video Transcript<br />&amp; Download Platform</h2>
+              <p className="vt-sub">The best tool for video transcription, bulk downloads, and AI content</p>
+            </div>
+
+            <div className="vt-row">
+              <div className="vt-text">
+                <h3 className="vt-row-title">Bulk Importing</h3>
+                <p className="vt-row-body">Bulk import up to 50 TikTok, Instagram, or YouTube Shorts links at once to quickly download transcripts in bulk. Save time and manage large volumes of videos efficiently, all in one place.</p>
+                <ul className="vt-list">
+                  <li>Bulk import up to 50 video links</li>
+                  <li>TikTok, Instagram, and YouTube Shorts support</li>
+                  <li>Bulk export all transcripts at once</li>
+                  <li>Individual or batch processing options</li>
+                </ul>
+                <Link href="/pricing" className="vt-cta">Get Started now</Link>
               </div>
-              <div className="bulk-import-section light">
-                <div className="row">
-                  <div className="col-lg-6">
-                    <div className="content-main-wrapper">
-                      <h3>Bulk Importing</h3>
-                      <p className="bulk-text-div">
-                        Bulk import up to 50 TikTok, Instagram, or YouTube
-                        Shorts links at once to quickly download transcripts in
-                        bulk. Save time and manage large volumes of videos
-                        efficiently, all in one place.
-                      </p>
-                      <ul>
-                        <li>Bulk import up to 50 video links</li>
-                        <li>TikTok, Instagram, and YouTube Shorts support</li>
-                        <li>Bulk export all transcripts at once</li>
-                        <li>Individual or batch processing options</li>
-                      </ul>
-                      <Link href="/pricing" className="start-now">
-                        Get Started Now
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="col-lg-6 align-self-center">
-                    <div className="img-card mt-4">
-                      <Image
-                        src={bulkProcess}
-                        alt="Bulk transcript processing interface showing multiple TikTok video URLs being imported"
-                        loading="lazy"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    </div>
-                  </div>
-                </div>
+              <div className="vt-visual">
+                <Image src={bulkProcess} alt="Bulk transcript processing" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
               </div>
-              <div className="bulk-import-section">
-                <div className="row">
-                  <div className="col-12 col-lg-6 order-2 order-lg-1 align-self-center">
-                    <div className="img-card">
-                      <Image
-                        src={collectImg}
-                        alt="Collection import interface showing TikTok profile videos being bulk downloaded"
-                        loading="lazy"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-12 col-lg-6 order-1 order-lg-2 mb-4 mb-lg-0">
-                    <div className="content-main-wrapper">
-                      <h3>TikTok Collection & Playlist Importing</h3>
-                      <p className="bulk-text-div">
-                        Users can paste a single link to a public TikTok
-                        collection (bookmarks) or a creator&apos;s playlist to
-                        automatically import and transcribe all videos contained
-                        within it. Playlists often represent a creator&apos;s
-                        mini-series based on a specific subject, topic, or
-                        series.
-                      </p>
-                      <ul>
-                        <li>Public TikTok collection importing</li>
-                        <li>Creator playlist auto-detection</li>
-                        <li>Series and topic-based organization</li>
-                        <li>Automatic metadata preservation</li>
-                      </ul>
-                      <Link href="/pricing" className="start-now">
-                        Get Started Now
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+            </div>
+
+            <div className="vt-row vt-row-reverse">
+              <div className="vt-visual">
+                <Image src={collectImg} alt="TikTok collection import" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
               </div>
-              <div className="bulk-import-section">
-                <div className="row">
-                  <div className="col-lg-6">
-                    <div className="content-main-wrapper">
-                      <h3>Cloud Storage</h3>
-                      <p className="bulk-text-div">
-                        Store all your video transcripts securely in the cloud
-                        with enterprise-grade encryption. Instantly sync and
-                        access your files across every device. Anytime,
-                        anywhere, with automatic cloud backup and unmatched
-                        reliability.
-                      </p>
-                      <ul>
-                        <li>Secure cloud storage with encryption</li>
-                        <li>Cross-device automatic sync</li>
-                        <li>Access from anywhere, anytime</li>
-                        <li>Enterprise-grade reliability</li>
-                      </ul>
-                      <Link href="/pricing" className="start-now">
-                        Get Started Now
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="col-lg-6 align-self-center">
-                    <div className="img-card mt-3">
-                      <Image
-                        src={cloudSync}
-                        alt="Cloud transcript library with saved transcripts organized by date"
-                        loading="lazy"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    </div>
-                  </div>
-                </div>
+              <div className="vt-text">
+                <h3 className="vt-row-title">TikTok Collection &amp; Playlist Importing</h3>
+                <p className="vt-row-body">Users can paste a single link to a public TikTok collection (bookmarks) or a creator&apos;s playlist to automatically import and transcribe all videos contained within it. Playlists often represent a creator&apos;s mini-series based on a specific subject, topic, or series.</p>
+                <ul className="vt-list">
+                  <li>Public TikTok collection importing</li>
+                  <li>Creator playlist auto-detection</li>
+                  <li>Series and topic-based organization</li>
+                  <li>Automatic metadata preservation</li>
+                </ul>
+                <Link href="/pricing" className="vt-cta">Get Started now</Link>
               </div>
-              <div className="bulk-import-section" id="history-bookmarking">
-                <div className="row">
-                  <div className="col-12 col-lg-6 order-2 order-lg-1 align-self-center">
-                    <div className="img-card">
-                      <Image
-                        src={historyImg}
-                        alt="Transcript history panel showing previously processed videos"
-                        loading="lazy"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-12 col-lg-6 order-1 order-lg-2 mb-4 mb-lg-0">
-                    <div className="content-main-wrapper">
-                      <h3>History & Bookmarking</h3>
-                      <p className="bulk-text-div">
-                        Access a complete transcript history for every video you
-                        process, automatically logging download dates,
-                        transcript details, video sources, and durations.
-                        Instantly re-download transcripts in TXT, XML, or PDF
-                        formats, and organize your entire video library with
-                        custom bookmark folders. Effortlessly share, bulk
-                        export, or review transcripts, collections, and
-                        playlists for ultimate video transcript organization and
-                        workflow management.
-                      </p>
-                      <ul>
-                        <li>Complete download history with metadata</li>
-                        <li>Custom bookmark folders</li>
-                        <li>Re-download in TXT, XML, PDF formats</li>
-                        <li>Bulk export and sharing capabilities</li>
-                      </ul>
-                      <Link href="/pricing" className="start-now">
-                        Get Started Now
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+            </div>
+
+            <div className="vt-row">
+              <div className="vt-text">
+                <h3 className="vt-row-title">Cloud Storage</h3>
+                <p className="vt-row-body">Store all your video transcripts securely in the cloud with enterprise-grade encryption. Instantly sync and access your files across every device. Anytime, anywhere, with automatic cloud backup and unmatched reliability.</p>
+                <ul className="vt-list">
+                  <li>Secure cloud storage with encryption</li>
+                  <li>Cross-device automatic sync</li>
+                  <li>Access from anywhere, anytime</li>
+                  <li>Enterprise-grade reliability</li>
+                </ul>
+                <Link href="/pricing" className="vt-cta">Get Started now</Link>
               </div>
-              <div className="bulk-import-section">
-                <div className="row">
-                  <div className="col-lg-6 mb-4 mb-lg-0">
-                    <div className="content-main-wrapper">
-                      <h3>HD Video & Cover Image Downloads</h3>
-                      <p className="bulk-text-div">
-                        Download TikTok, Instagram Reels, and YouTube Shorts
-                        videos in HD quality with no watermarks. Instantly save
-                        high-resolution cover images and preserve original video
-                        quality across all supported platforms.
-                      </p>
-                      <ul>
-                        <li>HD video downloads without watermarks</li>
-                        <li>Cover image extraction and download</li>
-                        <li>Multiple platform support</li>
-                        <li>Original quality preservation</li>
-                      </ul>
-                      <Link href="/pricing" className="start-now">
-                        Get Started Now
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="col-lg-6 align-self-center">
-                    <div className="img-card">
-                      <Image
-                        src={mediaImg}
-                        alt="Media download interface with video and cover image save options"
-                        loading="lazy"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    </div>
-                  </div>
-                </div>
+              <div className="vt-visual">
+                <Image src={cloudSync} alt="Cloud storage" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
               </div>
-              <div className="bulk-import-section">
-                <div className="row">
-                  <div className="col-12 col-lg-6 order-2 order-lg-1 align-self-center">
-                    <div className="img-card">
-                      <Image
-                        src={excessImg}
-                        alt="Quick URL method showing paste-and-process transcript extraction"
-                        loading="lazy"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-12 col-lg-6 order-1 order-lg-2 mb-4 mb-lg-0">
-                    <div className="content-main-wrapper">
-                      <h3>Quick URL Download</h3>
-                      <p className="bulk-text-div">
-                        Instant video transcripts just add ‘tokscript.com/’ in
-                        front of any video URL. Instantly redirect and download
-                        transcripts without logging in or visiting the main
-                        website. Fast, automatic, and works with every platform.
-                      </p>
-                      <ul>
-                        <li>Instant URL-based downloading</li>
-                        <li>No need to visit main website</li>
-                        <li>Works with all supported platforms</li>
-                        <li>Automatic redirect and processing</li>
-                      </ul>
-                      <Link href="/pricing" className="start-now">
-                        Get Started Now
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+            </div>
+
+            <div className="vt-row vt-row-reverse" id="history-bookmarking">
+              <div className="vt-visual">
+                <Image src={historyImg} alt="Transcript history and bookmarks" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
               </div>
-              <div className="bulk-import-section">
-                <div className="row">
-                  <div className="col-lg-6 mb-4 mb-lg-0">
-                    <div className="content-main-wrapper">
-                      <h3>Chrome Extension</h3>
-                      <p className="bulk-text-div">
-                        Use our Chrome extension to instantly copy video
-                        transcripts to your clipboard or download them as .txt
-                        files while watching TikTok, Instagram Reels, or YouTube
-                        Shorts. No need to copy the URL. Works on both web and
-                        mobile browsers for ultimate convenience.
-                      </p>
-                      <ul>
-                        <li>One-click transcript download</li>
-                        <li>Instant clipboard copying</li>
-                        <li>Works on web and mobile browsers</li>
-                        <li>No URL copying required</li>
-                      </ul>
-                      <Link href="/pricing" className="start-now">
-                        Get Started Now
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="col-lg-6 align-self-center">
-                    <div className="img-card">
-                      <Image
-                        src={extensionImg}
-                        alt="TokScript Chrome extension panel overlay on a TikTok video page"
-                        loading="lazy"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    </div>
-                  </div>
-                </div>
+              <div className="vt-text">
+                <h3 className="vt-row-title">History &amp; Bookmarking</h3>
+                <p className="vt-row-body">Access a complete transcript history for every video you process, automatically logging download dates, transcript details, video sources, and durations.</p>
+                <ul className="vt-list">
+                  <li>Complete download history with metadata</li>
+                  <li>Custom bookmark folders</li>
+                  <li>Re-download in TXT, XML, PDF formats</li>
+                  <li>Bulk export and sharing capabilities</li>
+                </ul>
+                <Link href="/pricing" className="vt-cta">Get Started now</Link>
               </div>
-              <div className="bulk-import-section">
-                <div className="row">
-                  <div className="col-12 col-lg-6 order-2 order-lg-1 align-self-center">
-                    <div className="img-card">
-                      <Image
-                        src={teamworkImg}
-                        alt="Team workspace with shared transcript library and collaboration tools"
-                        loading="lazy"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-12 col-lg-6 order-1 order-lg-2 mb-4 mb-lg-0">
-                    <div className="content-main-wrapper">
-                      <h3>Team Collaboration</h3>
-                      <p className="bulk-text-div">
-                        For Agencies and Brands. Share, manage, and organize
-                        transcripts with your team. Set permissions, collaborate
-                        in real-time, and control access. Perfect for agencies,
-                        editors, and educators.
-                      </p>
-                      <ul>
-                        <li>Share transcripts with team members</li>
-                        <li>Collaborate on projects in real-time</li>
-                        <li>Manage workspace permissions</li>
-                      </ul>
-                      <Link href="/pricing" className="start-now">
-                        Get Started Now
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+            </div>
+
+            <div className="vt-row">
+              <div className="vt-text">
+                <h3 className="vt-row-title">HD Video &amp; Cover Image Downloads</h3>
+                <p className="vt-row-body">Download TikTok, Instagram Reels, and YouTube Shorts videos in HD quality with no watermarks. Instantly save high-resolution cover images and preserve original video quality across all supported platforms.</p>
+                <ul className="vt-list">
+                  <li>HD video downloads without watermarks</li>
+                  <li>Cover image extraction and download</li>
+                  <li>Multiple platform support</li>
+                  <li>Original quality preservation</li>
+                </ul>
+                <Link href="/pricing" className="vt-cta">Get Started now</Link>
               </div>
-              <div className="bulk-import-section">
-                <div className="row">
-                  <div className="col-12 col-lg-6 mb-4 mb-lg-0">
-                    <div className="content-main-wrapper">
-                      <h3>AI Agents</h3>
-                      <p className="bulk-text-div">
-                        AI-Powered Virality: Hooks, Viral Script writing & Video
-                        Breakdown Unlock the secret weapons behind today’s top
-                        viral videos, powered by AI. Designed for those who want
-                        to win attention and grow fast.
-                      </p>
-                      <div className="ai-listing">
-                        <ul>
-                          <li>
-                            Viral Hook Generator:
-                            <p>
-                              Generate scroll-stopping, proven hooks in seconds.
-                              No more guessing or losing viewers in the first
-                              five seconds.
-                            </p>
-                          </li>
-                          <li>
-                            Agent #2 Viral Script Writer:
-                            <p>
-                              Turn any video transcript into a brand new,
-                              viral-ready script. Remix, mimic, and create
-                              unique content with one click.
-                            </p>
-                          </li>
-                          <li>
-                            Agent #3 Virality Explainer:
-                            <p>
-                              See exactly why a video went viral. Get actionable
-                              breakdowns of psychological triggers and algorithm
-                              secrets, so you can repeat the formula.viral,
-                              teaching and educating users along the way.
-                            </p>
-                          </li>
-                        </ul>
-                      </div>
-                      <ul>
-                        <li>Viral Hook Generator for instant engagement</li>
-                        <li>Script rewriter with viral essence preservation</li>
-                        <li>Virality psychology analysis and insights</li>
-                        <li>One-click content transformation</li>
-                      </ul>
-                      <Link href="/pricing" className="start-now">
-                        Get Started Now
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="col-12 col-lg-6 align-self-center">
-                    <div className="img-card">
-                      <Image
-                        src={workspceImg}
-                        alt="AI-powered dashboard showing transcript analysis and viral hook suggestions"
-                        loading="lazy"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    </div>
-                  </div>
-                </div>
+              <div className="vt-visual">
+                <Image src={mediaImg} alt="HD video and cover image downloads" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
+              </div>
+            </div>
+
+            <div className="vt-row vt-row-reverse">
+              <div className="vt-visual">
+                <Image src={excessImg} alt="Quick URL download" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
+              </div>
+              <div className="vt-text">
+                <h3 className="vt-row-title">Quick URL Download</h3>
+                <p className="vt-row-body">Instant video transcripts just add &lsquo;tokscript.com/&rsquo; in front of any video URL. Instantly redirect and download transcripts without logging in or visiting the main website. Fast, automatic, and works with every platform.</p>
+                <ul className="vt-list">
+                  <li>Instant URL-based downloading</li>
+                  <li>No need to visit main website</li>
+                  <li>Works with all supported platforms</li>
+                  <li>Automatic redirect and processing</li>
+                </ul>
+                <Link href="/pricing" className="vt-cta">Get Started now</Link>
+              </div>
+            </div>
+
+            <div className="vt-row">
+              <div className="vt-text">
+                <h3 className="vt-row-title">Chrome Extension</h3>
+                <p className="vt-row-body">Use our Chrome extension to instantly copy video transcripts to your clipboard or download them as .txt files while watching TikTok, Instagram Reels, or YouTube Shorts. No need to copy the URL. Works on both web and mobile browsers for ultimate convenience.</p>
+                <ul className="vt-list">
+                  <li>One-click transcript download</li>
+                  <li>Instant clipboard copying</li>
+                  <li>Works on web and mobile browsers</li>
+                  <li>No URL copying required</li>
+                </ul>
+                <Link href="/pricing" className="vt-cta">Get Started now</Link>
+              </div>
+              <div className="vt-visual">
+                <Image src={extensionImg} alt="Chrome extension overlay" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
               </div>
             </div>
           </div>

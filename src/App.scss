@@ -17035,3 +17035,179 @@ section h2 + p,
     }
   }
 }
+
+/* ── #1 Video Transcript & Download Platform — Figma 240:2506 ── */
+.vt-platform-section {
+  background: #000 !important;
+  padding: clamp(64px, 9vw, 120px) clamp(20px, 4vw, 48px) !important;
+  position: relative;
+  overflow: hidden;
+
+  .vt-platform-inner {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(64px, 8vw, 112px);
+  }
+
+  /* Section header */
+  .vt-platform-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+  }
+  .vt-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #fff;
+    background: linear-gradient(#0d0d0d, #0d0d0d) padding-box,
+                linear-gradient(135deg, #00d9b4, rgba(255, 255, 255, 0.12)) border-box;
+    border: 0.5px solid transparent;
+  }
+  .vt-h2 {
+    margin: 0;
+    font-size: clamp(32px, 5.5vw, 56px);
+    font-weight: 800;
+    letter-spacing: -1.6px;
+    line-height: 1.06;
+    color: #fff;
+    text-align: center;
+  }
+  .vt-sub {
+    margin: 0;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.65;
+    text-align: center;
+    max-width: 540px;
+  }
+
+  /* Alternating rows */
+  .vt-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(40px, 6vw, 96px);
+    width: 100%;
+  }
+  .vt-row-reverse .vt-text { order: 2; }
+  .vt-row-reverse .vt-visual { order: 1; }
+
+  .vt-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .vt-row-title {
+    margin: 0 0 16px;
+    font-size: clamp(26px, 3.6vw, 38px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.15;
+    color: #fff;
+  }
+  .vt-row-body {
+    margin: 0 0 22px;
+    font-size: 15.5px;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.65;
+    max-width: 520px;
+  }
+  .vt-list {
+    list-style: none;
+    margin: 0 0 28px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    li {
+      position: relative;
+      padding-left: 32px;
+      font-size: 14.5px;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.55;
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 1px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: rgba(0, 217, 180, 0.15);
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M2 5l2 2 4-4' stroke='%2300d9b4' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>");
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+    }
+  }
+  .vt-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    padding: 0 22px;
+    background: #00d9b4;
+    color: #0d0d0d;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    text-decoration: none !important;
+    transition: opacity .2s, transform .15s;
+    &:hover {
+      opacity: .9;
+      transform: translateY(-1px);
+      color: #0d0d0d !important;
+    }
+  }
+
+  .vt-visual {
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    img,
+    span,
+    > * {
+      width: 100% !important;
+      height: auto !important;
+      display: block;
+    }
+  }
+
+  /* Tablet */
+  @media (max-width: 1023px) {
+    .vt-row {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .vt-row-reverse .vt-text { order: 2; }
+    .vt-row-reverse .vt-visual { order: 1; }
+    .vt-row .vt-visual { order: 1; }
+    .vt-row .vt-text { order: 2; }
+  }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    padding: 56px 16px !important;
+    .vt-platform-inner { gap: 56px; }
+    .vt-h2 { font-size: clamp(26px, 8vw, 36px); letter-spacing: -1px; }
+    .vt-sub { font-size: 14.5px; }
+    .vt-row-title { font-size: clamp(22px, 6vw, 28px); }
+    .vt-row-body { font-size: 14.5px; }
+    .vt-list li { font-size: 14px; }
+    .vt-cta { height: 40px; padding: 0 18px; }
+  }
+}
