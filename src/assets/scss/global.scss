@@ -531,7 +531,7 @@ button {
     width: 100%;
   }
   &.cyan-light {
-    background: #193f55;
+    background: #1f1f1f;
     color: $white;
     img,
     svg {
@@ -563,13 +563,13 @@ button {
     }
   }
   &.btn-blue {
-    background: #22d3ee;
+    background: #00D9B4;
     border-radius: 10px;
     padding: 14px 28px;
     box-shadow:
       0 0 #0000,
       0 0 #0000,
-      0 0 30px rgba(34, 211, 238, 0.3);
+      0 0 30px rgba(0, 217, 180, 0.3);
     &:hover {
       transform: scale(1.05);
       background: #67e8f9;
