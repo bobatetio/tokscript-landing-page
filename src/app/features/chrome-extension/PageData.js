@@ -202,7 +202,7 @@ const AnimatedExtensionVisual = ({ hovering }) => {
               top: "45px",
               right: "12px",
               width: "180px",
-              background: "rgba(15,23,42,0.95)",
+              background: "rgba(13,13,13,0.95)",
               backdropFilter: "blur(10px)",
               border: "1px solid rgba(255,255,255,0.1)",
               borderRadius: "12px",
@@ -427,7 +427,7 @@ const AnimatedKeyboardShortcut = ({ hovering }) => {
       >
         ⌥ Opt
       </motion.div>
-      <div style={{ fontSize: "14px", color: "#64748b" }}>+</div>
+      <div style={{ fontSize: "14px", color: "#7a7a7a" }}>+</div>
       {/* T Key */}
       <motion.div
         animate={
@@ -820,7 +820,7 @@ export default function ChromeExtensionPage() {
             <div className="ts-hero-split">
               <div className="ts-hero-content">
                 <div className="ts-kicker-badge">
-                  <Chrome size={14} className="text-blue-400" />
+                  <Chrome size={14} className="text-zinc-400" />
                   <span>CHROME EXTENSION</span>
                 </div>
                 <h1 className="ts-hero-title">
@@ -868,7 +868,7 @@ export default function ChromeExtensionPage() {
                 <div
                   className="ts-hv-glass-panel"
                   style={{
-                    background: "rgba(15, 23, 42, 0.85)",
+                    background: "rgba(13, 13, 13, 0.85)",
                     borderRadius: "24px",
                     border: "1px solid rgba(255, 255, 255, 0.1)",
                     boxShadow:

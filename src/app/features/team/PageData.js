@@ -54,12 +54,12 @@ const AnimatedWorkspaceSwitcher = ({ hovering }) => {
 
   return (
     <div style={{ width: '260px', background: '#0d0d0d', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
-      <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#64748b', marginBottom: '12px', letterSpacing: '0.05em' }}>SELECT WORKSPACE</div>
+      <div style={{ fontSize: '10px', fontWeight: 'bold', color: '#7a7a7a', marginBottom: '12px', letterSpacing: '0.05em' }}>SELECT WORKSPACE</div>
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <div style={{ padding: '12px', borderRadius: '10px', background: active === 0 ? 'rgba(20, 184, 166, 0.1)' : '#1a1a1a', border: '1px solid', borderColor: active === 0 ? 'rgba(20, 184, 166, 0.4)' : 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'all 0.3s' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ width: '28px', height: '28px', borderRadius: '6px', background: 'linear-gradient(135deg, #14b8a6, #0ea5e9)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '12px', fontWeight: 'bold' }}>A</div>
+            <div style={{ width: '28px', height: '28px', borderRadius: '6px', background: 'linear-gradient(135deg, #14b8a6, #00D9B4)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '12px', fontWeight: 'bold' }}>A</div>
             <div>
               <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#fff' }}>Acme Agency</div>
               <div style={{ fontSize: '10px', color: '#7a7a7a' }}>14 members • 4.2k videos</div>
@@ -100,7 +100,7 @@ const AnimatedTeamActivity = ({ hovering }) => {
             </div>
             <div style={{ fontSize: '12px', lineHeight: 1.4 }}>
               <span style={{ color: '#fff', fontWeight: 'bold' }}>{item.name}</span> <span style={{ color: '#7a7a7a' }}>{item.action}</span> <span style={{ color: item.color }}>{item.target}</span>
-              <div style={{ fontSize: '10px', color: '#64748b', marginTop: '4px' }}>{item.time}</div>
+              <div style={{ fontSize: '10px', color: '#7a7a7a', marginTop: '4px' }}>{item.time}</div>
             </div>
           </div>
         ))}
@@ -123,12 +123,12 @@ const AnimatedPermissions = ({ hovering }) => {
           </div>
           <div style={{ flex: 1, height: '4px', background: '#2a2a2a', borderRadius: '2px' }} />
           <motion.div
-            initial={{ background: '#2a2a2a', color: '#64748b' }}
+            initial={{ background: '#2a2a2a', color: '#7a7a7a' }}
             animate={hovering ? { 
               background: ['#2a2a2a', item.color, item.color, '#2a2a2a'], 
-              color: ['#64748b', '#fff', '#fff', '#64748b'],
+              color: ['#7a7a7a', '#fff', '#fff', '#7a7a7a'],
               boxShadow: ['none', `0 0 10px ${item.color}`, `0 0 10px ${item.color}`, 'none']
-            } : { background: '#2a2a2a', color: '#64748b', boxShadow: 'none' }}
+            } : { background: '#2a2a2a', color: '#7a7a7a', boxShadow: 'none' }}
             transition={{ duration: 3, repeat: Infinity, delay: item.delay }}
             style={{ fontSize: '8px', fontWeight: 'bold', padding: '2px 6px', borderRadius: '4px' }}
           >
@@ -229,7 +229,7 @@ export default function TeamCollaborationPage() {
                 </div>
               </div>
               <div className="ts-hero-visual">
-                <div className="ts-hv-glass-panel" style={{ background: 'rgba(15, 23, 42, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(20, 184, 166, 0.2)' }}>
+                <div className="ts-hv-glass-panel" style={{ background: 'rgba(13, 13, 13, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(20, 184, 166, 0.2)' }}>
                   <AnimatedWorkspaceSwitcher hovering={true} />
                 </div>
               </div>
@@ -296,7 +296,7 @@ export default function TeamCollaborationPage() {
             <p className="ts-section-subheading ts-text-center">Set up in minutes. Add members as you grow.</p>
             
             <div className="ts-animated-timeline">
-              <div className="ts-timeline-line"><div className="ts-timeline-line-glow" style={{ background: 'linear-gradient(to bottom, #14b8a6, #0ea5e9)' }}></div></div>
+              <div className="ts-timeline-line"><div className="ts-timeline-line-glow" style={{ background: 'linear-gradient(to bottom, #14b8a6, #00D9B4)' }}></div></div>
 
               {[
                 { title: "Create Your Team Workspace", desc: "Set up a shared workspace and invite your team members. Choose a name, add collaborators by email, assign roles. Takes about 2 minutes." },

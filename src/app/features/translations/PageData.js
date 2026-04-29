@@ -128,7 +128,7 @@ const AnimatedReTranslate = ({ hovering }) => {
           <div style={{ background: '#1a1a1a', padding: '4px', borderRadius: '4px' }}><MessageSquare size={10} color="#818cf8" /></div>
           <span style={{ fontSize: '10px', color: '#e6e6e6', fontWeight: '500' }}>Transcript Library</span>
         </div>
-        <div style={{ fontSize: '9px', color: '#64748b' }}>42 Items</div>
+        <div style={{ fontSize: '9px', color: '#7a7a7a' }}>42 Items</div>
       </div>
       
       {/* List Item */}
@@ -136,7 +136,7 @@ const AnimatedReTranslate = ({ hovering }) => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
           <div>
             <div style={{ fontSize: '11px', color: '#fff', fontWeight: '600', marginBottom: '2px' }}>Viral Hook Format #4</div>
-            <div style={{ fontSize: '9px', color: '#64748b' }}>Added Oct 12 • 45s audio</div>
+            <div style={{ fontSize: '9px', color: '#7a7a7a' }}>Added Oct 12 • 45s audio</div>
           </div>
           <div style={{ background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '4px', fontSize: '8px', color: '#7a7a7a' }}>EN</div>
         </div>
@@ -161,7 +161,7 @@ const AnimatedReTranslate = ({ hovering }) => {
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           animate={hovering ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-          style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(30,27,75,0.95) 0%, rgba(15,23,42,0.95) 100%)', backdropFilter: 'blur(2px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 12px' }}
+          style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(30,27,75,0.95) 0%, rgba(13,13,13,0.95) 100%)', backdropFilter: 'blur(2px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 12px' }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Languages size={14} color="#818cf8" />
@@ -182,7 +182,7 @@ const AnimatedCrossPlatform = ({ hovering }) => {
     <div style={{ width: '280px', height: '180px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
       {/* Search Input Simulation */}
       <div style={{ background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '8px 12px', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-        <Globe2 size={12} color="#64748b" />
+        <Globe2 size={12} color="#7a7a7a" />
         <span style={{ fontSize: '10px', color: '#7a7a7a', fontFamily: 'monospace' }}>Paste TikTok, IG Reel, or YT Link...</span>
       </div>
       
@@ -200,7 +200,7 @@ const AnimatedCrossPlatform = ({ hovering }) => {
               <div style={{ padding: '4px', background: item.bg, borderRadius: '4px' }}>{item.icon}</div>
               <span style={{ fontSize: '10px', color: '#e6e6e6', fontWeight: '500' }}>{item.name}</span>
             </div>
-            <div style={{ fontSize: '8px', color: '#64748b' }}>{item.count}</div>
+            <div style={{ fontSize: '8px', color: '#7a7a7a' }}>{item.count}</div>
           </div>
         ))}
       </div>
@@ -213,7 +213,7 @@ const AnimatedClientNative = ({ hovering }) => {
     <div style={{ width: '280px', height: '180px', background: '#0d0d0d', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', gap: '16px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
       {/* Sidebar */}
       <div style={{ width: '80px', borderRight: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', gap: '8px', paddingRight: '12px' }}>
-        <div style={{ fontSize: '9px', color: '#64748b', fontWeight: '600', textTransform: 'uppercase', marginBottom: '4px' }}>Export As</div>
+        <div style={{ fontSize: '9px', color: '#7a7a7a', fontWeight: '600', textTransform: 'uppercase', marginBottom: '4px' }}>Export As</div>
         <div style={{ padding: '6px', background: '#1a1a1a', border: '1px solid rgba(99,102,241,0.4)', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
           <div style={{ width: '4px', height: '4px', background: '#818cf8', borderRadius: '50%' }} />
           <span style={{ fontSize: '9px', color: '#c7d2fe' }}>.TXT</span>
@@ -313,7 +313,7 @@ export default function TranslationsPage() {
                 </div>
               </div>
               <div className="ts-hero-visual">
-                <div className="ts-hv-glass-panel" style={{ background: 'rgba(15, 23, 42, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(99, 102, 241, 0.2)' }}>
+                <div className="ts-hv-glass-panel" style={{ background: 'rgba(13, 13, 13, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(99, 102, 241, 0.2)' }}>
                   <AnimatedLanguageSwitcher hovering={true} />
                 </div>
               </div>

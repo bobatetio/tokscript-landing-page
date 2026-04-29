@@ -120,7 +120,7 @@ const AnimatedProfileCard = ({ hovering }) => {
         </div>
       </div>
       <div style={{ background: '#0d0d0d', padding: '12px', borderRadius: '8px', marginBottom: '12px' }}>
-        <div style={{ fontSize: '10px', color: '#64748b', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Collection Stats</div>
+        <div style={{ fontSize: '10px', color: '#7a7a7a', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Collection Stats</div>
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#e6e6e6' }}><span>Videos Mapped</span> <strong>342</strong></div>
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#e6e6e6', marginTop: '4px' }}><span>Total Words</span> <strong>47,000</strong></div>
       </div>
@@ -283,7 +283,7 @@ export default function PageData() {
                 </div>
               </div>
               <div className="ts-hero-visual">
-                <div className="ts-hv-glass-panel" style={{ background: 'rgba(15, 23, 42, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(168, 85, 247, 0.2)' }}>
+                <div className="ts-hv-glass-panel" style={{ background: 'rgba(13, 13, 13, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(168, 85, 247, 0.2)' }}>
                   <AnimatedCollectionVisual hovering={true} />
                 </div>
               </div>

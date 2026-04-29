@@ -1256,7 +1256,7 @@ export default function YouTubeLandingPage() {
                             </div>
                             <div
                               style={{
-                                color: "#64748b",
+                                color: "#7a7a7a",
                                 fontSize: "10px",
                                 lineHeight: "16px",
                                 position: "relative",
@@ -1298,7 +1298,7 @@ export default function YouTubeLandingPage() {
                             <div className="group-title">
                               <Layers
                                 size={12}
-                                className="text-cyan-400"
+                                className="text-emerald-400"
                                 style={{ color: "#ff5252" }}
                               />{" "}
                               BULK PROCESSING
@@ -1487,7 +1487,7 @@ export default function YouTubeLandingPage() {
                               = $120/year
                             </div>
                             <div
-                              style={{ color: "#64748b", fontSize: "0.625rem" }}
+                              style={{ color: "#7a7a7a", fontSize: "0.625rem" }}
                             >
                               Annual saves $81
                             </div>
@@ -1497,7 +1497,7 @@ export default function YouTubeLandingPage() {
                             <div className="group-title">
                               <Layers
                                 size={12}
-                                className="text-cyan-400"
+                                className="text-emerald-400"
                                 style={{ color: "#ff5252" }}
                               />{" "}
                               EVERYTHING IN ANNUAL:

@@ -183,7 +183,7 @@ $border-light: rgba(255, 255, 255, 0.08);
 
       .ts-cd-transcript {
         flex: 1.5; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px;
-        .ts-cd-label { font-size: 10px; font-weight: 800; color: #64748b; letter-spacing: 0.1em; margin-bottom: 12px; }
+        .ts-cd-label { font-size: 10px; font-weight: 800; color: #7a7a7a; letter-spacing: 0.1em; margin-bottom: 12px; }
         .ts-cd-text { font-size: 14px; color: #d4d4d4; line-height: 1.6; }
         .ts-cd-highlight { background: rgba(34, 197, 94, 0.2); color: #86efac; padding: 2px 4px; border-radius: 4px; border-bottom: 2px solid #22c55e; font-weight: 600; }
       }
@@ -191,7 +191,7 @@ $border-light: rgba(255, 255, 255, 0.08);
       .ts-cd-stats {
         flex: 1; display: flex; flex-direction: column; gap: 16px; justify-content: center;
         .ts-cd-stat {
-          .ts-cd-s-label { font-size: 10px; font-weight: 800; color: #64748b; letter-spacing: 0.1em; margin-bottom: 4px; }
+          .ts-cd-s-label { font-size: 10px; font-weight: 800; color: #7a7a7a; letter-spacing: 0.1em; margin-bottom: 4px; }
           .ts-cd-s-value { font-size: 32px; font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
           .ts-val-blue { color: #60a5fa; text-shadow: 0 0 20px rgba(96,165,250,0.3); }
           .ts-val-purple { color: #c084fc; text-shadow: 0 0 20px rgba(192,132,252,0.3); }
@@ -230,7 +230,7 @@ $border-light: rgba(255, 255, 255, 0.08);
     .ts-ticker-track { display: inline-flex; gap: 64px; animation: ticker 40s linear infinite; }
     .ts-ticker-stat {
       display: inline-flex; align-items: baseline; gap: 12px;
-      .ts-ticker-l { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; }
+      .ts-ticker-l { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #7a7a7a; }
       .ts-ticker-v { font-size: 24px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; }
       .ts-ticker-sep { color: #2a2a2a; margin-left: 64px; }
     }
@@ -330,7 +330,7 @@ $border-light: rgba(255, 255, 255, 0.08);
       .ts-cv-vs {
         background: #060913;
         border: 1px solid rgba(255,255,255,0.1);
-        color: #64748b;
+        color: #7a7a7a;
         font-size: 12px;
         font-weight: 800;
         padding: 8px 12px;
@@ -660,7 +660,7 @@ $border-light: rgba(255, 255, 255, 0.08);
     .ts-lm-header { font-size: 12px; font-weight: 600; color: #e6e6e6; margin-bottom: 12px; }
     .ts-lm-bar-track { height: 6px; background: rgba(0,0,0,0.3); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
     .ts-lm-bar-fill { height: 100%; width: 15%; background: #ef4444; border-radius: 3px; box-shadow: 0 0 10px #ef4444; }
-    .ts-lm-time { font-size: 11px; color: #64748b; text-align: right; }
+    .ts-lm-time { font-size: 11px; color: #7a7a7a; text-align: right; }
   }
 
   // 2. The TokScript Way (Success Stack)
@@ -668,7 +668,7 @@ $border-light: rgba(255, 255, 255, 0.08);
     display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 280px;
     .ts-fs-item {
       padding: 12px 16px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px;
-      font-size: 13px; font-weight: 600; color: #64748b; display: flex; align-items: center; gap: 12px;
+      font-size: 13px; font-weight: 600; color: #7a7a7a; display: flex; align-items: center; gap: 12px;
     }
     .ts-fs-active {
       background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3); color: #ffffff;
@@ -1022,8 +1022,8 @@ $border-light: rgba(255, 255, 255, 0.08);
       .ts-cta-title { font-size: 56px; color: #ffffff; margin-bottom: 24px; position: relative; letter-spacing: -0.04em; }
       .ts-cta-desc { font-size: 20px; color: $text-secondary; max-width: 600px; margin: 0 auto 48px; position: relative; strong { color: #fff; } }
       .ts-btn-primary { display: inline-flex; align-items: center; justify-content: center; padding: 18px 40px; background: #ffffff; color: #000000; font-size: 18px; font-weight: 800; border-radius: 999px; text-decoration: none; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 10px 20px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.1); &:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(255,255,255,0.1), 0 0 0 1px rgba(255,255,255,0.2); } }
-      .ts-cta-subtext { margin-top: 16px; font-size: 13px; font-weight: 600; color: #64748b; letter-spacing: 0.05em; text-transform: uppercase; }
+      .ts-cta-subtext { margin-top: 16px; font-size: 13px; font-weight: 600; color: #7a7a7a; letter-spacing: 0.05em; text-transform: uppercase; }
     }
-    .ts-footer-blurb { margin-top: 64px; font-size: 14px; color: #64748b; text-align: center; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .ts-footer-blurb { margin-top: 64px; font-size: 14px; color: #7a7a7a; text-align: center; max-width: 600px; margin-left: auto; margin-right: auto; }
   }
 }

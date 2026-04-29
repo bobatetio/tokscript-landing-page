@@ -1387,7 +1387,7 @@ export default function LanguageHomePage({ lang, t, langConfig }) {
                             </div>
                             <div
                               style={{
-                                color: "#64748b",
+                                color: "#7a7a7a",
                                 fontSize: "10px",
                                 lineHeight: "16px",
                                 position: "relative",
@@ -1428,7 +1428,7 @@ export default function LanguageHomePage({ lang, t, langConfig }) {
                             <div className="group-title">
                               <Layers
                                 size={12}
-                                className="text-cyan-400"
+                                className="text-emerald-400"
                                 style={{ color: "#00D9B4" }}
                               />{" "}
                               {t.pricing.annual.bulkLabel}
@@ -1643,7 +1643,7 @@ export default function LanguageHomePage({ lang, t, langConfig }) {
                               {t.pricing.monthly.yearlyEquivalent}
                             </div>
                             <div
-                              style={{ color: "#64748b", fontSize: "0.625rem" }}
+                              style={{ color: "#7a7a7a", fontSize: "0.625rem" }}
                             >
                               {t.pricing.monthly.annualSaves}
                             </div>
@@ -1757,7 +1757,7 @@ export default function LanguageHomePage({ lang, t, langConfig }) {
                                       }
                                     }}
                                     style={{
-                                      background: "rgba(15, 23, 42, 0.5)",
+                                      background: "rgba(13, 13, 13, 0.5)",
                                       border: "1px solid #2a2a2a",
                                     }}
                                   >
@@ -1768,7 +1768,7 @@ export default function LanguageHomePage({ lang, t, langConfig }) {
                                     href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/signin?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.buyUrl}`}
                                     className="btn btn-outline d-flex d-md-none"
                                     style={{
-                                      background: "rgba(15, 23, 42, 0.5)",
+                                      background: "rgba(13, 13, 13, 0.5)",
                                       border: "1px solid #2a2a2a",
                                     }}
                                   >
@@ -1792,7 +1792,7 @@ export default function LanguageHomePage({ lang, t, langConfig }) {
                                     }
                                   }}
                                   style={{
-                                    background: "rgba(15, 23, 42, 0.5)",
+                                    background: "rgba(13, 13, 13, 0.5)",
                                     border: "1px solid #2a2a2a",
                                   }}
                                 >
@@ -1803,7 +1803,7 @@ export default function LanguageHomePage({ lang, t, langConfig }) {
                                   href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/signin?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.buyUrl}`}
                                   className="btn btn-outline d-flex d-md-none"
                                   style={{
-                                    background: "rgba(15, 23, 42, 0.5)",
+                                    background: "rgba(13, 13, 13, 0.5)",
                                     border: "1px solid #2a2a2a",
                                   }}
                                 >

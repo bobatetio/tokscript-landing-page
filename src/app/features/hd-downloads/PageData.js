@@ -51,7 +51,7 @@ const AnimatedQualityComparison = ({ hovering }) => {
       {/* TokScript */}
       <div style={{ flex: 1, background: 'linear-gradient(to bottom, #0d0d0d, #1a1a1a)', borderRadius: '12px', border: '1px solid rgba(59, 130, 246, 0.4)', overflow: 'hidden', position: 'relative', boxShadow: hovering ? '0 10px 30px rgba(59, 130, 246, 0.3)' : 'none', transform: hovering ? 'scale(1.05)' : 'scale(1)', transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
         <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ width: '40px', height: '40px', background: 'linear-gradient(135deg, #3b82f6, #0ea5e9)', borderRadius: '8px', marginBottom: '12px', boxShadow: '0 4px 12px rgba(59, 130, 246, 0.5)' }}></div>
+          <div style={{ width: '40px', height: '40px', background: 'linear-gradient(135deg, #3b82f6, #00D9B4)', borderRadius: '8px', marginBottom: '12px', boxShadow: '0 4px 12px rgba(59, 130, 246, 0.5)' }}></div>
           <div style={{ fontSize: '10px', color: '#60a5fa', fontWeight: 'bold' }}>1080p HD</div>
         </div>
         <div style={{ position: 'absolute', bottom: '12px', left: '0', width: '100%', textAlign: 'center', fontSize: '10px', color: '#93c5fd', fontWeight: 'bold' }}>TOKSCRIPT</div>
@@ -86,7 +86,7 @@ const AnimatedResolution = ({ hovering }) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', maxWidth: '200px' }}>
       {[
-        { label: "480p SD", color: "#64748b", active: false },
+        { label: "480p SD", color: "#7a7a7a", active: false },
         { label: "720p HD", color: "#7a7a7a", active: false },
         { label: "1080p Original", color: "#3b82f6", active: true }
       ].map((res, i) => (
@@ -105,7 +105,7 @@ const AnimatedNoBranding = ({ hovering }) => {
       {/* Base video layer with watermark */}
       <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', opacity: 0.6 }}>
-           <div style={{ fontSize: '12px', fontWeight: '900', color: '#fff', transform: 'rotate(-15deg)', letterSpacing: '1px', textShadow: '1px 1px 0 #ef4444, -1px -1px 0 #0ea5e9' }}>@TIKTOK</div>
+           <div style={{ fontSize: '12px', fontWeight: '900', color: '#fff', transform: 'rotate(-15deg)', letterSpacing: '1px', textShadow: '1px 1px 0 #ef4444, -1px -1px 0 #00D9B4' }}>@TIKTOK</div>
         </div>
       </div>
       
@@ -203,7 +203,7 @@ export default function HDVideoDownloaderPage() {
                 </div>
               </div>
               <div className="ts-hero-visual">
-                <div className="ts-hv-glass-panel" style={{ background: 'rgba(15, 23, 42, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(236, 72, 153, 0.2)' }}>
+                <div className="ts-hv-glass-panel" style={{ background: 'rgba(13, 13, 13, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(236, 72, 153, 0.2)' }}>
                   <AnimatedQualityComparison hovering={true} />
                 </div>
               </div>

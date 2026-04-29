@@ -92,7 +92,7 @@ const AnimatedBulkProcessing = ({ hovering }) => {
           <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px', background: item.status === 'done' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(255,255,255,0.03)', borderRadius: '6px', border: '1px solid', borderColor: item.status === 'done' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(255,255,255,0.05)', transition: 'all 0.3s' }}>
             <div style={{ fontSize: '11px', color: '#d4d4d4', fontFamily: 'monospace' }}>tiktok.com/@user/vid{i}</div>
             <div>
-              {item.status === 'pending' && <span style={{ color: '#64748b', fontSize: '10px' }}>Waiting...</span>}
+              {item.status === 'pending' && <span style={{ color: '#7a7a7a', fontSize: '10px' }}>Waiting...</span>}
               {item.status === 'processing' && <span style={{ color: '#eab308', fontSize: '10px', display: 'flex', alignItems: 'center', gap: '4px' }}><div style={{ width: '8px', height: '8px', border: '2px solid #eab308', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} /> Processing</span>}
               {item.status === 'done' && <Check size={14} color="#4ade80" />}
             </div>
@@ -290,14 +290,14 @@ export default function BulkImportPage() {
         <section className="ts-hero">
           <div className="ts-hero-bg">
             <div className="ts-hero-grid"></div>
-            <div className="ts-glow-orb ts-glow-orb-1" style={{ background: '#0ea5e9' }}></div>
+            <div className="ts-glow-orb ts-glow-orb-1" style={{ background: '#00D9B4' }}></div>
           </div>
           
           <div className="ts-container">
             <div className="ts-hero-split">
               <div className="ts-hero-content">
                 <div className="ts-kicker-badge">
-                  <Database size={14} className="text-sky-400" />
+                  <Database size={14} className="text-emerald-400" />
                   <span>BULK EXTRACTION</span>
                 </div>
                 <h1 className="ts-hero-title">
@@ -310,13 +310,13 @@ export default function BulkImportPage() {
                   Paste a list of URLs. Click process. Walk away. TokScript extracts every transcript in the background and notifies you when your library is ready.
                 </p>
                 <div className="ts-hero-cta-wrap">
-                  <a href="/" style={{ background: '#0ea5e9', color: '#fff', padding: '16px 24px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', boxShadow: '0 4px 14px rgba(14, 165, 233, 0.4)' }}>
+                  <a href="/" style={{ background: '#00D9B4', color: '#fff', padding: '16px 24px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', boxShadow: '0 4px 14px rgba(14, 165, 233, 0.4)' }}>
                     Start Batch <ArrowRight size={18} />
                   </a>
                 </div>
               </div>
               <div className="ts-hero-visual">
-                <div className="ts-hv-glass-panel" style={{ background: 'rgba(15, 23, 42, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(14, 165, 233, 0.2)' }}>
+                <div className="ts-hv-glass-panel" style={{ background: 'rgba(13, 13, 13, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(14, 165, 233, 0.2)' }}>
                   <AnimatedBulkProcessing hovering={true} />
                 </div>
               </div>

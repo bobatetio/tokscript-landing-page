@@ -55,7 +55,7 @@ const AnimatedLibrarySearch = ({ hovering }) => {
   return (
     <div style={{ position: 'relative', width: '320px', background: '#0d0d0d', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', overflow: 'hidden' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#1a1a1a', padding: '12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', marginBottom: '16px' }}>
-        <Search size={16} color="#64748b" />
+        <Search size={16} color="#7a7a7a" />
         <span style={{ fontSize: '13px', color: '#fff', fontFamily: 'monospace' }}>
           {step >= 1 ? 'hook' : <span style={{ opacity: 0.5 }}>Search 4,200 transcripts...</span>}
           {step >= 1 && <span style={{ display: 'inline-block', width: '2px', height: '14px', background: '#3b82f6', verticalAlign: 'middle', animation: 'blink 1s infinite' }}></span>}
@@ -89,7 +89,7 @@ const AnimatedFolderStructure = ({ hovering }) => {
       </div>
       <div style={{ paddingLeft: '16px', borderLeft: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: hovering ? '#fff' : '#7a7a7a', transition: 'color 0.3s' }}>
-          <FolderOpen size={12} color={hovering ? "#22c55e" : "#64748b"} /> Brand A
+          <FolderOpen size={12} color={hovering ? "#22c55e" : "#7a7a7a"} /> Brand A
         </div>
         <div style={{ paddingLeft: '16px', display: 'flex', flexDirection: 'column', gap: '8px', height: hovering ? '40px' : '0', overflow: 'hidden', transition: 'height 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#60a5fa' }}><FileText size={10} /> Q1 Campaign (42)</div>
@@ -247,7 +247,7 @@ export default function CloudStoragePage() {
                 </div>
               </div>
               <div className="ts-hero-visual">
-                <div className="ts-hv-glass-panel" style={{ background: 'rgba(15, 23, 42, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(34, 197, 94, 0.2)' }}>
+                <div className="ts-hv-glass-panel" style={{ background: 'rgba(13, 13, 13, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(34, 197, 94, 0.2)' }}>
                   <AnimatedLibrarySearch hovering={true} />
                 </div>
               </div>

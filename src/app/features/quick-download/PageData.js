@@ -54,7 +54,7 @@ const AnimatedSpeedTest = ({ hovering }) => {
       {/* Input */}
       <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', opacity: step >= 2 ? 0.5 : 1, transition: 'opacity 0.3s' }}>
         <div style={{ flex: 1, background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 12px', fontSize: '12px', color: '#d4d4d4', display: 'flex', alignItems: 'center' }}>
-          {step >= 1 ? 'https://tiktok.com/@user/vid' : <span style={{ color: '#64748b' }}>Paste URL</span>}
+          {step >= 1 ? 'https://tiktok.com/@user/vid' : <span style={{ color: '#7a7a7a' }}>Paste URL</span>}
         </div>
         <div style={{ background: step >= 1 ? '#eab308' : '#2a2a2a', color: step >= 1 ? '#000' : '#fff', padding: '10px 16px', borderRadius: '8px', fontSize: '12px', fontWeight: 'bold', display: 'flex', alignItems: 'center', transition: 'all 0.3s' }}>
           Extract
@@ -97,7 +97,7 @@ const AnimatedOneClickCopy = ({ hovering }) => {
     <div style={{ width: '200px', background: '#0d0d0d', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
       <div style={{ position: 'relative' }}>
         <div style={{ width: '64px', height: '64px', background: hovering ? '#eab308' : '#1a1a1a', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease', transform: hovering ? 'scale(1.1)' : 'scale(1)', boxShadow: hovering ? '0 10px 20px rgba(234, 179, 8, 0.4)' : 'none' }}>
-          <Copy size={32} color={hovering ? '#000' : '#64748b'} />
+          <Copy size={32} color={hovering ? '#000' : '#7a7a7a'} />
         </div>
         <div style={{ position: 'absolute', top: '-10px', right: '-10px', background: '#22c55e', color: '#fff', padding: '4px 8px', borderRadius: '12px', fontSize: '10px', fontWeight: 'bold', opacity: hovering ? 1 : 0, transform: hovering ? 'scale(1)' : 'scale(0.8)', transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s', boxShadow: '0 4px 10px rgba(34, 197, 94, 0.4)' }}>
           COPIED!
@@ -223,7 +223,7 @@ export default function QuickDownloadPage() {
                 </div>
               </div>
               <div className="ts-hero-visual">
-                <div className="ts-hv-glass-panel" style={{ background: 'rgba(15, 23, 42, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(234, 179, 8, 0.2)' }}>
+                <div className="ts-hv-glass-panel" style={{ background: 'rgba(13, 13, 13, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(234, 179, 8, 0.2)' }}>
                   <AnimatedSpeedTest hovering={true} />
                 </div>
               </div>

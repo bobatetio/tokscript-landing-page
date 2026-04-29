@@ -84,12 +84,12 @@ export default function DemoPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-8 text-center">
+    <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center p-8 text-center">
       <div className="mb-12">
         <h1 className="text-3xl font-bold text-white mb-4">
           Checkout & Login Modal System
         </h1>
-        <p className="text-slate-400">
+        <p className="text-zinc-400">
           Click a button below to trigger the modal in different states.
         </p>
       </div>
@@ -97,9 +97,9 @@ export default function DemoPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl">
         <button
           onClick={() => handlePlanSelect(FREE_PLAN)}
-          className="bg-slate-800 hover:bg-slate-700 text-white p-6 rounded-xl border border-slate-700 transition-all"
+          className="bg-zinc-800 hover:bg-zinc-700 text-white p-6 rounded-xl border border-zinc-700 transition-all"
         >
-          <div className="text-xs font-bold text-slate-500 uppercase mb-2">
+          <div className="text-xs font-bold text-zinc-500 uppercase mb-2">
             Scenario 1
           </div>
           <div className="font-bold text-lg">Free Plan</div>
@@ -117,9 +117,9 @@ export default function DemoPage() {
 
         <button
           onClick={() => handlePlanSelect(ANNUAL_PLAN)}
-          className="bg-cyan-900/20 hover:bg-cyan-900/40 text-white p-6 rounded-xl border border-cyan-500/30 transition-all"
+          className="bg-emerald-900/20 hover:bg-emerald-900/40 text-white p-6 rounded-xl border border-emerald-500/30 transition-all"
         >
-          <div className="text-xs font-bold text-cyan-400 uppercase mb-2">
+          <div className="text-xs font-bold text-emerald-400 uppercase mb-2">
             Scenario 3
           </div>
           <div className="font-bold text-lg">Annual</div>
@@ -127,9 +127,9 @@ export default function DemoPage() {
 
         <button
           onClick={() => handlePlanSelect(LOGIN_PLAN, true)}
-          className="bg-white hover:bg-slate-200 text-slate-900 p-6 rounded-xl border border-slate-200 transition-all"
+          className="bg-white hover:bg-zinc-200 text-zinc-900 p-6 rounded-xl border border-zinc-200 transition-all"
         >
-          <div className="text-xs font-bold text-slate-500 uppercase mb-2">
+          <div className="text-xs font-bold text-zinc-500 uppercase mb-2">
             Scenario 4
           </div>
           <div className="font-bold text-lg">Login</div>

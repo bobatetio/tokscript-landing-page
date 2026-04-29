@@ -1419,7 +1419,7 @@ export default function InstagramLandingPage() {
                             <div className="group-title">
                               <Layers
                                 size={12}
-                                className="text-cyan-400"
+                                className="text-emerald-400"
                                 style={{ color: "#F77737" }}
                               />{" "}
                               FREE FEATURES
@@ -1549,7 +1549,7 @@ export default function InstagramLandingPage() {
                             </div>
                             <div
                               style={{
-                                color: "#64748b",
+                                color: "#7a7a7a",
                                 fontSize: "10px",
                                 lineHeight: "16px",
                                 position: "relative",
@@ -1591,7 +1591,7 @@ export default function InstagramLandingPage() {
                             <div className="group-title">
                               <Layers
                                 size={12}
-                                className="text-cyan-400"
+                                className="text-emerald-400"
                                 style={{ color: "#F77737" }}
                               />{" "}
                               BULK PROCESSING
@@ -1801,7 +1801,7 @@ export default function InstagramLandingPage() {
                               = $120/year
                             </div>
                             <div
-                              style={{ color: "#64748b", fontSize: "0.625rem" }}
+                              style={{ color: "#7a7a7a", fontSize: "0.625rem" }}
                             >
                               Annual saves $81
                             </div>
@@ -1811,7 +1811,7 @@ export default function InstagramLandingPage() {
                             <div className="group-title">
                               <Layers
                                 size={12}
-                                className="text-cyan-400"
+                                className="text-emerald-400"
                                 style={{ color: "#F77737" }}
                               />{" "}
                               EVERYTHING IN ANNUAL:
@@ -1827,7 +1827,7 @@ export default function InstagramLandingPage() {
                           <div
                             style={{
                               fontSize: "0.75rem",
-                              color: "#64748b",
+                              color: "#7a7a7a",
                               marginTop: "0.5rem",
                               paddingLeft: "0.25rem",
                             }}
@@ -1910,7 +1910,7 @@ export default function InstagramLandingPage() {
                                       }
                                     }}
                                     style={{
-                                      background: "rgba(15, 23, 42, 0.5)",
+                                      background: "rgba(13, 13, 13, 0.5)",
                                       border: "1px solid #2a2a2a",
                                     }}
                                   >
@@ -1921,7 +1921,7 @@ export default function InstagramLandingPage() {
                                     href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.buyUrl}`}
                                     className="btn btn-outline d-flex d-md-none"
                                     style={{
-                                      background: "rgba(15, 23, 42, 0.5)",
+                                      background: "rgba(13, 13, 13, 0.5)",
                                       border: "1px solid #2a2a2a",
                                     }}
                                   >
@@ -1943,7 +1943,7 @@ export default function InstagramLandingPage() {
                                     handleCheckout(monthlyPlan || { title: "Pro Monthly", price: "$10", buyUrl: null });
                                   }}
                                   style={{
-                                    background: "rgba(15, 23, 42, 0.5)",
+                                    background: "rgba(13, 13, 13, 0.5)",
                                     border: "1px solid #2a2a2a",
                                   }}
                                 >
@@ -1954,7 +1954,7 @@ export default function InstagramLandingPage() {
                                   href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.buyUrl || ""}`}
                                   className="btn btn-outline d-flex d-md-none"
                                   style={{
-                                    background: "rgba(15, 23, 42, 0.5)",
+                                    background: "rgba(13, 13, 13, 0.5)",
                                     border: "1px solid #2a2a2a",
                                   }}
                                 >

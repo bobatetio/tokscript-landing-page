@@ -55,8 +55,8 @@ const AnimatedUrlImport = ({ hovering }) => {
     <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0d0d0d 0%, #020617 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
       {/* Input Bar */}
       <div style={{ background: '#1a1a1a', border: step >= 1 ? '1px solid #00f2ea' : '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 12px', display: 'flex', alignItems: 'center', gap: '8px', transition: 'all 0.3s' }}>
-        <LinkIcon size={14} color={step >= 1 ? "#00f2ea" : "#64748b"} />
-        <span style={{ fontSize: '11px', color: step >= 1 ? '#e6e6e6' : '#64748b', fontFamily: 'monospace', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <LinkIcon size={14} color={step >= 1 ? "#00f2ea" : "#7a7a7a"} />
+        <span style={{ fontSize: '11px', color: step >= 1 ? '#e6e6e6' : '#7a7a7a', fontFamily: 'monospace', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {step >= 1 ? "tiktok.com/@creator/video/1234..." : "Paste video URL here..."}
         </span>
       </div>
@@ -133,7 +133,7 @@ const AnimatedExtractionSpeed = ({ hovering }) => {
               key={i}
               animate={hovering ? { height: ['4px', '20px', '4px'] } : { height: '8px' }}
               transition={{ duration: 1, repeat: Infinity, delay: i * 0.05 }}
-              style={{ width: '4px', background: '#64748b', borderRadius: '2px' }}
+              style={{ width: '4px', background: '#7a7a7a', borderRadius: '2px' }}
             />
           ))}
         </div>
@@ -159,10 +159,10 @@ const AnimatedCopyPaste = ({ hovering }) => {
           <span style={{ fontSize: '10px', color: '#7a7a7a', fontWeight: '500' }}>Final Transcript</span>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-          <div style={{ width: '100%', height: '4px', background: '#64748b', borderRadius: '2px' }} />
-          <div style={{ width: '85%', height: '4px', background: '#64748b', borderRadius: '2px' }} />
-          <div style={{ width: '95%', height: '4px', background: '#64748b', borderRadius: '2px' }} />
-          <div style={{ width: '60%', height: '4px', background: '#64748b', borderRadius: '2px' }} />
+          <div style={{ width: '100%', height: '4px', background: '#7a7a7a', borderRadius: '2px' }} />
+          <div style={{ width: '85%', height: '4px', background: '#7a7a7a', borderRadius: '2px' }} />
+          <div style={{ width: '95%', height: '4px', background: '#7a7a7a', borderRadius: '2px' }} />
+          <div style={{ width: '60%', height: '4px', background: '#7a7a7a', borderRadius: '2px' }} />
         </div>
 
         {/* Hover Copy Button */}
@@ -243,7 +243,7 @@ export default function TranscriptGeneratorPage() {
                 </div>
               </div>
               <div className="ts-hero-visual">
-                <div className="ts-hv-glass-panel" style={{ background: 'rgba(15, 23, 42, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(0, 242, 234, 0.2)' }}>
+                <div className="ts-hv-glass-panel" style={{ background: 'rgba(13, 13, 13, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(0, 242, 234, 0.2)' }}>
                   <AnimatedExtractionSpeed hovering={true} />
                 </div>
               </div>

@@ -1698,7 +1698,7 @@ export default function LandingPage() {
                             </div>
                             <div
                               style={{
-                                color: "#64748b",
+                                color: "#7a7a7a",
                                 fontSize: "10px",
                                 lineHeight: "16px",
                                 position: "relative",
@@ -1739,7 +1739,7 @@ export default function LandingPage() {
                             <div className="group-title">
                               <Layers
                                 size={12}
-                                className="text-cyan-400"
+                                className="text-emerald-400"
                                 style={{ color: "#00D9B4" }}
                               />{" "}
                               BULK PROCESSING
@@ -1954,7 +1954,7 @@ export default function LandingPage() {
                               = $120/year
                             </div>
                             <div
-                              style={{ color: "#64748b", fontSize: "0.625rem" }}
+                              style={{ color: "#7a7a7a", fontSize: "0.625rem" }}
                             >
                               Annual saves $81
                             </div>
@@ -2068,7 +2068,7 @@ export default function LandingPage() {
                                       }
                                     }}
                                     style={{
-                                      background: "rgba(15, 23, 42, 0.5)",
+                                      background: "rgba(13, 13, 13, 0.5)",
                                       border: "1px solid #2a2a2a",
                                     }}
                                   >
@@ -2079,7 +2079,7 @@ export default function LandingPage() {
                                     href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.buyUrl}`}
                                     className="btn btn-outline d-flex d-md-none"
                                     style={{
-                                      background: "rgba(15, 23, 42, 0.5)",
+                                      background: "rgba(13, 13, 13, 0.5)",
                                       border: "1px solid #2a2a2a",
                                     }}
                                   >
@@ -2103,7 +2103,7 @@ export default function LandingPage() {
                                     }
                                   }}
                                   style={{
-                                    background: "rgba(15, 23, 42, 0.5)",
+                                    background: "rgba(13, 13, 13, 0.5)",
                                     border: "1px solid #2a2a2a",
                                   }}
                                 >
@@ -2114,7 +2114,7 @@ export default function LandingPage() {
                                   href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.buyUrl}`}
                                   className="btn btn-outline d-flex d-md-none"
                                   style={{
-                                    background: "rgba(15, 23, 42, 0.5)",
+                                    background: "rgba(13, 13, 13, 0.5)",
                                     border: "1px solid #2a2a2a",
                                   }}
                                 >

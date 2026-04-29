@@ -663,7 +663,7 @@ export default function PricingPage() {
                       </div>
                       <div
                         style={{
-                          color: "#64748b",
+                          color: "#7a7a7a",
                           fontSize: "10px",
                           lineHeight: "16px",
                           position: "relative",
@@ -704,7 +704,7 @@ export default function PricingPage() {
                       <div className="group-title">
                         <Layers
                           size={12}
-                          className="text-cyan-400"
+                          className="text-emerald-400"
                           style={{ color: "#00D9B4" }}
                         />{" "}
                         BULK PROCESSING
@@ -878,7 +878,7 @@ export default function PricingPage() {
                       <div style={{ color: "#7a7a7a", fontSize: "0.75rem" }}>
                         = $120/year
                       </div>
-                      <div style={{ color: "#64748b", fontSize: "0.625rem" }}>
+                      <div style={{ color: "#7a7a7a", fontSize: "0.625rem" }}>
                         Annual saves $81
                       </div>
                     </div>
@@ -970,7 +970,7 @@ export default function PricingPage() {
                               )
                             }
                             style={{
-                              background: "rgba(15, 23, 42, 0.5)",
+                              background: "rgba(13, 13, 13, 0.5)",
                               border: "1px solid #2a2a2a",
                             }}
                           >
@@ -981,7 +981,7 @@ export default function PricingPage() {
                             href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=https://tokscript.lemonsqueezy.com/checkout/buy/${productsData?.data?.[2]?.variants?.[1]?.attributes.slug}`}
                             className="btn btn-outline d-flex d-md-none"
                             style={{
-                              background: "rgba(15, 23, 42, 0.5)",
+                              background: "rgba(13, 13, 13, 0.5)",
                               border: "1px solid #2a2a2a",
                             }}
                           >
@@ -1048,7 +1048,7 @@ export default function PricingPage() {
               desc="2.6M+ videos transcribed"
               icon={
                 <Globe
-                  className="text-blue-400"
+                  className="text-zinc-400"
                   style={{ color: " #60a5fa" }}
                 />
               }
@@ -1198,7 +1198,7 @@ export default function PricingPage() {
           <p
             style={{
               marginTop: "1.5rem",
-              color: "#64748b",
+              color: "#7a7a7a",
               fontSize: "0.75rem",
               fontWeight: 500,
             }}

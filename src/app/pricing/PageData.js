@@ -696,7 +696,7 @@ export default function PricingPage({ initialProductsData }) {
                       </div>
                       <div
                         style={{
-                          color: "#64748b",
+                          color: "#7a7a7a",
                           fontSize: "10px",
                           lineHeight: "16px",
                           position: "relative",
@@ -737,7 +737,7 @@ export default function PricingPage({ initialProductsData }) {
                       <div className="group-title">
                         <Layers
                           size={12}
-                          className="text-cyan-400"
+                          className="text-emerald-400"
                           style={{ color: "#00D9B4" }}
                         />{" "}
                         BULK PROCESSING
@@ -916,7 +916,7 @@ export default function PricingPage({ initialProductsData }) {
                       <div style={{ color: "#7a7a7a", fontSize: "0.75rem" }}>
                         = $120/year
                       </div>
-                      <div style={{ color: "#64748b", fontSize: "0.625rem" }}>
+                      <div style={{ color: "#7a7a7a", fontSize: "0.625rem" }}>
                         Annual saves $81
                       </div>
                     </div>
@@ -1008,7 +1008,7 @@ export default function PricingPage({ initialProductsData }) {
                               )
                             }
                             style={{
-                              background: "rgba(15, 23, 42, 0.5)",
+                              background: "rgba(13, 13, 13, 0.5)",
                               border: "1px solid #2a2a2a",
                             }}
                           >
@@ -1020,7 +1020,7 @@ export default function PricingPage({ initialProductsData }) {
                               href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=https://tokscript.lemonsqueezy.com/checkout/buy/${productsData?.data?.[2]?.variants?.[1]?.attributes.slug}` + (aff ? `&aff=${aff}` : "")}
                               className="btn btn-outline d-flex d-md-none"
                               style={{
-                                background: "rgba(15, 23, 42, 0.5)",
+                                background: "rgba(13, 13, 13, 0.5)",
                                 border: "1px solid #2a2a2a",
                               }}
                             >
@@ -1042,7 +1042,7 @@ export default function PricingPage({ initialProductsData }) {
                                 window.location.href = checkoutUrl;
                               }}
                               style={{
-                                background: "rgba(15, 23, 42, 0.5)",
+                                background: "rgba(13, 13, 13, 0.5)",
                                 border: "1px solid #2a2a2a",
                               }}
                             >
@@ -1093,7 +1093,7 @@ export default function PricingPage({ initialProductsData }) {
               desc="2.6M+ videos transcribed"
               icon={
                 <Globe
-                  className="text-blue-400"
+                  className="text-zinc-400"
                   style={{ color: " #60a5fa" }}
                 />
               }
@@ -1263,14 +1263,14 @@ export default function PricingPage({ initialProductsData }) {
           <p
             style={{
               marginTop: "1.5rem",
-              color: "#64748b",
+              color: "#7a7a7a",
               fontSize: "0.75rem",
               fontWeight: 500,
             }}
           >
             Secure payment via Stripe. Cancel anytime.
           </p>
-          <p style={{ marginTop: '1rem', color: '#64748b', fontSize: '0.8rem' }}>
+          <p style={{ marginTop: '1rem', color: '#7a7a7a', fontSize: '0.8rem' }}>
             Want to earn while you share? <Link href="/affiliate" style={{ color: '#60a5fa', textDecoration: 'underline', textUnderlineOffset: '3px' }}>Join our affiliate program</Link> — 40% recurring commissions.
           </p>
           <ShareBar url="https://tokscript.com/pricing" text="TokScript -- Free plan + $39/yr Pro with AI Script Writer & Viral Hook Generator. 41,000+ creators trust it." />
