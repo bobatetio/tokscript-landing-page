@@ -1155,16 +1155,16 @@ export default function LandingPage() {
                   <li>Bulk export all transcripts at once</li>
                   <li>Individual or batch processing options</li>
                 </ul>
-                <Link href="/pricing" className="vt-cta">Get Started now</Link>
+                <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
               </div>
               <div className="vt-visual">
-                <Image src={bulkProcess} alt="Bulk transcript processing" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
+                <img src="/figma-rows/01-bulk.png" alt="Bulk import — paste up to 50 video links" loading="lazy" />
               </div>
             </div>
 
             <div className="vt-row vt-row-reverse">
               <div className="vt-visual">
-                <Image src={collectImg} alt="TikTok collection import" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
+                <img src="/figma-rows/02-collection.png" alt="TikTok collection and playlist importing" loading="lazy" />
               </div>
               <div className="vt-text">
                 <h3 className="vt-row-title">TikTok Collection &amp; Playlist Importing</h3>
@@ -1175,7 +1175,7 @@ export default function LandingPage() {
                   <li>Series and topic-based organization</li>
                   <li>Automatic metadata preservation</li>
                 </ul>
-                <Link href="/pricing" className="vt-cta">Get Started now</Link>
+                <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
               </div>
             </div>
 
@@ -1189,16 +1189,40 @@ export default function LandingPage() {
                   <li>Access from anywhere, anytime</li>
                   <li>Enterprise-grade reliability</li>
                 </ul>
-                <Link href="/pricing" className="vt-cta">Get Started now</Link>
+                <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
               </div>
-              <div className="vt-visual">
-                <Image src={cloudSync} alt="Cloud storage" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
+              <div className="vt-visual vt-visual-cloud">
+                <div className="vt-currency-card">
+                  <div className="vt-currency-flag" aria-hidden>
+                    <svg viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg" width="28" height="18"><rect width="28" height="18" rx="2" fill="#fff"/><rect width="28" height="6" rx="2" fill="#007a3d"/><rect y="12" width="28" height="6" rx="2" fill="#ce1126"/><polygon points="0,0 9,9 0,18" fill="#000"/></svg>
+                  </div>
+                  <div className="vt-currency-info"><div className="vt-currency-code">KWD</div><div className="vt-currency-name">Kuwaiti Dinar</div></div>
+                  <div className="vt-currency-amount"><div className="vt-currency-value">5,780 KWD</div><div className="vt-currency-conv">18,865.80 USD</div></div>
+                </div>
+                <div className="vt-currency-card">
+                  <div className="vt-currency-flag" aria-hidden>
+                    <svg viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg" width="28" height="18"><rect width="28" height="18" rx="9" fill="#003399"/><g fill="#FFCC00" transform="translate(14 9)"><circle r="0.7" cx="0" cy="-5"/><circle r="0.7" cx="2.94" cy="-4.04"/><circle r="0.7" cx="4.76" cy="-1.55"/><circle r="0.7" cx="4.76" cy="1.55"/><circle r="0.7" cx="2.94" cy="4.04"/><circle r="0.7" cx="0" cy="5"/><circle r="0.7" cx="-2.94" cy="4.04"/><circle r="0.7" cx="-4.76" cy="1.55"/><circle r="0.7" cx="-4.76" cy="-1.55"/><circle r="0.7" cx="-2.94" cy="-4.04"/></g></svg>
+                  </div>
+                  <div className="vt-currency-info"><div className="vt-currency-code">EUR</div><div className="vt-currency-name">EURO</div></div>
+                  <div className="vt-currency-amount"><div className="vt-currency-value">3,456 EUR</div><div className="vt-currency-conv">3,751.80 USD</div></div>
+                </div>
+                <div className="vt-currency-card">
+                  <div className="vt-currency-flag" aria-hidden>
+                    <svg viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg" width="28" height="18"><rect width="28" height="18" rx="2" fill="#bf0a30"/><rect y="1.4" width="28" height="1.4" fill="#fff"/><rect y="4.2" width="28" height="1.4" fill="#fff"/><rect y="7" width="28" height="1.4" fill="#fff"/><rect y="9.8" width="28" height="1.4" fill="#fff"/><rect y="12.6" width="28" height="1.4" fill="#fff"/><rect y="15.4" width="28" height="1.4" fill="#fff"/><rect width="12" height="9.8" fill="#002868"/></svg>
+                  </div>
+                  <div className="vt-currency-info"><div className="vt-currency-code">USD</div><div className="vt-currency-name">United States Dollar</div></div>
+                  <div className="vt-currency-amount"><div className="vt-currency-value">3,657 USD</div><div className="vt-currency-conv">5,809.56 BTD</div></div>
+                </div>
+                <div className="vt-currency-card vt-currency-card-muted">
+                  <div className="vt-currency-info"><div className="vt-currency-code">KYD</div><div className="vt-currency-name">Cayman Islands Dollar</div></div>
+                  <div className="vt-currency-amount"><div className="vt-currency-value">1,345 KYD</div><div className="vt-currency-conv">1,617.67 USD</div></div>
+                </div>
               </div>
             </div>
 
             <div className="vt-row vt-row-reverse" id="history-bookmarking">
               <div className="vt-visual">
-                <Image src={historyImg} alt="Transcript history and bookmarks" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
+                <img src="/figma-rows/04-history.png" alt="History and bookmarking — transcript library" loading="lazy" />
               </div>
               <div className="vt-text">
                 <h3 className="vt-row-title">History &amp; Bookmarking</h3>
@@ -1209,7 +1233,7 @@ export default function LandingPage() {
                   <li>Re-download in TXT, XML, PDF formats</li>
                   <li>Bulk export and sharing capabilities</li>
                 </ul>
-                <Link href="/pricing" className="vt-cta">Get Started now</Link>
+                <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
               </div>
             </div>
 
@@ -1223,16 +1247,16 @@ export default function LandingPage() {
                   <li>Multiple platform support</li>
                   <li>Original quality preservation</li>
                 </ul>
-                <Link href="/pricing" className="vt-cta">Get Started now</Link>
+                <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
               </div>
               <div className="vt-visual">
-                <Image src={mediaImg} alt="HD video and cover image downloads" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
+                <img src="/figma-rows/05-hd-video.png" alt="HD video and cover image downloads" loading="lazy" />
               </div>
             </div>
 
             <div className="vt-row vt-row-reverse">
               <div className="vt-visual">
-                <Image src={excessImg} alt="Quick URL download" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
+                <img src="/figma-rows/06-quick-url.png" alt="Quick URL download — paste tokscript.com/ in front of any link" loading="lazy" />
               </div>
               <div className="vt-text">
                 <h3 className="vt-row-title">Quick URL Download</h3>
@@ -1243,7 +1267,7 @@ export default function LandingPage() {
                   <li>Works with all supported platforms</li>
                   <li>Automatic redirect and processing</li>
                 </ul>
-                <Link href="/pricing" className="vt-cta">Get Started now</Link>
+                <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
               </div>
             </div>
 
@@ -1257,10 +1281,10 @@ export default function LandingPage() {
                   <li>Works on web and mobile browsers</li>
                   <li>No URL copying required</li>
                 </ul>
-                <Link href="/pricing" className="vt-cta">Get Started now</Link>
+                <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
               </div>
               <div className="vt-visual">
-                <Image src={extensionImg} alt="Chrome extension overlay" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
+                <img src="/figma-rows/07-chrome.png" alt="Chrome extension panel showing engagement metrics" loading="lazy" />
               </div>
             </div>
           </div>
