@@ -1,0 +1,577 @@
+{
+  "meta": {
+    "title": "TokScript - Video Transcript Downloader for TikTok, Reels & Shorts Transcripts Instantly",
+    "description": "Download Transcripts, HD Videos & Cover Images, Bulk export from TikTok, Reels, and Shorts Instantly. Plus use our AI viral script generator hook writer analyzer.",
+    "ogTitle": "TokScript - Video Transcript Downloader for TikTok, Reels & Shorts Transcripts Instantly",
+    "ogDescription": "Generate TikTok transcripts, analyze videos, and unlock viral growth.",
+    "ogSiteName": "Tokscript",
+    "ogImageAlt": "Tokscript - Social Preview",
+    "twitterTitle": "TokScript - Video Transcript Downloader for TikTok, Reels & Shorts Transcripts Instantly",
+    "twitterDescription": "Generate TikTok transcripts, analyze videos, and unlock viral growth."
+  },
+  "header": {
+    "banner": {
+      "textDesktop": "Earn 40% recurring commission for every customer you refer",
+      "textMobile": "Earn 40% recurring commission",
+      "cta": "Join Affiliate Program →",
+      "dismissAriaLabel": "Dismiss banner"
+    },
+    "logo": {
+      "alt": "TokScript"
+    },
+    "nav": {
+      "home": "Home",
+      "features": "Features",
+      "featuresLabel": "FEATURES",
+      "pricing": "Pricing",
+      "affiliate": "Affiliate",
+      "affiliateBadge": "💰 40%",
+      "faqs": "FAQs",
+      "support": "Support",
+      "settings": "Settings",
+      "installExtension": "Install Chrome Extension",
+      "logout": "Logout",
+      "helpSupport": "Help & Support",
+      "upgradePlan": "Upgrade My Plan"
+    },
+    "auth": {
+      "login": "Log In",
+      "getStarted": "Get Started",
+      "signUp": "Sign Up",
+      "userAvatarAlt": "User avatar"
+    },
+    "hamburger": {
+      "ariaLabel": "Open menu"
+    }
+  },
+  "hero": {
+    "aiBadge": "AI Powered",
+    "heading": "TikTok Transcript Generator",
+    "headingLine1": "TikTok",
+    "headingLine2": "Transcript Generator",
+    "subheading": "Turn speech into text for any TikTok, Reels, and Shorts video",
+    "input": {
+      "placeholder": "Paste up to 50 video links here (or tiktok collection)",
+      "translateLabel": "Translate",
+      "scanButton": "Scan Video",
+      "downloadButton": "Download",
+      "loadingButton": "Loading..."
+    },
+    "helperText": "Download up to 50 videos (any platform) at the same time and entire TikTok collections",
+    "platforms": {
+      "label": "Supports:",
+      "tiktok": "TikTok",
+      "reels": "Reels",
+      "shorts": "Shorts"
+    },
+    "error": {
+      "emptyLink": "Please enter a valid video link"
+    }
+  },
+  "aiFeatures": {
+    "title": "Try our latest AI features!",
+    "cards": {
+      "coverImage": {
+        "title": "Save cover image",
+        "description": "Download HD cover images"
+      },
+      "downloadVideo": {
+        "title": "Download HD video",
+        "description": "No watermarks, full quality"
+      },
+      "viralHooks": {
+        "title": "Generate Viral Hooks",
+        "description": "Create viral hooks instantly"
+      },
+      "rewriteScripts": {
+        "title": "Rewrite scripts",
+        "description": "Turn transcripts to viral videos"
+      },
+      "analyzeVirality": {
+        "title": "Analyze Virality",
+        "description": "Learn why video went viral"
+      }
+    }
+  },
+  "preview": {
+    "title": "Preview:",
+    "titleLine2": "Your Dashboard Awaits",
+    "description": "Get instant access to all your transcripts, AI agents, folders, bulk Uploads + more!",
+    "ctaLoggedIn": "Access your full dashboard",
+    "ctaLoggedOut": "Sign in to access your full dashboard"
+  },
+  "platform": {
+    "title": "#1 Video Transcript",
+    "titleLine2": "& Download Platform",
+    "subtitle": "The best tool for video transcription, bulk downloads, and AI content",
+    "bulkImport": {
+      "title": "Bulk Importing",
+      "description": "Bulk import up to 50 TikTok, Instagram, or YouTube Shorts links at once to quickly download transcripts in bulk. Save time and manage large volumes of videos efficiently, all in one place.",
+      "feature1": "Bulk import up to 50 video links",
+      "feature2": "TikTok, Instagram, and YouTube Shorts support",
+      "feature3": "Bulk export all transcripts at once",
+      "feature4": "Individual or batch processing options",
+      "cta": "Start now",
+      "imageAlt": "Bulk transcript processing interface showing multiple TikTok video URLs being imported"
+    },
+    "collection": {
+      "title": "TikTok Collection & Playlist Importing",
+      "description": "Users can paste a single link to a public TikTok collection (bookmarks) or a creator's playlist to automatically import and transcribe all videos contained within it. Playlists often represent a creator's mini-series based on a specific subject, topic, or series.",
+      "feature1": "Public TikTok collection importing",
+      "feature2": "Creator playlist auto-detection",
+      "feature3": "Series and topic-based organization",
+      "feature4": "Automatic metadata preservation",
+      "cta": "Start now",
+      "imageAlt": "Collection import interface showing TikTok profile videos being bulk downloaded"
+    },
+    "cloudStorage": {
+      "title": "Cloud Storage",
+      "description": "Store all your video transcripts securely in the cloud with enterprise-grade encryption. Instantly sync and access your files across every device. Anytime, anywhere, with automatic cloud backup and unmatched reliability.",
+      "feature1": "Secure cloud storage with encryption",
+      "feature2": "Cross-device automatic sync",
+      "feature3": "Access from anywhere, anytime",
+      "feature4": "Enterprise-grade reliability",
+      "cta": "Start now",
+      "imageAlt": "Cloud transcript library with saved transcripts organized by date"
+    },
+    "history": {
+      "title": "History & Bookmarking",
+      "description": "Access a complete transcript history for every video you process—automatically logging download dates, transcript details, video sources, and durations. Instantly re-download transcripts in TXT, XML, or PDF formats, and organize your entire video library with custom bookmark folders. Effortlessly share, bulk export, or review transcripts, collections, and playlists for ultimate video transcript organization and workflow management.",
+      "feature1": "Complete download history with metadata",
+      "feature2": "Custom bookmark folders",
+      "feature3": "Re-download in TXT, XML, PDF formats",
+      "feature4": "Bulk export and sharing capabilities",
+      "cta": "Start now",
+      "imageAlt": "Transcript history panel showing previously processed videos"
+    },
+    "mediaDownload": {
+      "title": "HD Video & Cover Image Downloads",
+      "description": "Download TikTok, Instagram Reels, and YouTube Shorts videos in HD quality with no watermarks. Instantly save high-resolution cover images and preserve original video quality across all supported platforms.",
+      "feature1": "HD video downloads without watermarks",
+      "feature2": "Cover image extraction and download",
+      "feature3": "Multiple platform support",
+      "feature4": "Original quality preservation",
+      "cta": "Start now",
+      "imageAlt": "Media download interface with video and cover image save options"
+    },
+    "quickUrl": {
+      "title": "Quick URL Download",
+      "description": "Instant video transcripts just add 'tokscript.com/' in front of any video URL. Instantly redirect and download transcripts without logging in or visiting the main website—fast, automatic, and works with every platform.",
+      "feature1": "Instant URL-based downloading",
+      "feature2": "No need to visit main website",
+      "feature3": "Works with all supported platforms",
+      "feature4": "Automatic redirect and processing",
+      "cta": "Start now",
+      "imageAlt": "Quick URL method showing paste-and-process transcript extraction"
+    },
+    "chromeExtension": {
+      "title": "Chrome Extension",
+      "description": "Use our Chrome extension to instantly copy video transcripts to your clipboard or download them as .txt files while watching TikTok, Instagram Reels, or YouTube Shorts—no need to copy the URL. Works on both web and mobile browsers for ultimate convenience.",
+      "feature1": "One-click transcript download",
+      "feature2": "Instant clipboard copying",
+      "feature3": "Works on web and mobile browsers",
+      "feature4": "No URL copying required",
+      "cta": "Start now",
+      "imageAlt": "TokScript Chrome extension panel overlay on a TikTok video page"
+    },
+    "teamCollab": {
+      "title": "Team Collaboration",
+      "description": "For Agencies and Brands. Share, manage, and organize transcripts with your team. Set permissions, collaborate in real-time, and control access—perfect for agencies, editors, and educators.",
+      "feature1": "Share transcripts with team members",
+      "feature2": "Collaborate on projects in real-time",
+      "feature3": "Manage workspace permissions",
+      "cta": "Start now",
+      "imageAlt": "Team workspace with shared transcript library and collaboration tools"
+    },
+    "aiAgents": {
+      "title": "AI Agents",
+      "description": "AI-Powered Virality: Hooks, Viral Script writing & Video Breakdown Unlock the secret weapons behind today's top viral videos, powered by AI. Designed for those who want to win attention and grow fast.",
+      "hookGenerator": {
+        "title": "Viral Hook Generator:",
+        "description": "Generate scroll-stopping, proven hooks in seconds—no more guessing or losing viewers in the first five seconds."
+      },
+      "scriptWriter": {
+        "title": "Agent #2 Viral Script Writer:",
+        "description": "Turn any video transcript into a brand new, viral-ready script. Remix, mimic, and create unique content with one click."
+      },
+      "viralityExplainer": {
+        "title": "Agent #3 Virality Explainer:",
+        "description": "See exactly why a video went viral. Get actionable breakdowns of psychological triggers and algorithm secrets—so you can repeat the formula.viral, teaching and educating users along the way."
+      },
+      "feature1": "Viral Hook Generator for instant engagement",
+      "feature2": "Script rewriter with viral essence preservation",
+      "feature3": "Virality psychology analysis and insights",
+      "feature4": "One-click content transformation",
+      "cta": "Start now",
+      "imageAlt": "AI-powered dashboard showing transcript analysis and viral hook suggestions"
+    }
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Find the plan that fits your content workflow",
+    "tabs": {
+      "free": "Free",
+      "annual": "Annual",
+      "monthly": "Monthly"
+    },
+    "free": {
+      "title": "Free",
+      "description": "Test the basics",
+      "price": "$0",
+      "period": "forever",
+      "feature1": "5 transcripts per day",
+      "feature2": "5 translations per day",
+      "feature3": "TikTok, Reels, Shorts",
+      "feature4": "Basic Chrome Extension",
+      "notIncludedLabel": "NOT INCLUDED",
+      "excluded1": "AI Agents",
+      "excluded2": "Bulk Import",
+      "ctaCurrentPlan": "Current Plan",
+      "ctaGetStarted": "Get Started"
+    },
+    "annual": {
+      "title": "Annual",
+      "description": "Best value for serious creators",
+      "price": "$39",
+      "period": "per year",
+      "monthlyBreakdown": "That's $3.25/month",
+      "monthlyComparison": "(Monthly plan = $120/year)",
+      "recommended": "Recommended",
+      "aiAgentsLabel": "UNLIMITED AI AGENTS",
+      "hookGenerator": {
+        "title": "Viral Hook Generator",
+        "sub": "Paste any transcript → Get 20+ proven hooks"
+      },
+      "scriptWriter": {
+        "title": "Viral Script Writer",
+        "sub": "Turn any viral video into YOUR script"
+      },
+      "viralityExplainer": {
+        "title": "Virality Explainer",
+        "sub": "See exactly WHY videos blow up"
+      },
+      "bulkLabel": "BULK PROCESSING",
+      "feature1": "Unlimited transcripts (no daily cap)",
+      "feature2": "Unlimited translations (any language)",
+      "feature3": "Bulk import 50 videos at once",
+      "allPlatforms": "All Platforms",
+      "feature4": "HD video downloads (no watermark)",
+      "ctaGetAnnual": "Get Annual — Save $81",
+      "ctaCurrentPlan": "Current Plan",
+      "ctaUpgrade": "Upgrade",
+      "ctaProcessing": "Processing...",
+      "ctaLoading": "Loading..."
+    },
+    "monthly": {
+      "title": "Monthly",
+      "description": "Full power, flexible billing",
+      "price": "$10",
+      "period": "per month",
+      "yearlyEquivalent": "= $120/year",
+      "annualSaves": "Annual saves $81",
+      "everythingInAnnual": "EVERYTHING IN ANNUAL:",
+      "feature1": "All 3 AI Agents (unlimited)",
+      "feature2": "Unlimited transcripts",
+      "feature3": "Unlimited translations",
+      "feature4": "Bulk import 50 videos",
+      "costsMore": "Costs $81 more per year",
+      "ctaGetMonthly": "Get Monthly",
+      "ctaCurrentPlan": "Current Plan",
+      "ctaUpgrade": "Upgrade",
+      "ctaProcessing": "Processing..."
+    }
+  },
+  "checkout": {
+    "features": {
+      "hookGenerator": "Viral Hook Generator",
+      "scriptGenerator": "Viral Script Generator",
+      "unlimitedTranscripts": "Unlimited transcripts",
+      "unlimitedTranslations": "Unlimited Translations",
+      "bulkImport": "Bulk Import (50 Videos)",
+      "hdDownloads": "HD Video Downloads",
+      "chromeExtensionPro": "Chrome Extension Pro",
+      "allExportFormats": "All Export Formats",
+      "prioritySupport": "Priority Support",
+      "commercialUse": "Commercial Use"
+    },
+    "continueToCheckout": "Continue to Checkout",
+    "createFreeAccount": "Create Free Account",
+    "saveBadge": "Save $81/year"
+  },
+  "stats": {
+    "description": "41,000+ users have processed more than 2,600,000 videos so far",
+    "counter": {
+      "videosProcessed": {
+        "amount": "2.6M+",
+        "label": "Videos Processed"
+      },
+      "profilesDownloaded": {
+        "amount": "190K+",
+        "label": "Profiles Downloaded"
+      },
+      "hoursSaved": {
+        "amount": "120K+",
+        "label": "Hours Saved"
+      },
+      "minutesTotal": {
+        "amount": "84M+",
+        "label": "Minutes of videos total"
+      }
+    }
+  },
+  "chromeExtensionBanner": {
+    "title": "Enhance Your Experience with Our Chrome Extension",
+    "cta": "Add to Chrome",
+    "imageAlt": "TokScript Chrome extension showing one-click transcript extraction on a TikTok video"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Your questions, answered.",
+    "bottomText": "Have more questions? Click here to visit our support docs.",
+    "q1": {
+      "title": "What is TokScript?",
+      "answer": "TokScript is an AI-powered platform that allows users to generate transcripts for TikTok, Instagram Reels, and YouTube Shorts videos. It offers features like bulk importing, cloud storage, team collaboration, and AI agents to enhance content creation and management."
+    },
+    "q2": {
+      "title": "Who can use TokScript?",
+      "answer": "TokScript is designed for content creators, social media managers, marketing teams, agencies, and businesses who want to streamline their video content creation process. Whether you're a solo creator or part of a large team, our platform scales to meet your needs."
+    },
+    "q3": {
+      "title": "How does TokScript work?",
+      "answer": "Simply upload your video links or import them in bulk, and our AI analyzes the content to generate engaging scripts. You can then customize, save to your cloud library, and share with your team. Our AI agents can also help optimize scripts for better engagement and virality."
+    },
+    "q4": {
+      "title": "Can I customize the scripts?",
+      "answer": "Absolutely! All generated scripts are fully customizable. You can edit, rewrite, add your own style, and save multiple versions. Our platform also offers AI-powered suggestions to help you optimize your scripts for maximum engagement."
+    },
+    "q5": {
+      "title": "Does TokScript only work for TikTok?",
+      "answer": "No, TokScript works across multiple platforms including TikTok, Instagram Reels, and YouTube Shorts. Our AI is trained to understand the unique requirements and audience preferences of each platform to generate optimized content."
+    },
+    "q6": {
+      "title": "Are the scripts original?",
+      "answer": "Yes, all scripts generated by TokScript are original content created by our AI based on your input videos. We ensure that each script is unique and tailored to your specific content, helping you maintain authenticity while saving time on content creation."
+    },
+    "q7": {
+      "title": "How long does it take to download a transcript?",
+      "answer": "The download time for videos transcripts depends on various factors: internet speed, the length of the transcript, and the size or length of the video files. Generally, it should take about 5-10 seconds to get download the video transcript. If the video is longer (5 minutes) it can take around 30 seconds until it's complete. Please note that these are approximate times and may vary based on the specific circumstances mentioned above."
+    },
+    "q8": {
+      "title": "How do I download TikTok Video Transcript?",
+      "answer": "We make it easy to download your TikTok Video Transcript instantly and with as little effort as possible. To download your TikTok video Transcript all you need is the link to the video you wish to get the transcript from. Go to the TikTok video you wish to download, Copy the link to the video, and paste it into the input field up above. This will allow you to download the TikTok video transcript instantly! You can grab this link by going to the \"share\" icon, and clicking \"Copy Link\". Now just paste it on our site and that's it!"
+    },
+    "q9": {
+      "title": "How do I download Instagram Reels Video Transcript?",
+      "answer": "In order to download your Instagram Reels video Transcript all you need is the link to the video. Go to the Instagram Reels video you wish to download, Copy the link to the video, and paste it into the input field on our website. This will allow you to download the Instagram Reels video transcript instantly! You can grab this link by going to the \"share\" icon, and clicking \"Copy Link\". Now just paste it on our site and that's it!"
+    },
+    "q10": {
+      "title": "How do I download Youtube Shorts video transcript?",
+      "answer": "It's simple! All you need to do is go to the Youtube Shorts video you wish to download, Copy the link to the video, and paste it into the input field on our website. This will allow you to download the Youtube Shorts video transcript instantly! You can grab this link by going to the \"share\" icon, and clicking \"Copy Link\". Now just paste it on our site and that's it!"
+    },
+    "q11": {
+      "title": "It says there's no transcripts to download, how come?",
+      "answer": "If you get this error it means that the video you tried to get a transcription from doesn't exist. This has nothing to do with our website and more so to do with the specific video you're attempting to download. Double-check and make sure that something is being said in the video in order for us to extract those words and download them for you!"
+    },
+    "q12": {
+      "title": "Will it download ANY transcript from ANY video?",
+      "answer": "We can download ANY transcript from ANY video for TikTok, Youtube Shorts, and IG Reels so long as there's a transcript available to download. If your video has no \"talking\" in it, or the creator has disabled the auto-transcribe within the platform itself we will not be able to download them. Don't worry, most videos have video transcripts enabled and this only happens on rare occasions."
+    },
+    "q13": {
+      "title": "Do I need to have a TikTok, Youtube, or Instagram account to download transcripts?",
+      "answer": "Absolutely not! You don't need a TikTok, Instagram, or Youtube account to download your video transcripts. All you require is the link to the video you want to download the transcript from. Simply paste your link into the input field at the top of this page and hit \"Start.\" and we will handle the rest!"
+    },
+    "q14": {
+      "title": "Do I need to be logged into a TikTok, Youtube, or Instagram to download Transcripts?",
+      "answer": "No. You do not need to be logged into TikTok, Instagram, or Youtube when downloading the transcripts. Making it fast and easy for you to use regardless where you're at or if you're logged in."
+    },
+    "q15": {
+      "title": "Do I need to install extensions to use the downloader?",
+      "answer": "No. To save your video transcripts all you need to do is add the link to your TikTok, Youtube Shorts, or Instagram Reels video. Just paste it into the input field above and download your video transcript!"
+    },
+    "q16": {
+      "title": "How do I get the link to download TikTok, Instagram Reels, or Youtube Shorts transcripts?",
+      "answer": "To download Youtube Shorts, TikTok Videos, and IG Reels is simple! All you need is the link to the video (available on both desktop and mobile). Copy paste it into our site and we'll take care of the rest! It's that simple to download any video transcript with ease!"
+    },
+    "q17": {
+      "title": "Do I have to pay to download transcripts?",
+      "answer": "This website is 100% free for you to use. We do have a paid subscription that gives you over 10 different features that a free account does not have! If you like this tool we suggest checking out our other tools and extensions for even faster social media growth and management. We support and are compatible with all browsers such as Google Chrome, Arc, Mozilla Firefox, Microsoft Edge, Safari, and more!"
+    },
+    "q18": {
+      "title": "Is it free?",
+      "answer": "Yes! TikTok, Instagram Reels, and YouTube Shorts offer free video transcripts. These transcripts are created using automated speech recognition technology, so they might not be entirely accurate but are generally suitable for most purposes."
+    }
+  },
+  "disclaimer": {
+    "about": {
+      "title": "About TokScript Free Video Transcript Generator",
+      "paragraph1": "Download Video Transcripts (captions) For Free. Instantly, without uploading any files! Quick and simple. No catch.",
+      "paragraph2": "Download any video's captions, transcripts, and words for your TikTok, Instagram Reels, and Youtube Shorts videos in seconds. Add your video link, hit start, and instantly get any TikTok, Reels, or Shorts video script within seconds. Perfect for UGC creators, Media Buyers, Ads Experts, Creators, and Influencers who need help coming up with ideas or understanding what videos",
+      "paragraph3": "Easily and instantly download any video transcripts from your favorite TikTok, Youtube Shorts, and Instagram Reels videos instantly!"
+    },
+    "tiktokAds": {
+      "title": "TikTok Ads:",
+      "content": "If you're struggling to come up with ideas or need to know what a video is talking about you can easily download any videos transcript / subtitles to easily come up with new ideas or use for SEO and topic creation."
+    },
+    "ugcCreators": {
+      "title": "UGC Creators:",
+      "content": "If you're struggling with what to say in your videos or just want a quick reminder of what does work and doesn't work, you can now download any transcript subtitles and reuse them for any future video ideas you might have."
+    },
+    "ai": {
+      "title": "AI:",
+      "content": "Easily download any TikTok, Reels, or Shorts video's video transcript and subtitles so you can use it with any of your favorite Al companies like ChatGPT, Bard, Claude, and more to easily create User Generated Video Scripts and ideas for your next video!"
+    },
+    "legal": {
+      "title": "LEGAL DISCLAIMER:",
+      "content": "Tokscript is not affiliated with, endorsed by, or sponsored by TikTok, TikTok USDS Joint Venture LLC, ByteDance, Instagram, Meta, YouTube, or Google. All trademarks belong to their respective owners."
+    }
+  },
+  "footer": {
+    "description": "The most advanced TikTok transcription tool. Turn your videos into accurate transcripts instantly with AI-powered technology.",
+    "generators": {
+      "title": "Generators",
+      "tiktok": "TikTok Transcript Generator",
+      "instagram": "Instagram Transcripts",
+      "youtube": "YouTube Transcript Generator"
+    },
+    "product": {
+      "title": "Product",
+      "features": "Features",
+      "pricing": "Pricing",
+      "api": "API",
+      "integrations": "Integrations",
+      "legal": "Legal"
+    },
+    "company": {
+      "title": "Company",
+      "about": "About",
+      "contact": "Contact",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "helpCenter": "Featurebase help center"
+    },
+    "copyright": "© {year} TokScript. All rights reserved.",
+    "cta": "Start Free Today"
+  },
+  "languages": {
+    "en": "English",
+    "pt": "Portuguese",
+    "es": "Spanish",
+    "zh": "Mandarin",
+    "fr": "French",
+    "hi": "Hindi",
+    "ar": "Arabic",
+    "de": "German",
+    "ja": "Japanese",
+    "ko": "Korean",
+    "ru": "Russian"
+  },
+  "dontMissOutModal": {
+    "title": "Don't Miss Out",
+    "subtitle": "You're just one step away from unlocking this feature.",
+    "features": {
+      "unlimitedTranscripts": "Unlimited transcripts & bulk downloads",
+      "unlimitedTranslations": "Unlimited translations",
+      "bulkImport": "Bulk import 50 video links at once",
+      "reelsShorts": "Instagram Reels & YouTube Shorts (unlimited)",
+      "hdDownloads": "Download HD videos (no watermark) + Cover Images",
+      "collections": "Download TikTok Collections & Playlists",
+      "chromeExtension": "Chrome Extension with all Pro Features",
+      "quickUrl": "Quick URL method — just add tokscript.com/",
+      "exportFormats": "Export in multiple formats — .txt, .xml, .json, .csv"
+    },
+    "aiAgents": {
+      "heading": "Plus: Unlock our Powerful AI Agents",
+      "unlimitedLabel": "UNLIMITED",
+      "description": "Create viral content - AI trained on 20,000+ viral videos to boost your reach",
+      "hookGenerator": {
+        "title": "Agent #1: Viral Hook Generator",
+        "cta": "Generate",
+        "description": "Creates viral TikTok hooks based on transcript topics"
+      },
+      "scriptWriter": {
+        "title": "Agent #2: Viral Script Writer",
+        "cta": "Rewrite",
+        "description": "Rewrites transcripts into better viral scripts"
+      },
+      "viralityExplainer": {
+        "title": "Agent #3: Virality Explainer",
+        "cta": "Analyze",
+        "description": "Explains psychology behind viral content + creates new scripts"
+      }
+    },
+    "ctaDashboard": "Access your dashboard",
+    "ctaUpgrade": "Upgrade Now",
+    "ctaSignUp": "Sign Up & Get Access",
+    "closeAlt": "Close"
+  },
+  "checkoutOverlay": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Your transcripts are waiting for you.",
+      "feature1": "Instant access",
+      "feature1Detail": "pick up where you left off",
+      "feature2": "Synced library",
+      "feature2Detail": "all your saved transcripts",
+      "feature3": "AI Agents ready",
+      "feature3Detail": "create your next viral hit",
+      "trustText": "Trusted by {count} users",
+      "userCount": "+41K"
+    },
+    "signup": {
+      "orderSummary": "Order Summary",
+      "trustText": "Join 41,000+ users using TokScript"
+    },
+    "form": {
+      "createAccount": "Create your account",
+      "welcomeBack": "Welcome back",
+      "step1of2": "Step 1 of 2",
+      "loginSubtitle": "Enter your details to access your workspace.",
+      "signupSubtitle": "Set up your login details for your",
+      "emailLabel": "Email",
+      "emailPlaceholder": "name@example.com",
+      "passwordLabel": "Password",
+      "forgotPassword": "Forgot?",
+      "passwordPlaceholderLogin": "Enter your password",
+      "passwordPlaceholderSignup": "Create a password",
+      "signIn": "Sign In",
+      "continue": "Continue",
+      "or": "or",
+      "continueWithGoogle": "Continue with Google",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "hasAccount": "Already have an account?",
+      "signInLink": "Sign in",
+      "secureCheckout": "Secure 256-bit encrypted checkout"
+    },
+    "validation": {
+      "invalidEmail": "Invalid email address",
+      "emailRequired": "Email is required",
+      "passwordMinLength": "Password must be at least 6 characters.",
+      "passwordRequired": "Password is required."
+    },
+    "toasts": {
+      "loginSuccess": "Login successful!",
+      "accountCreated": "Account created successfully! Logging you in...",
+      "accountCreatedSignIn": "Account created! Please sign in.",
+      "loginError": "Invalid email or password. Please check your credentials and try again.",
+      "registrationError": "Something went wrong during registration. Please try again."
+    },
+    "freeCheckout": {
+      "tiktokOnly": "TikTok only",
+      "chromeExtensionFree": "Chrome Extension (free features)"
+    }
+  },
+  "confirmationModal": {
+    "paragraph1": "You are about to upgrade your subscription plan. This will provide you with access to premium features and benefits.",
+    "paragraph2": "Please note that you will be charged according to the new plan.",
+    "paragraph3": "Are you sure you want to proceed with the upgrade?",
+    "cancel": "Cancel",
+    "upgrade": "Upgrade"
+  },
+  "toast": {
+    "subscriptionUpdated": "Subscription updated successfully",
+    "subscriptionError": "Error while updating subscription",
+    "checkoutError": "Unable to initiate checkout. Please try again.",
+    "failedToFetch": "Failed to fetch video data"
+  }
+}

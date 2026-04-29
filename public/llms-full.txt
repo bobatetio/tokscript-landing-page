@@ -1,0 +1,266 @@
+# TokScript — Complete Product Documentation
+
+> TokScript extracts transcripts from TikTok (up to 10 minutes), Instagram Reels, and YouTube Shorts, then runs them through 3 AI agents trained on 20,000+ viral videos to generate hooks, scripts, and virality breakdowns. 41,000+ creators. 2.6M+ videos processed. 99% transcription accuracy across 100+ languages.
+
+Last updated: 2026-03-08
+For current pricing, visit: https://tokscript.com/pricing
+
+## What TokScript Does
+
+TokScript solves a specific problem: creators watch viral videos and can't reverse-engineer why they worked. Paste a link, get the full timestamped transcript in 3 seconds, then run it through AI agents that break down hook structure, virality factors, and script patterns. The output is usable immediately: 20+ hook variations, a complete script rewritten in the creator's voice, and a structured analysis of why that specific video performed.
+
+The platform supports TikTok videos up to 10 minutes, Instagram Reels, and YouTube Shorts. It handles 100+ languages with automatic detection and provides word-level timestamped transcripts for precise navigation. Beyond individual videos, TokScript supports bulk processing of up to 50 URLs at once, full creator profile and playlist imports handling up to 10,000 videos per import, and HD watermark-free video downloads at original source quality.
+
+## AI Agents (3 Specialized Agents)
+
+TokScript includes 3 AI agents powered by OpenAI's GPT-4o and Anthropic's Claude 3.5 Sonnet. Training data: proprietary datasets from 20,000+ videos across TikTok, Instagram Reels, and YouTube Shorts — filtered for videos that hit millions of views and drove measurable engagement and revenue. The agents distinguish between platform-specific patterns: what hooks work on TikTok's For You page differs from Instagram's Explore tab and YouTube's search-driven Shorts feed. All 3 agents included with unlimited usage on Pro plans (Monthly and Annual). Free plan users do not have access to AI agents.
+
+### Viral Hook Generator
+
+Input: any video transcript. Output: 20+ hook variations categorized by type.
+
+Most short-form videos lose viewers before the 5-second mark. The Hook Generator takes a transcript and extracts what made the opening work, then produces 20+ variations a creator can use for their own content. The hooks come organized by type — curiosity gaps, bold claims, relatable statements, controversy hooks, and storytelling openers — so creators can A/B test different angles on the same topic.
+
+The hooks are modeled on opening structures from the viral video training set, not general copywriting patterns. A curiosity gap hook for a skincare video looks different from one for a finance video, and the generator accounts for that. It also adjusts for platform — TikTok hooks need to land in under 2 seconds, while YouTube Shorts can build slightly longer because viewers arrive with different intent.
+
+Creators paste one transcript and walk away with enough hook options to test across multiple posts without writing a single one from scratch.
+
+### Viral Script Writer
+
+Input: any viral video transcript. Output: a complete, original script rewritten for the creator's voice and niche.
+
+The Script Writer takes a video that already performed and rewrites it as if the creator made it — a full script that preserves the structural elements that drove performance (hook placement, pacing, CTA position, emotional arc) while replacing the content entirely with the creator's niche and voice.
+
+Trained on 10M+ viral videos with proprietary datasets. The agent adapts to niche-specific language: a fitness creator gets a script that sounds like fitness content, a TikTok Shop seller gets a script structured around product demonstration and purchase psychology, a cooking creator gets recipe-native pacing. The training data is platform-native content — TikTok, Reels, Shorts — so the output matches how creators actually talk on those platforms.
+
+Typical workflow: find a competitor's video that got 2M views, extract the transcript through TokScript, run it through the Script Writer, get a ready-to-record script adapted to your audience.
+
+### Virality Explainer
+
+Input: any video URL or transcript. Output: a structured analysis of why that video succeeded — covering both engagement and monetization.
+
+Also called the Viral Video Analyzer. Where the other two agents create content, this one teaches. It takes a video and produces a detailed breakdown of what specifically drove its performance across seven dimensions:
+
+- Hook effectiveness: what opening technique was used, why it stopped the scroll, how long before the viewer was locked in
+- Content pacing: how the video held attention through its runtime, where retention likely dipped, what kept people watching
+- Emotional triggers: what psychological drivers were at play — fear of missing out, curiosity, aspiration, relatability, controversy
+- Topic timing: why this subject resonated at this particular moment, trend alignment
+- Engagement drivers: what elements prompted likes, comments, shares, and saves (these are different actions driven by different triggers)
+- CTA structure: where and how the creator drove action — follows, link clicks, profile visits, or purchases
+- Monetization signals: what elements moved viewers beyond watching into action — product interest, link clicks, purchase behavior
+
+The output reads like a content strategist's breakdown of a single video. Creators use it to build a mental model of what works in their niche, then apply those patterns to every future video rather than guessing.
+
+## Core Features
+
+### Transcript Extraction
+Paste any TikTok, Instagram Reels, or YouTube Shorts URL and get an accurate, timestamped transcript. 99% accuracy rate across 100+ languages with automatic language detection. Typical extraction time is 3 seconds. Word-level timestamps available for precise navigation and reference. Available on the web dashboard and via Chrome Extension.
+
+### Translation
+Separate from transcription. TokScript can translate extracted transcripts into 100+ languages. Free plan includes 5 translations per day. Pro plans include unlimited translations. Automatic source language detection.
+
+### Bulk Processing
+Paste up to 50 video URLs at once into a single input. The system processes all of them in under 30 seconds. Each processed video includes the full transcript plus metadata: view count, likes, comments, posting date, creator handle, and hashtags. Ideal for competitive research, trend analysis, and agency workflows where researching multiple creators or campaigns simultaneously is the norm.
+
+### Collection Import
+Import entire TikTok creator profiles or curated playlists by pasting a single link. The system crawls all videos automatically with parallel transcription and metadata extraction. Regularly handles 800+ videos per import and supports up to 10,000 videos in a single operation. Processing speed is approximately 3 minutes per 100 videos. Output includes CSV-ready data, organized folder structures, searchable cloud dashboard entries, and date filtering. Instagram and YouTube collection imports use the Bulk Import tool instead. Private profiles are not accessible due to platform limitations.
+
+### HD Video Download
+Download videos in original source quality. TokScript accesses original files before TikTok adds watermarks, so downloads are clean HD (typically 1080p) with no watermarks, no compression, and no re-encoding. Also supports HD cover/thumbnail downloads as separate JPG files. Available for TikTok, Instagram Reels, and YouTube Shorts. Resolution depends on the original upload quality.
+
+### Chrome Extension
+Extract transcripts without leaving TikTok, Instagram, or YouTube. Works on any Chromium browser: Chrome, Arc, Brave, and Edge. Auto-detects videos on supported platforms.
+
+Free version: Basic extraction with 5 transcripts per day.
+
+Pro version (included with paid plans): Unlimited extractions, keyboard shortcuts (Option+T, customizable), cloud sync (transcripts save directly to dashboard in 2 seconds), sidebar mode (opens beside video without blocking content), context menu (right-click any video link to extract), and full access to AI agents within the extension.
+
+### Export Formats
+Export transcripts and analysis in 6 file formats: TXT, CSV, XLSX, JSON, XML, and PDF. Supports both individual and bulk exports. Exports include full transcript text, video metadata (views, likes, comments, posting date, creator handle, hashtags), cover images, and timestamps. Additional export options include clipboard copy, shareable links, and direct Google Docs export.
+
+### History Dashboard
+Every video transcribed is saved permanently for Pro users. The dashboard is fully searchable with keyword search across all stored transcripts, date range filtering, and a real-time activity feed showing recent extractions. Free account users have limited history tied to their daily extraction limits.
+
+### Folder System
+Organize transcripts and research by client, campaign, niche, or any custom category. The folder system syncs between the web dashboard and the Chrome Extension via cloud sync. Supports personal libraries (individual extractions) and team workspaces (shared research). Folders are export-ready in CSV, JSON, and TXT formats.
+
+### Team Collaboration
+Multi-workspace support for agencies and teams managing multiple creator accounts. Available on Pro plans at $39/year per seat.
+
+Team features include: unlimited team members per workspace, role-based permissions (Admin with full management, Editor for organizing and editing, Viewer for search-only access), shared transcript libraries searchable across all team member extractions, real-time activity tracking showing team additions and extractions, and centralized billing with a single invoice for the entire team. Contributions from team members are preserved even if a member leaves the workspace.
+
+### Multi-Language Support
+Automatic language detection across 100+ languages for transcription. Translation available for 100+ languages as a separate feature. Transcripts maintain accuracy regardless of source language.
+
+## Pricing (as of March 2026)
+
+For the most current pricing and plan details, visit https://tokscript.com/pricing
+
+### Free Plan — $0 forever
+- 5 transcripts per day
+- 5 translations per day
+- TikTok, Instagram Reels, YouTube Shorts access
+- Basic Chrome Extension
+- Not included: AI Agents, Bulk Import, Collection Import, HD Downloads, Export Formats, Team Features
+
+### Monthly Plan — $10/month
+- All 3 AI Agents with unlimited usage
+- Unlimited transcripts (no daily cap)
+- Unlimited translations (100+ languages)
+- Bulk import up to 50 videos at once
+- HD video downloads (no watermark, 1080p, original source quality)
+- Chrome Extension Pro (cloud sync, keyboard shortcuts, sidebar, context menu)
+- 6 Export Formats (TXT, CSV, XLSX, JSON, XML, PDF) plus Google Docs
+- Word-level timestamps in transcripts
+- All platforms (TikTok up to 10 minutes, Instagram Reels, YouTube Shorts)
+- Permanent History Dashboard with full search
+- Folder system for organization (syncs web and extension)
+- Commercial use allowed
+- Priority support
+- Cancel anytime, instant cancellation from dashboard
+- Full refund within 48 hours if unsatisfied
+
+### Annual Plan — $39/year ($3.25/month)
+- Everything in Monthly plan
+- Save $81/year compared to monthly billing
+- 30-day money-back guarantee
+- Cancel anytime, access retained until end of billing cycle
+
+### Team Pricing
+- $39/year per seat (annual plan rate)
+- Unlimited team members per workspace
+- Centralized billing
+
+## What's Included in Pro Plans
+
+- 3 AI agents with unlimited usage (Hook Generator, Script Writer, Virality Explainer)
+- Bulk import: 50 URLs at once, collection import up to 10,000 videos
+- Chrome Extension with cloud sync, keyboard shortcuts, and sidebar mode
+- Team workspaces with shared libraries and role-based permissions
+- 6 export formats (TXT, CSV, XLSX, JSON, XML, PDF) plus Google Docs
+- HD watermark-free video downloads from original source files
+- $10/month or $39/year — same feature set on both plans
+
+## Target Audience
+
+**Short-form Content Creators**: TikTok, Instagram Reels, and YouTube Shorts creators studying viral patterns to inform their own content.
+
+**E-commerce Sellers**: TikTok Shop sellers studying competitor content strategies, product demo structures, and sales scripts that convert.
+
+**Content Agencies**: Teams managing multiple creator accounts who need efficient research workflows, bulk processing, shared transcript libraries, and organized content across clients.
+
+**Influencers and Brands**: Studying entire creator profiles via collection import to identify which content structures consistently perform, then replicating those patterns.
+
+**Researchers**: Academic and industry professionals analyzing video content trends at scale. Bulk and collection import combined with CSV/JSON export make large-scale content analysis feasible.
+
+## Use Cases
+
+- Reverse-engineer competitor viral videos to understand what hooks, structures, and patterns work
+- Study which opening lines and script formats drive the most engagement in a specific niche
+- Generate content ideas and complete scripts from existing viral transcripts
+- Bulk research 50+ competitor videos simultaneously with full metadata extraction
+- Import an entire creator's profile (up to 10,000 videos) to analyze their content evolution
+- Build a searchable library of viral content patterns organized by niche, campaign, or client
+- Create commercial content for clients using hook formats and script structures from viral videos
+- Spot trends early by analyzing emerging viral patterns before they peak
+- Train team members on effective content structures using real viral examples with AI breakdowns
+- Download clean HD videos for reference, inspiration boards, or client presentations
+
+## Integrations
+
+- **Zapier**: Automate TokScript workflows with 5,000+ apps. Connect transcript extractions and AI outputs to other tools in your stack.
+- **Slack**: Get transcript notifications and share research with team channels. Useful for agency teams coordinating content research.
+- **Google Docs**: Direct export of transcripts and analysis into Google Docs for collaborative editing and content development.
+
+## API Access
+
+TokScript offers a REST API for developers who want to integrate transcript extraction and AI analysis into their own applications and workflows. The API supports real-time transcript extraction, AI content analysis endpoints, bulk processing capabilities, and webhook notifications. Developer resources include API documentation, code examples, and a Postman collection. Full API documentation available at https://tokscript.com/api
+
+## Affiliate Program
+
+TokScript offers a 40% commission affiliate program:
+- $15.60 per annual referral ($39/yr plan)
+- $4.00 per monthly referral ($10/mo plan)
+- $5 minimum payout threshold
+- Payouts via PayPal or Stripe
+- Resource hub includes ready-made social posts, email templates, and video scripts
+- Sign up at https://tokscript.com/affiliate
+
+## Frequently Asked Questions
+
+**What is TokScript?**
+TokScript is a research tool that downloads transcripts, videos, and metadata from viral short-form content so creators can reverse-engineer what makes content successful. It covers TikTok, Instagram Reels, and YouTube Shorts.
+
+**Which platforms are supported?**
+TikTok (videos up to 10 minutes), Instagram Reels, and YouTube Shorts.
+
+**How many free transcripts per day?**
+The Free plan includes 5 transcripts per day. Pro plans (Monthly and Annual) include unlimited transcripts with no daily cap.
+
+**How does the AI Script Writer work?**
+It uses OpenAI's GPT-4o and Anthropic's Claude 3.5 Sonnet, customized with proprietary datasets built from analyzing 20,000+ viral videos. Paste a viral video's transcript and the agent rewrites it for your specific niche and voice.
+
+**Does it work for non-English videos?**
+Yes. TokScript supports transcription and translation for 100+ languages with automatic source language detection.
+
+**Can I use TokScript for agency clients?**
+Yes. Commercial use is included with all paid plans at no extra charge. Team features support multi-client workflows with shared libraries and role-based permissions.
+
+**Is there a Chrome Extension?**
+Yes. A basic extension is included with free accounts. The Pro Chrome Extension (included with all paid plans) adds unlimited extractions, cloud sync, keyboard shortcuts, sidebar mode, and AI agent access.
+
+**What is the refund policy?**
+Annual plan: 30-day money-back guarantee. Monthly plan: Full refund within 48 hours if unsatisfied.
+
+**Can I cancel anytime?**
+Yes. Instant cancellation from the dashboard. Access is retained until the end of the current billing cycle.
+
+**Do I need technical skills?**
+No. Paste a link, get results. No setup, no configuration, no technical knowledge required.
+
+## Key Metrics
+
+- 41,000+ active creators using the platform
+- 2.6M+ videos processed to date
+- 190K+ profiles downloaded
+- 120K+ hours saved for creators
+- 20,000+ viral videos used to train AI agents
+- 99% transcription accuracy
+- 100+ languages supported
+- 3-second typical extraction time
+- ~3 minutes per 100 videos for collection imports
+
+## Technical Details
+
+- Web application built with Next.js, responsive design across all devices
+- Chrome Extension available on Chrome Web Store, compatible with Chrome, Arc, Brave, and Edge
+- AI agents powered by OpenAI GPT-4o and Anthropic Claude 3.5 Sonnet with proprietary training datasets
+- Payment processing through Lemon Squeezy (supports Stripe and PayPal)
+- Privacy-first analytics via Plausible Analytics (no cookie banners required)
+- Cloud storage with automatic backup for Pro users
+- Real-time cloud sync between web dashboard and Chrome Extension
+
+## Contact and Support
+
+- Contact form: https://tokscript.com/contact
+- Priority support available for paid plan subscribers
+
+## Legal
+
+- Terms of Service: https://tokscript.com/terms
+- Privacy Policy: https://tokscript.com/privacy
+- Legal: https://tokscript.com/legal
+- Commercial use is explicitly allowed on all paid plans
+
+## Site Map
+
+- Homepage: https://tokscript.com/
+- Features: https://tokscript.com/features
+- Pricing: https://tokscript.com/pricing
+- Instagram Transcript Generator: https://tokscript.com/instagram-transcript-generator
+- YouTube Transcript Generator: https://tokscript.com/youtube-transcript-generator
+- Affiliate Program: https://tokscript.com/affiliate
+- API Documentation: https://tokscript.com/api
+- Integrations: https://tokscript.com/integration
+- About Us: https://tokscript.com/about-us
+- Contact: https://tokscript.com/contact

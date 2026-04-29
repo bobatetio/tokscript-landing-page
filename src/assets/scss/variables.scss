@@ -1,0 +1,85 @@
+// Inter font loaded via next/font/google in layout.js (non-render-blocking)
+$inter: var(--font-inter), "Inter", sans-serif;
+
+$screen-xs: 767px;
+
+$body_bg_color: #0a1025;
+$body_bg_color_1: #191f2f;
+$light_bg_color: #082539;
+$primary_bg_color: #08182d;
+$primary_bg_color_1: #193f5566;
+$primary_bg_color_2: #08182d;
+$secondary_bg_color: #073446;
+
+$gray_bg_color: #374151;
+
+$white: #ffffff;
+$black: #000000;
+$pink: #ff6393;
+$purple: #5352b0;
+
+$primary_cyan: #00f2ea;
+
+$heading_primary: #ececec;
+
+$text_primary: #9ca3af;
+$text_secondary: #81868e;
+$text_light: #d1d5db;
+$text_light_1: #ffffffbf;
+$text_primary_dark: #0a0338;
+$light_white: #ffffff99;
+$text_gray: #e5e7eb;
+$gray: #aaaaaa;
+
+$border_primary: #212f42;
+$border_light_white: #ffffff1a;
+$border_light_white_1: #ffffff0f;
+
+$transition: 0.3s ease-in-out all;
+
+//------------------ images filters ---------------------//
+
+$filter_primary_dark: brightness(0) saturate(100%) invert(9%) sepia(27%)
+  saturate(3669%) hue-rotate(229deg) brightness(93%) contrast(117%);
+$filter_white: brightness(0) saturate(100%) invert(97%) sepia(100%) saturate(0%)
+  hue-rotate(29deg) brightness(107%) contrast(103%);
+$filter_primary: brightness(0) saturate(100%) invert(78%) sepia(1%)
+  saturate(2807%) hue-rotate(180deg) brightness(83%) contrast(91%);
+$filter_secondary: brightness(0) saturate(100%) invert(52%) sepia(7%)
+  saturate(340%) hue-rotate(178deg) brightness(99%) contrast(98%);
+$filter_cyan: brightness(0) saturate(100%) invert(76%) sepia(93%) saturate(951%)
+  hue-rotate(108deg) brightness(102%) contrast(103%);
+$filter_dark_gray: brightness(0) saturate(100%) invert(6%) sepia(16%)
+  saturate(3436%) hue-rotate(198deg) brightness(93%) contrast(104%);
+
+//------------------ Slate Color Palette ---------------------//
+$slate-300: #cbd5e1;
+$slate-400: #94a3b8;
+$slate-500: #64748b;
+$slate-600: #475569;
+$slate-700: #334155;
+$slate-800: #1e293b;
+
+//------------------ Gray Color Palette ---------------------//
+$gray-100: #f1f5f9;
+$gray-200: #e5e7eb;
+$gray-300: #d1d5db;
+$gray-500: #6b7280;
+$gray-600: #4b5563;
+$gray-700: #374151;
+$gray-900: #111827;
+
+//------------------ Checkout Modal Colors ---------------------//
+$checkout-dark-bg: #020617;
+$checkout-blue: #3b82f6;
+$checkout-indigo: #4f46e5;
+
+//------------------ mixins ---------------------//
+
+@mixin ellipse($lines: 1) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,0 +1,321 @@
+# TokScript Homepage Documentation
+
+## URL
+https://tokscript.com/
+
+## Source Files
+- `src/app/page.js` - Entry point with schema markup
+- `src/app/HomePage.js` - Main homepage component (2081 lines)
+- `src/app/layout.js` - Root layout with default metadata
+
+## Metadata (from layout.js)
+
+### Title
+"TokScript - Video Transcript Downloader for TikTok, Reels & Shorts Transcripts Instantly"
+
+### Description
+"Download Transcripts, HD Videos & Cover Images, Bulk export from TikTok, Reels, and Shorts Instantly. Plus use our AI viral script generator hook writer analyzer."
+
+### Canonical URL
+https://tokscript.com/
+
+### Language Alternates
+- en: https://tokscript.com/
+- pt-BR: https://tokscript.com/br
+- es: https://tokscript.com/es
+- zh: https://tokscript.com/zh
+- fr: https://tokscript.com/fr
+- hi: https://tokscript.com/hi
+- ar: https://tokscript.com/ar
+- de: https://tokscript.com/de
+- ja: https://tokscript.com/ja
+- ko: https://tokscript.com/ko
+- ru: https://tokscript.com/ru
+- tr: https://tokscript.com/tr
+- x-default: https://tokscript.com/
+
+### Open Graph
+- Title: "TokScript - Video Transcript Downloader for TikTok, Reels & Shorts Transcripts Instantly"
+- Description: "Generate TikTok transcripts, analyze videos, and unlock viral growth."
+- URL: https://tokscript.com/
+- Type: website
+- Image: https://tokscript.com/og-image.png (1200x630)
+- Site Name: Tokscript
+- Locale: en_US
+
+### Twitter Card
+- Card Type: summary_large_image
+- Title: "TokScript - Video Transcript Downloader for TikTok, Reels & Shorts Transcripts Instantly"
+- Description: "Generate TikTok transcripts, analyze videos, and unlock viral growth."
+- Image: https://tokscript.com/og-image.png
+
+---
+
+## Schema Markup (JSON-LD)
+
+### BreadcrumbList
+- Position 1: Home (https://tokscript.com)
+
+### Organization
+- Name: TokScript
+- Founded: 2024
+- Description: "TokScript extracts transcripts from TikTok, Instagram Reels, and YouTube Shorts. Used by 41,000+ creators to download scripts, generate viral hooks, and analyze video performance."
+- Logo: https://tokscript.com/og-image.png
+- Social Profiles:
+  - Twitter: https://x.com/tokscript
+  - TikTok: https://tiktok.com/@tokscript
+  - Instagram: https://instagram.com/tokscript
+  - YouTube: https://youtube.com/@tokscript
+  - LinkedIn: https://linkedin.com/company/tokscript
+
+### SoftwareApplication
+- Name: TokScript
+- Category: MultimediaApplication
+- Operating System: All
+- Description: "AI-powered video transcript platform for TikTok, Instagram Reels, and YouTube Shorts. Download transcripts, generate viral hooks, rewrite scripts, and analyze video performance."
+- Pricing:
+  - Free: $0 USD
+  - Annual: $39 USD (P1Y billing)
+- Aggregate Rating: 4.8/5 (520 reviews)
+
+### HowTo
+- Name: "How to Get a TikTok Transcript"
+- Description: "Download any TikTok, Instagram Reels, or YouTube Shorts transcript in seconds using TokScript."
+- Total Time: PT30S
+
+#### Steps:
+1. **Paste the video URL**: Copy the link to any TikTok, Instagram Reel, or YouTube Short and paste it into the input field on TokScript.
+2. **Get your transcript**: TokScript's AI extracts the full transcript from the video in seconds. View, copy, or download the text.
+3. **Use AI tools to enhance your content**: Generate viral hooks, rewrite scripts for different platforms, analyze video performance, and save transcripts to your cloud library.
+
+### FAQPage (17 Items)
+
+1. **What is TokScript?**
+   - "TokScript is an AI-powered platform that allows users to generate transcripts for TikTok, Instagram Reels, and YouTube Shorts videos. It offers features like bulk importing, cloud storage, team collaboration, and AI agents to enhance content creation and management."
+
+2. **Who can use TokScripts?**
+   - "TokScripts is designed for content creators, social media managers, marketing teams, agencies, and businesses who want to streamline their video content creation process. Whether you're a solo creator or part of a large team, our platform scales to meet your needs."
+
+3. **How does TokScripts work?**
+   - "Simply upload your video links or import them in bulk, and our AI analyzes the content to generate engaging scripts. You can then customize, save to your cloud library, and share with your team. Our AI agents can also help optimize scripts for better engagement and virality."
+
+4. **Can I customize the scripts?**
+   - "Absolutely! All generated scripts are fully customizable. You can edit, rewrite, add your own style, and save multiple versions. Our platform also offers AI-powered suggestions to help you optimize your scripts for maximum engagement."
+
+5. **Does TokScripts only work for TikTok?**
+   - "No, TokScripts works across multiple platforms including TikTok, Instagram Reels, and YouTube Shorts. Our AI is trained to understand the unique requirements and audience preferences of each platform to generate optimized content."
+
+6. **Are the scripts original?**
+   - "Yes, all scripts generated by TokScripts are original content created by our AI based on your input videos. We ensure that each script is unique and tailored to your specific content, helping you maintain authenticity while saving time on content creation."
+
+7. **How long does it take to download a transcript?**
+   - "The download time for video transcripts depends on various factors: internet speed, the length of the transcript, and the size or length of the video files. Generally, it should take about 5-10 seconds to download the video transcript. If the video is longer (5 minutes) it can take around 30 seconds until it's complete."
+
+8. **How do I download TikTok Video Transcript?**
+   - "We make it easy to download your TikTok Video Transcript instantly. To download your TikTok video Transcript all you need is the link to the video you wish to get the transcript from. Go to the TikTok video you wish to download, copy the link to the video, and paste it into the input field on TokScript."
+
+9. **How do I download Instagram Reels Video Transcript?**
+   - "To download your Instagram Reels video Transcript all you need is the link to the video. Go to the Instagram Reels video you wish to download, copy the link to the video, and paste it into the input field on our website. This will allow you to download the Instagram Reels video transcript instantly."
+
+10. **How do I download Youtube Shorts video transcript?**
+    - "All you need to do is go to the Youtube Shorts video you wish to download, copy the link to the video, and paste it into the input field on our website. This will allow you to download the Youtube Shorts video transcript instantly."
+
+11. **It says there's no transcripts to download, how come?**
+    - "If you get this error it means that the video you tried to get a transcription from doesn't have spoken content. Double-check and make sure that something is being said in the video in order for us to extract those words and download them for you."
+
+12. **Will it download ANY transcript from ANY video?**
+    - "We can download ANY transcript from ANY video for TikTok, Youtube Shorts, and IG Reels so long as there's a transcript available to download. If your video has no talking in it, or the creator has disabled the auto-transcribe within the platform itself we will not be able to download them."
+
+13. **Do I need to have a TikTok, Youtube, or Instagram account to download transcripts?**
+    - "Absolutely not! You don't need a TikTok, Instagram, or Youtube account to download your video transcripts. All you require is the link to the video you want to download the transcript from."
+
+14. **Do I need to be logged into a TikTok, Youtube, or Instagram to download Transcripts?**
+    - "No. You do not need to be logged into TikTok, Instagram, or Youtube when downloading the transcripts. Making it fast and easy for you to use regardless where you're at or if you're logged in."
+
+15. **Do I need to install extensions to use the downloader?**
+    - "No. To save your video transcripts all you need to do is add the link to your TikTok, Youtube Shorts, or Instagram Reels video. Just paste it into the input field and download your video transcript."
+
+16. **How do I get the link to download TikTok, Instagram Reels, or Youtube Shorts transcripts?**
+    - "All you need is the link to the video (available on both desktop and mobile). Copy paste it into our site and we'll take care of the rest."
+
+17. **Do I have to pay to download transcripts?**
+    - "This website is 100% free for you to use. We do have a paid subscription that gives you over 10 different features that a free account does not have. If you like this tool we suggest checking out our other tools and extensions for even faster social media growth and management."
+
+---
+
+## Page Sections (from HomePage.js)
+
+### Hero Section
+- Video URL input field with placeholder "Paste your video link here"
+- Platform indicator icons showing TikTok, Instagram, YouTube support
+- Counter statistics showing user engagement
+
+### AI Features Cards Section
+Primary feature cards displayed with icons:
+1. Save cover image
+2. Download HD video
+3. Generate Viral Hooks
+4. Rewrite scripts
+5. Analyze Virality
+
+### Dashboard Preview Section
+Displays screenshot or preview of the app dashboard showing transcript extraction results and interface
+
+### Bulk Import Section
+Feature highlighting ability to process 100+ videos at once with bulk operations
+
+### Cloud Storage Section
+Feature highlighting transcript saving and searchable storage capabilities
+
+### History & Bookmarking Section
+Feature showing users can track all extracted transcripts with bookmarking functionality
+
+### HD Downloads Section
+Emphasizes no watermark downloads in original quality
+
+### Quick URL Method Section
+Explains how to add tokscript.com/ before any video URL for quick downloads
+
+### Chrome Extension Section
+Details about browser extension for extracting transcripts without leaving TikTok, Instagram, or YouTube
+
+### Team Collaboration Section
+Feature for shared workspaces and team management for agencies
+
+### AI Agents Section
+Details about feeding transcripts to ChatGPT, Claude, Gemini, and other AI tools
+
+### Pricing Section
+Comparison table of Free vs Pro plans with feature details
+
+### Counter Statistics Section
+Displays:
+- 41,000+ users
+- 2,600,000 videos saved
+
+### Enhance Experience / Email Capture Section
+Call-to-action for email subscription or account creation
+
+### FAQ Section
+17 items (listed above in schema markup section)
+
+### Disclaimer / About Section
+Legal and informational content
+
+### Ask AI Footer Section
+Links to integrate with AI tools:
+- ChatGPT
+- Claude
+- Gemini
+- Perplexity
+- Grok
+
+---
+
+## Free Plan Features
+
+- Download 5 transcripts/day limit
+- 5 translations per day limit
+- Download HD videos with no watermark
+- Download Cover Images
+- Chrome Extension (free features only)
+- History & Bookmarking Dashboard
+- Quick URL method support
+- Export formats: .txt, .xml, .json, .csv
+- No account required for basic use
+
+---
+
+## Pro Plans
+
+### Pro Annual
+- Price: $39/year
+- Features:
+  - Unlimited transcripts & bulk downloads
+  - Unlimited translations
+  - Bulk import 50 video links at once
+  - Instagram Reels unlimited
+  - YouTube Shorts unlimited
+  - Download HD videos with no watermark
+  - Download Cover Images
+  - Download TikTok Collections & Playlists
+  - Chrome Extension with all Pro Features
+  - Quick URL method (unlimited)
+  - Export formats: .txt, .xml, .json, .csv
+  - Access to 3 AI Agents:
+    - Create Viral Hooks
+    - Generate New Scripts
+    - Analyze Videos
+
+### Pro Monthly
+- Price: $10/month or $5/month (when listed as $5)
+- Features:
+  - Unlimited transcript downloads
+  - Bulk transcript downloads (up to 50 at once)
+  - Instagram Reels unlimited
+  - YouTube Shorts unlimited
+  - Download HD videos with no watermark
+  - Download Cover Images
+  - Download collections & playlists
+  - Access to 3 AI Agents:
+    - Create Viral Hooks
+    - Generate New Scripts
+    - Analyze Videos
+  - Chrome Extension with paid features
+  - Quick URL download unlimited
+  - Export formats: .txt, .xml, .json, .csv
+
+---
+
+## Supported Languages for Transcription
+
+11 languages supported on platform:
+1. English
+2. Portuguese
+3. Spanish
+4. Mandarin
+5. French
+6. Hindi
+7. Arabic
+8. German
+9. Japanese
+10. Korean
+11. Russian
+
+---
+
+## Platform Support
+
+- TikTok (up to 10 minutes)
+- Instagram Reels
+- YouTube Shorts
+
+---
+
+## Key Statistics
+
+- 41,000+ users
+- 2,600,000+ videos saved
+- 4.8/5 rating (from 520 reviews based on schema, though actual count may vary)
+
+---
+
+## Integration Partners
+
+The app can integrate transcripts with:
+- ChatGPT
+- Claude (Anthropic)
+- Gemini (Google)
+- Perplexity
+- Grok
+
+---
+
+## Important Notes
+
+- Homepage metadata is defined in root layout.js to preserve SEO ranking (ranks #1-2 for "tiktok transcript" with 58.9% CTR)
+- Title should not be changed without deliberate SEO review
+- 11 language variants available across different regional URLs
+- Payment processing handled through Lemon Squeezy integration
+- User authentication tracked via localStorage with authToken
+- Modal-based upsells include DontMissOutModal, CheckoutOverlay, and ConfirmationModal

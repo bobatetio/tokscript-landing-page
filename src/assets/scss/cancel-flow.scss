@@ -1,0 +1,931 @@
+@use "./variables.scss" as *;
+
+// ============================================
+// CANCEL FLOW MODAL — Evernote-Mirrored v2
+// ============================================
+
+.cancel-flow-modal {
+  padding-left: 0 !important;
+
+  // Fix global CSS overrides that make ul li black and inline
+  ul li {
+    color: $text_light !important;
+    display: flex !important;
+  }
+
+  .modal-dialog {
+    max-width: 760px;
+  }
+
+  .modal-content {
+    border-radius: 24px;
+    border: 1px solid transparent;
+    background:
+      linear-gradient(180deg, #0b2c3c, #0b1f31, #0e2234) padding-box,
+      linear-gradient(180deg, rgba($primary_cyan, 0.28), rgba($primary_cyan, 0.08), rgba($primary_cyan, 0.16)) border-box;
+    box-shadow:
+      0 4px 6px rgba(0, 0, 0, 0.3),
+      0 25px 50px -12px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    overflow: hidden;
+    position: relative;
+
+    // Radial gradient ambient lighting — top left
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba($primary_cyan, 0.12), transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    // Radial gradient ambient lighting — bottom right
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at bottom right, rgba(#3b82f6, 0.08), transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+  }
+
+  .modal-body {
+    padding: 40px;
+    position: relative;
+    z-index: 1; // Above the ::before/::after gradients
+  }
+
+  // ============================================
+  // FULLPAGE — All steps are full-page, no card container
+  // ============================================
+  &--fullpage {
+    .modal-dialog {
+      max-width: 100% !important;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    .modal-content {
+      border-radius: 0 !important;
+      border: none !important;
+      background: $body_bg_color !important;
+      box-shadow: none !important;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &::before,
+      &::after {
+        display: none;
+      }
+    }
+
+    .modal-body {
+      padding: 60px 40px;
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+  }
+}
+
+// ============================================
+// CLOSE BUTTON
+// ============================================
+.cancel-flow-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: $slate-400;
+  cursor: pointer;
+  transition: $transition;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 6px;
+
+  &:hover {
+    color: $white;
+    background: rgba($white, 0.05);
+  }
+
+  // Variant inside the win-back card
+  &--card {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: $slate-400;
+    cursor: pointer;
+    transition: $transition;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 4px;
+
+    &:hover {
+      color: $white;
+    }
+  }
+}
+
+// ============================================
+// STEP CONTAINERS & TYPOGRAPHY
+// ============================================
+.cancel-flow-step {
+  text-align: center;
+  position: relative;
+}
+
+// STEP LABEL (Step 1) — cyan tiny-caps with subtle glow
+.cancel-flow-step-label {
+  display: inline-block;
+  font-family: $inter;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: $primary_cyan;
+  margin-bottom: 16px;
+  text-shadow: 0 0 12px rgba($primary_cyan, 0.3);
+}
+
+// TITLE — display heading
+.cancel-flow-title {
+  font-family: $inter;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: $white;
+  margin: 0 0 10px;
+  line-height: 1.2;
+
+  // Gradient text variant (Step 5)
+  &--gradient {
+    background: linear-gradient(135deg, $primary_cyan, $pink);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+// SUBTITLE
+.cancel-flow-subtitle {
+  font-family: $inter;
+  font-size: 15px;
+  font-weight: 400;
+  color: $slate-400;
+  margin: 0 auto 8px;
+  line-height: 1.6;
+  max-width: 440px;
+
+  &--small {
+    font-size: 13px;
+    color: $slate-500;
+  }
+
+  // Wide variant for Step 1 fullpage — long lines like Evernote
+  &--wide {
+    max-width: 100%;
+    font-size: 16px;
+  }
+}
+
+// BODY TEXT (Steps 3 & 5)
+.cancel-flow-body {
+  font-family: $inter;
+  font-size: 14px;
+  font-weight: 400;
+  color: $text_light;
+  margin: 0 0 24px;
+  line-height: 1.6;
+
+  strong {
+    color: $white;
+    font-weight: 600;
+  }
+}
+
+// ============================================
+// STEP 1 — TWO-COLUMN IMPACT CARD
+// ============================================
+.cancel-flow-impact-card {
+  background: rgba(#0f2a3d, 0.6);
+  border: 1px solid rgba($primary_cyan, 0.08);
+  border-radius: 16px;
+  padding: 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  text-align: left;
+  margin: 24px 0;
+}
+
+.cancel-flow-impact-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  h3 {
+    font-family: $inter;
+    font-size: 16px;
+    font-weight: 700;
+    color: $white;
+    margin: 16px 0 8px;
+    line-height: 1.4;
+  }
+
+  p {
+    font-family: $inter;
+    font-size: 14px;
+    color: $slate-400;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+// PRO plan badge
+.cancel-flow-pro-badge {
+  align-self: flex-start;
+  font-family: $inter;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: $black;
+  background: $primary_cyan;
+  padding: 5px 14px;
+  border-radius: 6px;
+  box-shadow: 0 0 16px rgba($primary_cyan, 0.3);
+}
+
+.cancel-flow-impact-right {
+  h4 {
+    font-family: $inter;
+    font-size: 14px;
+    font-weight: 600;
+    color: $slate-300;
+    margin: 0 0 14px;
+    line-height: 1.4;
+  }
+}
+
+// LIMITS LIST — red X icons with stagger animation
+.cancel-flow-limits-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    font-family: $inter;
+    font-size: 14px;
+    font-weight: 400;
+    color: $text_light !important;
+    opacity: 0;
+    animation: fadeSlideIn 0.4s ease forwards;
+    animation-delay: calc(var(--index, 0) * 60ms);
+  }
+}
+
+// RETAIN LIST (Step 1) — cyan check icons, centered
+.cancel-flow-retain-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 20px;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+
+  li {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    color: $text_light !important;
+    font-family: $inter;
+    font-size: 14px;
+    text-align: left;
+  }
+}
+
+.cancel-flow-check-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba($primary_cyan, 0.15);
+  border: 1px solid rgba($primary_cyan, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: $primary_cyan;
+}
+
+// "Compare all plans" link
+.cancel-flow-learn-more {
+  font-family: $inter;
+  font-size: 13px;
+  color: $slate-500;
+  text-align: center;
+  margin: 16px 0;
+
+  a {
+    color: $primary_cyan;
+    font-size: inherit;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Product image (Step 1 — short wide image like Evernote's illustrations)
+.cancel-flow-product-image {
+  margin: 40px auto 48px;
+  text-align: center;
+  max-width: 480px;
+  max-height: 160px;
+  overflow: hidden;
+  border-radius: 12px;
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+  }
+}
+
+// Feature illustration row (Step 1 — mirrors Evernote's product art)
+.cancel-flow-feature-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  margin: 40px 0 48px;
+}
+
+.cancel-flow-feature-icon {
+  width: 96px;
+  height: 96px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 44px;
+    height: 44px;
+  }
+
+  &--cyan {
+    background: rgba($primary_cyan, 0.12);
+    border: 1px solid rgba($primary_cyan, 0.2);
+    svg { color: $primary_cyan; }
+  }
+
+  &--pink {
+    background: rgba($pink, 0.12);
+    border: 1px solid rgba($pink, 0.2);
+    svg { color: $pink; }
+  }
+
+  &--blue {
+    background: rgba(#3b82f6, 0.12);
+    border: 1px solid rgba(#3b82f6, 0.2);
+    svg { color: #3b82f6; }
+  }
+}
+
+.cancel-flow-limit-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(#ef4444, 0.12);
+  border: 1px solid rgba(#ef4444, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    width: 12px;
+    height: 12px;
+    color: #ef4444;
+  }
+}
+
+// ============================================
+// BUTTONS — THREE TIERS (Evernote hierarchy)
+// ============================================
+.cancel-flow-btn {
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: $inter;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+
+  // PRIMARY — filled cyan with glow
+  &--primary {
+    padding: 14px 24px;
+    background: $primary_cyan;
+    color: $black;
+    font-weight: 700;
+    font-size: 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba($primary_cyan, 0.25), 0 4px 12px rgba(0, 0, 0, 0.3);
+
+    &:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba($primary_cyan, 0.4), 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+
+  // OUTLINE — bordered, transparent bg
+  &--outline {
+    padding: 12px 24px;
+    background: transparent;
+    border: 1px solid $slate-600;
+    color: $slate-300;
+    font-weight: 500;
+    font-size: 14px;
+    border-radius: 12px;
+
+    &:hover {
+      border-color: $slate-400;
+      color: $white;
+    }
+  }
+
+  // GHOST — text only, no border, no underline
+  &--ghost {
+    padding: 10px 24px;
+    background: transparent;
+    border: none;
+    color: $slate-400;
+    font-weight: 500;
+    font-size: 13px;
+
+    &:hover {
+      color: $slate-300;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  // AUTO — not full-width, auto-sized centered (Evernote style)
+  &--auto {
+    width: auto;
+    min-width: 280px;
+    padding: 14px 48px;
+  }
+}
+
+// CTA group — centered column with gap
+.cancel-flow-cta-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+// Price text below primary CTA
+.cancel-flow-price-below {
+  font-family: $inter;
+  font-size: 14px;
+  color: $slate-400;
+  margin: 0;
+}
+
+// Actions container — default is column
+.cancel-flow-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 24px;
+
+  // ROW variant for Step 1 side-by-side buttons
+  &--row {
+    flex-direction: row;
+    gap: 12px;
+
+    .cancel-flow-btn {
+      flex: 1;
+    }
+  }
+}
+
+// ============================================
+// STEP 2 — OFFER BADGE + DECORATIVE + THREE-TIER
+// ============================================
+
+// Offer badge — tiny-caps with breathing glow
+.cancel-flow-offer-badge {
+  display: inline-block;
+  font-family: $inter;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: $primary_cyan;
+  background: rgba($primary_cyan, 0.1);
+  border: 1px solid rgba($primary_cyan, 0.2);
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  animation: badgePulse 3s ease-in-out infinite;
+}
+
+// Divider between CTA tiers
+.cancel-flow-divider {
+  border: none;
+  border-top: 1px solid rgba($slate-400, 0.2);
+  margin: 16px 0;
+  width: 100%;
+}
+
+// DECORATIVE ZONE — CSS-only floating orbs
+.cancel-flow-decorative {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+
+  // Large variant for Step 3
+  &--large {
+    height: 200px;
+    margin: 32px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba($primary_cyan, 0.1), transparent 70%);
+      top: 10px;
+      left: 15%;
+      animation: floatOrb 6s ease-in-out infinite alternate;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(#3b82f6, 0.1), transparent 70%);
+      bottom: 10px;
+      right: 18%;
+      animation: floatOrb 6s ease-in-out infinite alternate-reverse;
+    }
+  }
+}
+
+// Brand circle (Step 3) — centered "T" with dashed border
+.cancel-flow-brand-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px dashed rgba($primary_cyan, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  background: rgba(#0b2c3c, 0.4);
+
+  span {
+    font-family: $inter;
+    font-size: 36px;
+    font-weight: 800;
+    color: $slate-400;
+    letter-spacing: -0.02em;
+  }
+}
+
+// ============================================
+// STEP 4 — WIN-BACK OVERLAY + CARD
+// ============================================
+.cancel-flow-winback-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(#000, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  border-radius: 24px;
+  padding: 32px;
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.cancel-flow-winback-card {
+  width: 100%;
+  max-width: 480px;
+  background: linear-gradient(180deg, #0b2c3c, #0b1f31);
+  border: 1px solid rgba($primary_cyan, 0.15);
+  border-radius: 20px;
+  padding: 32px;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.cancel-flow-winback-header {
+  position: relative;
+  margin-bottom: 8px;
+
+  h2 {
+    font-family: $inter;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: $white;
+    margin: 0;
+    padding-right: 32px; // room for close button
+  }
+}
+
+// ============================================
+// PRICING CARD (Steps 2 & 4 inner card)
+// ============================================
+.cancel-flow-pricing-card {
+  background: rgba($primary_cyan, 0.06);
+  border: 1px solid rgba($primary_cyan, 0.20);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 20px 0;
+  text-align: center;
+  position: relative;
+}
+
+.cancel-flow-discount-badge {
+  display: inline-block;
+  background: $primary_cyan;
+  color: $black;
+  font-family: $inter;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+  animation: badgePulse 3s ease-in-out infinite;
+}
+
+.cancel-flow-pricing {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+.cancel-flow-price-old {
+  font-family: $inter;
+  text-decoration: line-through;
+  color: $slate-500;
+  font-size: 16px;
+}
+
+.cancel-flow-price-new {
+  font-family: $inter;
+  font-size: 32px;
+  font-weight: 800;
+  color: $white;
+}
+
+.cancel-flow-price-per {
+  font-family: $inter;
+  font-size: 13px;
+  color: $slate-400;
+}
+
+.cancel-flow-pricing-dates {
+  font-family: $inter;
+  font-size: 13px;
+  color: $slate-500;
+  margin: 4px 0 0;
+}
+
+// Fine print
+.cancel-flow-fine-print {
+  font-family: $inter;
+  font-size: 12px;
+  color: $slate-500;
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+// ============================================
+// STEP 5 — SUCCESS ICON
+// ============================================
+.cancel-flow-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+
+  &--cyan {
+    background: rgba($primary_cyan, 0.12);
+    box-shadow:
+      0 0 30px rgba($primary_cyan, 0.2),
+      0 0 60px rgba($primary_cyan, 0.1);
+    animation: successBounce 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+    svg {
+      color: $primary_cyan;
+      width: 32px;
+      height: 32px;
+    }
+  }
+}
+
+// ============================================
+// SPINNER
+// ============================================
+.cancel-flow-spinner {
+  animation: cancel-spin 1s linear infinite;
+}
+
+// ============================================
+// KEYFRAME ANIMATIONS
+// ============================================
+
+// Loss/limit items stagger entrance
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Discount badge breathing glow
+@keyframes badgePulse {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba($primary_cyan, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba($primary_cyan, 0.4);
+  }
+}
+
+// Step 5 success icon bounce
+@keyframes successBounce {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Win-back card entrance
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Spinner rotation
+@keyframes cancel-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// Decorative orb float
+@keyframes floatOrb {
+  from { transform: translateY(0); }
+  to { transform: translateY(-12px); }
+}
+
+// ============================================
+// RESPONSIVE
+// ============================================
+@media screen and (max-width: 640px) {
+  .cancel-flow-impact-card {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .cancel-flow-modal {
+    .modal-dialog {
+      margin: 10px;
+      max-width: calc(100vw - 20px);
+    }
+
+    .modal-body {
+      padding: 28px 20px;
+    }
+  }
+
+  .cancel-flow-title {
+    font-size: 22px;
+  }
+
+  .cancel-flow-impact-card {
+    padding: 20px;
+  }
+
+  .cancel-flow-actions--row {
+    flex-direction: column !important;
+  }
+
+  .cancel-flow-price-new {
+    font-size: 26px;
+  }
+
+  .cancel-flow-winback-overlay {
+    padding: 20px 16px;
+  }
+
+  .cancel-flow-winback-card {
+    padding: 24px 20px;
+  }
+
+  .cancel-flow-decorative {
+    height: 80px;
+  }
+
+  .cancel-flow-decorative--large {
+    height: 140px;
+  }
+
+  .cancel-flow-brand-circle {
+    width: 80px;
+    height: 80px;
+
+    span {
+      font-size: 28px;
+    }
+  }
+
+  .cancel-flow-retain-list {
+    gap: 6px;
+  }
+
+  .cancel-flow-pricing-card {
+    padding: 16px;
+  }
+
+  .cancel-flow-learn-more {
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,41 @@
+# TokScript
+
+> TokScript extracts transcripts from TikTok, Instagram Reels, and YouTube Shorts, then runs them through 3 AI agents trained on 20,000+ viral videos to generate hooks, scripts, and virality breakdowns. 41,000+ creators. 2.6M+ videos processed.
+
+- Built with Next.js, Chrome Extension on Chrome Web Store
+- AI agents powered by OpenAI GPT-4o and Anthropic Claude 3.5 Sonnet
+- Supports 100+ languages with 99% transcription accuracy
+- Free plan available; Pro plans at $10/month or $39/year
+
+## Core Pages
+
+- [Homepage](https://tokscript.com/): TikTok transcript generator — paste a link, get the transcript in 3 seconds
+- [Features](https://tokscript.com/features): Overview of all tools — transcript extraction, bulk import, AI agents, Chrome extension, team collaboration, and more
+- [Pricing](https://tokscript.com/pricing): Free, Monthly ($10/mo), and Annual ($39/yr) plans with full feature comparison
+
+## Platform-Specific Generators
+
+- [Instagram Transcript Generator](https://tokscript.com/instagram-transcript-generator): Extract transcripts from Instagram Reels
+- [YouTube Transcript Generator](https://tokscript.com/youtube-transcript-generator): Extract transcripts from YouTube Shorts
+
+## Product
+
+- [API Documentation](https://tokscript.com/api): REST API for transcript extraction and AI analysis integration
+- [Integrations](https://tokscript.com/integration): Zapier, Slack, and Google Docs connections
+- [Affiliate Program](https://tokscript.com/affiliate): 40% recurring commission — $15.60/annual referral, $4/monthly referral
+
+## Company
+
+- [About Us](https://tokscript.com/about-us): Background on TokScript and the team
+- [Contact](https://tokscript.com/contact): Contact form and support
+
+## Legal
+
+- [Terms of Service](https://tokscript.com/terms)
+- [Privacy Policy](https://tokscript.com/privacy)
+- [Legal](https://tokscript.com/legal)
+
+## Documentation
+
+- [Full Documentation](https://tokscript.com/llms-full.txt): Complete product documentation including AI agents, features, pricing, FAQs, and technical details
+- [Help Center](https://help.tokscript.com/): User guides and support articles
