@@ -17175,7 +17175,7 @@ section h2 + p,
   /* Visual column — consistent aspect-ratio that scales with viewport */
   .vt-visual {
     width: 100%;
-    aspect-ratio: 614 / 540;
+    aspect-ratio: 614 / 630;
     border-radius: 24px;
     overflow: hidden;
     background: #0a0a0a;
@@ -17186,14 +17186,15 @@ section h2 + p,
     img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
+      object-position: center;
       display: block;
     }
   }
 
   /* Cloud Storage — currency cards */
   .vt-visual-cloud {
-    aspect-ratio: 614 / 540;
+    aspect-ratio: 614 / 630;
     flex-direction: column;
     justify-content: center;
     gap: 14px;
@@ -17256,7 +17257,7 @@ section h2 + p,
     .vt-list li { font-size: 14.5px !important; padding-left: 32px; }
     .vt-list li::before { width: 22px; height: 22px; }
     .vt-cta { height: 42px; padding: 0 20px; font-size: 14.5px !important; }
-    .vt-visual { border-radius: 18px; aspect-ratio: 16 / 12; }
+    .vt-visual { border-radius: 18px; aspect-ratio: 614 / 630; }
     .vt-visual-cloud { padding: 28px 20px; gap: 12px; aspect-ratio: auto; }
     .vt-currency-card { padding: 14px 16px; gap: 12px; grid-template-columns: 32px 1fr auto; }
     .vt-currency-card.vt-currency-card-muted { grid-template-columns: 1fr auto; }
