@@ -419,7 +419,7 @@ export default function TeamCollaborationPage() {
         </section>
 
         {/* FINAL CTA */}
-        <section className="ts-section ts-final-cta" style={{ background: '#020617' }}>
+        <section className="ts-section ts-final-cta" style={{ background: '#0a0a0a' }}>
           <div className="ts-container ts-container-narrow">
             <div className="ts-cta-box">
               <div className="ts-cta-glow" style={{ background: 'radial-gradient(ellipse at top, rgba(20, 184, 166, 0.4) 0%, transparent 70%)' }}></div>

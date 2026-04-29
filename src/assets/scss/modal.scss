@@ -6,7 +6,7 @@
     .modal-content {
       overflow: hidden;
       background: $primary_bg_color;
-      border: 0.5px solid #00f2ea60;
+      border: 0.5px solid #00D9B460;
       border-radius: 8px;
       .modal-header {
         padding: 26px 24px;
@@ -65,7 +65,7 @@
       overflow: hidden;
       background: $primary_bg_color;
 
-      border: 0.5px solid #00f2ea60;
+      border: 0.5px solid #00D9B460;
       @media screen and (max-width: 767px) {
         border: 0.5px solid transparent;
         background:
@@ -552,7 +552,7 @@
       width: 100%;
       margin-inline: auto;
       padding: 32px;
-      border: 1px solid #00f2ea52;
+      border: 1px solid #00D9B452;
 
       border-radius: 28px;
       position: relative;
@@ -563,9 +563,9 @@
         width: 100%;
         background: linear-gradient(
           180deg,
-          rgba(0, 242, 234, 0.024) 0%,
-          rgba(0, 242, 234, 0.008) 50%,
-          rgba(0, 242, 234, 0.014) 100%
+          rgba(0, 217, 180, 0.024) 0%,
+          rgba(0, 217, 180, 0.008) 50%,
+          rgba(0, 217, 180, 0.014) 100%
         );
         backdrop-filter: blur(20px);
         position: absolute;
@@ -1057,7 +1057,7 @@
       }
 
       &.purple {
-        background: #6366f1;
+        background: #3a3a3a;
       }
       &.amber {
         background: #f59e0b;

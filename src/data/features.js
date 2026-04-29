@@ -5,7 +5,7 @@ export const features = [
     path: "/features/transcript-generator",
     title: "Transcript Generator",
     shortDescription: "Video to transcript in seconds",
-    color: "#00f2ea", // cyan
+    color: "#00D9B4", // cyan
   },
   {
     slug: "bulk-import",
@@ -61,7 +61,7 @@ export const features = [
     path: "/features/translations",
     title: "Translate Transcripts",
     shortDescription: "Transcribe to any native language",
-    color: "#6366f1", // indigo
+    color: "#3a3a3a", // indigo
   },
   {
     slug: "ai-agents",

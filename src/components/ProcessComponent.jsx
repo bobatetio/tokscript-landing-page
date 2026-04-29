@@ -351,7 +351,7 @@ export default function ProcessComponent({
                             {copiedIndex === index ? (
                               <span
                                 style={{
-                                  color: "#00f2ea",
+                                  color: "#00D9B4",
                                   fontSize: "12px",
                                   fontWeight: 600,
                                   whiteSpace: "nowrap",

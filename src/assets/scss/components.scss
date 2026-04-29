@@ -11,7 +11,7 @@
 header.header {
   padding: 20px 50px;
   border-bottom: 1px solid #0f121d33;
-  background: #0a1025;
+  background: #0d0d0d;
   position: relative;
   @media screen and (max-width: 1440px) and (min-width: 768px) {
     padding: 20px 20px;
@@ -146,7 +146,7 @@ header.header {
       }
 
       .features-menu {
-        background: #0a1025; /* Perfectly matches header background, zero transparency */
+        background: #0d0d0d; /* Perfectly matches header background, zero transparency */
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 12px;
         padding: 20px;
@@ -393,7 +393,7 @@ header.header {
       }
 
       .language-menu {
-        background: #0a1025;
+        background: #0d0d0d;
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 12px;
         padding: 8px;
@@ -515,7 +515,7 @@ header.header {
     }
 
     .mobile-menu-content {
-      background: #0a1025;
+      background: #0d0d0d;
       width: 100%;
       max-width: 100%;
       padding: 30px 24px;
@@ -734,12 +734,12 @@ header.header {
           white-space: nowrap;
           border-radius: 50px;
           background:
-            linear-gradient(to right, #0a162a, #0a182c, #09192d) padding-box,
+            linear-gradient(to right, #0a0a0a, #0a0a0a, #0a0a0a) padding-box,
             linear-gradient(
                 180deg,
-                rgba(0, 242, 234, 0.32) 0%,
-                rgba(0, 242, 234, 0.1) 50%,
-                rgba(0, 242, 234, 0.16) 100%
+                rgba(0, 217, 180, 0.32) 0%,
+                rgba(0, 217, 180, 0.1) 50%,
+                rgba(0, 217, 180, 0.16) 100%
               )
               border-box;
           animation: affiliate-pulse 3.5s ease-in-out infinite;
@@ -756,18 +756,18 @@ header.header {
         @media screen and (min-width: 992px) {
           &:hover .affiliate-badge {
             animation: none;
-            box-shadow: 0 0 12px rgba(0, 242, 234, 0.4);
-            border-color: rgba(0, 242, 234, 0.5);
+            box-shadow: 0 0 12px rgba(0, 217, 180, 0.4);
+            border-color: rgba(0, 217, 180, 0.5);
           }
         }
       }
       @keyframes affiliate-pulse {
         0%,
         100% {
-          box-shadow: 0 0 4px rgba(0, 242, 234, 0.05);
+          box-shadow: 0 0 4px rgba(0, 217, 180, 0.05);
         }
         50% {
-          box-shadow: 0 0 10px rgba(0, 242, 234, 0.2);
+          box-shadow: 0 0 10px rgba(0, 217, 180, 0.2);
         }
       }
     }
@@ -955,8 +955,8 @@ header.header {
     #10706a 65%,
     #0d3548 100%
   );
-  border-top: 1px solid rgba(0, 242, 234, 0.3);
-  border-bottom: 1px solid rgba(0, 242, 234, 0.35);
+  border-top: 1px solid rgba(0, 217, 180, 0.3);
+  border-bottom: 1px solid rgba(0, 217, 180, 0.35);
   padding: 10px 20px;
   display: flex;
   align-items: center;
@@ -1247,7 +1247,7 @@ header.header {
     .trial-btn {
       box-shadow: 0px 10px 15px 0px #0000001a;
       border: none;
-      background: linear-gradient(90deg, #00f2ea 0%, #ff004f 100%);
+      background: linear-gradient(90deg, #00D9B4 0%, #ff004f 100%);
       border-radius: 10px;
       min-width: 160px;
       padding: 10px 22px;
@@ -1332,17 +1332,17 @@ header.header {
 
 /*************pricing-cards******************/
 .pricing-card-detail {
-  margin-bottom: 40px;
-  padding: 0 50px;
+  margin-bottom: 0;
+  padding: clamp(72px, 9vw, 128px) 50px clamp(80px, 10vw, 144px);
 
   @media screen and (max-width: 991px) and (min-width: 768px) {
-    margin-bottom: 50px;
-    padding: 0 8px;
+    margin-bottom: 0;
+    padding: 80px 8px 96px;
   }
 
   @media screen and (max-width: 767px) {
-    margin-bottom: 30px;
-    padding: 0 8px;
+    margin-bottom: 0;
+    padding: 64px 8px 80px;
   }
   .pricing-page-new {
     .pricing-grid {
@@ -1364,9 +1364,9 @@ header.header {
       align-items: center;
       background: linear-gradient(
         164.95deg,
-        rgba(0, 242, 234, 0.1) 0%,
-        rgba(0, 242, 234, 0.02) 50%,
-        rgba(0, 242, 234, 0.06) 100%
+        rgba(0, 217, 180, 0.1) 0%,
+        rgba(0, 217, 180, 0.02) 50%,
+        rgba(0, 217, 180, 0.06) 100%
       );
       position: absolute;
       top: 50%;
@@ -1383,16 +1383,16 @@ header.header {
 
     &:hover,
     &.active {
-      // background: linear-gradient(180deg, rgba(0, 242, 234, 0.12) 0%, rgba(0, 242, 234, 0.04) 50%, rgba(0, 242, 234, 0.07) 100%);
+      // background: linear-gradient(180deg, rgba(0, 217, 180, 0.12) 0%, rgba(0, 217, 180, 0.04) 50%, rgba(0, 217, 180, 0.07) 100%);
 
       background: 0 0;
       border: 1px solid transparent;
       // background: linear-gradient($body_bg_color, $body_bg_color) padding-box,
       //   linear-gradient(
       //       180deg,
-      //       rgba(0, 242, 234, 0.12) 0%,
-      //       rgba(0, 242, 234, 0.04) 50%,
-      //       rgba(0, 242, 234, 0.07) 100%
+      //       rgba(0, 217, 180, 0.12) 0%,
+      //       rgba(0, 217, 180, 0.04) 50%,
+      //       rgba(0, 217, 180, 0.07) 100%
       //     )
       //     border-box;
       background: none;
@@ -1401,23 +1401,23 @@ header.header {
         background:
           linear-gradient(
               164.95deg,
-              rgba(0, 242, 234, 0.1) 0%,
-              rgba(0, 242, 234, 0.02) 50%,
-              rgba(0, 242, 234, 0.06) 100%
+              rgba(0, 217, 180, 0.1) 0%,
+              rgba(0, 217, 180, 0.02) 50%,
+              rgba(0, 217, 180, 0.06) 100%
             )
             padding-box,
           linear-gradient(
               180deg,
-              rgba(0, 242, 234, 0.12) 0%,
-              rgba(0, 242, 234, 0.04) 50%,
-              rgba(0, 242, 234, 0.07) 100%
+              rgba(0, 217, 180, 0.12) 0%,
+              rgba(0, 217, 180, 0.04) 50%,
+              rgba(0, 217, 180, 0.07) 100%
             )
             border-box;
         // background: linear-gradient(
         //   180deg,
-        //   rgba(0, 242, 234, 0.12) 0%,
-        //   rgba(0, 242, 234, 0.04) 50%,
-        //   rgba(0, 242, 234, 0.07) 100%
+        //   rgba(0, 217, 180, 0.12) 0%,
+        //   rgba(0, 217, 180, 0.04) 50%,
+        //   rgba(0, 217, 180, 0.07) 100%
         // );
         backdrop-filter: blur(20px);
       }
@@ -1425,8 +1425,8 @@ header.header {
       .ellipce-wrap {
         background: linear-gradient(
           180deg,
-          #00f2ea 0%,
-          rgba(0, 242, 234, 0.41) 100%
+          #00D9B4 0%,
+          rgba(0, 217, 180, 0.41) 100%
         ) !important;
 
         .inner-wrap {
@@ -1435,8 +1435,8 @@ header.header {
           .inner-div {
             background: linear-gradient(
               180deg,
-              #00f2ea 0%,
-              rgba(0, 242, 234, 0.41) 100%
+              #00D9B4 0%,
+              rgba(0, 217, 180, 0.41) 100%
             ) !important;
           }
         }
@@ -1446,7 +1446,7 @@ header.header {
         font-weight: 700 !important;
         background: linear-gradient(
           180deg,
-          #00f2ea 0%,
+          #00D9B4 0%,
           #1a9999 100%
         ) !important;
         border-color: transparent !important;
@@ -1758,7 +1758,212 @@ header.header {
   }
 }
 
-/*********************FAQ-section******************/
+/*********************FAQ-section (MCP-page parity)******************/
+/* 1:1 spec port from src/app/mcp/mcp.scss #faq block.
+   Same tokens, same dimensions, same hover/open behavior. */
+.ts-faq-mcp {
+  --teal: #00d9b4;
+  --white: #fff;
+  --muted: rgba(255, 255, 255, 0.48);
+  --border: rgba(255, 255, 255, 0.07);
+  --r: 14px;
+
+  background: #0d0d0d;
+  padding: 80px 24px;
+  font-family: "Inter", system-ui, sans-serif;
+  line-height: 1.65;
+  color: var(--white);
+
+  @media (max-width: 767px) {
+    padding: 64px 20px;
+  }
+
+  /* ── Wrap (matches mcp `.wrap`) ── */
+  .ts-faq-mcp-wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  /* ── Header (matches mcp inline-styled #faq header) ── */
+  .ts-faq-mcp-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 11px;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .ts-faq-mcp-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--white);
+    background:
+      linear-gradient(#0d0d0d, #0d0d0d) padding-box,
+      linear-gradient(135deg, var(--teal), rgba(255, 255, 255, 0.12)) border-box;
+    border: 0.5px solid transparent;
+  }
+
+  .ts-faq-mcp-headings {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    h2 {
+      font-family: "Inter", system-ui, sans-serif !important;
+      font-size: 40px !important;
+      font-weight: 800 !important;
+      color: var(--white) !important;
+      letter-spacing: -1.4px !important;
+      line-height: 1.12 !important;
+      margin: 0 !important;
+      max-width: 568px;
+      width: 100%;
+
+      @media (max-width: 767px) {
+        font-size: 32px !important;
+        letter-spacing: -1px !important;
+      }
+    }
+
+    p {
+      font-family: "Inter", system-ui, sans-serif !important;
+      font-size: 16px !important;
+      color: rgba(255, 255, 255, 0.48) !important;
+      margin: 0 !important;
+      line-height: 1.65 !important;
+      max-width: 730px;
+      width: 100%;
+      font-weight: 400 !important;
+
+      @media (max-width: 767px) {
+        font-size: 14.5px !important;
+      }
+    }
+  }
+
+  /* ── List (matches mcp `.faq-list`) ── */
+  .ts-faq-mcp-list {
+    margin-top: 48px;
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    overflow: hidden;
+  }
+
+  .ts-faq-mcp-item {
+    border-bottom: 1px solid var(--border);
+    &:last-child { border-bottom: none; }
+  }
+
+  /* ── Question button (matches mcp `.faq-q`) ── */
+  .ts-faq-mcp-q {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: var(--white);
+    padding: 20px 24px;
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    &:focus-visible {
+      outline: 2px solid rgba(0, 217, 180, 0.5);
+      outline-offset: -2px;
+    }
+
+    &.open {
+      color: var(--teal);
+
+      .ts-faq-mcp-icon {
+        transform: rotate(45deg);
+        border-color: var(--teal);
+        color: var(--teal);
+      }
+    }
+  }
+
+  /* ── Plus icon (matches mcp `.faq-icon`) ── */
+  .ts-faq-mcp-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: var(--muted);
+    transition: transform 0.3s, border-color 0.2s;
+  }
+
+  /* ── Answer (matches mcp `.faq-a`) ── */
+  .ts-faq-mcp-a {
+    display: none;
+    padding: 0 24px 20px;
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 0.88rem;
+    font-weight: 400;
+    color: var(--muted);
+    line-height: 1.7;
+
+    &.open { display: block; }
+  }
+
+  /* ── Help center CTA (matches mcp `.hiw-cta`) ── */
+  .ts-faq-mcp-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 11px;
+    margin-top: 40px;
+  }
+
+  .ts-faq-mcp-cta-text {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 14.1px;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .ts-faq-mcp-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    color: #0d0d0d !important;
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 14px;
+    width: 146px;
+    height: 36px;
+    text-decoration: none !important;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.86;
+      color: #0d0d0d !important;
+    }
+  }
+}
+
 .faq-main-section {
   padding: 9px 50px 90px;
 
@@ -2138,7 +2343,7 @@ header.header {
       li {
         &.active {
           button {
-            background: #00f2ea4a !important;
+            background: #00D9B44a !important;
           }
         }
       }
@@ -2177,7 +2382,7 @@ header.header {
 .process-component-wrapper {
   background: $primary_bg_color_2;
   border-radius: 10px;
-  border: 1px solid #00f2ea4d;
+  border: 1px solid #00D9B44d;
   padding: 7px 0;
   max-width: 321px;
 
@@ -2349,22 +2554,22 @@ header.header {
     }
 
     &::-webkit-scrollbar-track {
-      background: rgba(0, 242, 234, 0.05); /* Slight background */
+      background: rgba(0, 217, 180, 0.05); /* Slight background */
       border-radius: 10px;
     }
 
     &::-webkit-scrollbar-thumb {
-      background: rgba(0, 242, 234, 0.5); /* More opaque */
+      background: rgba(0, 217, 180, 0.5); /* More opaque */
       border-radius: 10px;
 
       &:hover {
-        background: rgba(0, 242, 234, 0.7); /* Even brighter on hover */
+        background: rgba(0, 217, 180, 0.7); /* Even brighter on hover */
       }
     }
 
     /* Firefox */
     scrollbar-width: thin;
-    scrollbar-color: rgba(0, 242, 234, 0.5) transparent;
+    scrollbar-color: rgba(0, 217, 180, 0.5) transparent;
 
     .processed-listings {
       // max-height: 365px;
@@ -2632,7 +2837,7 @@ header.header {
     border-top: 1px solid #0c4442;
     .btn-style {
       border: none;
-      background: linear-gradient(135deg, #00f2ea, #ff0050);
+      background: linear-gradient(135deg, #00D9B4, #ff0050);
       padding: 10px 24px;
       border-radius: 8px;
       color: #fff;
@@ -2658,8 +2863,8 @@ header.header {
     align-items: center;
     gap: 11px;
     padding: 14px;
-    background: #08182d;
-    border: 1px solid #00f2ea4d;
+    background: #0a0a0a;
+    border: 1px solid #00D9B44d;
     border-radius: 20px;
     margin: 0;
     order: 3;
@@ -2858,7 +3063,7 @@ header.header {
       gap: 6px;
       flex-wrap: wrap;
       border-bottom: none;
-      border: 1px solid #00f2ea4d;
+      border: 1px solid #00D9B44d;
       border-radius: 20px;
       padding: 14px;
     }
@@ -3017,9 +3222,9 @@ header.header {
         }
 
         &.active {
-          background: rgba(0, 242, 234, 0.08);
+          background: rgba(0, 217, 180, 0.08);
           color: $primary_cyan;
-          border-color: rgba(0, 242, 234, 0.2);
+          border-color: rgba(0, 217, 180, 0.2);
         }
 
         &:disabled {
@@ -3050,7 +3255,7 @@ header.header {
         position: absolute;
         bottom: calc(100% + 8px);
         left: 0;
-        background: #0c1a2e;
+        background: #0d0d0d;
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 10px;
         padding: 4px;
@@ -3065,7 +3270,7 @@ header.header {
         }
 
         &::-webkit-scrollbar-thumb {
-          background: rgba(0, 242, 234, 0.3);
+          background: rgba(0, 217, 180, 0.3);
           border-radius: 50px;
         }
 
@@ -3094,7 +3299,7 @@ header.header {
           }
 
           &.selected {
-            background: rgba(0, 242, 234, 0.1);
+            background: rgba(0, 217, 180, 0.1);
             color: $primary_cyan;
             font-weight: 500;
             position: relative;
@@ -3132,14 +3337,14 @@ header.header {
   }
   .transcripts-main-div {
     @media screen and (max-width: 767px) {
-      border: 1px solid #00f2ea4d;
+      border: 1px solid #00D9B44d;
       border-radius: 20px;
       padding: 14px;
     }
   }
   .features-wrapper {
     padding: 24px;
-    background: #050a204f;
+    background: #0d0d0d4f;
     border-radius: 12px;
     max-height: 423px;
     overflow-y: auto;
@@ -3153,22 +3358,22 @@ header.header {
     }
 
     &::-webkit-scrollbar-track {
-      background: rgba(0, 242, 234, 0.05); /* Slight background */
+      background: rgba(0, 217, 180, 0.05); /* Slight background */
       border-radius: 10px;
     }
 
     &::-webkit-scrollbar-thumb {
-      background: rgba(0, 242, 234, 0.5); /* More opaque */
+      background: rgba(0, 217, 180, 0.5); /* More opaque */
       border-radius: 10px;
 
       &:hover {
-        background: rgba(0, 242, 234, 0.7); /* Even brighter on hover */
+        background: rgba(0, 217, 180, 0.7); /* Even brighter on hover */
       }
     }
 
     /* Firefox */
     scrollbar-width: thin;
-    scrollbar-color: rgba(0, 242, 234, 0.5) transparent;
+    scrollbar-color: rgba(0, 217, 180, 0.5) transparent;
 
     @media screen and (max-width: 1440px) and (min-width: 1200px) {
       padding: 13px 19px;
@@ -3203,7 +3408,7 @@ header.header {
 
       /* Handle */
       &::-webkit-scrollbar-thumb {
-        background: #00f2ea4d;
+        background: #00D9B44d;
       }
     }
     .transcript-content {
@@ -3224,7 +3429,7 @@ header.header {
 
       /* Handle */
       &::-webkit-scrollbar-thumb {
-        background: #00f2ea4d;
+        background: #00D9B44d;
       }
       @media screen and (max-width: 1440px) {
         font-size: 10px;
@@ -3274,9 +3479,9 @@ header.header {
   padding: 25px;
   // background: linear-gradient(
   //   180deg,
-  //   rgba(0, 242, 234, 0.12) 0%,
-  //   rgba(0, 242, 234, 0.04) 50%,
-  //   rgba(0, 242, 234, 0.07) 100%
+  //   rgba(0, 217, 180, 0.12) 0%,
+  //   rgba(0, 217, 180, 0.04) 50%,
+  //   rgba(0, 217, 180, 0.07) 100%
   // );
   position: relative;
   border-radius: 28px;
@@ -3291,9 +3496,9 @@ header.header {
       linear-gradient(180deg, #0b2c3c, #0b1f31, #0e2234) padding-box,
       linear-gradient(
           180deg,
-          rgba(0, 242, 234, 0.32) 0%,
-          rgba(0, 242, 234, 0.1) 50%,
-          rgba(0, 242, 234, 0.16) 100%
+          rgba(0, 217, 180, 0.32) 0%,
+          rgba(0, 217, 180, 0.1) 50%,
+          rgba(0, 217, 180, 0.16) 100%
         )
         border-box;
     backdrop-filter: blur(20px);
@@ -3583,9 +3788,9 @@ header.header {
     .card-wrapper {
       background: linear-gradient(
         164.95deg,
-        rgba(0, 242, 234, 0.1) 0%,
-        rgba(0, 242, 234, 0.02) 50%,
-        rgba(0, 242, 234, 0.06) 100%
+        rgba(0, 217, 180, 0.1) 0%,
+        rgba(0, 217, 180, 0.02) 50%,
+        rgba(0, 217, 180, 0.06) 100%
       );
       border-radius: 28px;
       text-align: center;
@@ -3844,7 +4049,7 @@ header.header {
       margin-top: 16px;
       font-size: 14px;
       font-weight: 600;
-      color: #00f2ea;
+      color: #00D9B4;
       text-decoration: none;
       transition: opacity 0.2s ease;
 

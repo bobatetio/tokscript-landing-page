@@ -5,7 +5,7 @@
 // Inter font is loaded via next/font in layout.js (self-hosted, non-blocking)
 
 // Colors
-$bg-color: #020617; // Slate 950 - Deepest black/blue
+$bg-color: #0a0a0a; // Slate 950 - Deepest black/blue
 $surface-color: rgba(13, 13, 13, 0.6); // Slate 900 with transparency
 $surface-elevated: rgba(26, 26, 26, 0.8); // Slate 800 with transparency
 $text-primary: #f8fafc;
@@ -62,7 +62,7 @@ $border-light: rgba(255, 255, 255, 0.08);
   .ts-bg-aurora {
     position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;
     &::before, &::after { content: ''; position: absolute; filter: blur(120px); border-radius: 50%; opacity: 0.15; }
-    &::before { top: 0; left: -20%; width: 800px; height: 800px; background: #6366f1; }
+    &::before { top: 0; left: -20%; width: 800px; height: 800px; background: #3a3a3a; }
     &::after { bottom: 0; right: -20%; width: 600px; height: 600px; background: #00D9B4; }
   }
 
@@ -81,7 +81,7 @@ $border-light: rgba(255, 255, 255, 0.08);
     @media (max-width: 768px) { padding: 80px 0 40px; }
     .ts-hero-bg {
       position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: -1;
-      background: #020617;
+      background: #0a0a0a;
       .ts-hero-grid {
         position: absolute; inset: 0;
         background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
@@ -89,7 +89,7 @@ $border-light: rgba(255, 255, 255, 0.08);
         mask-image: radial-gradient(ellipse at top, black 0%, transparent 70%);
       }
       .ts-glow-orb { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.4; }
-      .ts-glow-orb-1 { top: -100px; right: 10%; width: 600px; height: 600px; background: #6366f1; }
+      .ts-glow-orb-1 { top: -100px; right: 10%; width: 600px; height: 600px; background: #3a3a3a; }
       .ts-glow-orb-2 { top: 200px; left: -100px; width: 600px; height: 600px; background: #3b82f6; }
     }
     
@@ -167,7 +167,7 @@ $border-light: rgba(255, 255, 255, 0.08);
   // ==========================================
   .ts-core-value {
     position: relative;
-    background: #020617;
+    background: #0a0a0a;
     padding: 160px 0;
     border-top: 1px solid rgba(255,255,255,0.03);
     border-bottom: 1px solid rgba(255,255,255,0.03);
@@ -196,7 +196,7 @@ $border-light: rgba(255, 255, 255, 0.08);
       grid-template-columns: 1fr 1fr;
       border-radius: 28px;
       overflow: hidden;
-      background: #060913;
+      background: #0a0a0a;
       position: relative;
       @media(max-width: 768px) { grid-template-columns: 1fr; }
     }
@@ -252,7 +252,7 @@ $border-light: rgba(255, 255, 255, 0.08);
   // TIMELINE (Staggered Floating Cards)
   // ==========================================
   .ts-timeline-section {
-    position: relative; padding: 160px 0; background: #040816;
+    position: relative; padding: 160px 0; background: #0a0a0a;
   }
 
   .ts-animated-timeline {
@@ -287,8 +287,8 @@ $border-light: rgba(255, 255, 255, 0.08);
       .ts-step-node {
         width: 48px; height: 48px; border-radius: 50%; background: #0d0d0d; border: 2px solid rgba(255,255,255,0.1);
         display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; color: #fff;
-        transition: all 0.4s ease; box-shadow: 0 0 0 8px #040816; z-index: 2;
-        @media(max-width: 768px) { width: 24px; height: 24px; font-size: 12px; box-shadow: 0 0 0 4px #040816; border-width: 1px; }
+        transition: all 0.4s ease; box-shadow: 0 0 0 8px #0a0a0a; z-index: 2;
+        @media(max-width: 768px) { width: 24px; height: 24px; font-size: 12px; box-shadow: 0 0 0 4px #0a0a0a; border-width: 1px; }
         &::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1px dashed rgba(255,255,255,0.2); animation: spin 10s linear infinite; opacity: 0; transition: opacity 0.4s; @media(max-width: 768px) { inset: -2px; border-width: 1px; } }
       }
 
@@ -329,7 +329,7 @@ $border-light: rgba(255, 255, 255, 0.08);
   // ==========================================
   // TRUE VISUAL BENTO CARDS (10x Upgrade)
   // ==========================================
-  .ts-bento-section { background: #020617; position: relative; padding: 160px 0; @media(max-width: 768px) { padding: 48px 0; } }
+  .ts-bento-section { background: #0a0a0a; position: relative; padding: 160px 0; @media(max-width: 768px) { padding: 48px 0; } }
   
   .ts-bento-grid-3 { 
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; 
@@ -426,7 +426,7 @@ $border-light: rgba(255, 255, 255, 0.08);
 
   // FAQ
   .ts-faq-section {
-    position: relative; background: #040816; padding: 160px 0;
+    position: relative; background: #0a0a0a; padding: 160px 0;
     @media (max-width: 768px) { padding: 48px 0; }
     .ts-faq-accordion { display: flex; flex-direction: column; gap: 16px; @media(max-width: 768px){ gap: 8px; } }
     .ts-faq-item {
@@ -456,7 +456,7 @@ $border-light: rgba(255, 255, 255, 0.08);
 
   // FINAL CTA
   .ts-final-cta {
-    padding: 80px 0; background: #020617; position: relative;
+    padding: 80px 0; background: #0a0a0a; position: relative;
     @media (max-width: 768px) { padding: 48px 0; }
     .ts-cta-box {
       background: linear-gradient(180deg, rgba(26, 26, 26, 0.4) 0%, rgba(13, 13, 13, 0.8) 100%);

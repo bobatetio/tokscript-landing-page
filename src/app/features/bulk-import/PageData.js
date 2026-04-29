@@ -136,7 +136,7 @@ const AnimatedBatchAudit = ({ hovering }) => {
         </div>
       </div>
       
-      <div style={{ padding: '16px', background: 'rgba(56, 189, 248, 0.1)', border: '1px solid rgba(56, 189, 248, 0.3)', borderRadius: '12px', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ padding: '16px', background: 'rgba(0, 217, 180, 0.1)', border: '1px solid rgba(0, 217, 180, 0.3)', borderRadius: '12px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'relative', zIndex: 2, fontSize: '14px', fontWeight: 'bold', color: '#fff', marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
           <span>TokScript Processing</span>
           <span style={{ color: '#7dd3fc' }}>{progress}%</span>
@@ -310,13 +310,13 @@ export default function BulkImportPage() {
                   Paste a list of URLs. Click process. Walk away. TokScript extracts every transcript in the background and notifies you when your library is ready.
                 </p>
                 <div className="ts-hero-cta-wrap">
-                  <a href="/" style={{ background: '#00D9B4', color: '#fff', padding: '16px 24px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', boxShadow: '0 4px 14px rgba(14, 165, 233, 0.4)' }}>
+                  <a href="/" style={{ background: '#00D9B4', color: '#fff', padding: '16px 24px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', boxShadow: '0 4px 14px rgba(0, 217, 180, 0.4)' }}>
                     Start Batch <ArrowRight size={18} />
                   </a>
                 </div>
               </div>
               <div className="ts-hero-visual">
-                <div className="ts-hv-glass-panel" style={{ background: 'rgba(13, 13, 13, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(14, 165, 233, 0.2)' }}>
+                <div className="ts-hv-glass-panel" style={{ background: 'rgba(13, 13, 13, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(0, 217, 180, 0.2)' }}>
                   <AnimatedBulkProcessing hovering={true} />
                 </div>
               </div>
@@ -425,7 +425,7 @@ export default function BulkImportPage() {
               <HoverStateWrapper className="ts-bento-card-visual ts-span-2-desktop">
                 {(hovering) => (
                   <>
-                    <div className="ts-card-graphic" style={{ background: 'radial-gradient(ellipse at center, rgba(14, 165, 233, 0.15) 0%, transparent 70%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="ts-card-graphic" style={{ background: 'radial-gradient(ellipse at center, rgba(0, 217, 180, 0.15) 0%, transparent 70%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                        <AnimatedErrorHandling hovering={hovering} />
                     </div>
                     <div className="ts-card-text-content">
@@ -521,10 +521,10 @@ export default function BulkImportPage() {
         </section>
 
         {/* FINAL CTA */}
-        <section className="ts-section ts-final-cta" style={{ background: '#020617' }}>
+        <section className="ts-section ts-final-cta" style={{ background: '#0a0a0a' }}>
           <div className="ts-container ts-container-narrow">
             <div className="ts-cta-box">
-              <div className="ts-cta-glow" style={{ background: 'radial-gradient(ellipse at top, rgba(14, 165, 233, 0.4) 0%, transparent 70%)' }}></div>
+              <div className="ts-cta-glow" style={{ background: 'radial-gradient(ellipse at top, rgba(0, 217, 180, 0.4) 0%, transparent 70%)' }}></div>
               <h2 className="ts-cta-title">Ready to scale up?</h2>
               <p className="ts-cta-desc">
                 Stop pasting links one by one. Process your entire backlog today.

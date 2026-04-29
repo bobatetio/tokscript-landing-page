@@ -2,7 +2,7 @@
 
 :root {
   /* Colors */
-  --bg-dark: #020617;
+  --bg-dark: #0a0a0a;
   --bg-card: rgba(2, 6, 23, 0.4);
   --bg-card-featured: #0d0d0d;
 
@@ -112,13 +112,13 @@
   inset: 0;
   opacity: 0.05;
   background-size: 40px 40px;
-  background-image: linear-gradient(#4f46e5 1px, transparent 1px),
-    linear-gradient(90deg, #4f46e5 1px, transparent 1px);
+  background-image: linear-gradient(#3a3a3a 1px, transparent 1px),
+    linear-gradient(90deg, #3a3a3a 1px, transparent 1px);
 }
 .bg-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, transparent 0%, #020617 90%);
+  background: radial-gradient(circle at center, transparent 0%, #0a0a0a 90%);
 }
 .bg-glow-blob {
   position: absolute;
@@ -573,7 +573,7 @@
 
 .btn-primary {
   background: linear-gradient(to right, #00D9B4, #00b694);
-  color: #020617;
+  color: #0a0a0a;
   box-shadow: 0 0 30px rgba(0, 217, 180, 0.3);
 }
 .btn-primary:hover {
@@ -598,7 +598,7 @@
   left: 50%;
   transform: translateX(-50%);
   background: linear-gradient(to right, #00D9B4, #2dd4bf);
-  color: #020617;
+  color: #0a0a0a;
   font-size: 0.5rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -831,7 +831,7 @@
 
 .btn-white {
   background: white;
-  color: #020617;
+  color: #0a0a0a;
   padding: 1rem 2rem;
   border-radius: 0.75rem;
   font-weight: 900;

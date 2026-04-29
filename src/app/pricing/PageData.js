@@ -147,7 +147,7 @@ const FAQItem = ({ q, a }) => {
             transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
             transition: "transform 0.3s",
             backgroundColor: isOpen ? "#00D9B4" : "#1a1a1a",
-            color: isOpen ? "#020617" : "#7a7a7a",
+            color: isOpen ? "#0a0a0a" : "#7a7a7a",
           }}
         >
           <ChevronDown size={16} strokeWidth={2.5} />

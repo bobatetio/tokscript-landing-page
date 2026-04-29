@@ -27,7 +27,7 @@ export default function CancelFlowDemo() {
     <div
       style={{
         minHeight: "100vh",
-        backgroundColor: "#0a1025",
+        backgroundColor: "#0d0d0d",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -63,8 +63,8 @@ export default function CancelFlowDemo() {
         <button
           onClick={openMonthly}
           style={{
-            backgroundColor: "rgba(99, 102, 241, 0.2)",
-            border: "1px solid rgba(99, 102, 241, 0.3)",
+            backgroundColor: "rgba(58, 58, 58, 0.2)",
+            border: "1px solid rgba(58, 58, 58, 0.3)",
             color: "#ffffff",
             padding: "1.5rem 2rem",
             borderRadius: "0.75rem",
@@ -80,8 +80,8 @@ export default function CancelFlowDemo() {
         <button
           onClick={openAnnual}
           style={{
-            backgroundColor: "rgba(0, 242, 234, 0.1)",
-            border: "1px solid rgba(0, 242, 234, 0.3)",
+            backgroundColor: "rgba(0, 217, 180, 0.1)",
+            border: "1px solid rgba(0, 217, 180, 0.3)",
             color: "#ffffff",
             padding: "1.5rem 2rem",
             borderRadius: "0.75rem",

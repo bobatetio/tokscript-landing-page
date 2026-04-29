@@ -54,7 +54,7 @@ h1 {
     line-height: 72px;
   }
   &.cyan-pink-gradient {
-    background: linear-gradient(275.45deg, #ff5e8f 2.38%, #00f2ea 84.13%);
+    background: linear-gradient(275.45deg, #ff5e8f 2.38%, #00D9B4 84.13%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -336,12 +336,12 @@ button {
     border: 1px solid transparent;
     text-wrap: nowrap;
     background:
-      linear-gradient(to right, #0a162a, #0a182c, #09192d) padding-box,
+      linear-gradient(to right, #0a0a0a, #0a0a0a, #0a0a0a) padding-box,
       linear-gradient(
           180deg,
-          rgba(0, 242, 234, 0.32) 0%,
-          rgba(0, 242, 234, 0.1) 50%,
-          rgba(0, 242, 234, 0.16) 100%
+          rgba(0, 217, 180, 0.32) 0%,
+          rgba(0, 217, 180, 0.1) 50%,
+          rgba(0, 217, 180, 0.16) 100%
         )
         border-box;
     img,
@@ -476,7 +476,7 @@ button {
 
 .progress-wrapper {
   .progress {
-    background-color: #036b6842;
+    background-color: #1a1a1a42;
     .progress-bar {
       background-color: $primary_cyan;
       border-radius: 50px;
@@ -728,7 +728,7 @@ button {
 
   /* When the toggle is checked, change track color and move handle */
   .toggle-label input:checked ~ .toggle-switch {
-    background: #073446;
+    background: #141414;
   }
 
   .toggle-label input:checked ~ .toggle-switch:after {

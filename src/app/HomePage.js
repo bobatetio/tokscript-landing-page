@@ -1087,7 +1087,7 @@ export default function LandingPage() {
         <section id="vt-platform" className="vt-platform-section">
           <div className="vt-platform-inner">
             <div className="vt-platform-header">
-              <span className="vt-pill">How It Works</span>
+              <span className="vt-pill">Features</span>
               <h2 className="vt-h2">#1 Video Transcript<br />&amp; Download Platform</h2>
               <p className="vt-sub">The best tool for video transcription, bulk downloads, and AI content</p>
             </div>
@@ -1128,41 +1128,52 @@ export default function LandingPage() {
 
             <div className="vt-row">
               <div className="vt-text">
-                <h3 className="vt-row-title">Cloud Storage</h3>
-                <p className="vt-row-body">Store all your video transcripts securely in the cloud with enterprise-grade encryption. Instantly sync and access your files across every device. Anytime, anywhere, with automatic cloud backup and unmatched reliability.</p>
+                <h3 className="vt-row-title">TokScript MCP</h3>
+                <p className="vt-row-body">TokScript now lives inside Claude and ChatGPT. Connect once and pull transcripts, download videos, and analyze creator libraries — all without leaving the conversation. Built on the open Model Context Protocol so your AI uses TokScript as a native tool.</p>
                 <ul className="vt-list">
-                  <li>Secure cloud storage with encryption</li>
-                  <li>Cross-device automatic sync</li>
-                  <li>Access from anywhere, anytime</li>
-                  <li>Enterprise-grade reliability</li>
+                  <li>Native integration with Claude &amp; ChatGPT</li>
+                  <li>Pull transcripts directly inside your AI</li>
+                  <li>Analyze creator libraries in chat</li>
+                  <li>One-click setup — no API wiring required</li>
                 </ul>
-                <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                <Link href="/mcp" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
               </div>
-              <div className="vt-visual vt-visual-cloud">
-                <div className="vt-currency-card">
-                  <div className="vt-currency-flag" aria-hidden>
-                    <svg viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg" width="28" height="18"><rect width="28" height="18" rx="2" fill="#fff"/><rect width="28" height="6" rx="2" fill="#007a3d"/><rect y="12" width="28" height="6" rx="2" fill="#ce1126"/><polygon points="0,0 9,9 0,18" fill="#000"/></svg>
+              <div className="vt-visual vt-visual-mcp">
+                <div className="vt-mcp-card">
+                  <div className="vt-mcp-header">
+                    <span className="vt-mcp-title">MCP Connection</span>
+                    <span className="vt-mcp-pill"><span className="vt-mcp-dot" />Connected</span>
                   </div>
-                  <div className="vt-currency-info"><div className="vt-currency-code">KWD</div><div className="vt-currency-name">Kuwaiti Dinar</div></div>
-                  <div className="vt-currency-amount"><div className="vt-currency-value">5,780 KWD</div><div className="vt-currency-conv">18,865.80 USD</div></div>
-                </div>
-                <div className="vt-currency-card">
-                  <div className="vt-currency-flag" aria-hidden>
-                    <svg viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg" width="28" height="18"><rect width="28" height="18" rx="9" fill="#003399"/><g fill="#FFCC00" transform="translate(14 9)"><circle r="0.7" cx="0" cy="-5"/><circle r="0.7" cx="2.94" cy="-4.04"/><circle r="0.7" cx="4.76" cy="-1.55"/><circle r="0.7" cx="4.76" cy="1.55"/><circle r="0.7" cx="2.94" cy="4.04"/><circle r="0.7" cx="0" cy="5"/><circle r="0.7" cx="-2.94" cy="4.04"/><circle r="0.7" cx="-4.76" cy="1.55"/><circle r="0.7" cx="-4.76" cy="-1.55"/><circle r="0.7" cx="-2.94" cy="-4.04"/></g></svg>
+                  <div className="vt-mcp-row vt-mcp-row-claude">
+                    <div className="vt-mcp-logo vt-mcp-logo-claude" aria-hidden>
+                      <svg viewBox="0 0 32 32" width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path fill="#D97757" d="M16.5 4.5c-3.4 0-6 1.4-7.5 4-1.4-2.6-4-4-7.5-4l3.4 14.6L8 27.5l3-9.4 3 9.4 3.1-8.4z"/></svg>
+                    </div>
+                    <div className="vt-mcp-info">
+                      <strong>Claude</strong>
+                      <span>Active · Pulling transcripts</span>
+                    </div>
+                    <span className="vt-mcp-status">Live</span>
                   </div>
-                  <div className="vt-currency-info"><div className="vt-currency-code">EUR</div><div className="vt-currency-name">EURO</div></div>
-                  <div className="vt-currency-amount"><div className="vt-currency-value">3,456 EUR</div><div className="vt-currency-conv">3,751.80 USD</div></div>
-                </div>
-                <div className="vt-currency-card">
-                  <div className="vt-currency-flag" aria-hidden>
-                    <svg viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg" width="28" height="18"><rect width="28" height="18" rx="2" fill="#bf0a30"/><rect y="1.4" width="28" height="1.4" fill="#fff"/><rect y="4.2" width="28" height="1.4" fill="#fff"/><rect y="7" width="28" height="1.4" fill="#fff"/><rect y="9.8" width="28" height="1.4" fill="#fff"/><rect y="12.6" width="28" height="1.4" fill="#fff"/><rect y="15.4" width="28" height="1.4" fill="#fff"/><rect width="12" height="9.8" fill="#002868"/></svg>
+                  <div className="vt-mcp-row vt-mcp-row-chatgpt">
+                    <div className="vt-mcp-logo vt-mcp-logo-chatgpt" aria-hidden>
+                      <svg viewBox="0 0 32 32" width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path fill="#10A37F" d="M29.07 13.1a7.86 7.86 0 0 0-.7-6.55 8.05 8.05 0 0 0-8.7-3.83 8.05 8.05 0 0 0-13.66 2.94 7.95 7.95 0 0 0-5.32 3.86 8.05 8.05 0 0 0 1 9.45 7.86 7.86 0 0 0 .7 6.55 8.05 8.05 0 0 0 8.7 3.83 7.95 7.95 0 0 0 6 2.66 8.05 8.05 0 0 0 7.66-5.6 7.95 7.95 0 0 0 5.32-3.86 8.05 8.05 0 0 0-1-9.45zM16.69 28.96a5.97 5.97 0 0 1-3.83-1.4l.18-.1 6.36-3.67a1.04 1.04 0 0 0 .52-.91v-9l2.69 1.55a.1.1 0 0 1 .05.07v7.43a5.99 5.99 0 0 1-5.97 6.03zM3.83 23.46a5.97 5.97 0 0 1-.71-4.01l.18.11 6.36 3.67a1.04 1.04 0 0 0 1.05 0l7.77-4.49v3.1a.1.1 0 0 1-.04.08l-6.43 3.71a5.97 5.97 0 0 1-8.18-2.18zM2.16 9.59a5.97 5.97 0 0 1 3.13-2.62v7.56a1.04 1.04 0 0 0 .52.9l7.74 4.46-2.69 1.55a.1.1 0 0 1-.09 0l-6.43-3.72a5.97 5.97 0 0 1-2.18-8.13zm22.06 5.13l-7.77-4.49 2.69-1.55a.1.1 0 0 1 .09 0l6.43 3.71a5.97 5.97 0 0 1-.92 10.78v-7.56a1.04 1.04 0 0 0-.52-.89zm2.68-4.03l-.18-.11-6.35-3.69a1.04 1.04 0 0 0-1.05 0L11.55 11.4v-3.1a.1.1 0 0 1 .04-.08l6.43-3.71a5.97 5.97 0 0 1 8.88 6.18zM10.08 16.21l-2.7-1.55a.1.1 0 0 1-.04-.08V7.16a5.97 5.97 0 0 1 9.79-4.59l-.18.1L10.6 6.34a1.04 1.04 0 0 0-.52.91zm1.46-3.16l3.46-2 3.46 2v4l-3.46 2-3.46-2z"/></svg>
+                    </div>
+                    <div className="vt-mcp-info">
+                      <strong>ChatGPT</strong>
+                      <span>Active · Custom GPT ready</span>
+                    </div>
+                    <span className="vt-mcp-status">Live</span>
                   </div>
-                  <div className="vt-currency-info"><div className="vt-currency-code">USD</div><div className="vt-currency-name">United States Dollar</div></div>
-                  <div className="vt-currency-amount"><div className="vt-currency-value">3,657 USD</div><div className="vt-currency-conv">5,809.56 BTD</div></div>
-                </div>
-                <div className="vt-currency-card vt-currency-card-muted">
-                  <div className="vt-currency-info"><div className="vt-currency-code">KYD</div><div className="vt-currency-name">Cayman Islands Dollar</div></div>
-                  <div className="vt-currency-amount"><div className="vt-currency-value">1,345 KYD</div><div className="vt-currency-conv">1,617.67 USD</div></div>
+                  <div className="vt-mcp-tools">
+                    <div className="vt-mcp-tool">Transcripts</div>
+                    <div className="vt-mcp-tool">Downloads</div>
+                    <div className="vt-mcp-tool">Search</div>
+                    <div className="vt-mcp-tool">Analytics</div>
+                  </div>
+                  <div className="vt-mcp-footer">
+                    <span>12 tools exposed</span>
+                    <span>Open Protocol Standard</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1234,14 +1245,67 @@ export default function LandingPage() {
                 <img src="/figma-rows/07-chrome.png" alt="Chrome extension panel showing engagement metrics" loading="lazy" />
               </div>
             </div>
+
+            <div className="vt-row vt-row-reverse">
+              <div className="vt-visual vt-visual-ai">
+                <div className="vt-ai-card">
+                  <div className="vt-ai-header">
+                    <span className="vt-ai-title">AI Agent Dashboard</span>
+                    <span className="vt-ai-pill">POWERED BY AI</span>
+                  </div>
+                  <div className="vt-ai-row vt-ai-row-orange">
+                    <div className="vt-ai-icon" aria-hidden>
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="#FB923C" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c.5 4 3.5 4.5 4.5 8 1 3.5-2 6-4.5 6S6.5 13.5 7.5 10C8.5 6.5 11.5 6 12 2z M12 22c-5 0-8-3-8-7 0-2 1-3.5 2.5-5-.5 4 1.5 6 5.5 6s5.5-2 5.5-6c1.5 1.5 2.5 3 2.5 5 0 4-3 7-8 7z"/></svg>
+                    </div>
+                    <div className="vt-ai-info">
+                      <strong>Agent #1: Viral Hook Generator</strong>
+                      <span>Creates viral TikTok hooks from transcript topics</span>
+                    </div>
+                    <button className="vt-ai-btn vt-ai-btn-orange" type="button">Generate</button>
+                  </div>
+                  <div className="vt-ai-row vt-ai-row-purple">
+                    <div className="vt-ai-icon" aria-hidden>
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="#C084FC" xmlns="http://www.w3.org/2000/svg"><path d="M3 21l1.5-5.5L15 5l4 4-10.5 10.5L3 21zm14-14l-2-2 2-2 2 2-2 2z"/></svg>
+                    </div>
+                    <div className="vt-ai-info">
+                      <strong>Agent #2: Viral Script Writer</strong>
+                      <span>Rewrites transcripts into better viral scripts</span>
+                    </div>
+                    <button className="vt-ai-btn vt-ai-btn-purple" type="button">Rewrite</button>
+                  </div>
+                  <div className="vt-ai-row vt-ai-row-blue">
+                    <div className="vt-ai-icon" aria-hidden>
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="#60A5FA" xmlns="http://www.w3.org/2000/svg"><path d="M12 3a4 4 0 0 0-4 4v1a4 4 0 0 0-2 7.5A4 4 0 0 0 9 21h6a4 4 0 0 0 3-7.5A4 4 0 0 0 16 6V7a4 4 0 0 0-4-4z"/></svg>
+                    </div>
+                    <div className="vt-ai-info">
+                      <strong>Agent #3: Virality Explainer</strong>
+                      <span>Explains psychology behind viral content + new scripts</span>
+                    </div>
+                    <button className="vt-ai-btn vt-ai-btn-blue" type="button">Analyze</button>
+                  </div>
+                </div>
+              </div>
+              <div className="vt-text">
+                <h3 className="vt-row-title">AI Agents</h3>
+                <p className="vt-row-body">AI-powered virality: hooks, viral script writing, and video breakdown. Unlock the secret weapons behind today&apos;s top viral videos, powered by AI. Designed for creators who want to win attention and grow fast.</p>
+                <ul className="vt-list">
+                  <li>Viral Hook Generator for instant engagement</li>
+                  <li>Script rewriter with viral essence preservation</li>
+                  <li>Virality psychology analysis and insights</li>
+                  <li>One-click content transformation</li>
+                </ul>
+                <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+              </div>
+            </div>
           </div>
         </section>
 
         <div className="pricing-card-detail">
           <div className="container">
-            <div className="title-section">
-              <h3>Pricing</h3>
-              <p>Find the plan that fits your content workflow</p>
+            <div className="ur-header pricing-header">
+              <span className="ur-pill">Pricing</span>
+              <h2 className="ur-title">Find the plan that fits your content workflow</h2>
+              <p className="ur-sub">Start free, upgrade when you&apos;re ready. Every plan includes Claude and ChatGPT integration, Chrome extension, and full transcript downloads.</p>
             </div>
 
             {/* Mobile Tabs */}
@@ -1875,35 +1939,32 @@ export default function LandingPage() {
         </div>
 
         <section className="ai-features-section">
-          <div className="container">
-            <div className="ai-features-div">
-              <div className="title text-center">
-                <strong className="white w-600">
-                  Try our latest AI features!
-                </strong>
-              </div>
-              <div className="row row-cols-1 row-cols-md-3 row-cols-xl-5 justify-content-center">
-                {featureCards.map((item, index) => (
-                  <div className="col mb-5" key={index}>
-                    <div className="feature-card">
-                      <Image
-                        src={item.icon}
-                        alt={item.title}
-                        className={item.imageBgClass}
-                        width={35}
-                        height={33}
-                        loading="lazy"
-                      />
-                      <div className="content-div">
-                        <strong className="ex-small white w-700">
-                          {item.title}
-                        </strong>
-                        <p className="ex-small w-500">{item.description}</p>
-                      </div>
-                    </div>
+          <div className="ai-features-inner">
+            <div className="ai-features-header">
+              <span className="ai-features-pill">AI Features</span>
+              <h2 className="ai-features-title">Try our latest AI features</h2>
+              <p className="ai-features-sub">
+                Five purpose-built tools that turn any video into shareable, viral-ready content.
+              </p>
+            </div>
+            <div className="ai-features-grid">
+              {featureCards.map((item, index) => (
+                <div className={`ai-feature-card ai-feature-card-${item.imageBgClass}`} key={index}>
+                  <div className="ai-feature-icon">
+                    <Image
+                      src={item.icon}
+                      alt={item.title}
+                      width={28}
+                      height={28}
+                      loading="lazy"
+                    />
                   </div>
-                ))}
-              </div>
+                  <div className="ai-feature-content">
+                    <strong className="ai-feature-title">{item.title}</strong>
+                    <p className="ai-feature-desc">{item.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>

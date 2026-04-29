@@ -57,7 +57,7 @@ const AnimatedLanguageSwitcher = ({ hovering }) => {
     <div style={{ position: 'relative', width: '320px', background: '#0d0d0d', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.5)', overflow: 'hidden' }}>
       {/* Top Bar: Language Select */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#1a1a1a', padding: '8px 12px', borderRadius: '8px', border: '1px solid rgba(99, 102, 241, 0.3)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#1a1a1a', padding: '8px 12px', borderRadius: '8px', border: '1px solid rgba(58, 58, 58, 0.3)' }}>
           <Globe2 size={14} color="#818cf8" />
           <span style={{ fontSize: '12px', color: '#c7d2fe', fontWeight: '500' }}>
             {step < 2 ? "English (US)" : "Spanish (ES)"}
@@ -85,7 +85,7 @@ const AnimatedLanguageSwitcher = ({ hovering }) => {
             style={{ position: 'absolute', top: '56px', left: '16px', width: '140px', background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', zIndex: 10, boxShadow: '0 10px 25px rgba(0,0,0,0.5)', overflow: 'hidden' }}
           >
             <div style={{ padding: '8px 12px', fontSize: '12px', color: '#7a7a7a', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>English (US)</div>
-            <div style={{ padding: '8px 12px', fontSize: '12px', color: '#fff', background: 'rgba(99, 102, 241, 0.2)' }}>Spanish (ES)</div>
+            <div style={{ padding: '8px 12px', fontSize: '12px', color: '#fff', background: 'rgba(58, 58, 58, 0.2)' }}>Spanish (ES)</div>
             <div style={{ padding: '8px 12px', fontSize: '12px', color: '#7a7a7a' }}>French (FR)</div>
           </motion.div>
         )}
@@ -121,7 +121,7 @@ const AnimatedLanguageSwitcher = ({ hovering }) => {
 
 const AnimatedReTranslate = ({ hovering }) => {
   return (
-    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0d0d0d 0%, #020617 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
+    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0d0d0d 0%, #0a0a0a 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '8px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -148,7 +148,7 @@ const AnimatedReTranslate = ({ hovering }) => {
              <div style={{ width: '24px', height: '4px', background: '#2a2a2a', borderRadius: '2px' }} />
           </div>
           <motion.div 
-            style={{ display: 'flex', alignItems: 'center', gap: '4px', background: hovering ? 'rgba(99, 102, 241, 0.15)' : '#1a1a1a', border: hovering ? '1px solid rgba(99, 102, 241, 0.4)' : '1px solid rgba(255,255,255,0.1)', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '4px', background: hovering ? 'rgba(58, 58, 58, 0.15)' : '#1a1a1a', border: hovering ? '1px solid rgba(58, 58, 58, 0.4)' : '1px solid rgba(255,255,255,0.1)', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer' }}
           >
             <motion.div animate={{ rotate: hovering ? 180 : 0 }} transition={{ duration: 0.5 }}>
               <RefreshCw size={10} color={hovering ? "#818cf8" : "#7a7a7a"} />
@@ -170,7 +170,7 @@ const AnimatedReTranslate = ({ hovering }) => {
               <span style={{ fontSize: '8px', color: '#34d399' }}>Translated Successfully</span>
             </div>
           </div>
-          <div style={{ background: 'rgba(99,102,241,0.2)', color: '#c7d2fe', padding: '2px 6px', borderRadius: '4px', fontSize: '8px', border: '1px solid rgba(99,102,241,0.3)' }}>ES</div>
+          <div style={{ background: 'rgba(58,58,58,0.2)', color: '#c7d2fe', padding: '2px 6px', borderRadius: '4px', fontSize: '8px', border: '1px solid rgba(58,58,58,0.3)' }}>ES</div>
         </motion.div>
       </div>
     </div>
@@ -214,7 +214,7 @@ const AnimatedClientNative = ({ hovering }) => {
       {/* Sidebar */}
       <div style={{ width: '80px', borderRight: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', gap: '8px', paddingRight: '12px' }}>
         <div style={{ fontSize: '9px', color: '#7a7a7a', fontWeight: '600', textTransform: 'uppercase', marginBottom: '4px' }}>Export As</div>
-        <div style={{ padding: '6px', background: '#1a1a1a', border: '1px solid rgba(99,102,241,0.4)', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <div style={{ padding: '6px', background: '#1a1a1a', border: '1px solid rgba(58,58,58,0.4)', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
           <div style={{ width: '4px', height: '4px', background: '#818cf8', borderRadius: '50%' }} />
           <span style={{ fontSize: '9px', color: '#c7d2fe' }}>.TXT</span>
         </div>
@@ -256,7 +256,7 @@ const AnimatedClientNative = ({ hovering }) => {
             initial={{ bottom: -20, opacity: 0 }}
             animate={hovering ? { bottom: 8, opacity: 1 } : { bottom: -20, opacity: 0 }}
             transition={{ duration: 0.4 }}
-            style={{ position: 'absolute', left: '12px', right: '12px', background: '#6366f1', color: '#fff', padding: '6px', borderRadius: '4px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '4px', fontSize: '9px', fontWeight: 'bold', boxShadow: '0 4px 10px rgba(99,102,241,0.3)' }}
+            style={{ position: 'absolute', left: '12px', right: '12px', background: '#3a3a3a', color: '#fff', padding: '6px', borderRadius: '4px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '4px', fontSize: '9px', fontWeight: 'bold', boxShadow: '0 4px 10px rgba(58,58,58,0.3)' }}
           >
             <CheckCircle2 size={10} /> Copy to Clipboard
           </motion.div>
@@ -288,13 +288,13 @@ export default function TranslationsPage() {
         <section className="ts-hero">
           <div className="ts-hero-bg">
             <div className="ts-hero-grid"></div>
-            <div className="ts-glow-orb ts-glow-orb-1" style={{ background: '#6366f1' }}></div>
+            <div className="ts-glow-orb ts-glow-orb-1" style={{ background: '#3a3a3a' }}></div>
           </div>
           
           <div className="ts-container">
             <div className="ts-hero-split">
               <div className="ts-hero-content">
-                <div className="ts-kicker-badge" style={{ borderColor: 'rgba(99, 102, 241, 0.3)', background: 'rgba(99, 102, 241, 0.1)' }}>
+                <div className="ts-kicker-badge" style={{ borderColor: 'rgba(58, 58, 58, 0.3)', background: 'rgba(58, 58, 58, 0.1)' }}>
                   <Languages size={14} color="#818cf8" />
                   <span style={{ color: '#c7d2fe' }}>TRANSLATE TRANSCRIPTS</span>
                 </div>
@@ -307,13 +307,13 @@ export default function TranslationsPage() {
                   Turn TikToks, Reels, and Shorts into the language your clients speak. No manual copying and pasting.
                 </p>
                 <div className="ts-hero-cta-wrap">
-                  <a href="/" style={{ background: '#6366f1', color: '#fff', padding: '16px 24px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', boxShadow: '0 4px 14px rgba(99, 102, 241, 0.4)' }}>
+                  <a href="/" style={{ background: '#3a3a3a', color: '#fff', padding: '16px 24px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', boxShadow: '0 4px 14px rgba(58, 58, 58, 0.4)' }}>
                     Start Translating Videos <ArrowRight size={18} />
                   </a>
                 </div>
               </div>
               <div className="ts-hero-visual">
-                <div className="ts-hv-glass-panel" style={{ background: 'rgba(13, 13, 13, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(99, 102, 241, 0.2)' }}>
+                <div className="ts-hv-glass-panel" style={{ background: 'rgba(13, 13, 13, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(58, 58, 58, 0.2)' }}>
                   <AnimatedLanguageSwitcher hovering={true} />
                 </div>
               </div>
@@ -380,7 +380,7 @@ export default function TranslationsPage() {
             <p className="ts-section-subheading ts-text-center">Convert content into the language you actually need in three simple steps.</p>
             
             <div className="ts-animated-timeline">
-              <div className="ts-timeline-line"><div className="ts-timeline-line-glow" style={{ background: 'linear-gradient(to bottom, #6366f1, #4f46e5)' }}></div></div>
+              <div className="ts-timeline-line"><div className="ts-timeline-line-glow" style={{ background: 'linear-gradient(to bottom, #3a3a3a, #3a3a3a)' }}></div></div>
 
               {[
                 { title: "Pick a Video", desc: "Paste a new link or open a transcript you already saved." },
@@ -391,7 +391,7 @@ export default function TranslationsPage() {
                   {(hovering) => (
                     <>
                       <div className="ts-step-node-wrap">
-                        <div className="ts-step-node" style={hovering ? { borderColor: '#818cf8', background: '#312e81', color: '#fff', transform: 'scale(1.1)', boxShadow: '0 0 20px rgba(99,102,241,0.4)' } : {}}>{i + 1}</div>
+                        <div className="ts-step-node" style={hovering ? { borderColor: '#818cf8', background: '#312e81', color: '#fff', transform: 'scale(1.1)', boxShadow: '0 0 20px rgba(58,58,58,0.4)' } : {}}>{i + 1}</div>
                       </div>
                       <div className="ts-step-card-wrap">
                         <div className="ts-step-card">
@@ -412,7 +412,7 @@ export default function TranslationsPage() {
 
         {/* VISUAL BENTO GRIDS */}
         <section className="ts-bento-section">
-          <div className="ts-bg-aurora" style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(99,102,241,0.15) 0%, transparent 70%)' }}></div>
+          <div className="ts-bg-aurora" style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(58,58,58,0.15) 0%, transparent 70%)' }}></div>
           <div className="ts-container">
             <h2 className="ts-section-heading ts-text-center">Stop relying on external tools.</h2>
             <p className="ts-section-subheading ts-text-center">Manage all your translations inside TokScript.</p>
@@ -421,7 +421,7 @@ export default function TranslationsPage() {
               <HoverStateWrapper className="ts-feature-card-v4-wrap">
                 {(hovering) => (
                   <>
-                    <div className="ts-card-graphic" style={{ height: '240px', background: 'radial-gradient(ellipse at center, rgba(99, 102, 241, 0.15) 0%, transparent 70%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="ts-card-graphic" style={{ height: '240px', background: 'radial-gradient(ellipse at center, rgba(58, 58, 58, 0.15) 0%, transparent 70%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                        <AnimatedReTranslate hovering={hovering} />
                     </div>
                     <div className="ts-card-text-content">
@@ -491,15 +491,15 @@ export default function TranslationsPage() {
         </section>
 
         {/* FINAL CTA */}
-        <section className="ts-section ts-final-cta" style={{ background: '#020617' }}>
+        <section className="ts-section ts-final-cta" style={{ background: '#0a0a0a' }}>
           <div className="ts-container ts-container-narrow">
             <div className="ts-cta-box">
-              <div className="ts-cta-glow" style={{ background: 'radial-gradient(ellipse at top, rgba(99, 102, 241, 0.4) 0%, transparent 70%)' }}></div>
+              <div className="ts-cta-glow" style={{ background: 'radial-gradient(ellipse at top, rgba(58, 58, 58, 0.4) 0%, transparent 70%)' }}></div>
               <h2 className="ts-cta-title">Stop letting language slow you down.</h2>
               <p className="ts-cta-desc">
                 Translate any video directly inside your TokScript library.
               </p>
-              <a href="/" className="ts-btn-primary" style={{ background: '#6366f1', color: '#fff', border: 'none' }}>Start Translating Videos →</a>
+              <a href="/" className="ts-btn-primary" style={{ background: '#3a3a3a', color: '#fff', border: 'none' }}>Start Translating Videos →</a>
             </div>
           </div>
         </section>

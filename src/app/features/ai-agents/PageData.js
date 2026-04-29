@@ -60,7 +60,7 @@ const AnimatedHookGen = ({ hovering }) => {
   }, [hovering]);
 
   return (
-    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0d0d0d 0%, #020617 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
+    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0d0d0d 0%, #0a0a0a 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
         <Sparkles size={14} color="#f43f5e" />
         <span style={{ fontSize: '11px', color: '#fff', fontWeight: '500' }}>Hook Generator</span>
@@ -116,7 +116,7 @@ const AnimatedScriptGen = ({ hovering }) => {
   ];
 
   return (
-    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0d0d0d 0%, #020617 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
+    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0d0d0d 0%, #0a0a0a 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <ScrollText size={14} color="#f43f5e" />
@@ -177,7 +177,7 @@ const AnimatedFrameworkExtract = ({ hovering }) => {
   ];
 
   return (
-    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0d0d0d 0%, #020617 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0d0d0d 0%, #0a0a0a 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)', position: 'relative', overflow: 'hidden' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
         <GitFork size={14} color="#f43f5e" />
         <span style={{ fontSize: '11px', color: '#fff', fontWeight: '500' }}>Framework Extractor</span>
@@ -468,7 +468,7 @@ export default function AIAgentsPage() {
         </section>
 
         {/* FINAL CTA */}
-        <section className="ts-section ts-final-cta" style={{ background: '#020617' }}>
+        <section className="ts-section ts-final-cta" style={{ background: '#0a0a0a' }}>
           <div className="ts-container ts-container-narrow">
             <div className="ts-cta-box">
               <div className="ts-cta-glow" style={{ background: 'radial-gradient(ellipse at top, rgba(244, 63, 94, 0.4) 0%, transparent 70%)' }}></div>

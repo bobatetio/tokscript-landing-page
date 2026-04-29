@@ -846,7 +846,7 @@ export default function PageData() {
                         {f.id === 'sparkles' && (
                           <div className="ts-faux-ai-chat" style={{ maxWidth: '200px', transform: hovering ? 'scale(1.05)' : 'scale(1)', transition: 'transform 0.4s ease', opacity: hovering ? 1 : 0.4 }}>
                             <div className="ts-fac-in" style={{ padding: '8px 12px', fontSize: '10px' }}>Generate hook...</div>
-                            <div className="ts-fac-out" style={{ padding: '8px 12px', fontSize: '10px', background: hovering ? 'linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%)' : '#1a1a1a', boxShadow: hovering ? '0 5px 15px rgba(59, 130, 246, 0.3)' : 'none' }}>"Stop scrolling..."</div>
+                            <div className="ts-fac-out" style={{ padding: '8px 12px', fontSize: '10px', background: hovering ? 'linear-gradient(135deg, #3a3a3a 0%, #3b82f6 100%)' : '#1a1a1a', boxShadow: hovering ? '0 5px 15px rgba(59, 130, 246, 0.3)' : 'none' }}>"Stop scrolling..."</div>
                           </div>
                         )}
                         {f.id === 'clock' && (
