@@ -1065,35 +1065,6 @@ export default function LandingPage() {
                 )}
               </div>
             </div>
-            <div className="ai-features-div">
-              <div className="title text-center">
-                <strong className="white w-600">
-                  Try our latest AI features!
-                </strong>
-              </div>
-              <div className="row row-cols-1 row-cols-md-3 row-cols-xl-5 justify-content-center">
-                {featureCards.map((item, index) => (
-                  <div className="col mb-5" key={index}>
-                    <div className="feature-card">
-                      <Image
-                        src={item.icon}
-                        alt={item.title}
-                        className={item.imageBgClass}
-                        width={35}
-                        height={33}
-                        loading="lazy"
-                      />
-                      <div className="content-div">
-                        <strong className="ex-small white w-700">
-                          {item.title}
-                        </strong>
-                        <p className="ex-small w-500">{item.description}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
         <section id="up-running" className="up-running-section">
@@ -1902,6 +1873,40 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
+
+        <section className="ai-features-section">
+          <div className="container">
+            <div className="ai-features-div">
+              <div className="title text-center">
+                <strong className="white w-600">
+                  Try our latest AI features!
+                </strong>
+              </div>
+              <div className="row row-cols-1 row-cols-md-3 row-cols-xl-5 justify-content-center">
+                {featureCards.map((item, index) => (
+                  <div className="col mb-5" key={index}>
+                    <div className="feature-card">
+                      <Image
+                        src={item.icon}
+                        alt={item.title}
+                        className={item.imageBgClass}
+                        width={35}
+                        height={33}
+                        loading="lazy"
+                      />
+                      <div className="content-div">
+                        <strong className="ex-small white w-700">
+                          {item.title}
+                        </strong>
+                        <p className="ex-small w-500">{item.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
         <section className="users-info-section">
           <div className="container">
             <div className="inner-section">
