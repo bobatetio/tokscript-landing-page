@@ -1096,45 +1096,21 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-        <section className="preview-section">
-          <div className="container">
-            <div className="inner-section">
-              <div className="title-section">
-                <h2>
-                  Preview: <br /> Your Dashboard Awaits
-                </h2>
-                <p className="fw-medium w-500">
-                  Get instant access to all your transcripts, AI agents,
-                  folders, bulk Uploads + more!
-                </p>
-              </div>
-              <div className="dashboard-img-section">
-                <div className="bottom-content-wrapper">
-                  <div className="sign-up-div">
-                    {user ? (
-                      <Link
-                        href={`${process.env.NEXT_PUBLIC_APP_URL}/dashboard`}
-                        className="btn-style"
-                      >
-                        <IoLockClosed />
-                        Access your full dashboard
-                      </Link>
-                    ) : (
-                      <Link
-                        href={`${process.env.NEXT_PUBLIC_APP_URL}/sign-up`}
-                        className="btn-style"
-                      >
-                        <IoLockClosed />
-                        Sign in to access your full dashboard
-                      </Link>
-                    )}
-                  </div>
-                  {/* <div className="trust-pilot-card">
-                    <Image src={trustPilotLogo} alt="Trust Pilot Logo" />
-                  </div> */}
-                </div>
-              </div>
+        <section id="up-running" className="up-running-section">
+          <div className="ur-inner">
+            <div className="ur-header">
+              <span className="ur-pill">New · TokScript MCP</span>
+              <h2 className="ur-title">TokScript now lives inside Claude &amp; ChatGPT.</h2>
+              <p className="ur-sub">Connect TokScript to your AI in one click. Pull transcripts, download videos, and analyze creator libraries — all without leaving the conversation.</p>
             </div>
+            <div className="ur-video">
+              <iframe
+                src="https://www.youtube.com/embed/5m37dBH-G_g?autoplay=1&mute=1&loop=1&playlist=5m37dBH-G_g&controls=0&rel=0&modestbranding=1&playsinline=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0"
+                allow="autoplay; encrypted-media"
+                title="TokScript MCP — works inside Claude and ChatGPT"
+              ></iframe>
+            </div>
+            <Link href="/mcp" className="ur-cta">Try it Free Today</Link>
           </div>
         </section>
         <section id="vt-platform" className="vt-platform-section">
