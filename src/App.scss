@@ -17036,10 +17036,10 @@ section h2 + p,
   }
 }
 
-/* ── #1 Video Transcript & Download Platform — Figma 240:2506 (exact) ── */
+/* ── #1 Video Transcript & Download Platform — clean professional spacing ── */
 .vt-platform-section {
   background: #000 !important;
-  padding: clamp(56px, 8vw, 120px) clamp(20px, 4vw, 40px) !important;
+  padding: clamp(80px, 10vw, 160px) clamp(24px, 5vw, 64px) !important;
   position: relative;
 
   .vt-platform-inner {
@@ -17047,25 +17047,26 @@ section h2 + p,
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: clamp(64px, 8vw, 112px);
+    gap: clamp(96px, 11vw, 160px);
   }
 
-  /* Section header */
+  /* Section header — generous breathing room */
   .vt-platform-header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: clamp(32px, 4vw, 56px);
   }
   .vt-pill {
     display: inline-flex;
     align-items: center;
-    padding: 5px 14px;
-    border-radius: 20px;
+    padding: 6px 16px;
+    border-radius: 999px;
     font-size: 12px;
     font-weight: 500;
+    letter-spacing: 0.04em;
     line-height: 1.4;
     color: #fff;
     background: linear-gradient(#0d0d0d, #0d0d0d) padding-box,
@@ -17074,9 +17075,10 @@ section h2 + p,
   }
   .vt-h2 {
     margin: 0;
-    font: 600 clamp(32px, 5.5vw, 56px)/1.06 Inter, system-ui, sans-serif !important;
+    font: 600 clamp(34px, 5.5vw, 56px)/1.1 Inter, system-ui, sans-serif !important;
     letter-spacing: -1.6px;
     color: #fff;
+    max-width: 720px;
   }
   .vt-sub {
     margin: 0;
@@ -17085,38 +17087,38 @@ section h2 + p,
     color: rgba(255, 255, 255, 0.6);
   }
 
-  /* Row */
+  /* Row — fluid, not pixel-locked */
   .vt-row {
     display: grid;
-    grid-template-columns: 536px 614px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
     align-items: center;
-    justify-content: center;
-    gap: 90px;
+    gap: clamp(48px, 7vw, 96px);
+    width: 100%;
   }
   .vt-row-reverse .vt-text { order: 2; }
   .vt-row-reverse .vt-visual { order: 1; }
 
   /* Text column */
   .vt-text {
-    width: 536px;
-    max-width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 40px;
+    gap: clamp(28px, 3vw, 40px);
+    max-width: 540px;
   }
   .vt-text > * { margin: 0; }
+  .vt-text-head { display: flex; flex-direction: column; gap: 18px; }
   .vt-row-title {
-    font: 600 40px/1.2 Inter, system-ui, sans-serif !important;
+    font: 600 clamp(28px, 3.4vw, 40px)/1.15 Inter, system-ui, sans-serif !important;
     color: #fff !important;
-    letter-spacing: -0.5px;
-    margin: 0 0 16px !important;
+    letter-spacing: -0.6px;
+    margin: 0 !important;
   }
   .vt-row-body {
-    max-width: 455px;
-    font: 500 18px/1.45 Inter, system-ui, sans-serif !important;
+    font: 500 clamp(15px, 1.4vw, 18px)/1.55 Inter, system-ui, sans-serif !important;
     color: rgba(255, 255, 255, 0.7) !important;
     margin: 0 !important;
+    max-width: 480px;
   }
   .vt-list {
     list-style: none;
@@ -17124,23 +17126,23 @@ section h2 + p,
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
     li {
       position: relative;
-      padding-left: 38px;
-      font: 500 18px/1.4 Inter, system-ui, sans-serif !important;
-      color: rgba(255, 255, 255, 0.7) !important;
+      padding-left: 36px;
+      font: 500 clamp(14.5px, 1.3vw, 16px)/1.5 Inter, system-ui, sans-serif !important;
+      color: rgba(255, 255, 255, 0.8) !important;
       &::before {
         content: "";
         position: absolute;
         left: 0;
         top: 50%;
         transform: translateY(-50%);
-        width: 26px;
-        height: 26px;
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
         background-color: #00b8b2;
-        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'><path d='M3 7l3 3 5-6' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>");
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2.5 6l2.5 2.5 4.5-5' stroke='%23fff' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>");
         background-position: center;
         background-repeat: no-repeat;
       }
@@ -17150,22 +17152,33 @@ section h2 + p,
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    height: 36px;
-    padding: 0 32px;
+    height: 42px;
+    padding: 0 26px;
     background: #00b8b2 !important;
     color: #fff !important;
-    font: 500 16px/1.2 Inter, system-ui, sans-serif !important;
+    font: 500 15px/1.2 Inter, system-ui, sans-serif !important;
     text-decoration: none !important;
     border-radius: 14px;
-    transition: opacity .2s, transform .15s;
-    &:hover { opacity: .9; transform: translateY(-1px); color: #fff !important; }
-    .vt-cta-arrow { font-size: 18px; line-height: 1; }
+    transition: opacity .2s, transform .15s, box-shadow .2s;
+    box-shadow: 0 6px 18px rgba(0, 184, 178, 0.18);
+    &:hover {
+      opacity: .92;
+      transform: translateY(-1px);
+      color: #fff !important;
+      box-shadow: 0 10px 22px rgba(0, 184, 178, 0.28);
+    }
+    .vt-cta-arrow {
+      font-size: 16px;
+      line-height: 1;
+      transition: transform .2s;
+    }
+    &:hover .vt-cta-arrow { transform: translateX(2px); }
   }
 
-  /* Visual column */
+  /* Visual column — consistent aspect-ratio that scales with viewport */
   .vt-visual {
-    width: 614px;
-    height: 630px;
+    width: 100%;
+    aspect-ratio: 614 / 540;
     border-radius: 24px;
     overflow: hidden;
     background: #0a0a0a;
@@ -17181,67 +17194,79 @@ section h2 + p,
     }
   }
 
-  /* Cloud Storage — inline currency cards */
+  /* Cloud Storage — currency cards */
   .vt-visual-cloud {
-    display: flex;
+    aspect-ratio: 614 / 540;
     flex-direction: column;
     justify-content: center;
-    gap: 16px;
-    padding: 40px 36px;
+    gap: 14px;
+    padding: clamp(32px, 4vw, 48px) clamp(28px, 4vw, 44px);
   }
   .vt-currency-card {
     display: grid;
-    grid-template-columns: 44px 1fr auto;
+    grid-template-columns: 40px 1fr auto;
     align-items: center;
-    gap: 18px;
-    padding: 18px 24px;
-    border-radius: 16px;
+    gap: 16px;
+    padding: 16px 22px;
+    border-radius: 14px;
     background: #fff;
     color: #06091a;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
     &.vt-currency-card-muted {
       background: #b5b5b5;
       grid-template-columns: 1fr auto;
       align-self: flex-end;
-      width: 92%;
+      width: 90%;
     }
   }
   .vt-currency-flag {
-    width: 44px; height: 28px;
+    width: 40px; height: 26px;
     border-radius: 50%;
     overflow: hidden;
     display: flex; align-items: center; justify-content: center;
     background: #f0f0f0;
-    svg { width: 32px; height: 22px; }
+    svg { width: 30px; height: 20px; }
   }
   .vt-currency-info { display: flex; flex-direction: column; gap: 2px; }
-  .vt-currency-code { font-size: 18px; font-weight: 700; }
-  .vt-currency-name { font-size: 12px; color: rgba(6,9,26,0.65); }
+  .vt-currency-code { font: 700 17px/1.2 Inter, sans-serif; }
+  .vt-currency-name { font: 400 12px/1.2 Inter, sans-serif; color: rgba(6,9,26,0.65); }
   .vt-currency-amount { text-align: right; }
-  .vt-currency-value { font-size: 18px; font-weight: 700; }
-  .vt-currency-conv { font-size: 12px; color: rgba(6,9,26,0.55); }
+  .vt-currency-value { font: 700 17px/1.2 Inter, sans-serif; }
+  .vt-currency-conv { font: 400 12px/1.2 Inter, sans-serif; color: rgba(6,9,26,0.55); margin-top: 2px; }
 
   /* Tablet */
-  @media (max-width: 1199px) {
-    .vt-row { grid-template-columns: 1fr; gap: 40px; justify-content: stretch; }
-    .vt-row .vt-text, .vt-row-reverse .vt-text { order: 2; width: 100%; align-items: flex-start; }
-    .vt-row .vt-visual, .vt-row-reverse .vt-visual { order: 1; width: 100%; height: auto; aspect-ratio: 614 / 630; }
-    .vt-text { gap: 32px; }
+  @media (max-width: 1023px) {
+    padding: clamp(64px, 8vw, 96px) 32px !important;
+    .vt-platform-inner { gap: clamp(72px, 9vw, 96px); }
+    .vt-row { grid-template-columns: 1fr; gap: 36px; }
+    .vt-row .vt-text, .vt-row-reverse .vt-text { order: 2; max-width: 100%; }
+    .vt-row .vt-visual, .vt-row-reverse .vt-visual { order: 1; }
+    .vt-text { gap: 28px; max-width: 640px; }
+    .vt-row-body { max-width: 640px; }
   }
 
   /* Mobile */
   @media (max-width: 640px) {
-    padding: 56px 16px !important;
-    .vt-platform-inner { gap: 64px; }
+    padding: 64px 20px !important;
+    .vt-platform-inner { gap: 72px; }
+    .vt-platform-header { gap: 16px; margin-bottom: 8px; }
     .vt-h2 { font-size: clamp(28px, 8vw, 36px) !important; letter-spacing: -1px; }
     .vt-sub { font-size: 14.5px; }
-    .vt-row-title { font-size: clamp(24px, 7vw, 30px) !important; }
-    .vt-row-body { font-size: 15px !important; max-width: 100%; }
-    .vt-list li { font-size: 14.5px !important; padding-left: 34px; }
+    .vt-text { gap: 24px; }
+    .vt-text-head { gap: 14px; }
+    .vt-row-title { font-size: clamp(24px, 7vw, 28px) !important; letter-spacing: -0.4px; }
+    .vt-row-body { font-size: 15px !important; line-height: 1.6 !important; }
+    .vt-list { gap: 14px; }
+    .vt-list li { font-size: 14.5px !important; padding-left: 32px; }
     .vt-list li::before { width: 22px; height: 22px; }
-    .vt-cta { height: 40px; padding: 0 22px; font-size: 14px !important; }
-    .vt-currency-card { padding: 14px 16px; gap: 12px; grid-template-columns: 36px 1fr auto; }
+    .vt-cta { height: 42px; padding: 0 20px; font-size: 14.5px !important; }
+    .vt-visual { border-radius: 18px; aspect-ratio: 16 / 12; }
+    .vt-visual-cloud { padding: 28px 20px; gap: 12px; aspect-ratio: auto; }
+    .vt-currency-card { padding: 14px 16px; gap: 12px; grid-template-columns: 32px 1fr auto; }
     .vt-currency-card.vt-currency-card-muted { grid-template-columns: 1fr auto; }
-    .vt-currency-code, .vt-currency-value { font-size: 15px; }
+    .vt-currency-flag { width: 32px; height: 22px; }
+    .vt-currency-flag svg { width: 24px; height: 16px; }
+    .vt-currency-code, .vt-currency-value { font-size: 14.5px; }
+    .vt-currency-name, .vt-currency-conv { font-size: 11.5px; }
   }
 }
