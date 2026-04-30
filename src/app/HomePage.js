@@ -1337,35 +1337,18 @@ export default function LandingPage() {
                         </div>
                       </div>
                       <div className="pc-body">
-                        <ul className="pc-list pc-list-detailed">
-                          <li>
-                            <Check size={16} strokeWidth={3} />
-                            <div>
-                              <strong>5 transcripts per day</strong>
-                              <span>Try it daily, no commitment</span>
-                            </div>
-                          </li>
-                          <li>
-                            <Check size={16} strokeWidth={3} />
-                            <div>
-                              <strong>5 translations per day</strong>
-                              <span>Any language, capped daily</span>
-                            </div>
-                          </li>
-                          <li>
-                            <Check size={16} strokeWidth={3} />
-                            <div>
-                              <strong>TikTok, Reels, Shorts</strong>
-                              <span>Pull from any major platform</span>
-                            </div>
-                          </li>
-                          <li>
-                            <Check size={16} strokeWidth={3} />
-                            <div>
-                              <strong>Basic Chrome Extension</strong>
-                              <span>One-click transcribe in your browser</span>
-                            </div>
-                          </li>
+                        <ul className="pc-list">
+                          <li><Check size={16} strokeWidth={3} /><span>5 transcripts per day</span></li>
+                          <li><Check size={16} strokeWidth={3} /><span>5 translations per day</span></li>
+                          <li><Check size={16} strokeWidth={3} /><span>TikTok, Reels, Shorts</span></li>
+                        </ul>
+                        <div className="pc-platforms pc-platforms-row">
+                          <TikTokIcon />
+                          <InstagramIcon />
+                          <YoutubeIcon />
+                        </div>
+                        <ul className="pc-list">
+                          <li><Check size={16} strokeWidth={3} /><span>Basic Chrome Extension</span></li>
                         </ul>
                         <div className="pc-separator">
                           <span className="pc-sep-line" />
@@ -1375,7 +1358,7 @@ export default function LandingPage() {
                         <ul className="pc-list pc-list-locked">
                           <li><X size={16} strokeWidth={3} /><span>AI Agents</span></li>
                           <li><X size={16} strokeWidth={3} /><span>Bulk Import</span></li>
-                          <li><X size={16} strokeWidth={3} /><span>Claude &amp; ChatGPT Integration</span></li>
+                          <li><X size={16} strokeWidth={3} /><span>Claude &amp; ChatGPT</span></li>
                         </ul>
                       </div>
                       <div className="pc-cta-wrap">
@@ -1435,90 +1418,37 @@ export default function LandingPage() {
                         </div>
                         <div className="pc-price-highlight">
                           <span className="pc-price-highlight-pill">That&apos;s $3.25/month</span>
-                          <span className="pc-price-highlight-note">Monthly plan = $120/year</span>
                         </div>
                       </div>
                       <div className="pc-body">
                         <div className="pc-group">
                           <div className="pc-group-title">Bulk Processing</div>
-                          <ul className="pc-list pc-list-detailed">
-                            <li>
-                              <Check size={16} strokeWidth={3} />
-                              <div>
-                                <strong>Unlimited transcripts</strong>
-                                <span>No daily caps — pull as much as you need</span>
-                              </div>
-                            </li>
-                            <li>
-                              <Check size={16} strokeWidth={3} />
-                              <div>
-                                <strong>Unlimited translations</strong>
-                                <span>Any video, any language</span>
-                              </div>
-                            </li>
-                            <li>
-                              <Check size={16} strokeWidth={3} />
-                              <div>
-                                <strong>Bulk import 50 videos at once</strong>
-                                <span>TikTok · Instagram · YouTube</span>
-                              </div>
-                            </li>
-                            <li>
-                              <Check size={16} strokeWidth={3} />
-                              <div>
-                                <strong>HD video downloads</strong>
-                                <span>No watermarks, ever</span>
-                              </div>
-                            </li>
+                          <div className="pc-platforms pc-platforms-row">
+                            <TikTokIcon />
+                            <InstagramIcon />
+                            <YoutubeIcon />
+                          </div>
+                          <ul className="pc-list">
+                            <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Unlimited translations</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos at once</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>HD downloads, no watermarks</span></li>
                           </ul>
                         </div>
                         <div className="pc-group">
                           <div className="pc-group-title">Add to Claude &amp; ChatGPT</div>
-                          <ul className="pc-list pc-list-detailed">
-                            <li>
-                              <Check size={16} strokeWidth={3} />
-                              <div>
-                                <strong>TikTok, Instagram &amp; YouTube inside Claude</strong>
-                                <span>Ask anything about any profile or video</span>
-                              </div>
-                            </li>
-                            <li>
-                              <Check size={16} strokeWidth={3} />
-                              <div>
-                                <strong>TikTok, Instagram &amp; YouTube inside ChatGPT</strong>
-                                <span>Same power, your favorite chat app</span>
-                              </div>
-                            </li>
-                          </ul>
-                          <div className="pc-platforms pc-platforms--ai">
-                            <span className="pc-ai-icon" style={{ color: "#D97757" }}><ClaudeIcon /></span>
-                            <span className="pc-ai-icon" style={{ color: "#10A37F" }}><ChatGPTIcon /></span>
+                          <div className="pc-ai-pair">
+                            <span className="pc-ai-logo pc-ai-logo--claude" aria-label="Claude"><ClaudeIcon /></span>
+                            <span className="pc-ai-logo pc-ai-logo--chatgpt" aria-label="ChatGPT"><ChatGPTIcon /></span>
                           </div>
+                          <p className="pc-group-blurb">Ask anything about any TikTok, Instagram, or YouTube — right inside your AI chat.</p>
                         </div>
                         <div className="pc-group">
                           <div className="pc-group-title">Everywhere You Work</div>
-                          <ul className="pc-list pc-list-detailed">
-                            <li>
-                              <Check size={16} strokeWidth={3} />
-                              <div>
-                                <strong>Chrome Extension</strong>
-                                <span>Transcribe any video in one click</span>
-                              </div>
-                            </li>
-                            <li>
-                              <Check size={16} strokeWidth={3} />
-                              <div>
-                                <strong>Mobile + Desktop apps</strong>
-                                <span>iOS, Android, Mac, Windows</span>
-                              </div>
-                            </li>
-                            <li>
-                              <Check size={16} strokeWidth={3} />
-                              <div>
-                                <strong>Cloud-synced dashboard</strong>
-                                <span>Everything connected, always in sync</span>
-                              </div>
-                            </li>
+                          <ul className="pc-list">
+                            <li><Check size={16} strokeWidth={3} /><span>Chrome Extension</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Mobile + Desktop apps</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Cloud-synced dashboard</span></li>
                           </ul>
                         </div>
                         <div className="pc-group">
@@ -1528,7 +1458,7 @@ export default function LandingPage() {
                               <Check size={16} strokeWidth={3} />
                               <div>
                                 <strong>Viral Hook Generator</strong>
-                                <span>Paste any transcript → Get 20+ proven hooks</span>
+                                <span>Paste any transcript → 20+ proven hooks</span>
                               </div>
                             </li>
                             <li>
@@ -1633,49 +1563,12 @@ export default function LandingPage() {
                       <div className="pc-body">
                         <div className="pc-group">
                           <div className="pc-group-title">Everything in Annual</div>
-                          <ul className="pc-list pc-list-detailed">
-                            <li>
-                              <Check size={16} strokeWidth={3} />
-                              <div>
-                                <strong>All 3 AI Agents (unlimited)</strong>
-                                <span>Hooks, scripts, virality breakdowns</span>
-                              </div>
-                            </li>
-                            <li>
-                              <Check size={16} strokeWidth={3} />
-                              <div>
-                                <strong>Unlimited transcripts</strong>
-                                <span>No daily caps</span>
-                              </div>
-                            </li>
-                            <li>
-                              <Check size={16} strokeWidth={3} />
-                              <div>
-                                <strong>Unlimited translations</strong>
-                                <span>Any video, any language</span>
-                              </div>
-                            </li>
-                            <li>
-                              <Check size={16} strokeWidth={3} />
-                              <div>
-                                <strong>Bulk import 50 videos</strong>
-                                <span>TikTok · Instagram · YouTube</span>
-                              </div>
-                            </li>
-                            <li>
-                              <Check size={16} strokeWidth={3} />
-                              <div>
-                                <strong>Claude &amp; ChatGPT integration</strong>
-                                <span>Pull any video into your AI chat</span>
-                              </div>
-                            </li>
-                            <li>
-                              <Check size={16} strokeWidth={3} />
-                              <div>
-                                <strong>Chrome, mobile &amp; desktop apps</strong>
-                                <span>Cloud-synced everywhere you work</span>
-                              </div>
-                            </li>
+                          <ul className="pc-list">
+                            <li><Check size={16} strokeWidth={3} /><span>All 3 AI Agents</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts &amp; translations</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Claude &amp; ChatGPT</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Chrome, mobile &amp; desktop</span></li>
                           </ul>
                         </div>
                         <div className="pc-warn-callout">
