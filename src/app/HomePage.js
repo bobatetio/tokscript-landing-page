@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import Header from "../components/Header";
 const ShareBar = dynamic(() => import("@/components/ShareBar"));
 import magicIcon from "../assets/images/icons/magicIcon.svg";
+import ClaudeIcon from "../assets/images/icons/ai/ClaudeIcon";
+import ChatGPTIcon from "../assets/images/icons/ai/ChatGPTIcon";
 import coverImg from "../assets/images/icons/coverImg.svg";
 import downloadIcon from "../assets/images/icons/download-lg.svg";
 import generateIcon from "../assets/images/icons/generate-viral.svg";
@@ -50,6 +52,7 @@ const ProcessComponent = dynamic(() => import("@/components/ProcessComponent"));
 const VideoLargeComponent = dynamic(() => import("@/components/VideoLargeComponent"));
 const TokToolsFeatures = dynamic(() => import("@/components/TokToolsFeatures"));
 const EnhenceExperience = dynamic(() => import("@/components/EnhenceExperience"));
+const HeroFloatingIcons = dynamic(() => import("@/components/HeroFloatingIcons"), { ssr: false });
 const CounterComponent = dynamic(() => import("@/components/CounterComponent"));
 const LegalDisclaimer = dynamic(() => import("@/components/LegalDisclaimer"));
 const DontMissOutModal = dynamic(() => import("@/components/modals/DontMissOutModal"), { ssr: false });
@@ -116,40 +119,41 @@ const Feature = ({ text, excluded = false, bold = false, sub = "" }) => (
   </div>
 );
 
+const BP = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const featureCards = [
   {
-    icon: coverImg,
+    icon: `${BP}/figma-rows/ai-cover.png`,
     title: "Save cover image",
     description: "Download HD cover images",
     imageBgClass: "blue",
     href: "#download-img",
   },
   {
-    icon: downloadIcon,
+    icon: `${BP}/figma-rows/ai-video.png`,
     title: "Download HD video",
     description: "No watermarks, full quality",
-    imageBgClass: "purple",
+    imageBgClass: "orange",
     href: "#download-video",
   },
   {
-    icon: generateIcon,
+    icon: `${BP}/figma-rows/ai-viral.png`,
     title: "Generate Viral Hooks",
     description: "Create viral hooks instantly",
-    imageBgClass: "green",
+    imageBgClass: "red",
     href: "#generate-hooks",
   },
   {
-    icon: scriptIcon,
+    icon: `${BP}/figma-rows/ai-script.png`,
     title: "Rewrite scripts",
     description: "Turn transcripts to viral videos",
-    imageBgClass: "yellow",
+    imageBgClass: "purple",
     href: "#rewrite-scripts",
   },
   {
-    icon: analyzeImg,
+    icon: `${BP}/figma-rows/ai-analyze.png`,
     title: "Analyze Virality",
     description: "Learn why video went viral",
-    imageBgClass: "orange",
+    imageBgClass: "pink",
     href: "#analyze-virality",
   },
 ];
@@ -355,6 +359,23 @@ export default function LandingPage() {
       fetchUserData();
     }
   }, [token, fetchUserData]);
+
+  // Scroll-driven feature spotlight: fade non-centered rows in #vt-platform
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const rows = document.querySelectorAll("#vt-platform .vt-row");
+    if (!rows.length) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle("vt-row-active", entry.isIntersecting);
+        });
+      },
+      { threshold: 0, rootMargin: "-38% 0px -38% 0px" }
+    );
+    rows.forEach((r) => obs.observe(r));
+    return () => obs.disconnect();
+  }, []);
 
   // Close translate dropdown when clicking outside
   useEffect(() => {
@@ -873,6 +894,7 @@ export default function LandingPage() {
       <Header />
       <main className="inner-page">
         <div className="banner-section">
+          <HeroFloatingIcons />
           <div className="container">
             <div className="inner-section">
               <div className="banner-content-wrapper">
@@ -1015,9 +1037,6 @@ export default function LandingPage() {
                   {error}
                 </div>
               )}
-              <Image src={tiktok1Icon} alt="TikTok" className="tiktok-icon" width={80} height={80} priority />
-              <Image src={youtube1Icon} alt="YouTube" className="youtube-icon" width={80} height={80} priority />
-              <Image src={instagram1Icon} alt="Instagram" className="instagram-icon" width={80} height={80} priority />
             </div>
             <div className="about-toktools-section" ref={processRef}>
               <div className="inner-section-wrapper">
@@ -1092,209 +1111,165 @@ export default function LandingPage() {
               <p className="vt-sub">The best tool for video transcription, bulk downloads, and AI content</p>
             </div>
 
+            {/* All 8 rows: text-card (498) + plain image (748), 22px gap. Strict alternation per Figma 240:2568 */}
+
+            {/* 1. Bulk Importing — text-card LEFT, visual RIGHT (Figma 240:2569) */}
             <div className="vt-row">
               <div className="vt-text">
-                <h3 className="vt-row-title">Bulk Importing</h3>
-                <p className="vt-row-body">Bulk import up to 50 TikTok, Instagram, or YouTube Shorts links at once to quickly download transcripts in bulk. Save time and manage large volumes of videos efficiently, all in one place.</p>
-                <ul className="vt-list">
-                  <li>Bulk import up to 50 video links</li>
-                  <li>TikTok, Instagram, and YouTube Shorts support</li>
-                  <li>Bulk export all transcripts at once</li>
-                  <li>Individual or batch processing options</li>
-                </ul>
-                <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                <div className="vt-text-inner">
+                  <h3 className="vt-row-title">Bulk Importing</h3>
+                  <p className="vt-row-body">Bulk import up to 50 TikTok, Instagram, or YouTube Shorts links at once to quickly download transcripts in bulk.</p>
+                  <ul className="vt-list">
+                    <li>Bulk import up to 50 video links</li>
+                    <li>TikTok, Instagram, and YouTube Shorts support</li>
+                    <li>Bulk export all transcripts at once</li>
+                    <li>Individual or batch processing options</li>
+                  </ul>
+                  <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                </div>
               </div>
               <div className="vt-visual">
-                <img src="/figma-rows/01-bulk.png" alt="Bulk import — paste up to 50 video links" loading="lazy" />
+                <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/01-bulk.png?v=20260430a`} alt="Bulk Importing" />
               </div>
             </div>
 
+            {/* 2. TokScript MCP — visual LEFT, text-card RIGHT (Figma 557:16010) */}
             <div className="vt-row vt-row-reverse">
               <div className="vt-visual">
-                <img src="/figma-rows/02-collection.png" alt="TikTok collection and playlist importing" loading="lazy" />
+                <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/02-mcp.png?v=20260430a`} alt="TokScript MCP" />
               </div>
               <div className="vt-text">
-                <h3 className="vt-row-title">TikTok Collection &amp; Playlist Importing</h3>
-                <p className="vt-row-body">Users can paste a single link to a public TikTok collection (bookmarks) or a creator&apos;s playlist to automatically import and transcribe all videos contained within it. Playlists often represent a creator&apos;s mini-series based on a specific subject, topic, or series.</p>
-                <ul className="vt-list">
-                  <li>Public TikTok collection importing</li>
-                  <li>Creator playlist auto-detection</li>
-                  <li>Series and topic-based organization</li>
-                  <li>Automatic metadata preservation</li>
-                </ul>
-                <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
-              </div>
-            </div>
-
-            <div className="vt-row">
-              <div className="vt-text">
-                <h3 className="vt-row-title">TokScript MCP</h3>
-                <p className="vt-row-body">TokScript now lives inside Claude and ChatGPT. Connect once and pull transcripts, download videos, and analyze creator libraries — all without leaving the conversation. Built on the open Model Context Protocol so your AI uses TokScript as a native tool.</p>
-                <ul className="vt-list">
-                  <li>Native integration with Claude &amp; ChatGPT</li>
-                  <li>Pull transcripts directly inside your AI</li>
-                  <li>Analyze creator libraries in chat</li>
-                  <li>One-click setup — no API wiring required</li>
-                </ul>
-                <Link href="/mcp" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
-              </div>
-              <div className="vt-visual vt-visual-mcp">
-                <div className="vt-mcp-card">
-                  <div className="vt-mcp-header">
-                    <span className="vt-mcp-title">MCP Connection</span>
-                    <span className="vt-mcp-pill"><span className="vt-mcp-dot" />Connected</span>
-                  </div>
-                  <div className="vt-mcp-row vt-mcp-row-claude">
-                    <div className="vt-mcp-logo vt-mcp-logo-claude" aria-hidden>
-                      <svg viewBox="0 0 32 32" width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path fill="#D97757" d="M16.5 4.5c-3.4 0-6 1.4-7.5 4-1.4-2.6-4-4-7.5-4l3.4 14.6L8 27.5l3-9.4 3 9.4 3.1-8.4z"/></svg>
-                    </div>
-                    <div className="vt-mcp-info">
-                      <strong>Claude</strong>
-                      <span>Active · Pulling transcripts</span>
-                    </div>
-                    <span className="vt-mcp-status">Live</span>
-                  </div>
-                  <div className="vt-mcp-row vt-mcp-row-chatgpt">
-                    <div className="vt-mcp-logo vt-mcp-logo-chatgpt" aria-hidden>
-                      <svg viewBox="0 0 32 32" width="22" height="22" xmlns="http://www.w3.org/2000/svg"><path fill="#10A37F" d="M29.07 13.1a7.86 7.86 0 0 0-.7-6.55 8.05 8.05 0 0 0-8.7-3.83 8.05 8.05 0 0 0-13.66 2.94 7.95 7.95 0 0 0-5.32 3.86 8.05 8.05 0 0 0 1 9.45 7.86 7.86 0 0 0 .7 6.55 8.05 8.05 0 0 0 8.7 3.83 7.95 7.95 0 0 0 6 2.66 8.05 8.05 0 0 0 7.66-5.6 7.95 7.95 0 0 0 5.32-3.86 8.05 8.05 0 0 0-1-9.45zM16.69 28.96a5.97 5.97 0 0 1-3.83-1.4l.18-.1 6.36-3.67a1.04 1.04 0 0 0 .52-.91v-9l2.69 1.55a.1.1 0 0 1 .05.07v7.43a5.99 5.99 0 0 1-5.97 6.03zM3.83 23.46a5.97 5.97 0 0 1-.71-4.01l.18.11 6.36 3.67a1.04 1.04 0 0 0 1.05 0l7.77-4.49v3.1a.1.1 0 0 1-.04.08l-6.43 3.71a5.97 5.97 0 0 1-8.18-2.18zM2.16 9.59a5.97 5.97 0 0 1 3.13-2.62v7.56a1.04 1.04 0 0 0 .52.9l7.74 4.46-2.69 1.55a.1.1 0 0 1-.09 0l-6.43-3.72a5.97 5.97 0 0 1-2.18-8.13zm22.06 5.13l-7.77-4.49 2.69-1.55a.1.1 0 0 1 .09 0l6.43 3.71a5.97 5.97 0 0 1-.92 10.78v-7.56a1.04 1.04 0 0 0-.52-.89zm2.68-4.03l-.18-.11-6.35-3.69a1.04 1.04 0 0 0-1.05 0L11.55 11.4v-3.1a.1.1 0 0 1 .04-.08l6.43-3.71a5.97 5.97 0 0 1 8.88 6.18zM10.08 16.21l-2.7-1.55a.1.1 0 0 1-.04-.08V7.16a5.97 5.97 0 0 1 9.79-4.59l-.18.1L10.6 6.34a1.04 1.04 0 0 0-.52.91zm1.46-3.16l3.46-2 3.46 2v4l-3.46 2-3.46-2z"/></svg>
-                    </div>
-                    <div className="vt-mcp-info">
-                      <strong>ChatGPT</strong>
-                      <span>Active · Custom GPT ready</span>
-                    </div>
-                    <span className="vt-mcp-status">Live</span>
-                  </div>
-                  <div className="vt-mcp-tools">
-                    <div className="vt-mcp-tool">Transcripts</div>
-                    <div className="vt-mcp-tool">Downloads</div>
-                    <div className="vt-mcp-tool">Search</div>
-                    <div className="vt-mcp-tool">Analytics</div>
-                  </div>
-                  <div className="vt-mcp-footer">
-                    <span>12 tools exposed</span>
-                    <span>Open Protocol Standard</span>
-                  </div>
+                <div className="vt-text-inner">
+                  <h3 className="vt-row-title">TokScript MCP</h3>
+                  <p className="vt-row-body">TokScript now lives inside Claude and ChatGPT. Pull transcripts, download videos, and analyze creator libraries — all without leaving the conversation.</p>
+                  <ul className="vt-list">
+                    <li>Native integration with Claude &amp; ChatGPT</li>
+                    <li>Pull transcripts directly inside your AI</li>
+                    <li>Analyze creator libraries in chat</li>
+                    <li>One-click setup — no API wiring required</li>
+                  </ul>
+                  <Link href="/mcp" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
                 </div>
               </div>
             </div>
 
+            {/* 3. TikTok Collection & Playlist Importing — text-card LEFT, visual RIGHT (Figma 558:16543) */}
+            <div className="vt-row">
+              <div className="vt-text">
+                <div className="vt-text-inner">
+                  <h3 className="vt-row-title">TikTok Collection &amp; Playlist Importing</h3>
+                  <p className="vt-row-body">Paste a single link to a public TikTok collection (bookmarks) or a creator&apos;s playlist to automatically import and transcribe all videos contained within it.</p>
+                  <ul className="vt-list">
+                    <li>Public TikTok collection importing</li>
+                    <li>Creator playlist auto-detection</li>
+                    <li>Series and topic-based organization</li>
+                    <li>Automatic metadata preservation</li>
+                  </ul>
+                  <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                </div>
+              </div>
+              <div className="vt-visual">
+                <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/03-collection.png?v=20260430a`} alt="TikTok Collection & Playlist Importing" />
+              </div>
+            </div>
+
+            {/* 4. History & Bookmarking — visual LEFT, text-card RIGHT (Figma 558:17653) */}
             <div className="vt-row vt-row-reverse" id="history-bookmarking">
               <div className="vt-visual">
-                <img src="/figma-rows/04-history.png" alt="History and bookmarking — transcript library" loading="lazy" />
+                <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/04-history.png?v=20260430a`} alt="History & Bookmarking" />
               </div>
               <div className="vt-text">
-                <h3 className="vt-row-title">History &amp; Bookmarking</h3>
-                <p className="vt-row-body">Access a complete transcript history for every video you process, automatically logging download dates, transcript details, video sources, and durations.</p>
-                <ul className="vt-list">
-                  <li>Complete download history with metadata</li>
-                  <li>Custom bookmark folders</li>
-                  <li>Re-download in TXT, XML, PDF formats</li>
-                  <li>Bulk export and sharing capabilities</li>
-                </ul>
-                <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
-              </div>
-            </div>
-
-            <div className="vt-row">
-              <div className="vt-text">
-                <h3 className="vt-row-title">HD Video &amp; Cover Image Downloads</h3>
-                <p className="vt-row-body">Download TikTok, Instagram Reels, and YouTube Shorts videos in HD quality with no watermarks. Instantly save high-resolution cover images and preserve original video quality across all supported platforms.</p>
-                <ul className="vt-list">
-                  <li>HD video downloads without watermarks</li>
-                  <li>Cover image extraction and download</li>
-                  <li>Multiple platform support</li>
-                  <li>Original quality preservation</li>
-                </ul>
-                <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
-              </div>
-              <div className="vt-visual">
-                <img src="/figma-rows/05-hd-video.png" alt="HD video and cover image downloads" loading="lazy" />
-              </div>
-            </div>
-
-            <div className="vt-row vt-row-reverse">
-              <div className="vt-visual">
-                <img src="/figma-rows/06-quick-url.png" alt="Quick URL download — paste tokscript.com/ in front of any link" loading="lazy" />
-              </div>
-              <div className="vt-text">
-                <h3 className="vt-row-title">Quick URL Download</h3>
-                <p className="vt-row-body">Instant video transcripts just add &lsquo;tokscript.com/&rsquo; in front of any video URL. Instantly redirect and download transcripts without logging in or visiting the main website. Fast, automatic, and works with every platform.</p>
-                <ul className="vt-list">
-                  <li>Instant URL-based downloading</li>
-                  <li>No need to visit main website</li>
-                  <li>Works with all supported platforms</li>
-                  <li>Automatic redirect and processing</li>
-                </ul>
-                <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
-              </div>
-            </div>
-
-            <div className="vt-row">
-              <div className="vt-text">
-                <h3 className="vt-row-title">Chrome Extension</h3>
-                <p className="vt-row-body">Use our Chrome extension to instantly copy video transcripts to your clipboard or download them as .txt files while watching TikTok, Instagram Reels, or YouTube Shorts. No need to copy the URL. Works on both web and mobile browsers for ultimate convenience.</p>
-                <ul className="vt-list">
-                  <li>One-click transcript download</li>
-                  <li>Instant clipboard copying</li>
-                  <li>Works on web and mobile browsers</li>
-                  <li>No URL copying required</li>
-                </ul>
-                <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
-              </div>
-              <div className="vt-visual">
-                <img src="/figma-rows/07-chrome.png" alt="Chrome extension panel showing engagement metrics" loading="lazy" />
-              </div>
-            </div>
-
-            <div className="vt-row vt-row-reverse">
-              <div className="vt-visual vt-visual-ai">
-                <div className="vt-ai-card">
-                  <div className="vt-ai-header">
-                    <span className="vt-ai-title">AI Agent Dashboard</span>
-                    <span className="vt-ai-pill">POWERED BY AI</span>
-                  </div>
-                  <div className="vt-ai-row vt-ai-row-orange">
-                    <div className="vt-ai-icon" aria-hidden>
-                      <svg viewBox="0 0 24 24" width="16" height="16" fill="#FB923C" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c.5 4 3.5 4.5 4.5 8 1 3.5-2 6-4.5 6S6.5 13.5 7.5 10C8.5 6.5 11.5 6 12 2z M12 22c-5 0-8-3-8-7 0-2 1-3.5 2.5-5-.5 4 1.5 6 5.5 6s5.5-2 5.5-6c1.5 1.5 2.5 3 2.5 5 0 4-3 7-8 7z"/></svg>
-                    </div>
-                    <div className="vt-ai-info">
-                      <strong>Agent #1: Viral Hook Generator</strong>
-                      <span>Creates viral TikTok hooks from transcript topics</span>
-                    </div>
-                    <button className="vt-ai-btn vt-ai-btn-orange" type="button">Generate</button>
-                  </div>
-                  <div className="vt-ai-row vt-ai-row-purple">
-                    <div className="vt-ai-icon" aria-hidden>
-                      <svg viewBox="0 0 24 24" width="16" height="16" fill="#C084FC" xmlns="http://www.w3.org/2000/svg"><path d="M3 21l1.5-5.5L15 5l4 4-10.5 10.5L3 21zm14-14l-2-2 2-2 2 2-2 2z"/></svg>
-                    </div>
-                    <div className="vt-ai-info">
-                      <strong>Agent #2: Viral Script Writer</strong>
-                      <span>Rewrites transcripts into better viral scripts</span>
-                    </div>
-                    <button className="vt-ai-btn vt-ai-btn-purple" type="button">Rewrite</button>
-                  </div>
-                  <div className="vt-ai-row vt-ai-row-blue">
-                    <div className="vt-ai-icon" aria-hidden>
-                      <svg viewBox="0 0 24 24" width="16" height="16" fill="#60A5FA" xmlns="http://www.w3.org/2000/svg"><path d="M12 3a4 4 0 0 0-4 4v1a4 4 0 0 0-2 7.5A4 4 0 0 0 9 21h6a4 4 0 0 0 3-7.5A4 4 0 0 0 16 6V7a4 4 0 0 0-4-4z"/></svg>
-                    </div>
-                    <div className="vt-ai-info">
-                      <strong>Agent #3: Virality Explainer</strong>
-                      <span>Explains psychology behind viral content + new scripts</span>
-                    </div>
-                    <button className="vt-ai-btn vt-ai-btn-blue" type="button">Analyze</button>
-                  </div>
+                <div className="vt-text-inner">
+                  <h3 className="vt-row-title">History &amp; Bookmarking</h3>
+                  <p className="vt-row-body">Access a complete transcript history for every video you process, automatically logging download dates, transcript details, video sources, and durations.</p>
+                  <ul className="vt-list">
+                    <li>Complete download history with metadata</li>
+                    <li>Custom bookmark folders</li>
+                    <li>Re-download in TXT, XML, PDF formats</li>
+                    <li>Bulk export and sharing capabilities</li>
+                  </ul>
+                  <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
                 </div>
               </div>
+            </div>
+
+            {/* 5. HD Video & Cover Image Downloads — text-card LEFT, visual RIGHT (Figma 558:19296) */}
+            <div className="vt-row" id="hd-video">
               <div className="vt-text">
-                <h3 className="vt-row-title">AI Agents</h3>
-                <p className="vt-row-body">AI-powered virality: hooks, viral script writing, and video breakdown. Unlock the secret weapons behind today&apos;s top viral videos, powered by AI. Designed for creators who want to win attention and grow fast.</p>
-                <ul className="vt-list">
-                  <li>Viral Hook Generator for instant engagement</li>
-                  <li>Script rewriter with viral essence preservation</li>
-                  <li>Virality psychology analysis and insights</li>
-                  <li>One-click content transformation</li>
-                </ul>
-                <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                <div className="vt-text-inner">
+                  <h3 className="vt-row-title">HD Video &amp; Cover Image Downloads</h3>
+                  <p className="vt-row-body">Download TikTok, Instagram Reels, and YouTube Shorts videos in HD with no watermarks. Save high-resolution cover images across every platform.</p>
+                  <ul className="vt-list">
+                    <li>HD video downloads without watermarks</li>
+                    <li>Cover image extraction and download</li>
+                    <li>Multiple platform support</li>
+                    <li>Original quality preservation</li>
+                  </ul>
+                  <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                </div>
+              </div>
+              <div className="vt-visual">
+                <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/05-hd-video.png?v=20260430a`} alt="HD Video & Cover Image Downloads" />
+              </div>
+            </div>
+
+            {/* 6. Quick URL Download — visual LEFT, text-card RIGHT (Figma 558:26755) */}
+            <div className="vt-row vt-row-reverse">
+              <div className="vt-visual">
+                <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/06-quick-url.png?v=20260430a`} alt="Quick URL Download" />
+              </div>
+              <div className="vt-text">
+                <div className="vt-text-inner">
+                  <h3 className="vt-row-title">Quick URL Download</h3>
+                  <p className="vt-row-body">Just add &lsquo;tokscript.com/&rsquo; in front of any video URL. Instantly redirect and download transcripts without logging in. Fast, automatic, every platform.</p>
+                  <ul className="vt-list">
+                    <li>Instant URL-based downloading</li>
+                    <li>No need to visit main website</li>
+                    <li>Works with all supported platforms</li>
+                    <li>Automatic redirect and processing</li>
+                  </ul>
+                  <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                </div>
+              </div>
+            </div>
+
+            {/* 7. Chrome Extension — text-card LEFT, visual RIGHT (Figma 558:27643) */}
+            <div className="vt-row">
+              <div className="vt-text">
+                <div className="vt-text-inner">
+                  <h3 className="vt-row-title">Chrome Extension</h3>
+                  <p className="vt-row-body">Copy video transcripts to your clipboard or download them as .txt files while watching TikTok, Instagram Reels, or YouTube Shorts — no URL copying required.</p>
+                  <ul className="vt-list">
+                    <li>One-click transcript download</li>
+                    <li>Instant clipboard copying</li>
+                    <li>Works on web and mobile browsers</li>
+                    <li>No URL copying required</li>
+                  </ul>
+                  <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                </div>
+              </div>
+              <div className="vt-visual">
+                <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/07-chrome.png?v=20260430a`} alt="Chrome Extension" />
+              </div>
+            </div>
+
+            {/* 8. AI Agents — visual LEFT, text-card RIGHT (Figma 558:31342) */}
+            <div className="vt-row vt-row-reverse">
+              <div className="vt-visual">
+                <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/08-ai-agents.png?v=20260430a`} alt="AI Agents" />
+              </div>
+              <div className="vt-text">
+                <div className="vt-text-inner">
+                  <h3 className="vt-row-title">AI Agents</h3>
+                  <p className="vt-row-body">AI-Powered Virality: Hooks, Viral Script writing &amp; Video Breakdown. Unlock the secret weapons behind today&rsquo;s top viral videos, powered by AI.</p>
+                  <ul className="vt-list">
+                    <li>Viral Hook Generator for instant engagement</li>
+                    <li>Script rewriter with viral essence preservation</li>
+                    <li>Virality psychology analysis and insights</li>
+                    <li>One-click content transformation</li>
+                  </ul>
+                  <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                </div>
               </div>
             </div>
           </div>
@@ -1341,598 +1316,330 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              {/* Pricing Grid */}
-              <div className="pricing-grid">
-                <div className="row">
+              {/* Pricing Grid — glass card style */}
+              <div className="pc-grid">
                   {/* Free */}
-                  <div className="col-xl-4 col-lg-4 col-md-12">
-                    <div
-                      className={`pricing-card-wrapper ${
-                        activeTab === "free" ? "active" : ""
-                      }`}
-                    >
-                      <div className="pricing-card">
-                        <div
-                          className="relative z-10"
-                          style={{
-                            height: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                          }}
-                        >
-                          <div style={{ marginBottom: "0.5rem" }}>
-                            <h3
-                              className="card-title"
-                              style={{ color: "#e6e6e6" }}
+                  <div className={`pc-card-wrapper ${activeTab === "free" ? "active" : ""}`}>
+                    <div className="pc-card">
+                      <div className="pc-header">
+                        <div className="pc-plan-row">
+                          <div className="pc-plan-name">
+                            <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/pricing-icons/free.svg`} alt="" width={20} height={20} className="pc-plan-icon" /> Free Plan
+                          </div>
+                          <span className="pc-badge">Forever</span>
+                        </div>
+                        <p className="pc-description">Kick the tires, free forever.</p>
+                        <div className="pc-price-row">
+                          <span className="pc-price-main">$0</span>
+                          <span className="pc-price-period">forever</span>
+                        </div>
+                      </div>
+                      <div className="pc-cta-wrap">
+                        {user && user?.plan == "free" ? (
+                          <button disabled className="pc-cta">Current Plan</button>
+                        ) : !user ? (
+                          <>
+                            <button
+                              onClick={() => {
+                                setPendingCheckoutUrl(null);
+                                setPendingPlan({
+                                  name: "Free Plan",
+                                  price: "$0",
+                                  period: "/forever",
+                                  badge: null,
+                                  features: [
+                                    "5 transcripts per day",
+                                    "TikTok only",
+                                    "Chrome Extension (free features)",
+                                  ],
+                                  buttonText: "Create Free Account",
+                                });
+                                setCheckoutOverlayShow(true);
+                              }}
+                              className="pc-cta d-none d-md-flex"
                             >
-                              Free
-                            </h3>
-                            <p className="card-desc">Test the basics</p>
-                          </div>
-                          <div className="price-row">
-                            <span
-                              className="price-val"
-                              style={{ color: "#e6e6e6" }}
+                              Get Started
+                            </button>
+                            <a
+                              href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/signin`}
+                              className="pc-cta d-flex d-md-none"
                             >
-                              $0
-                            </span>
-                            <span className="price-period">forever</span>
+                              Get Started
+                            </a>
+                          </>
+                        ) : (
+                          <button onClick={() => setDontMissOutModalShow(true)} className="pc-cta">Get Started</button>
+                        )}
+                      </div>
+                      <div className="pc-body">
+                        <div className="pc-group">
+                          <div className="pc-group-title">
+                            <span className="pc-group-icon" style={{ WebkitMaskImage: "url(/pricing-icons/free.svg)", maskImage: "url(/pricing-icons/free.svg)" }} /> Daily limits
                           </div>
-                          <div className="feature-group">
-                            <Feature text="5 transcripts per day" />
-                            <Feature text="5 translations per day" />
-                            <Feature text="TikTok, Reels, Shorts" />
-                            <Feature text="Basic Chrome Extension" />
+                          <ul className="pc-list">
+                            <li><Check size={16} strokeWidth={3} /><span>5 transcripts per day</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>5 translations per day</span></li>
+                          </ul>
+                        </div>
+                        <div className="pc-group">
+                          <div className="pc-group-title">
+                            <span className="pc-group-icon" style={{ WebkitMaskImage: "url(/pricing-icons/free.svg)", maskImage: "url(/pricing-icons/free.svg)" }} /> Platforms &amp; tools
                           </div>
-                          <div
-                            className="feature-group disabled"
-                            style={{
-                              opacity: 0.4,
-                              borderTop: "1px solid var(--border-color)",
-                              paddingTop: "1rem",
-                            }}
-                          >
-                            <div
-                              className="stat-lbl"
-                              style={{ marginBottom: "0.5rem" }}
+                          <ul className="pc-list">
+                            <li><Check size={16} strokeWidth={3} /><span>TikTok, Reels, Shorts</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Basic Chrome Extension</span></li>
+                          </ul>
+                        </div>
+                        <div className="pc-separator">
+                          <span className="pc-sep-line" />
+                          <span>Upgrade to unlock</span>
+                          <span className="pc-sep-line" />
+                        </div>
+                        <ul className="pc-list pc-list-locked">
+                          <li><X size={16} strokeWidth={3} /><span>AI Agents</span></li>
+                          <li><X size={16} strokeWidth={3} /><span>Bulk Import</span></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  {/* Annual (Featured) */}
+                  <div className={`pc-card-wrapper ${activeTab === "annual" ? "active" : ""}`}>
+                    <div className="pc-card pc-card-featured">
+                      <div className="pc-header">
+                        <div className="pc-plan-row">
+                          <div className="pc-plan-name">
+                            <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/pricing-icons/annual.svg`} alt="" width={20} height={20} className="pc-plan-icon" /> Annual
+                          </div>
+                          <span className="pc-badge pc-badge-recommended">Recommended</span>
+                        </div>
+                        <p className="pc-description">Best value — just $3.25/month.</p>
+                        <div className="pc-price-row">
+                          <span className="pc-price-main">$39</span>
+                          <span className="pc-price-period">/year</span>
+                          <span className="pc-price-original">$120</span>
+                        </div>
+                      </div>
+                      <div className="pc-cta-wrap">
+                        {loading ? (
+                          <button disabled className="pc-cta pc-cta-primary">Loading...</button>
+                        ) : user ? (
+                          profile?.plan == "pro" &&
+                          profile?.subscription?.status === "active" &&
+                          profile.subscription.lemonSqueezyVariantId ===
+                            allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.variantId ? (
+                            <button disabled className="pc-cta">Current Plan</button>
+                          ) : profile?.plan == "pro" &&
+                            profile?.plan !== "free" &&
+                            profile.subscription?.status === "active" ? (
+                            <button
+                              disabled={loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.variantId]}
+                              onClick={() => {
+                                const annualPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"));
+                                if (annualPlan) handleUpgradeClick(annualPlan.variantId, "annual");
+                              }}
+                              className="pc-cta pc-cta-primary"
                             >
-                              NOT INCLUDED
-                            </div>
-                            <Feature text="AI Agents" excluded />
-                            <Feature text="Bulk Import" excluded />
-                          </div>
-                          <div
-                            style={{ marginTop: "auto", paddingTop: "1.5rem" }}
-                          >
-                            {user && user?.plan == "free" ? (
+                              {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.variantId] ? "Processing..." : "Upgrade"}
+                            </button>
+                          ) : (
+                            <>
                               <button
-                                disabled={true}
-                                className="btn btn-outline"
+                                onClick={() => {
+                                  const annualPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"));
+                                  if (annualPlan) handleCheckout(annualPlan);
+                                }}
+                                className="pc-cta pc-cta-primary d-none d-md-flex"
                               >
-                                Current Plan
+                                Get Annual — Save $81 <ArrowRight size={18} strokeWidth={2.5} />
                               </button>
-                            ) : !user ? (
-                              <>
-                                {/* Desktop: Button opens modal */}
-                                <button
-                                  onClick={() => {
-                                    // Open CheckoutOverlay for signup (no checkout redirect)
-                                    setPendingCheckoutUrl(null);
-                                    setPendingPlan({
-                                      name: "Free Plan",
-                                      price: "$0",
-                                      period: "/forever",
-                                      badge: null,
-                                      features: [
-                                        "5 transcripts per day",
-                                        "TikTok only",
-                                        "Chrome Extension (free features)",
-                                      ],
-                                      buttonText: "Create Free Account",
-                                    });
-                                    setCheckoutOverlayShow(true);
-                                  }}
-                                  className="btn btn-outline d-none d-md-flex justify-content-center"
-                                >
-                                  Get Started
-                                </button>
-                                {/* Mobile: Anchor redirects to signin */}
-                                <a
-                                  href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/signin`}
-                                  className="btn btn-outline d-flex d-md-none justify-content-center"
-                                >
-                                  Get Started
-                                </a>
-                              </>
-                            ) : (
-                              <button
-                                onClick={() => setDontMissOutModalShow(true)}
-                                className="btn btn-outline"
+                              <a
+                                href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.buyUrl}`}
+                                className="pc-cta pc-cta-primary d-flex d-md-none"
                               >
-                                Get Started
-                              </button>
-                            )}
+                                Get Annual — Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+                              </a>
+                            </>
+                          )
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => {
+                                const annualPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"));
+                                if (annualPlan) handleCheckout(annualPlan);
+                              }}
+                              className="pc-cta pc-cta-primary d-none d-md-flex"
+                            >
+                              Get Annual — Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+                            </button>
+                            <a
+                              href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.buyUrl}`}
+                              className="pc-cta pc-cta-primary d-flex d-md-none"
+                            >
+                              Get Annual — Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+                            </a>
+                          </>
+                        )}
+                      </div>
+                      <div className="pc-body">
+                        <div className="pc-group">
+                          <div className="pc-group-title">
+                            <span className="pc-group-icon" style={{ WebkitMaskImage: "url(/pricing-icons/annual.svg)", maskImage: "url(/pricing-icons/annual.svg)" }} /> Unlimited AI agents
+                          </div>
+                          <ul className="pc-list">
+                            <li><Check size={16} strokeWidth={3} /><span>Viral Hook Generator</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Viral Script Writer</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Virality Explainer</span></li>
+                          </ul>
+                        </div>
+                        <div className="pc-group">
+                          <div className="pc-group-title">
+                            <span className="pc-group-icon" style={{ WebkitMaskImage: "url(/pricing-icons/annual.svg)", maskImage: "url(/pricing-icons/annual.svg)" }} /> Bulk &amp; downloads
+                          </div>
+                          <ul className="pc-list">
+                            <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts (no daily cap)</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Unlimited translations (any language)</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos at once</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>HD video downloads (no watermark)</span></li>
+                          </ul>
+                          <div className="pc-platforms">
+                            <TikTokIcon />
+                            <InstagramIcon />
+                            <YoutubeIcon />
+                          </div>
+                        </div>
+                        <div className="pc-group">
+                          <div className="pc-group-title">
+                            <span className="pc-group-icon" style={{ WebkitMaskImage: "url(/pricing-icons/annual.svg)", maskImage: "url(/pricing-icons/annual.svg)" }} /> MCP &amp; extension
+                          </div>
+                          <ul className="pc-list">
+                            <li><Check size={16} strokeWidth={3} /><span>TokScript MCP for Claude</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>TokScript MCP for ChatGPT</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Chrome Extension (Pro features)</span></li>
+                          </ul>
+                          <div className="pc-platforms pc-platforms--ai">
+                            <span className="pc-ai-icon" style={{ color: "#D97757" }}><ClaudeIcon /></span>
+                            <span className="pc-ai-icon" style={{ color: "#10A37F" }}><ChatGPTIcon /></span>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="col-xl-4 col-lg-4 col-md-12">
-                    {/* Annual (Featured) */}
-                    <div
-                      className={`pricing-card-wrapper ${
-                        activeTab === "annual" ? "active" : ""
-                      }`}
-                    >
-                      <div className="pricing-card featured">
-                        <div className="featured-border-gradient"></div>
-                        <div className="crown-badge">
-                          <Crown size={12} fill="currentColor" /> Recommended
+
+                  {/* Monthly */}
+                  <div className={`pc-card-wrapper ${activeTab === "monthly" ? "active" : ""}`}>
+                    <div className="pc-card">
+                      <div className="pc-header">
+                        <div className="pc-plan-row">
+                          <div className="pc-plan-name">
+                            <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/pricing-icons/monthly.svg`} alt="" width={20} height={20} className="pc-plan-icon" /> Monthly
+                          </div>
+                          <span className="pc-badge">Flexible</span>
                         </div>
-                        <div
-                          className="relative z-10"
-                          style={{
-                            height: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                          }}
-                        >
-                          <div style={{ marginBottom: "0.5rem" }}>
-                            <h3 className="card-title">Annual</h3>
-                            <p className="card-desc">
-                              Best value for serious creators
-                            </p>
-                          </div>
-                          <div className="price-row">
-                            <span className="price-val">$39</span>
-                            <span className="price-period">per year</span>
-                          </div>
-
-                          <div className="calc-box">
-                            <div className="calc-box-highlight"></div>
-                            <div
-                              style={{
-                                color: "#00D9B4",
-                                fontWeight: 700,
-                                fontSize: "12px",
-                                lineHeight: "17px",
-                                position: "relative",
+                        <p className="pc-description">Full power, billed monthly.</p>
+                        <div className="pc-price-row">
+                          <span className="pc-price-main">$10</span>
+                          <span className="pc-price-period">/month</span>
+                        </div>
+                      </div>
+                      <div className="pc-cta-wrap">
+                        {loading ? (
+                          <button disabled className="pc-cta">Loading...</button>
+                        ) : user ? (
+                          profile?.plan == "pro" &&
+                          profile?.subscription?.status === "active" &&
+                          profile.subscription.lemonSqueezyVariantId ===
+                            allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.variantId ? (
+                            <button disabled className="pc-cta">Current Plan</button>
+                          ) : profile?.plan == "pro" &&
+                            profile?.plan !== "free" &&
+                            profile.subscription?.status === "active" ? (
+                            <button
+                              disabled={loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.variantId]}
+                              onClick={() => {
+                                const monthlyPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"));
+                                if (monthlyPlan) handleUpgradeClick(monthlyPlan.variantId, "monthly");
                               }}
+                              className="pc-cta"
                             >
-                              That's $3.25/month
-                            </div>
-                            <div
-                              style={{
-                                color: "#7a7a7a",
-                                fontSize: "10px",
-                                lineHeight: "16px",
-                                position: "relative",
-                              }}
-                            >
-                              (Monthly plan = $120/year)
-                            </div>
-                          </div>
-
-                          <div className="feature-group">
-                            <div className="group-title">
-                              <Sparkles
-                                size={12}
-                                className="text-yellow-400"
-                                style={{ color: "#facc15" }}
-                              />{" "}
-                              UNLIMITED AI AGENTS
-                            </div>
-                            <Feature
-                              text="Viral Hook Generator"
-                              sub="Paste any transcript → Get 20+ proven hooks"
-                              bold
-                            />
-                            <Feature
-                              text="Viral Script Writer"
-                              sub="Turn any viral video into YOUR script"
-                              bold
-                            />
-                            <Feature
-                              text="Virality Explainer"
-                              sub="See exactly WHY videos blow up"
-                            />
-                          </div>
-
-                          <div className="divider"></div>
-
-                          <div className="feature-group">
-                            <div className="group-title">
-                              <Layers
-                                size={12}
-                                className="text-emerald-400"
-                                style={{ color: "#00D9B4" }}
-                              />{" "}
-                              BULK PROCESSING
-                            </div>
-                            <Feature text="Unlimited transcripts (no daily cap)" />
-                            <Feature text="Unlimited translations (any language)" />
-                            <Feature text="Bulk import 50 videos at once" />
-                            {/* Platform Logos */}
-                            <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "1rem",
-                                margin: "0.75rem 0",
-                                paddingLeft: "1.75rem",
-                                opacity: 0.9,
-                              }}
-                            >
-                              <TikTokIcon
-                                className="w-2 h-2 text-white"
-                                style={{ width: "16px", height: "16px" }}
-                              />
-                              <InstagramIcon
-                                className="w-2 h-2 text-white"
-                                style={{ width: "16px", height: "16px" }}
-                              />
-                              <YoutubeIcon
-                                className="w-2 h-2 text-white"
-                                style={{ width: "16px", height: "16px" }}
-                              />
-                              <span
-                                style={{
-                                  fontSize: "0.625rem",
-                                  color: "#7a7a7a",
-                                  fontWeight: 500,
-                                  textTransform: "uppercase",
-                                  letterSpacing: "0.05em",
+                              {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.variantId] ? "Processing..." : "Upgrade"}
+                            </button>
+                          ) : (
+                            <>
+                              <button
+                                className="pc-cta d-none d-md-flex"
+                                onClick={() => {
+                                  const monthlyPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"));
+                                  if (monthlyPlan) handleCheckout(monthlyPlan);
                                 }}
                               >
-                                All Platforms
-                              </span>
-                            </div>
-                            <Feature text="HD video downloads (no watermark)" />
-                          </div>
-
-                          <div style={{ marginTop: "2rem" }}>
-                            {loading ? (
-                              <button disabled className="btn btn-primary">
-                                Loading...
+                                Get Monthly
                               </button>
-                            ) : user ? (
-                              profile?.plan == "pro" &&
-                              profile?.subscription?.status === "active" &&
-                              profile.subscription.lemonSqueezyVariantId ===
-                                allPlans.find((plan) =>
-                                  plan.title?.toLowerCase().includes("annual"),
-                                )?.variantId ? (
-                                <button
-                                  disabled={true}
-                                  className="btn btn-outline"
-                                >
-                                  Current Plan
-                                </button>
-                              ) : profile?.plan == "pro" &&
-                                profile?.plan !== "free" &&
-                                profile.subscription?.status === "active" ? (
-                                <button
-                                  disabled={
-                                    loadingStates[
-                                      allPlans.find((plan) =>
-                                        plan.title
-                                          ?.toLowerCase()
-                                          .includes("annual"),
-                                      )?.variantId
-                                    ]
-                                  }
-                                  onClick={() => {
-                                    const annualPlan = allPlans.find((plan) =>
-                                      plan.title
-                                        ?.toLowerCase()
-                                        .includes("annual"),
-                                    );
-                                    if (annualPlan) {
-                                      handleUpgradeClick(
-                                        annualPlan.variantId,
-                                        "annual",
-                                      );
-                                    }
-                                  }}
-                                  className="btn btn-outline"
-                                >
-                                  {loadingStates[
-                                    allPlans.find((plan) =>
-                                      plan.title
-                                        ?.toLowerCase()
-                                        .includes("annual"),
-                                    )?.variantId
-                                  ]
-                                    ? "Processing..."
-                                    : "Upgrade"}
-                                </button>
-                              ) : (
-                                <>
-                                  {/* Desktop: Button opens modal */}
-                                  <button
-                                    onClick={() => {
-                                      const annualPlan = allPlans.find((plan) =>
-                                        plan.title
-                                          ?.toLowerCase()
-                                          .includes("annual"),
-                                      );
-                                      if (annualPlan) {
-                                        handleCheckout(annualPlan);
-                                      }
-                                    }}
-                                    className="btn btn-primary d-none d-md-flex"
-                                  >
-                                    Get Annual - Save $81
-                                    <ArrowRight size={20} strokeWidth={3} />
-                                  </button>
-                                  {/* Mobile: Anchor redirects to signin */}
-                                  <a
-                                    href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.buyUrl}`}
-                                    className="btn btn-primary d-flex d-md-none"
-                                  >
-                                    Get Annual - Save $81
-                                    <ArrowRight size={20} strokeWidth={3} />
-                                  </a>
-                                </>
-                              )
-                            ) : (
-                              <>
-                                {/* Desktop: Button opens modal */}
-                                <button
-                                  onClick={() => {
-                                    const annualPlan = allPlans.find((plan) =>
-                                      plan.title
-                                        ?.toLowerCase()
-                                        .includes("annual"),
-                                    );
-                                    if (annualPlan) {
-                                      handleCheckout(annualPlan);
-                                    }
-                                  }}
-                                  className="btn btn-primary d-none d-md-flex"
-                                >
-                                  Get Annual - Save $81
-                                  <ArrowRight size={20} strokeWidth={3} />
-                                </button>
-                                {/* Mobile: Anchor redirects to signin */}
-                                <a
-                                  href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.buyUrl}`}
-                                  className="btn btn-primary d-flex d-md-none"
-                                >
-                                  Get Annual - Save $81
-                                  <ArrowRight size={20} strokeWidth={3} />
-                                </a>
-                              </>
-                            )}
+                              <a
+                                href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.buyUrl}`}
+                                className="pc-cta d-flex d-md-none"
+                              >
+                                Get Monthly
+                              </a>
+                            </>
+                          )
+                        ) : (
+                          <>
+                            <button
+                              className="pc-cta d-none d-md-flex"
+                              onClick={() => {
+                                const monthlyPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"));
+                                if (monthlyPlan) handleCheckout(monthlyPlan);
+                              }}
+                            >
+                              Get Monthly
+                            </button>
+                            <a
+                              href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.buyUrl}`}
+                              className="pc-cta d-flex d-md-none"
+                            >
+                              Get Monthly
+                            </a>
+                          </>
+                        )}
+                      </div>
+                      <div className="pc-body">
+                        <div className="pc-group">
+                          <div className="pc-group-title">
+                            <span className="pc-group-icon" style={{ WebkitMaskImage: "url(/pricing-icons/monthly.svg)", maskImage: "url(/pricing-icons/monthly.svg)" }} /> Everything in annual
+                          </div>
+                          <ul className="pc-list">
+                            <li><Check size={16} strokeWidth={3} /><span>All 3 AI Agents (unlimited)</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Unlimited translations</span></li>
+                          </ul>
+                        </div>
+                        <div className="pc-group">
+                          <div className="pc-group-title">
+                            <span className="pc-group-icon" style={{ WebkitMaskImage: "url(/pricing-icons/monthly.svg)", maskImage: "url(/pricing-icons/monthly.svg)" }} /> Bulk &amp; downloads
+                          </div>
+                          <ul className="pc-list">
+                            <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>HD video downloads</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>TikTok, Instagram, YouTube</span></li>
+                          </ul>
+                        </div>
+                        <div className="pc-group">
+                          <div className="pc-group-title">
+                            <span className="pc-group-icon" style={{ WebkitMaskImage: "url(/pricing-icons/monthly.svg)", maskImage: "url(/pricing-icons/monthly.svg)" }} /> MCP &amp; extension
+                          </div>
+                          <ul className="pc-list">
+                            <li><Check size={16} strokeWidth={3} /><span>TokScript MCP for Claude</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>TokScript MCP for ChatGPT</span></li>
+                            <li><Check size={16} strokeWidth={3} /><span>Chrome Extension (Pro features)</span></li>
+                          </ul>
+                          <div className="pc-platforms pc-platforms--ai">
+                            <span className="pc-ai-icon" style={{ color: "#D97757" }}><ClaudeIcon /></span>
+                            <span className="pc-ai-icon" style={{ color: "#10A37F" }}><ChatGPTIcon /></span>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="col-xl-4 col-lg-4 col-md-12">
-                    {/* Monthly */}
-                    <div
-                      className={`pricing-card-wrapper ${
-                        activeTab === "monthly" ? "active" : ""
-                      }`}
-                    >
-                      <div className="pricing-card">
-                        <div
-                          className="relative z-10"
-                          style={{
-                            height: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                          }}
-                        >
-                          <div style={{ marginBottom: "0.5rem" }}>
-                            <h3
-                              className="card-title"
-                              style={{ color: "#e6e6e6" }}
-                            >
-                              Monthly
-                            </h3>
-                            <p className="card-desc">
-                              Full power, flexible billing
-                            </p>
-                          </div>
-                          <div className="price-row">
-                            <span
-                              className="price-val"
-                              style={{ color: "#e6e6e6" }}
-                            >
-                              $10
-                            </span>
-                            <span className="price-period">per month</span>
-                          </div>
-
-                          <div
-                            className="calc-box"
-                            style={{
-                              background: "transparent",
-                              border: "1px solid var(--border-color)",
-                            }}
-                          >
-                            <div
-                              style={{ color: "#7a7a7a", fontSize: "0.75rem" }}
-                            >
-                              = $120/year
-                            </div>
-                            <div
-                              style={{ color: "#7a7a7a", fontSize: "0.625rem" }}
-                            >
-                              Annual saves $81
-                            </div>
-                          </div>
-
-                          <div className="feature-group">
-                            <p
-                              className="stat-lbl"
-                              style={{ marginBottom: "0.5rem" }}
-                            >
-                              EVERYTHING IN ANNUAL:
-                            </p>
-                            <Feature text="All 3 AI Agents (unlimited)" />
-                            <Feature text="Unlimited transcripts" />
-                            <Feature text="Unlimited translations" />
-                            <Feature text="Bulk import 50 videos" />
-                          </div>
-
-                          <div
-                            className="feature-group listing"
-                            style={{
-                              display: "flex",
-                              gap: "0.5rem",
-                              fontSize: "0.625rem",
-                              color: "#eab308",
-                            }}
-                          >
-                            <TrendingUp size={12} />{" "}
-                            <span
-                              style={{ color: "#eab308", fontSize: "10px" }}
-                            >
-                              Costs $81 more per year
-                            </span>
-                          </div>
-                          <div
-                            style={{
-                              marginTop: "auto",
-                              paddingTop: "1.5rem",
-                              borderTop: "1px solid var(--border-color)",
-                            }}
-                          >
-                            {loading ? (
-                              <button disabled className="btn btn-outline">
-                                Loading...
-                              </button>
-                            ) : user ? (
-                              profile?.plan == "pro" &&
-                              profile?.subscription?.status === "active" &&
-                              profile.subscription.lemonSqueezyVariantId ===
-                                allPlans.find((plan) =>
-                                  plan.title?.toLowerCase().includes("monthly"),
-                                )?.variantId ? (
-                                <button
-                                  disabled={true}
-                                  className="btn btn-outline"
-                                >
-                                  Current Plan
-                                </button>
-                              ) : profile?.plan == "pro" &&
-                                profile?.plan !== "free" &&
-                                profile.subscription?.status === "active" ? (
-                                <button
-                                  disabled={
-                                    loadingStates[
-                                      allPlans.find((plan) =>
-                                        plan.title
-                                          ?.toLowerCase()
-                                          .includes("monthly"),
-                                      )?.variantId
-                                    ]
-                                  }
-                                  onClick={() => {
-                                    const monthlyPlan = allPlans.find((plan) =>
-                                      plan.title
-                                        ?.toLowerCase()
-                                        .includes("monthly"),
-                                    );
-                                    if (monthlyPlan) {
-                                      handleUpgradeClick(
-                                        monthlyPlan.variantId,
-                                        "monthly",
-                                      );
-                                    }
-                                  }}
-                                  className="btn btn-outline"
-                                >
-                                  {loadingStates[
-                                    allPlans.find((plan) =>
-                                      plan.title
-                                        ?.toLowerCase()
-                                        .includes("monthly"),
-                                    )?.variantId
-                                  ]
-                                    ? "Processing..."
-                                    : "Upgrade"}
-                                </button>
-                              ) : (
-                                <>
-                                  {/* Desktop: Button opens modal */}
-                                  <button
-                                    className="btn btn-outline d-none d-md-flex"
-                                    onClick={() => {
-                                      const monthlyPlan = allPlans.find(
-                                        (plan) =>
-                                          plan.title
-                                            ?.toLowerCase()
-                                            .includes("monthly"),
-                                      );
-                                      if (monthlyPlan) {
-                                        handleCheckout(monthlyPlan);
-                                      }
-                                    }}
-                                    style={{
-                                      background: "rgba(13, 13, 13, 0.5)",
-                                      border: "1px solid #2a2a2a",
-                                    }}
-                                  >
-                                    Get Monthly
-                                  </button>
-                                  {/* Mobile: Anchor redirects to signin */}
-                                  <a
-                                    href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.buyUrl}`}
-                                    className="btn btn-outline d-flex d-md-none"
-                                    style={{
-                                      background: "rgba(13, 13, 13, 0.5)",
-                                      border: "1px solid #2a2a2a",
-                                    }}
-                                  >
-                                    Get Monthly
-                                  </a>
-                                </>
-                              )
-                            ) : (
-                              <>
-                                {/* Desktop: Button opens modal */}
-                                <button
-                                  className="btn btn-outline d-none d-md-flex"
-                                  onClick={() => {
-                                    const monthlyPlan = allPlans.find((plan) =>
-                                      plan.title
-                                        ?.toLowerCase()
-                                        .includes("monthly"),
-                                    );
-                                    if (monthlyPlan) {
-                                      handleCheckout(monthlyPlan);
-                                    }
-                                  }}
-                                  style={{
-                                    background: "rgba(13, 13, 13, 0.5)",
-                                    border: "1px solid #2a2a2a",
-                                  }}
-                                >
-                                  Get Monthly
-                                </button>
-                                {/* Mobile: Anchor redirects to signin */}
-                                <a
-                                  href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.buyUrl}`}
-                                  className="btn btn-outline d-flex d-md-none"
-                                  style={{
-                                    background: "rgba(13, 13, 13, 0.5)",
-                                    border: "1px solid #2a2a2a",
-                                  }}
-                                >
-                                  Get Monthly
-                                </a>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -1951,11 +1658,11 @@ export default function LandingPage() {
               {featureCards.map((item, index) => (
                 <div className={`ai-feature-card ai-feature-card-${item.imageBgClass}`} key={index}>
                   <div className="ai-feature-icon">
-                    <Image
+                    <img
                       src={item.icon}
                       alt={item.title}
-                      width={28}
-                      height={28}
+                      width={40}
+                      height={40}
                       loading="lazy"
                     />
                   </div>
@@ -1995,14 +1702,14 @@ export default function LandingPage() {
                   your TikTok,{" "}
                   <Link
                     href="/instagram-transcript-generator"
-                    style={{ color: "#00D9B4" }}
+                    style={{ color: "#00B8B2" }}
                   >
                     Instagram Reels
                   </Link>
                   , and{" "}
                   <Link
                     href="/youtube-transcript-generator"
-                    style={{ color: "#00D9B4" }}
+                    style={{ color: "#00B8B2" }}
                   >
                     YouTube Shorts
                   </Link>{" "}
@@ -2018,23 +1725,23 @@ export default function LandingPage() {
                   favorite TikTok,{" "}
                   <Link
                     href="/youtube-transcript-generator"
-                    style={{ color: "#00D9B4" }}
+                    style={{ color: "#00B8B2" }}
                   >
                     YouTube Shorts
                   </Link>
                   , and{" "}
                   <Link
                     href="/instagram-transcript-generator"
-                    style={{ color: "#00D9B4" }}
+                    style={{ color: "#00B8B2" }}
                   >
                     Instagram Reels
                   </Link>{" "}
                   videos instantly! See our{" "}
-                  <Link href="/pricing" style={{ color: "#00D9B4" }}>
+                  <Link href="/pricing" style={{ color: "#00B8B2" }}>
                     pricing plans
                   </Link>{" "}
                   or learn more{" "}
-                  <Link href="/about-us" style={{ color: "#00D9B4" }}>
+                  <Link href="/about-us" style={{ color: "#00B8B2" }}>
                     about us
                   </Link>
                   .
