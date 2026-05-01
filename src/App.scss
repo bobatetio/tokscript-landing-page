@@ -18095,13 +18095,13 @@ $ds-font: "Inter", system-ui, sans-serif;
   margin: 0 auto;
   align-items: stretch;
 }
+.pc-card-wrapper { display: flex; }
+
 @media (max-width: 1023px) {
   .pc-grid { grid-template-columns: 1fr; gap: 16px; max-width: 480px; }
-  .pc-card-wrapper { display: none; }
-  .pc-card-wrapper.active { display: block; }
+  .pc-card-wrapper { display: none !important; }
+  .pc-card-wrapper.active { display: flex !important; }
 }
-
-.pc-card-wrapper { display: flex; }
 
 @property --pc-stroke-angle {
   syntax: "<angle>";
