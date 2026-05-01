@@ -10,11 +10,11 @@
       background-position: bottom;
       background-repeat: no-repeat;
       background-size: cover;
-      padding: 130px 50px 141px;
+      padding: 130px 50px 56px;
       position: relative;
 
       @media screen and (max-width: 1140px) and (min-width: 992px) {
-        padding: 130px 25px 109px;
+        padding: 130px 25px 48px;
       }
 
       @media screen and (max-width: 991px) {
@@ -174,23 +174,46 @@
           position: relative;
           max-width: 680px;
           margin-inline: auto;
-          background: $primary_bg_color;
-          border: 2px solid $border_light_white;
+          background: linear-gradient(180deg, #1f1f1f 0%, #161616 100%);
+          border: 1.5px solid rgba(255, 255, 255, 0.10);
           border-radius: 16px;
           overflow: visible;
-          transition: border-color 0.3s ease;
+          box-shadow:
+            0 1px 0 rgba(255, 255, 255, 0.04) inset,
+            0 18px 48px -12px rgba(0, 0, 0, 0.55),
+            0 0 0 1px rgba(0, 184, 178, 0.08),
+            0 0 32px -4px rgba(0, 184, 178, 0.18);
+          transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+
           @media screen and (max-width: 767px) {
-            background: #0d0d0d;
-            border-color: transparent;
-            border-width: 1px;
+            background: linear-gradient(180deg, #1c1c1c 0%, #131313 100%);
+            border-width: 1.5px;
+          }
+
+          &:hover {
+            border-color: rgba(0, 184, 178, 0.45);
+            box-shadow:
+              0 1px 0 rgba(255, 255, 255, 0.05) inset,
+              0 22px 56px -12px rgba(0, 0, 0, 0.6),
+              0 0 0 1px rgba(0, 184, 178, 0.18),
+              0 0 40px -4px rgba(0, 184, 178, 0.28);
           }
 
           &:focus-within {
             border-color: $primary_cyan;
+            box-shadow:
+              0 1px 0 rgba(255, 255, 255, 0.06) inset,
+              0 22px 56px -12px rgba(0, 0, 0, 0.6),
+              0 0 0 3px rgba(0, 184, 178, 0.18),
+              0 0 48px -4px rgba(0, 184, 178, 0.36);
           }
 
           &.has-error {
-            border-color: rgba(255, 0, 79, 0.3);
+            border-color: rgba(255, 0, 79, 0.55);
+            box-shadow:
+              0 1px 0 rgba(255, 255, 255, 0.04) inset,
+              0 18px 48px -12px rgba(0, 0, 0, 0.55),
+              0 0 0 3px rgba(255, 0, 79, 0.14);
 
             textarea::placeholder {
               color: rgba(255, 0, 79, 0.7);
@@ -17070,7 +17093,7 @@ section h2 + p,
 /* ── #1 Video Transcript & Download Platform — clean professional spacing ── */
 .vt-platform-section {
   background: #111111 !important;
-  padding: clamp(56px, 6vw, 96px) clamp(24px, 5vw, 64px) !important;
+  padding: 24px clamp(24px, 5vw, 64px) clamp(72px, 9vw, 128px) !important;
   position: relative;
 
   .vt-platform-inner {
@@ -17115,7 +17138,13 @@ section h2 + p,
     font: 600 clamp(34px, 5.5vw, 56px)/1.1 Inter, system-ui, sans-serif !important;
     letter-spacing: -1.6px;
     color: #fff;
-    max-width: 720px;
+    max-width: none;
+    white-space: nowrap;
+
+    @media (max-width: 991px) {
+      white-space: normal;
+      max-width: 720px;
+    }
   }
   .vt-sub {
     margin: 0;
@@ -17375,7 +17404,7 @@ section h2 + p,
     padding: clamp(64px, 8vw, 96px) 32px !important;
     .vt-platform-inner { gap: 24px; }
     .vt-platform-header + .vt-row { margin-top: -8px; }
-    .vt-row, .vt-row-reverse { grid-template-columns: 1fr; gap: 24px; }
+    .vt-row, .vt-row-reverse { grid-template-columns: 1fr; gap: 8px; }
     .vt-row .vt-text, .vt-row-reverse .vt-text { order: 2; max-width: 100%; aspect-ratio: auto; min-height: auto; }
     .vt-row .vt-visual, .vt-row-reverse .vt-visual { order: 1; }
     .vt-text-inner {
@@ -17389,8 +17418,9 @@ section h2 + p,
 
   /* Mobile */
   @media (max-width: 640px) {
-    padding: 64px 20px !important;
-    .vt-platform-inner { gap: 40px; }
+    padding: 48px 20px !important;
+    .vt-platform-inner { gap: 24px; }
+    .vt-row, .vt-row-reverse { gap: 8px !important; }
     .vt-platform-header { gap: 12px; margin-bottom: 0; }
     .vt-platform-header + .vt-row { margin-top: -4px; }
     .vt-h2 { font-size: clamp(28px, 8vw, 36px) !important; letter-spacing: -1px; }
@@ -17399,10 +17429,11 @@ section h2 + p,
     .vt-row-title { font-size: clamp(24px, 7vw, 28px) !important; letter-spacing: -0.4px; }
     .vt-row-body { font-size: 15px !important; line-height: 1.6 !important; }
     .vt-list { gap: 14px; }
-    .vt-list li { font-size: 14.5px !important; padding-left: 32px; }
-    .vt-list li::before { width: 22px; height: 22px; }
+    .vt-list li { font-size: 14.5px !important; padding-left: 24px; }
+    .vt-list li::before { width: 10px; height: 10px; top: 7px; }
+    .vt-list li:not(:last-child)::after { left: 4.5px; top: 18px; }
     .vt-cta { height: 42px; padding: 0 20px; font-size: 14.5px !important; }
-    .vt-visual { border-radius: 18px; aspect-ratio: 614 / 630; }
+    .vt-visual { border-radius: 18px; aspect-ratio: 748 / 462; }
     .vt-visual-cloud { padding: 28px 20px; gap: 12px; aspect-ratio: auto; }
     .vt-currency-card { padding: 14px 16px; gap: 12px; grid-template-columns: 32px 1fr auto; }
     .vt-currency-card.vt-currency-card-muted { grid-template-columns: 1fr auto; }
@@ -17777,7 +17808,7 @@ $ds-font: "Inter", system-ui, sans-serif;
 
 /* ── AI Features section (redesigned) ── */
 .ai-features-section {
-  padding: clamp(96px, 11vw, 144px) clamp(24px, 5vw, 64px) clamp(72px, 9vw, 112px);
+  padding: 24px clamp(24px, 5vw, 64px) clamp(72px, 9vw, 112px);
   font-family: $ds-font;
 
   .ai-features-inner {
@@ -18610,9 +18641,15 @@ $ds-font: "Inter", system-ui, sans-serif;
     gap: 10px;
 
     > svg {
+      width: 14px;
+      height: 14px;
       flex-shrink: 0;
       margin-top: 3px;
-      color: #00B8B2;
+      box-sizing: border-box;
+      padding: 2.5px;
+      background: #00b8b2;
+      border-radius: 50%;
+      color: #ffffff;
     }
 
     > div {
@@ -18753,4 +18790,140 @@ $ds-font: "Inter", system-ui, sans-serif;
   color: rgba(255, 255, 255, 0.62);
   margin: 0;
   max-width: 320px;
+}
+
+/* CTA back at top of pricing cards */
+.pc-cta-wrap { margin-top: 0 !important; }
+
+/* Brand tiles for TikTok / Instagram / YouTube — same vibe as Claude/ChatGPT tiles */
+.pc-brand-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+
+  svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+    color: #ffffff;
+    fill: currentColor;
+  }
+}
+.pc-brand-tile--tiktok {
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  position: relative;
+
+  svg { color: #ffffff; }
+}
+.pc-brand-tile--instagram {
+  background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  svg { color: #ffffff; }
+}
+.pc-brand-tile--youtube {
+  background: rgba(255, 0, 0, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+
+  svg { color: #ffffff; }
+}
+
+/* MCP-imported sections — match up-running spacing, kill bg art */
+.mcp-page #who,
+.mcp-page #beforeafter {
+  padding-top: 24px !important;
+  background-image: none !important;
+}
+.mcp-page #who .who-bg-spiral,
+.mcp-page #who .who-header-bg,
+.mcp-page #beforeafter .ba-bg,
+.mcp-page #beforeafter .ba-header-bg {
+  display: none !important;
+}
+
+/* Before & After CTA — white pill */
+.mcp-page #beforeafter .ba-cta {
+  background: #ffffff !important;
+  color: #0d0d0d !important;
+  border-color: transparent !important;
+
+  &:hover {
+    background: #ffffff !important;
+    color: #0d0d0d !important;
+    opacity: 0.9;
+  }
+}
+
+/* ─── Tighten section spacing globally ─── */
+.landing-page .pricing-card-detail {
+  padding-top: 24px;
+  margin-bottom: 32px !important;
+}
+.landing-page .users-info-section {
+  padding-top: 24px;
+  padding-bottom: 32px;
+}
+.mcp-cta-wrapper { padding: 32px 0 !important; }
+@media (max-width: 991px) { .mcp-cta-wrapper { padding: 24px 0 !important; } }
+
+/* Pricing platform row — left aligned */
+.pricing-page-new .pc-platforms.pc-platforms-row {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Instagram tile — match weight of TikTok/YouTube tiles (no gradient drama) */
+.pc-brand-tile--instagram {
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  svg { color: #ffffff; }
+}
+
+/* MCP-imported sections: tighter top padding */
+.mcp-page #who,
+.mcp-page #beforeafter {
+  padding-top: 12px !important;
+  padding-bottom: 32px !important;
+}
+.mcp-page #who .who-inner,
+.mcp-page #beforeafter .ba-inner {
+  padding-top: 0 !important;
+}
+
+.pc-brand-tile-img {
+  display: inline-block;
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+.pricing-page-new .pc-platforms.pc-platforms-row {
+  gap: 16px;
+  margin: 4px 0 12px;
+}
+
+.pc-ai-logo--platform {
+  background: rgba(0, 0, 0, 0.55);
+  border-color: rgba(255, 255, 255, 0.10);
+  padding: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+}
+.pricing-page-new .pc-platforms.pc-platforms-row {
+  gap: 16px;
+  margin: 4px 0 12px;
+}
+
+.pricing-page-new .pc-platforms.pc-platforms-row {
+  padding-left: 0 !important;
+  justify-content: flex-start !important;
 }

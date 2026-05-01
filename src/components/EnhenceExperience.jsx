@@ -19,17 +19,6 @@ export default function EnhenceExperience({ title, subtitle, cta, ctaHref }) {
           <div className="mcp-cta-glow mcp-cta-glow--right" aria-hidden />
 
           <div className="mcp-cta-inner">
-            <div className="mcp-cta-rating">
-              <div className="mcp-cta-stars" aria-label="Rated 4.9 out of 5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#FACC15" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                ))}
-              </div>
-              <span className="mcp-cta-rating-value">4.9/5</span>
-            </div>
-
             <div className="mcp-cta-avatars">
               {AVATARS.map((a, i) => (
                 <span key={i} className="mcp-cta-avatar" style={{ background: a.bg }}>

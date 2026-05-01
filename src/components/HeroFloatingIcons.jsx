@@ -3,11 +3,11 @@ import React, { useEffect, useState } from "react";
 
 const BP = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const ICONS = [
-  `${BP}/hero-creators/c1.png?v=4`,
-  `${BP}/hero-creators/c2.png?v=4`,
-  `${BP}/hero-creators/c3.png?v=4`,
-  `${BP}/hero-creators/c4.png?v=4`,
-  `${BP}/hero-creators/c5.png?v=4`,
+  `${BP}/hero-creators/c1.png?v=6`,
+  `${BP}/hero-creators/c2.png?v=6`,
+  `${BP}/hero-creators/c3.png?v=6`,
+  `${BP}/hero-creators/c4.png?v=6`,
+  `${BP}/hero-creators/c5.png?v=6`,
 ];
 
 const SLOTS = ["c1", "c2", "c3", "c4", "c5"];
