@@ -18932,3 +18932,87 @@ $ds-font: "Inter", system-ui, sans-serif;
     -webkit-backdrop-filter: none !important;
   }
 }
+
+/* Hover-to-play thumbnail used inside .vt-visual */
+.vh-thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: hidden;
+  border-radius: 24px;
+}
+.vh-thumb-img,
+.vh-thumb-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.vh-thumb-video {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: #000;
+  object-fit: cover;
+}
+.vh-thumb:hover .vh-thumb-video,
+.vh-thumb:focus-within .vh-thumb-video {
+  opacity: 1;
+}
+@media (max-width: 640px) {
+  .vh-thumb { border-radius: 18px; }
+}
+
+/* Mobile hero polish */
+@media (max-width: 640px) {
+  .landing-page .inner-page .banner-section {
+    padding: 72px 12px 24px !important;
+  }
+  .landing-page .banner-section .banner-content-wrapper { gap: 8px; }
+  .landing-page .banner-section h1.cyan-pink-gradient {
+    font-size: clamp(28px, 8vw, 36px) !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.6px !important;
+    margin: 8px auto 8px !important;
+    max-width: 22ch;
+  }
+  .landing-page .banner-section .banner-content-wrapper p {
+    font-size: 14.5px !important;
+    line-height: 1.5 !important;
+    margin: 0 auto 14px !important;
+    max-width: 30ch;
+  }
+  .landing-page .banner-section .ai-btn {
+    font-size: 11px !important;
+    padding: 4px 12px !important;
+    margin: 0 auto 6px !important;
+  }
+  .landing-page .banner-section .chat-input-container {
+    border-radius: 14px;
+    box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.6),
+                0 0 28px -4px rgba(0, 184, 178, 0.18);
+  }
+  .landing-page .banner-section .chat-input-container textarea {
+    height: 72px !important;
+    padding: 12px 14px 6px !important;
+    font-size: 14px !important;
+  }
+  .landing-page .banner-section .chat-input-container .chat-input-toolbar {
+    padding: 6px 8px !important;
+    gap: 6px !important;
+  }
+  .landing-page .banner-section .chat-input-container .toolbar-left .translate-btn,
+  .landing-page .banner-section .chat-input-container .scan-btn,
+  .landing-page .banner-section .chat-input-container button {
+    font-size: 13px !important;
+  }
+  .landing-page .banner-section .chat-input-container .scan-btn {
+    padding: 8px 14px !important;
+  }
+}

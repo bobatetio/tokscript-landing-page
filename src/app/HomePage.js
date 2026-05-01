@@ -55,6 +55,7 @@ const EnhenceExperience = dynamic(() => import("@/components/EnhenceExperience")
 const HeroFloatingIcons = dynamic(() => import("@/components/HeroFloatingIcons"), { ssr: false });
 const WhoItsFor = dynamic(() => import("@/components/WhoItsFor"));
 const BeforeAfter = dynamic(() => import("@/components/BeforeAfter"), { ssr: false });
+const VideoHoverThumb = dynamic(() => import("@/components/VideoHoverThumb"), { ssr: false });
 const CounterComponent = dynamic(() => import("@/components/CounterComponent"));
 const LegalDisclaimer = dynamic(() => import("@/components/LegalDisclaimer"));
 const DontMissOutModal = dynamic(() => import("@/components/modals/DontMissOutModal"), { ssr: false });
@@ -1121,14 +1122,14 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="vt-visual">
-                <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/01-bulk.png?v=20260430a`} alt="Bulk Importing" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/01-bulk.png?v=20260430a`} alt="Bulk Importing" />
               </div>
             </div>
 
             {/* 2. TokScript MCP — visual LEFT, text-card RIGHT (Figma 557:16010) */}
             <div className="vt-row vt-row-reverse">
               <div className="vt-visual">
-                <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/02-mcp.png?v=20260430a`} alt="TokScript MCP" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/02-mcp.png?v=20260430a`} alt="TokScript MCP" />
               </div>
               <div className="vt-text">
                 <div className="vt-text-inner">
@@ -1161,14 +1162,14 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="vt-visual">
-                <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/03-collection.png?v=20260430a`} alt="TikTok Collection & Playlist Importing" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/03-collection.png?v=20260430a`} alt="TikTok Collection & Playlist Importing" />
               </div>
             </div>
 
             {/* 4. History & Bookmarking — visual LEFT, text-card RIGHT (Figma 558:17653) */}
             <div className="vt-row vt-row-reverse" id="history-bookmarking">
               <div className="vt-visual">
-                <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/04-history.png?v=20260430a`} alt="History & Bookmarking" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/04-history.png?v=20260430a`} alt="History & Bookmarking" />
               </div>
               <div className="vt-text">
                 <div className="vt-text-inner">
@@ -1201,14 +1202,14 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="vt-visual">
-                <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/05-hd-video.png?v=20260430a`} alt="HD Video & Cover Image Downloads" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/05-hd-video.png?v=20260430a`} alt="HD Video & Cover Image Downloads" />
               </div>
             </div>
 
             {/* 6. Quick URL Download — visual LEFT, text-card RIGHT (Figma 558:26755) */}
             <div className="vt-row vt-row-reverse">
               <div className="vt-visual">
-                <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/06-quick-url.png?v=20260430a`} alt="Quick URL Download" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/06-quick-url.png?v=20260430a`} alt="Quick URL Download" />
               </div>
               <div className="vt-text">
                 <div className="vt-text-inner">
@@ -1241,14 +1242,14 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="vt-visual">
-                <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/07-chrome.png?v=20260430a`} alt="Chrome Extension" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/07-chrome.png?v=20260430a`} alt="Chrome Extension" />
               </div>
             </div>
 
             {/* 8. AI Agents — visual LEFT, text-card RIGHT (Figma 558:31342) */}
             <div className="vt-row vt-row-reverse">
               <div className="vt-visual">
-                <img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/08-ai-agents.png?v=20260430a`} alt="AI Agents" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/08-ai-agents.png?v=20260430a`} alt="AI Agents" />
               </div>
               <div className="vt-text">
                 <div className="vt-text-inner">
