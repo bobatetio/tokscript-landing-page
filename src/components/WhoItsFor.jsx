@@ -11,47 +11,20 @@ import whoUgcMarketplaces from "../../assets_updated/images/mcp/who-ugc-marketpl
 import whoSoloCreator from "../../assets_updated/images/mcp/who-solo-creator.png";
 import whoAgencies from "../../assets_updated/images/mcp/who-agencies.png";
 
+import { getPlatformCopy } from "../app/platformContent";
 import "../app/mcp/mcp.scss";
 
-const whoCards = [
-  {
-    num: 1,
-    title: "Brand Marketers",
-    img: whoBrandMarketers,
-    desc: "Competitive intelligence through precise transcript and messaging analysis.",
-    sizeClass: "who-card-img-sm",
-  },
-  {
-    num: 2,
-    title: "Researchers",
-    img: whoResearchers,
-    desc: "Large-scale data extraction to identify patterns and emerging tropes.",
-    sizeClass: "who-card-img-sm",
-  },
-  {
-    num: 3,
-    title: "UGC Marketplaces",
-    img: whoUgcMarketplaces,
-    desc: "Provide your creator network with high-performing templates from real-time data.",
-    sizeClass: "who-card-img-sm",
-  },
-  {
-    num: 4,
-    title: "Solo Creator",
-    img: whoSoloCreator,
-    desc: "Instant conversion from viral trends to structured, actionable scripts.",
-    sizeClass: "who-card-img-lg",
-  },
-  {
-    num: 5,
-    title: "Agencies",
-    img: whoAgencies,
-    desc: "Automating high-performing script templates for creator rosters.",
-    sizeClass: "who-card-img-lg",
-  },
+const cardMeta = [
+  { num: 1, title: "Content Creators",          img: whoSoloCreator,     key: "creators",    sizeClass: "who-card-img-sm" },
+  { num: 2, title: "Educators & Researchers",   img: whoResearchers,     key: "researchers", sizeClass: "who-card-img-sm" },
+  { num: 3, title: "Marketers & Ad Analysts",   img: whoBrandMarketers,  key: "marketers",   sizeClass: "who-card-img-sm" },
+  { num: 4, title: "AI & Automation Users",     img: whoAgencies,        key: "ai",          sizeClass: "who-card-img-lg" },
+  { num: 5, title: "UGC Creators & Influencers", img: whoUgcMarketplaces, key: "ugc",         sizeClass: "who-card-img-lg" },
 ];
 
-export default function WhoItsFor() {
+export default function WhoItsFor({ platform = "tiktok" }) {
+  const copy = getPlatformCopy(platform);
+  const whoCards = cardMeta.map((c) => ({ ...c, desc: copy.who?.[c.key] || "" }));
   return (
     <div className="mcp-page">
     <section id="who">

@@ -18822,7 +18822,7 @@ $ds-font: "Inter", system-ui, sans-serif;
   svg { color: #ffffff; }
 }
 .pc-brand-tile--youtube {
-  background: rgba(255, 0, 0, 0.92);
+  background: rgba(217, 38, 38, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.18);
 
   svg { color: #ffffff; }
@@ -19015,4 +19015,342 @@ $ds-font: "Inter", system-ui, sans-serif;
   .landing-page .banner-section .chat-input-container .scan-btn {
     padding: 8px 14px !important;
   }
+}
+
+/* Per-platform accent overrides — subtle teal swap */
+.landing-page.platform-instagram {
+  --platform-accent: #f77737;
+  --platform-accent-darker: #d9601e;
+}
+.landing-page.platform-youtube {
+  --platform-accent: #d92626;
+  --platform-accent-darker: #b51c1c;
+}
+.landing-page.platform-instagram .pc-cta-primary,
+.landing-page.platform-instagram .pc-badge-recommended,
+.landing-page.platform-instagram .vt-cta {
+  background: var(--platform-accent) !important;
+  box-shadow: 0 0 16px rgba(247, 119, 55, 0.45);
+}
+.landing-page.platform-instagram .pc-cta-primary:hover,
+.landing-page.platform-instagram .vt-cta:hover {
+  background: var(--platform-accent-darker) !important;
+}
+.landing-page.platform-instagram .pc-price-highlight-pill {
+  background: rgba(247, 119, 55, 0.18);
+  border-color: rgba(247, 119, 55, 0.45);
+  color: #ffb98a;
+}
+.landing-page.platform-instagram .ur-pill,
+.landing-page.platform-instagram .pc-pill-pricing,
+.landing-page.platform-instagram .ai-features-pill,
+.landing-page.platform-instagram .vt-pill {
+  border-color: rgba(247, 119, 55, 0.4) !important;
+  background: linear-gradient(#0d0d0d, #0d0d0d) padding-box,
+              linear-gradient(135deg, #f77737, rgba(255,255,255,0.12)) border-box !important;
+}
+
+.landing-page.platform-youtube .pc-cta-primary,
+.landing-page.platform-youtube .pc-badge-recommended,
+.landing-page.platform-youtube .vt-cta {
+  background: var(--platform-accent) !important;
+  box-shadow: 0 0 16px rgba(217, 38, 38, 0.45);
+}
+.landing-page.platform-youtube .pc-cta-primary:hover,
+.landing-page.platform-youtube .vt-cta:hover {
+  background: var(--platform-accent-darker) !important;
+}
+.landing-page.platform-youtube .pc-price-highlight-pill {
+  background: rgba(217, 38, 38, 0.18);
+  border-color: rgba(217, 38, 38, 0.45);
+  color: #e88a8a;
+}
+.landing-page.platform-youtube .ur-pill,
+.landing-page.platform-youtube .pc-pill-pricing,
+.landing-page.platform-youtube .ai-features-pill,
+.landing-page.platform-youtube .vt-pill {
+  border-color: rgba(217, 38, 38, 0.4) !important;
+  background: linear-gradient(#0d0d0d, #0d0d0d) padding-box,
+              linear-gradient(135deg, #d92626, rgba(255,255,255,0.12)) border-box !important;
+}
+
+/* ─── Comprehensive teal → orange (Instagram) / red (YouTube) sweep ─── */
+
+/* INSTAGRAM (orange #f77737) */
+.landing-page.platform-instagram {
+  /* Pricing — featured glow + animated stroke */
+  .pc-card-featured {
+    box-shadow:
+      0 28px 64px -12px rgba(247, 119, 55, 0.28),
+      0 8px 24px -6px rgba(0, 0, 0, 0.55);
+    &::after {
+      background: conic-gradient(
+        from var(--pc-stroke-angle, 0deg),
+        transparent 0deg, transparent 75deg,
+        rgba(247, 119, 55, 0.12) 82deg,
+        rgba(247, 119, 55, 0.4) 90deg,
+        rgba(247, 119, 55, 0.6) 96deg,
+        rgba(247, 119, 55, 0.7) 100deg,
+        rgba(247, 119, 55, 0.6) 104deg,
+        rgba(247, 119, 55, 0.4) 110deg,
+        rgba(247, 119, 55, 0.12) 118deg,
+        transparent 125deg, transparent 360deg
+      ) !important;
+    }
+  }
+  .pc-card-featured .pc-plan-name { color: #f77737 !important; }
+
+  /* Tick bullets */
+  .pc-list li > svg { background: #f77737 !important; }
+
+  /* Pills + AI button border */
+  .ur-pill, .ai-features-pill, .vt-pill, .ai-btn {
+    border-color: rgba(247, 119, 55, 0.4) !important;
+    background: linear-gradient(#0d0d0d, #0d0d0d) padding-box,
+                linear-gradient(135deg, #f77737, rgba(255,255,255,0.12)) border-box !important;
+  }
+
+  /* Chat input focus + hover glow */
+  .chat-input-container {
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.04) inset,
+      0 18px 48px -12px rgba(0, 0, 0, 0.55),
+      0 0 0 1px rgba(247, 119, 55, 0.10),
+      0 0 32px -4px rgba(247, 119, 55, 0.22) !important;
+    &:hover, &:focus-within {
+      border-color: #f77737 !important;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.06) inset,
+        0 22px 56px -12px rgba(0, 0, 0, 0.6),
+        0 0 0 3px rgba(247, 119, 55, 0.20),
+        0 0 48px -4px rgba(247, 119, 55, 0.40) !important;
+    }
+  }
+
+  /* vt-list bullets + cta */
+  .vt-list li::before { background: #f77737 !important; }
+  .vt-list li:not(:last-child)::after {
+    background: linear-gradient(to bottom, rgba(29,29,29,0) 0%, #f77737 50%, rgba(28,28,28,0) 100%) !important;
+  }
+  .vt-cta { background: #f77737 !important; }
+  .vt-cta:hover { background: #d9601e !important; }
+
+  /* up-running CTA */
+  .ur-cta { background: #f77737 !important; }
+  .ur-cta:hover { background: #d9601e !important; }
+
+  /* Pricing tab active.featured */
+  .tab-btn.active.featured {
+    background: linear-gradient(135deg, #f77737, #d9601e) !important;
+    box-shadow: 0 4px 14px rgba(247, 119, 55, 0.30) !important;
+  }
+
+  /* Pricing accent text */
+  .pc-price-original { color: rgba(247, 119, 55, 0.7); }
+}
+
+/* YOUTUBE (red #d92626) */
+.landing-page.platform-youtube {
+  .pc-card-featured {
+    box-shadow:
+      0 28px 64px -12px rgba(217, 38, 38, 0.28),
+      0 8px 24px -6px rgba(0, 0, 0, 0.55);
+    &::after {
+      background: conic-gradient(
+        from var(--pc-stroke-angle, 0deg),
+        transparent 0deg, transparent 75deg,
+        rgba(217, 38, 38, 0.12) 82deg,
+        rgba(217, 38, 38, 0.4) 90deg,
+        rgba(217, 38, 38, 0.6) 96deg,
+        rgba(217, 38, 38, 0.7) 100deg,
+        rgba(217, 38, 38, 0.6) 104deg,
+        rgba(217, 38, 38, 0.4) 110deg,
+        rgba(217, 38, 38, 0.12) 118deg,
+        transparent 125deg, transparent 360deg
+      ) !important;
+    }
+  }
+  .pc-card-featured .pc-plan-name { color: #d92626 !important; }
+
+  .pc-list li > svg { background: #d92626 !important; }
+
+  .ur-pill, .ai-features-pill, .vt-pill, .ai-btn {
+    border-color: rgba(217, 38, 38, 0.4) !important;
+    background: linear-gradient(#0d0d0d, #0d0d0d) padding-box,
+                linear-gradient(135deg, #d92626, rgba(255,255,255,0.12)) border-box !important;
+  }
+
+  .chat-input-container {
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.04) inset,
+      0 18px 48px -12px rgba(0, 0, 0, 0.55),
+      0 0 0 1px rgba(217, 38, 38, 0.10),
+      0 0 32px -4px rgba(217, 38, 38, 0.22) !important;
+    &:hover, &:focus-within {
+      border-color: #d92626 !important;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.06) inset,
+        0 22px 56px -12px rgba(0, 0, 0, 0.6),
+        0 0 0 3px rgba(217, 38, 38, 0.20),
+        0 0 48px -4px rgba(217, 38, 38, 0.40) !important;
+    }
+  }
+
+  .vt-list li::before { background: #d92626 !important; }
+  .vt-list li:not(:last-child)::after {
+    background: linear-gradient(to bottom, rgba(29,29,29,0) 0%, #d92626 50%, rgba(28,28,28,0) 100%) !important;
+  }
+  .vt-cta { background: #d92626 !important; }
+  .vt-cta:hover { background: #b51c1c !important; }
+
+  .ur-cta { background: #d92626 !important; }
+  .ur-cta:hover { background: #b51c1c !important; }
+
+  .tab-btn.active.featured {
+    background: linear-gradient(135deg, #d92626, #b51c1c) !important;
+    box-shadow: 0 4px 14px rgba(217, 38, 38, 0.30) !important;
+  }
+
+  .pc-price-original { color: rgba(217, 38, 38, 0.7); }
+}
+
+/* Instagram hero background ray (replaces teal light-ray) */
+.landing-page.platform-instagram .inner-page .banner-section {
+  background-image: url("/platform-bg/instagram-ray.png") !important;
+}
+@media (max-width: 767px) {
+  .landing-page.platform-instagram .inner-page .banner-section {
+    background-image: url("/platform-bg/instagram-ray.png") !important;
+  }
+}
+
+/* YouTube hero background ray (replaces teal light-ray) */
+.landing-page.platform-youtube .inner-page .banner-section {
+  background-image: url("/platform-bg/youtube-ray.png") !important;
+}
+@media (max-width: 767px) {
+  .landing-page.platform-youtube .inner-page .banner-section {
+    background-image: url("/platform-bg/youtube-ray.png") !important;
+  }
+}
+
+/* ─── Pricing card teal sweep — Instagram (orange) ─── */
+.landing-page.platform-instagram {
+  /* Featured card: header bg + top-glow + plan-name */
+  .pc-card-featured .pc-header {
+    border-color: rgba(247, 119, 55, 0.25) !important;
+    &::before {
+      background: linear-gradient(180deg, rgba(247, 119, 55, 0.16) 0%, rgba(247, 119, 55, 0.05) 40%, rgba(0, 0, 0, 0) 100%) !important;
+    }
+  }
+  .pc-plan-name { color: #f77737 !important; }
+  .pc-badge-recommended {
+    background: #f77737 !important;
+    box-shadow: 0 0 16px rgba(247, 119, 55, 0.45) !important;
+  }
+  .pc-cta-primary {
+    background: linear-gradient(180deg, #f77737 0%, #e06325 100%) !important;
+    border-color: rgba(247, 119, 55, 0.4) !important;
+    color: #2a1206 !important;
+    box-shadow: 0 8px 22px -4px rgba(247, 119, 55, 0.45) !important;
+    &:hover:not(:disabled) {
+      background: linear-gradient(180deg, #ff8a4f 0%, #f77737 100%) !important;
+      color: #2a1206 !important;
+      box-shadow: 0 12px 28px -4px rgba(247, 119, 55, 0.55) !important;
+    }
+  }
+  .pc-price-highlight-pill {
+    background: rgba(247, 119, 55, 0.18) !important;
+    border-color: rgba(247, 119, 55, 0.45) !important;
+    color: #ffb98a !important;
+  }
+}
+
+/* ─── Pricing card teal sweep — YouTube (red) ─── */
+.landing-page.platform-youtube {
+  .pc-card-featured .pc-header {
+    border-color: rgba(217, 38, 38, 0.25) !important;
+    &::before {
+      background: linear-gradient(180deg, rgba(217, 38, 38, 0.16) 0%, rgba(217, 38, 38, 0.05) 40%, rgba(0, 0, 0, 0) 100%) !important;
+    }
+  }
+  .pc-plan-name { color: #d92626 !important; }
+  .pc-badge-recommended {
+    background: #d92626 !important;
+    box-shadow: 0 0 16px rgba(217, 38, 38, 0.45) !important;
+  }
+  .pc-cta-primary {
+    background: linear-gradient(180deg, #d92626 0%, #d40000 100%) !important;
+    border-color: rgba(217, 38, 38, 0.4) !important;
+    color: #2a0606 !important;
+    box-shadow: 0 8px 22px -4px rgba(217, 38, 38, 0.45) !important;
+    &:hover:not(:disabled) {
+      background: linear-gradient(180deg, #e54545 0%, #d92626 100%) !important;
+      color: #2a0606 !important;
+      box-shadow: 0 12px 28px -4px rgba(217, 38, 38, 0.55) !important;
+    }
+  }
+  .pc-price-highlight-pill {
+    background: rgba(217, 38, 38, 0.18) !important;
+    border-color: rgba(217, 38, 38, 0.45) !important;
+    color: #e88a8a !important;
+  }
+}
+
+/* ─── Pricing card body teal glows — Instagram (orange) ─── */
+.landing-page.platform-instagram .pc-card {
+  background-image:
+    radial-gradient(circle at 100% 100%, rgba(247, 119, 55, 0.14) 0%, transparent 55%),
+    radial-gradient(circle at 100% 50%, rgba(247, 119, 55, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(247, 119, 55, 0.04) 0%, transparent 55%),
+    radial-gradient(circle at 30% 35%, hsla(240, 15%, 7%, 0.95) 0%, transparent 70%) !important;
+  border-color: rgba(247, 119, 55, 0.28) !important;
+}
+
+/* ─── Pricing card body teal glows — YouTube (red) ─── */
+.landing-page.platform-youtube .pc-card {
+  background-image:
+    radial-gradient(circle at 100% 100%, rgba(217, 38, 38, 0.14) 0%, transparent 55%),
+    radial-gradient(circle at 100% 50%, rgba(217, 38, 38, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(217, 38, 38, 0.04) 0%, transparent 55%),
+    radial-gradient(circle at 30% 35%, hsla(240, 15%, 7%, 0.95) 0%, transparent 70%) !important;
+  border-color: rgba(217, 38, 38, 0.28) !important;
+}
+
+/* Pill border accents per platform (Before & After / Who / FAQ eyebrow) */
+.landing-page.platform-instagram {
+  .ba-pill, .who-pill, .ts-faq-mcp-eyebrow {
+    background:
+      linear-gradient(#0d0d0d, #0d0d0d) padding-box,
+      linear-gradient(135deg, #f77737, rgba(255,255,255,0.12)) border-box !important;
+  }
+}
+.landing-page.platform-youtube {
+  .ba-pill, .who-pill, .ts-faq-mcp-eyebrow {
+    background:
+      linear-gradient(#0d0d0d, #0d0d0d) padding-box,
+      linear-gradient(135deg, #d92626, rgba(255,255,255,0.12)) border-box !important;
+  }
+}
+
+/* Features bullet pulse glow per platform */
+@keyframes vt-bullet-glow-orange {
+  0%, 70%, 100% { box-shadow: 0 0 0 0 rgba(247, 119, 55, 0); transform: scale(1); }
+  35% { box-shadow: 0 0 14px 4px rgba(247, 119, 55, 0.55); transform: scale(1.08); }
+}
+@keyframes vt-bullet-glow-red {
+  0%, 70%, 100% { box-shadow: 0 0 0 0 rgba(217, 38, 38, 0); transform: scale(1); }
+  35% { box-shadow: 0 0 14px 4px rgba(217, 38, 38, 0.55); transform: scale(1.08); }
+}
+.landing-page.platform-instagram .vt-list li::before {
+  animation-name: vt-bullet-glow-orange !important;
+}
+.landing-page.platform-youtube .vt-list li::before {
+  animation-name: vt-bullet-glow-red !important;
+}
+
+/* New per-platform feature images — fill the frame */
+.landing-page.platform-instagram .vt-visual .vh-thumb-img,
+.landing-page.platform-youtube .vt-visual .vh-thumb-img {
+  object-fit: cover !important;
 }

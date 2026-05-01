@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
 import Header from "../components/Header";
 const ShareBar = dynamic(() => import("@/components/ShareBar"));
+import { getPlatformCopy } from "./platformContent";
 import magicIcon from "../assets/images/icons/magicIcon.svg";
 import ClaudeIcon from "../assets/images/icons/ai/ClaudeIcon";
 import ChatGPTIcon from "../assets/images/icons/ai/ChatGPTIcon";
@@ -221,7 +222,8 @@ const LANGUAGES = [
   { code: "ru", name: "Russian" },
 ];
 
-export default function LandingPage() {
+export default function LandingPage({ platform = "tiktok" } = {}) {
+  const copy = getPlatformCopy(platform);
   const [dontMissOutModalShow, setDontMissOutModalShow] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [videoLink, setVideoLink] = useState("");
@@ -883,7 +885,7 @@ export default function LandingPage() {
   const allPlans = [freePlan, ...transformPlansData()];
 
   return (
-    <div className="landing-page">
+    <div className={`landing-page ${copy.accentClass}`}>
       <Header />
       <main className="inner-page">
         <div className="banner-section">
@@ -910,13 +912,10 @@ export default function LandingPage() {
                   </div>
                 </div> */}
                 <h1 className="cyan-pink-gradient w-600 large">
-                  {/* TikTok, Reels & Shorts <br /> Transcript Generator */}
-                  TikTok Transcript Generator{" "}
+                  {copy.heroH1}{" "}
                 </h1>
                 <p>
-                  {/* Turn speech into text from any TikTok, Instagram Reels, &
-                  Youtube shorts video */}
-                  Turn speech into text for any TikTok, Reels, and Shorts video
+                  {copy.heroSub}
                 </p>
               </div>
               {/* <div className="link-field-wrapper">
@@ -943,10 +942,7 @@ export default function LandingPage() {
                 className={`chat-input-container${error ? " has-error" : ""}`}
               >
                 <textarea
-                  placeholder={
-                    error ||
-                    "Paste up to 50 video links here (or tiktok collection)"
-                  }
+                  placeholder={error || copy.inputPlaceholder}
                   value={videoLink}
                   onChange={(e) => setVideoLink(e.target.value)}
                 />
@@ -1004,10 +1000,7 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
-              <p className="helper-text">
-                Download up to 50 videos (any platform) at the same time and
-                entire TikTok collections
-              </p>
+              <p className="helper-text">{copy.bottomCopy}</p>
               <div className="social-platform-buttons">
                 <span className="platform-label">Supports:</span>
                 <span className="platform-btn">
@@ -1111,25 +1104,22 @@ export default function LandingPage() {
               <div className="vt-text">
                 <div className="vt-text-inner">
                   <h3 className="vt-row-title">Bulk Importing</h3>
-                  <p className="vt-row-body">Bulk import up to 50 TikTok, Instagram, or YouTube Shorts links at once to quickly download transcripts in bulk.</p>
+                  <p className="vt-row-body">{copy.bulk.body}</p>
                   <ul className="vt-list">
-                    <li>Bulk import up to 50 video links</li>
-                    <li>TikTok, Instagram, and YouTube Shorts support</li>
-                    <li>Bulk export all transcripts at once</li>
-                    <li>Individual or batch processing options</li>
+                    {copy.bulk.bullets.map((b, i) => <li key={i}>{b}</li>)}
                   </ul>
                   <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
                 </div>
               </div>
               <div className="vt-visual">
-                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/01-bulk.png?v=20260430a`} alt="Bulk Importing" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/01-bulk${platform === "tiktok" ? "" : "-" + platform}.png?v=20260501b`} alt="Bulk Importing" />
               </div>
             </div>
 
             {/* 2. TokScript MCP — visual LEFT, text-card RIGHT (Figma 557:16010) */}
             <div className="vt-row vt-row-reverse">
               <div className="vt-visual">
-                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/02-mcp.png?v=20260430a`} alt="TokScript MCP" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/02-mcp${platform === "tiktok" ? "" : "-" + platform}.png?v=20260501b`} alt="TokScript MCP" />
               </div>
               <div className="vt-text">
                 <div className="vt-text-inner">
@@ -1162,14 +1152,14 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="vt-visual">
-                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/03-collection.png?v=20260430a`} alt="TikTok Collection & Playlist Importing" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/03-collection${platform === "tiktok" ? "" : "-" + platform}.png?v=20260501b`} alt="TikTok Collection & Playlist Importing" />
               </div>
             </div>
 
             {/* 4. History & Bookmarking — visual LEFT, text-card RIGHT (Figma 558:17653) */}
             <div className="vt-row vt-row-reverse" id="history-bookmarking">
               <div className="vt-visual">
-                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/04-history.png?v=20260430a`} alt="History & Bookmarking" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/04-history${platform === "tiktok" ? "" : "-" + platform}.png?v=20260501b`} alt="History & Bookmarking" />
               </div>
               <div className="vt-text">
                 <div className="vt-text-inner">
@@ -1202,24 +1192,21 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="vt-visual">
-                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/05-hd-video.png?v=20260430a`} alt="HD Video & Cover Image Downloads" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/05-hd-video${platform === "tiktok" ? "" : "-" + platform}.png?v=20260501b`} alt="HD Video & Cover Image Downloads" />
               </div>
             </div>
 
             {/* 6. Quick URL Download — visual LEFT, text-card RIGHT (Figma 558:26755) */}
             <div className="vt-row vt-row-reverse">
               <div className="vt-visual">
-                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/06-quick-url.png?v=20260430a`} alt="Quick URL Download" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/06-quick-url${platform === "tiktok" ? "" : "-" + platform}.png?v=20260501b`} alt="Quick URL Download" />
               </div>
               <div className="vt-text">
                 <div className="vt-text-inner">
                   <h3 className="vt-row-title">Quick URL Download</h3>
-                  <p className="vt-row-body">Just add &lsquo;tokscript.com/&rsquo; in front of any video URL. Instantly redirect and download transcripts without logging in. Fast, automatic, every platform.</p>
+                  <p className="vt-row-body">{copy.quickUrl.body}</p>
                   <ul className="vt-list">
-                    <li>Instant URL-based downloading</li>
-                    <li>No need to visit main website</li>
-                    <li>Works with all supported platforms</li>
-                    <li>Automatic redirect and processing</li>
+                    {copy.quickUrl.bullets.map((b, i) => <li key={i}>{b}</li>)}
                   </ul>
                   <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
                 </div>
@@ -1242,14 +1229,14 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="vt-visual">
-                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/07-chrome.png?v=20260430a`} alt="Chrome Extension" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/07-chrome${platform === "tiktok" ? "" : "-" + platform}.png?v=20260501b`} alt="Chrome Extension" />
               </div>
             </div>
 
             {/* 8. AI Agents — visual LEFT, text-card RIGHT (Figma 558:31342) */}
             <div className="vt-row vt-row-reverse">
               <div className="vt-visual">
-                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/08-ai-agents.png?v=20260430a`} alt="AI Agents" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/08-ai-agents${platform === "tiktok" ? "" : "-" + platform}.png?v=20260501b`} alt="AI Agents" />
               </div>
               <div className="vt-text">
                 <div className="vt-text-inner">
@@ -1268,7 +1255,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <WhoItsFor />
+        <WhoItsFor platform={platform} />
 
         <div className="pricing-card-detail">
           <div className="container">
@@ -1366,7 +1353,7 @@ export default function LandingPage() {
                       </div>
                       <div className="pc-body">
                         <ul className="pc-list">
-                          <li><Check size={16} strokeWidth={3} /><span>5 transcripts per day</span></li>
+                          <li><Check size={16} strokeWidth={3} /><span>{copy.pricingDailyFreeLine}</span></li>
                           <li><Check size={16} strokeWidth={3} /><span>5 translations per day</span></li>
                           <li><Check size={16} strokeWidth={3} /><span>TikTok, Reels, Shorts</span></li>
                         </ul>
@@ -1510,21 +1497,21 @@ export default function LandingPage() {
                               <Check size={16} strokeWidth={3} />
                               <div>
                                 <strong>Viral Hook Generator</strong>
-                                <span>Paste any transcript → 20+ proven hooks</span>
+                                <span>{copy.agents.hook}</span>
                               </div>
                             </li>
                             <li>
                               <Check size={16} strokeWidth={3} />
                               <div>
                                 <strong>Viral Script Writer</strong>
-                                <span>Turn any viral video into YOUR script</span>
+                                <span>{copy.agents.script}</span>
                               </div>
                             </li>
                             <li>
                               <Check size={16} strokeWidth={3} />
                               <div>
                                 <strong>Virality Explainer</strong>
-                                <span>See exactly WHY videos blow up</span>
+                                <span>{copy.agents.explainer}</span>
                               </div>
                             </li>
                           </ul>
@@ -1669,7 +1656,7 @@ export default function LandingPage() {
             <div className="inner-section">
               <div className="title-wrappe">
                 <p>
-                  41,000+ users have processed more than 2,600,000 videos so far
+                  {copy.statsCopy}
                 </p>
               </div>
               <CounterComponent />
