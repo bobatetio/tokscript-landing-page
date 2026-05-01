@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+# Internal/utility pages
+Disallow: /upgrade
+Disallow: /404
+Disallow: /pricing-old
+Disallow: /landing-page
+
+# Language pages (English content with translated headings only — duplicate content)
+Disallow: /br
+Disallow: /es
+Disallow: /zh
+Disallow: /fr
+Disallow: /hi
+Disallow: /translate-variations
+
+Sitemap: https://tokscript.com/sitemap.xml
+
+# AI/LLM-readable documentation (llmstxt.org spec)
+# Curated index: https://tokscript.com/llms.txt
+# Full documentation: https://tokscript.com/llms-full.txt
