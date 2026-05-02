@@ -1,0 +1,187 @@
+/* ============================================================
+   Chrome Extension Testimonials Slider
+   ------------------------------------------------------------
+   Continuous left-scrolling carousel. The cards array is
+   duplicated in JSX (testimonials concatenated with itself), so
+   the keyframe animates from 0 to -50% for a seamless loop.
+
+   Edge fade is handled with mask-image gradients on the track
+   container, matching the reference snippet.
+   ============================================================ */
+
+#cx-testimonials .cx-testimonials-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+#cx-testimonials .hiw-sub {
+  white-space: nowrap;
+  max-width: none;
+}
+
+@media (max-width: 991px) {
+  #cx-testimonials .hiw-sub {
+    white-space: normal;
+    max-width: 720px;
+  }
+}
+
+#cx-testimonials .cx-testimonials-track-mask {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  max-width: 100%;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+}
+
+#cx-testimonials .cx-testimonials-track {
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+  width: max-content;
+  animation: cx-testimonials-scroll 60s linear infinite;
+  will-change: transform;
+}
+
+#cx-testimonials .cx-testimonials-track-mask:hover .cx-testimonials-track {
+  animation-play-state: paused;
+}
+
+@keyframes cx-testimonials-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(calc(-50% - 10px), 0, 0);
+  }
+}
+
+/* ── Card ───────────────────────────────────────────────── */
+
+#cx-testimonials .cx-testimonial-card {
+  flex: 0 0 auto;
+  width: clamp(320px, 40vw, 520px);
+  display: flex;
+  flex-direction: column;
+  background: rgba(20, 20, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  overflow: hidden;
+}
+
+#cx-testimonials .cx-testimonial-quote {
+  padding: 24px 24px 22px;
+  margin: 0 !important;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(14px, 1.15vw, 16px);
+  line-height: 1.55;
+  font-weight: 300;
+  letter-spacing: -0.15px;
+}
+
+#cx-testimonials .cx-testimonial-footer {
+  display: flex;
+  align-items: stretch;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: auto;
+}
+
+#cx-testimonials .cx-testimonial-author {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  min-width: 0;
+}
+
+#cx-testimonials .cx-testimonial-author img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+#cx-testimonials .cx-testimonial-author-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+#cx-testimonials .cx-testimonial-author-meta h5 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.2;
+  letter-spacing: -0.1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#cx-testimonials .cx-testimonial-stars {
+  display: inline-block;
+  margin-top: 5px;
+  font-size: 18px;
+  color: #f5b700;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+#cx-testimonials .cx-testimonial-divider {
+  width: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+#cx-testimonials .cx-testimonial-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 22px;
+  flex-shrink: 0;
+}
+
+#cx-testimonials .cx-testimonial-logo img {
+  height: 44px;
+  width: auto;
+  max-width: 170px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Hide the Chrome Web Store logo + divider on tablet and mobile */
+@media (max-width: 991px) {
+  #cx-testimonials .cx-testimonial-divider,
+  #cx-testimonials .cx-testimonial-logo {
+    display: none;
+  }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  #cx-testimonials .cx-testimonials-track {
+    animation: none;
+  }
+}

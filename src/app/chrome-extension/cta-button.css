@@ -1,0 +1,606 @@
+/* ============================================================
+   Chrome Extension Hero CTA Button
+   ------------------------------------------------------------
+   Single source of truth for the "Add TokScript to Chrome"
+   button. Edit this file to change the button — Next.js
+   content-hashes the filename so the browser always picks up
+   changes on a normal reload (no hard refresh needed).
+
+   Class structure (BEM):
+     .cx-cta-btn               – the <a> wrapper
+     .cx-cta-btn__icon         – the Chrome SVG
+     .cx-cta-btn__label        – the text node
+
+   The #cx-hero scope keeps these rules ahead of mcp.scss's
+   global resets in the cascade.
+   ============================================================ */
+
+#cx-hero .cx-cta-btn {
+  /* layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  /* sizing */
+  height: 44px;
+  padding: 0 20px 0 16px;
+
+  /* shape */
+  border-radius: 14px;
+
+  /* surface */
+  background: #ffffff;
+  color: #000000;
+
+  /* typography */
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.1px;
+  white-space: nowrap;
+  text-decoration: none;
+
+  /* state */
+  transition: opacity 0.2s ease, transform 0.2s ease;
+
+  /* spacing relative to surrounding hero stack */
+  margin-bottom: 24px;
+}
+
+#cx-hero .cx-cta-btn:hover {
+  opacity: 0.88;
+}
+
+#cx-hero .cx-cta-btn:active {
+  transform: translateY(1px);
+}
+
+#cx-hero .cx-cta-btn:focus-visible {
+  outline: 2px solid #00d9b4;
+  outline-offset: 3px;
+}
+
+#cx-hero .cx-cta-btn__icon {
+  flex-shrink: 0;
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+#cx-hero .cx-cta-btn__label {
+  display: inline-block;
+}
+
+/* Mobile tweak (optional). Keep this in case the button
+   needs to shrink on very narrow screens. */
+@media (max-width: 480px) {
+  #cx-hero .cx-cta-btn {
+    height: 42px;
+    padding: 0 18px 0 14px;
+    font-size: 14px;
+  }
+  #cx-hero .cx-cta-btn__icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* ============================================================
+   Sign-up / Add to Chrome button (cx-signup-btn) interactivity
+   Hover, active, and focus states. Base look comes from the
+   inline style attribute on the <a> in PageData.js so it always
+   wins specificity. These rules only handle pseudo-states which
+   can't be expressed inline.
+   ============================================================ */
+
+#cx-hero .cx-signup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+  background: #f7f8fb !important;
+}
+
+#cx-hero .cx-signup-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+#cx-hero .cx-signup-btn:focus-visible {
+  outline: 2px solid #00d9b4;
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   #cx-vt-platform feature-row overrides
+   ------------------------------------------------------------
+   mcp.scss has `.mcp-page section ul li::before { display: none
+   !important; }` which would otherwise hide the glowing teal
+   bullets in our reused vt-list. Re-enable them here, scoped to
+   the chrome-extension page section only.
+   ============================================================ */
+
+#cx-vt-platform .vt-list li::before {
+  display: block !important;
+}
+
+/* ============================================================
+   Footer CTA action row + trust line
+   Reuses .mcp-cta-* card from EnhenceExperience visual style
+   but adds two buttons and a trust line specific to this page.
+   ============================================================ */
+
+.cx-footer-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* Buttons match the original .mcp-cta-button (EnhenceExperience)
+   visual style: 36px tall, 14px font / weight 500, 14px radius,
+   white surface for primary, ghost variant for secondary. */
+
+.cx-footer-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 22px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.92);
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 14.5px;
+  font-weight: 500;
+  border-radius: 16.4px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Tighter headshot stack in the footer-CTA social proof badge.
+   Default mcp-cta-avatar margin-right is -4px; pull each avatar
+   in further so they overlap visibly. */
+.cx-cta-avatars-tight .mcp-cta-avatar {
+  margin-right: -14px;
+}
+.cx-cta-avatars-tight .mcp-cta-avatar--count {
+  margin-right: 0;
+  margin-left: 6px;
+}
+
+/* Tablet + mobile padding inside the Who-It's-For outer frame so
+   the cards don't touch the outer border. */
+@media (max-width: 991px) {
+  .mcp-page #who .who-cards-outer {
+    padding: 16px;
+    box-sizing: border-box;
+  }
+}
+
+/* ============================================================
+   Why-Install (HIW) cards: taller layout to fit 318x272 images
+   from public/figma-rows/. Title at top, image below, desc
+   pinned at bottom with a clear gap above it.
+   ============================================================ */
+@media screen and (min-width: 992px) {
+  .mcp-page #video .cx-hiw-cards-outer {
+    height: 453px;
+  }
+  .mcp-page #video .cx-hiw-card {
+    height: 425px;
+  }
+  /* Title near the top, well above the image */
+  .mcp-page #video .cx-hiw-card .hiw-card-title {
+    top: 24px;
+    z-index: 2;
+  }
+  /* Image-wrap nudged down 50 → 56 */
+  .mcp-page #video .cx-hiw-card-img-wrap {
+    top: 56px;
+    left: 15px;
+    width: 318px;
+    height: 272px;
+    overflow: hidden;
+    border-radius: 12px;
+    z-index: 1;
+  }
+  .mcp-page #video .cx-hiw-card-img-wrap img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  /* Desc pinned to bottom with breathing room above */
+  .mcp-page #video .cx-hiw-card .hiw-card-desc {
+    bottom: 22px;
+    left: 20px;
+    right: 20px;
+    line-height: 1.5;
+    z-index: 2;
+  }
+}
+
+/* Tablet + mobile: clean stacked card layout. Each card flows
+   normally with padding instead of absolute-positioned children. */
+@media (max-width: 991px) {
+  .mcp-page #video .cx-hiw-cards-outer {
+    height: auto;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .mcp-page #video .hiw-cards-row {
+    position: static;
+    left: auto;
+    top: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  .mcp-page #video .cx-hiw-card {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    min-height: 0;
+    padding: 24px 20px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+  }
+  .mcp-page #video .cx-hiw-card .hiw-card-bg-img {
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 360px;
+    height: 220px;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .mcp-page #video .cx-hiw-card .hiw-card-title {
+    position: static;
+    top: auto;
+    left: auto;
+    right: auto;
+    margin: 0;
+    padding: 0;
+  }
+  .mcp-page #video .cx-hiw-card-img-wrap {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 318 / 272;
+    margin: 0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .mcp-page #video .cx-hiw-card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .mcp-page #video .cx-hiw-card .hiw-card-desc {
+    position: static;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+  }
+}
+
+/* Footer slightly brighter than the section above (#0d0d0d) so the
+   boundary is visible. Chrome-extension page only. */
+.mcp-page .footer-section {
+  background-color: #1A1A1A;
+}
+
+/* Force the "41K+ Creators" span in the footer-CTA eyebrow to
+   match the rest of the line exactly (same color, font, weight,
+   spacing). Applies to all viewports. */
+.mcp-page .mcp-cta-eyebrow .cx-eyebrow-creators {
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  opacity: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   COMPREHENSIVE MOBILE / TABLET OPTIMIZATION (≤ 991px)
+   Tightens spacing, scales typography, prevents overflow,
+   stacks two-column rows, and improves tap targets.
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 991px) {
+  /* Prevent any horizontal scroll on the page */
+  .mcp-page {
+    overflow-x: hidden;
+  }
+
+  /* ── Hero ── */
+  .mcp-page #cx-hero {
+    padding: 24px 0 16px;
+  }
+  .mcp-page #cx-hero .cx-hero-inner {
+    padding-block: 24px;
+    padding-inline: 16px;
+    gap: 24px;
+  }
+  .mcp-page #cx-hero .cx-hero-h1 {
+    font-size: clamp(28px, 8vw, 38px) !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.8px !important;
+    margin-bottom: 14px !important;
+  }
+  .mcp-page #cx-hero .cx-hero-sub {
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+    max-width: 100% !important;
+    margin-bottom: 24px !important;
+  }
+  .mcp-page #cx-hero .cx-signup-btn {
+    height: 42px !important;
+    font-size: 14px !important;
+    padding: 0 18px 0 14px !important;
+    border-radius: 14px !important;
+  }
+  .mcp-page #cx-hero .cx-signup-btn img {
+    width: 22px !important;
+    height: 22px !important;
+  }
+  .mcp-page #cx-hero .cx-hero-video {
+    max-width: 100%;
+  }
+
+  /* ── The Unfair Advantage ── */
+  .mcp-page #cx-vt-platform.vt-platform-section {
+    padding: 32px clamp(16px, 4vw, 32px) 48px !important;
+  }
+  .mcp-page #cx-vt-platform .vt-platform-inner {
+    gap: 20px !important;
+  }
+  .mcp-page #cx-vt-platform .vt-platform-header {
+    gap: 12px !important;
+    margin-bottom: 8px !important;
+  }
+  .mcp-page #cx-vt-platform .vt-h2 {
+    font-size: clamp(28px, 6vw, 36px) !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.8px !important;
+    text-align: center;
+    white-space: normal !important;
+  }
+  .mcp-page #cx-vt-platform .vt-sub {
+    font-size: 15px !important;
+    line-height: 1.55 !important;
+    text-align: center;
+    max-width: 560px !important;
+  }
+  .mcp-page #cx-vt-platform .vt-row,
+  .mcp-page #cx-vt-platform .vt-row.vt-row-reverse {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+  .mcp-page #cx-vt-platform .vt-text-inner {
+    padding: 24px !important;
+  }
+  .mcp-page #cx-vt-platform .vt-row-title {
+    font-size: 22px !important;
+    line-height: 1.2 !important;
+  }
+  .mcp-page #cx-vt-platform .vt-row-body {
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+  }
+  .mcp-page #cx-vt-platform .vt-list li {
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+    padding-left: 24px !important;
+  }
+  .mcp-page #cx-vt-platform .vt-cta {
+    height: 44px !important;
+    padding: 0 18px !important;
+    font-size: 14px !important;
+  }
+
+  /* ── Why Install (HIW) section breathing room ── */
+  .mcp-page #video {
+    padding: 32px 16px !important;
+  }
+  .mcp-page #video .hiw-inner {
+    gap: 20px !important;
+  }
+  .mcp-page #video .hiw-h2 {
+    font-size: clamp(26px, 6vw, 32px) !important;
+    line-height: 1.2 !important;
+    text-align: center;
+  }
+  .mcp-page #video .hiw-sub {
+    font-size: 14.5px !important;
+    line-height: 1.55 !important;
+    text-align: center;
+  }
+
+  /* ── Who It's For ── */
+  .mcp-page #who {
+    padding: 32px 16px !important;
+  }
+  .mcp-page #who .who-h2 {
+    font-size: clamp(26px, 6vw, 32px) !important;
+    line-height: 1.2 !important;
+  }
+  .mcp-page #who .who-sub {
+    font-size: 14.5px !important;
+    line-height: 1.55 !important;
+  }
+  .mcp-page #who .who-card-title {
+    font-size: 15px !important;
+    font-weight: 600;
+  }
+  .mcp-page #who .who-cta-btn {
+    height: 44px !important;
+  }
+  .mcp-page #who .cx-who-header-block {
+    margin-bottom: 24px !important;
+  }
+
+  /* ── Testimonials ── */
+  .mcp-page #cx-testimonials {
+    padding: clamp(32px, 6vw, 56px) 0 !important;
+  }
+  .mcp-page #cx-testimonials .cx-testimonials-header {
+    margin-bottom: 28px !important;
+    padding: 0 16px;
+  }
+  .mcp-page #cx-testimonials .hiw-h2 {
+    font-size: clamp(24px, 6vw, 32px) !important;
+    line-height: 1.2 !important;
+  }
+  .mcp-page #cx-testimonials .cx-testimonial-card {
+    width: 88vw !important;
+    max-width: 420px !important;
+  }
+  .mcp-page #cx-testimonials .cx-testimonial-quote {
+    padding: 20px 20px 18px !important;
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+  }
+  .mcp-page #cx-testimonials .cx-testimonials-track {
+    animation-duration: 50s;
+  }
+
+  /* ── FAQ ── */
+  .mcp-page #faq {
+    padding: 40px 16px !important;
+  }
+  .mcp-page #faq h2 {
+    font-size: clamp(28px, 6vw, 36px) !important;
+    line-height: 1.15 !important;
+  }
+
+  /* ── Footer CTA ── */
+  .mcp-page .mcp-cta-wrapper {
+    padding: 24px 16px !important;
+  }
+  .mcp-page .mcp-cta-card {
+    padding: 32px 20px 36px !important;
+    max-width: 100% !important;
+    border-radius: 28px !important;
+  }
+  .mcp-page .mcp-cta-title {
+    font-size: clamp(22px, 5.5vw, 30px) !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.6px !important;
+  }
+  .mcp-page .mcp-cta-subtitle {
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+  }
+  .mcp-page .mcp-cta-eyebrow {
+    font-size: 12.5px !important;
+    white-space: normal !important;
+  }
+  .mcp-page .mcp-cta-eyebrow .cx-footer-cta-dot {
+    display: none;
+  }
+  .mcp-page .mcp-cta-eyebrow .cx-eyebrow-creators {
+    display: block;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    opacity: 1;
+  }
+  .mcp-page .cx-footer-cta-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100%;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 10px !important;
+  }
+  .mcp-page .cx-footer-cta-actions > a {
+    width: 100% !important;
+  }
+
+  /* ── Footer ── */
+  .mcp-page .footer-section {
+    padding: 28px 16px !important;
+  }
+}
+
+/* Tightest layout for narrow phones */
+@media (max-width: 480px) {
+  .mcp-page #cx-hero .cx-hero-h1 {
+    font-size: 28px !important;
+  }
+  .mcp-page #cx-hero .cx-hero-sub {
+    font-size: 14px !important;
+  }
+  .mcp-page #cx-hero .cx-hero-avatars img {
+    width: 30px;
+    height: 30px;
+    margin-left: -8px;
+  }
+  .mcp-page #cx-hero .cx-hero-stars {
+    font-size: 16px;
+  }
+  .mcp-page #cx-hero .cx-hero-rating-text {
+    font-size: 11.5px;
+  }
+  .mcp-page #cx-vt-platform .vt-row-title {
+    font-size: 20px !important;
+  }
+  .mcp-page #cx-testimonials .cx-testimonial-card {
+    width: 92vw !important;
+  }
+  .mcp-page .mcp-cta-eyebrow {
+    font-size: 11.5px !important;
+  }
+}
+
+.cx-footer-cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.32);
+  color: #ffffff;
+}
+
+.cx-footer-cta-trust {
+  margin: 22px 0 0 !important;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.5;
+  text-align: center;
+}
+
+.cx-footer-cta-dot {
+  margin: 0 4px;
+  color: rgba(255, 255, 255, 0.32);
+}
+
+@media (max-width: 480px) {
+  .cx-footer-cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .cx-footer-cta-primary,
+  .cx-footer-cta-secondary {
+    width: 100%;
+  }
+  .cx-footer-cta-trust {
+    font-size: 12px;
+  }
+}

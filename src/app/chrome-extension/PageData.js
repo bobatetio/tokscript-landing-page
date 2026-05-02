@@ -4,6 +4,8 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import "../mcp/mcp.scss";
+import "./cta-button.css";
+import "./cx-testimonials.css";
 
 const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
 const VideoLightbox = dynamic(
@@ -314,24 +316,58 @@ const sparkles = [
   },
 ];
 
+const testimonials = [
+  {
+    name: "Steve Mellor",
+    description:
+      "This extension is a cheat code for content creators. Grabs transcripts in seconds and breaks down exactly what's working. If you're creating content or analyzing competitors, this is the tool you need in your stack. Stop sleeping on it.",
+    avatar: "https://i.pravatar.cc/96?img=12",
+  },
+  {
+    name: "Mubasher Khan",
+    description:
+      "One of the best extensions I've used. It surfaces real data on every profile, so you can finally see what's working and gain a real edge when going viral on TikTok, YouTube, and Instagram. Effortless install, instant results.",
+    avatar: "https://i.pravatar.cc/96?img=33",
+  },
+  {
+    name: "Randy Stover",
+    description:
+      "As a full-time creator, this tool saves me so much time it's ridiculous. Transcripts in one click, analytics on every video, and zero context switching. The hours I used to lose to copy-pasting URLs are just gone now. Honestly a game changer.",
+    avatar: "https://i.pravatar.cc/96?img=51",
+  },
+  {
+    name: "Faith Williamson",
+    description:
+      "I run creator campaigns for TikTok Shop brands and was juggling six tabs and overpaying for tools that pulled me out of TikTok. TokScript replaced all of it. One-click transcripts, live analytics, real-time vetting. Saves me hours every week.",
+    avatar: "https://i.pravatar.cc/96?img=44",
+  },
+  {
+    name: "Bob Atetio",
+    description:
+      "I love how TokScript simplifies my workflow. Pulling a full TikTok transcript with one click is a game changer for content research. The interface is clean and the MCP feature plugs straight into Claude. Highly recommended for any creator.",
+    avatar: "https://i.pravatar.cc/96?img=68",
+  },
+];
+const duplicatedTestimonials = [...testimonials, ...testimonials];
+
 const hiwCards = [
   {
     step: "Step 01",
-    title: "Copy the URL above",
-    img: hiwStep1Img,
-    desc: "Hit the copy button, one URL is all it takes to link TokScript to your AI.",
+    title: "Research Without Breaking Flow.",
+    img: "/figma-rows/Research%20without%20breaking%20flow.png?v=20260502c",
+    desc: "Stay on TikTok. Keep your scroll going. The transcripts, analytics, and downloads come to you, never the other way around.",
   },
   {
     step: "Step 02",
-    title: "Open Claude or ChatGPT",
-    img: hiwStep2Img,
-    desc: "Go to Settings \u2192 Connectors \u2192 Add Custom Connector, then paste the URL.",
+    title: "See Data TikTok Hides.",
+    img: "/figma-rows/See%20data%20tiktok%20hides.png?v=20260502c",
+    desc: "Real engagement rates. Posting patterns. Virality distribution. The metrics native analytics will never show you.",
   },
   {
     step: "Step 03",
-    title: "Log in. Done.",
-    img: hiwStep3Img,
-    desc: "Authenticate with your TokScript account. Your entire library is now in your AI.",
+    title: "AI-Ready, Instantly.",
+    img: "/figma-rows/Frame%202121457638.png?v=20260502c",
+    desc: "Every transcript exports clean and timestamped, ready to drop straight into Claude or ChatGPT and skip the formatting tax.",
   },
 ];
 
@@ -510,7 +546,7 @@ const workflows = [
   },
   {
     title: "Sidebar Mode",
-    desc: "Opens a sidebar right next to the video. Copy hooks, read the script, take notes — without leaving the page or losing your place.",
+    desc: "Opens a sidebar right next to the video. Copy hooks, read the script, take notes without leaving the page or losing your place.",
     img: wfImg1,
   },
   {
@@ -523,11 +559,11 @@ const workflows = [
 const faqs = [
   {
     q: "How do I install the Chrome Extension?",
-    a: "Install it from the Chrome Web Store, pin the icon to your toolbar, and log in once with your TokScript account. You're connected — every transcript you grab syncs to your dashboard automatically.",
+    a: "Install it from the Chrome Web Store, pin the icon to your toolbar, and log in once with your TokScript account. You're connected. Every transcript you grab syncs to your dashboard automatically.",
   },
   {
     q: "How fast is the capture?",
-    a: "About 2 seconds. Click the blue icon while you're watching a TikTok, Reel, or Short — we detect the URL, rip the transcript, and sync it straight to your library. No copy-paste, no tab switching.",
+    a: "About 2 seconds. Click the blue icon while you're watching a TikTok, Reel, or Short. We detect the URL, rip the transcript, and sync it straight to your library. No copy-paste, no tab switching.",
   },
   {
     q: "Can I trigger it without using my mouse?",
@@ -543,7 +579,7 @@ const faqs = [
   },
   {
     q: "Can I extract a video without opening it?",
-    a: "Yes. Right-click any video link on any webpage and use the context menu to extract the transcript directly — no need to open the video at all.",
+    a: "Yes. Right-click any video link on any webpage and use the context menu to extract the transcript directly. No need to open the video at all.",
   },
   {
     q: "Does the extension work with TikTok, Instagram and YouTube?",
@@ -624,6 +660,23 @@ export default function PageData() {
     return () => io.disconnect();
   }, []);
 
+  // Scroll-driven feature spotlight: fade non-centered rows in #cx-vt-platform
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const rows = document.querySelectorAll("#cx-vt-platform .vt-row");
+    if (!rows.length) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle("vt-row-active", entry.isIntersecting);
+        });
+      },
+      { threshold: 0, rootMargin: "-38% 0px -38% 0px" },
+    );
+    rows.forEach((r) => obs.observe(r));
+    return () => obs.disconnect();
+  }, []);
+
   // Filter skills
   const filteredSkills = skills.filter(
     (s) => skillsFilter === "all" || s.category === skillsFilter,
@@ -635,7 +688,7 @@ export default function PageData() {
 
       {/* ── Hero (chatgpt.html style) ── */}
       <section id="cx-hero">
-        <div className="cx-hero-aurora"><img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/chrome-extension/hero-flare.png`} alt="" /></div>
+        <div className="cx-hero-aurora"><img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/assets/chatgpt-hero-flare.png`} alt="" /></div>
         <div className="cx-hero-inner">
           <div className="cx-hero-left">
             <div className="cx-hero-badge">
@@ -643,22 +696,64 @@ export default function PageData() {
               Chrome Extension
             </div>
             <h1 className="cx-hero-h1">
-              Capture inspiration.
+              See What TikTok
               <br />
-              Don&apos;t break your scroll.
+              Doesn&apos;t Show You.
             </h1>
             <p className="cx-hero-sub">
-              Hit the extension, grab the transcript, keep scrolling. Two seconds, one click — never leave the feed.
+              One click pulls clean transcripts, hidden analytics, and HD downloads right inside your TikTok feed.
             </p>
             <a
               href="https://chromewebstore.google.com/detail/tokscript/ligffiaiehimfbhjflgkkfanhfjmdaoi?hl=en-US"
               target="_blank"
               rel="noopener noreferrer"
-              className="cx-hero-url-bar"
+              className="cx-signup-btn"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "10px",
+                marginBottom: "24px",
+                height: "52px",
+                padding: "0 28px 0 22px",
+                background: "#ffffff",
+                color: "#06091A",
+                fontFamily: "Inter, system-ui, sans-serif",
+                fontSize: "16px",
+                fontWeight: 500,
+                lineHeight: "24px",
+                borderRadius: "18px",
+                textDecoration: "none",
+                whiteSpace: "nowrap",
+                cursor: "pointer",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease",
+              }}
             >
-              <span className="cx-hero-url-text">chromewebstore.google.com/detail/tokscript</span>
-              <span className="cx-hero-url-btn">Add to Chrome</span>
+              <img
+                src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/figma-rows/Google_Chrome_Web_Store_icon_2015.svg.png`}
+                alt=""
+                aria-hidden="true"
+                style={{ flexShrink: 0, display: "block", width: 32, height: 32, objectFit: "contain" }}
+              />
+              Add TokScript To Chrome
             </a>
+            <div className="cx-hero-social-proof">
+              <div className="cx-hero-avatars">
+                <img src="https://i.pravatar.cc/56?img=5" alt="" loading="lazy" />
+                <img src="https://i.pravatar.cc/56?img=12" alt="" loading="lazy" />
+                <img src="https://i.pravatar.cc/56?img=32" alt="" loading="lazy" />
+                <img src="https://i.pravatar.cc/56?img=47" alt="" loading="lazy" />
+              </div>
+              <div className="cx-hero-rating">
+                <div className="cx-hero-stars" aria-hidden="true">
+                  <span className="cx-hero-stars-empty">★★★★★</span>
+                  <span className="cx-hero-stars-fill">★★★★★</span>
+                </div>
+                <div className="cx-hero-rating-text">
+                  41k+ creators
+                </div>
+              </div>
+            </div>
           </div>
           <div className="cx-hero-right">
             <div className="cx-hero-video">
@@ -673,23 +768,23 @@ export default function PageData() {
         </div>
 
         <style>{`
-          #cx-hero { position: relative; overflow: hidden; padding: 44px 0 4px; background: #0d0d0d; }
+          #cx-hero { position: relative; overflow: hidden; padding: 44px 0; background: #0d0d0d; }
           .cx-hero-aurora { position: absolute; bottom: 0; left: 0; width: 100%; pointer-events: none; z-index: 0; }
           .cx-hero-aurora img { width: 100%; height: auto; display: block; }
           .cx-hero-inner {
             position: relative; z-index: 2;
             display: grid;
             grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-            gap: clamp(2rem, 4vw, 4rem);
+            gap: clamp(1rem, 2vw, 2rem);
             width: 100%; max-width: 1440px;
             margin: 0 auto;
-            padding-block: clamp(1.5rem, 3vw, 3rem);
+            padding-block: clamp(1rem, 2.5vw, 2.5rem);
             padding-inline: clamp(1.5rem, 5vw, 4rem);
             box-sizing: border-box;
-            align-items: center; justify-items: center;
+            align-items: center; justify-content: center; justify-items: center;
           }
-          .cx-hero-left { display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 0; width: 100%; justify-self: end; }
-          .cx-hero-right { min-width: 0; display: flex; align-items: center; justify-content: center; width: 100%; justify-self: start; }
+          .cx-hero-left { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-width: 0; padding: 0; width: 100%; justify-self: end; }
+          .cx-hero-right { min-width: 0; display: flex; align-items: center; justify-content: center; padding: 0; width: 100%; justify-self: start; }
           .cx-hero-badge {
             display: inline-flex; align-items: center; gap: 8px;
             background: #202223; border-radius: 50px;
@@ -698,25 +793,43 @@ export default function PageData() {
             margin-bottom: 10px;
           }
           .cx-hero-badge svg { width: 17px; height: 17px; flex-shrink: 0; }
-          .cx-hero-h1 {
-            font-size: clamp(1.875rem, 2.8vw, 3rem); font-weight: 700; letter-spacing: -1.4px; line-height: 1.1;
-            margin: 0 auto 20px; color: #fff; text-wrap: balance; max-width: 32ch;
+          #cx-hero .cx-hero-h1 {
+            font-size: 58px; font-weight: 700; letter-spacing: -1.8px; line-height: 64px;
+            margin: 0 auto 16px; color: #fff; max-width: 100%;
           }
-          .cx-hero-sub { font-size: 19px; color: rgba(255,255,255,.8); max-width: 580px; margin: 0 auto 24px; line-height: 1.65; font-weight: 400; }
-          .cx-hero-url-bar {
-            display: flex; align-items: center; text-decoration: none;
-            width: min(420px, 100%); height: 48px;
-            background: #0d0d0d; border: 2px solid #e1dbdb; border-radius: 16px;
-            padding: 0 4px 0 16px;
+          #cx-hero .cx-hero-sub { font-size: 19px; color: rgba(255,255,255,.8); max-width: 580px; margin: 0 auto 24px; line-height: 1.65; font-weight: 400; }
+          /* CTA button lives in ./cta-button.css for reliable cache-busting */
+          .cx-hero-social-proof {
+            display: inline-flex; align-items: center; gap: 12px;
+            margin: 0 auto;
           }
-          .cx-hero-url-text { flex: 1; font-size: 14px; color: #d4d4d4; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
-          .cx-hero-url-btn {
-            flex-shrink: 0; height: 36px; padding: 0 16px; background: #fff; color: #06091a;
-            font-size: 14px; font-weight: 500; border-radius: 14px;
-            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-            transition: opacity .2s;
+          .cx-hero-avatars { display: inline-flex; flex-shrink: 0; }
+          .cx-hero-avatars img {
+            width: 36px; height: 36px; border-radius: 50%;
+            border: 1px solid #fff; object-fit: cover;
+            margin-left: -10px; background: #1a1a1a;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
           }
-          .cx-hero-url-bar:hover .cx-hero-url-btn { opacity: .86; }
+          .cx-hero-avatars img:first-child { margin-left: 0; }
+          .cx-hero-rating { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+          .cx-hero-stars {
+            position: relative; display: inline-block; font-size: 12px;
+            letter-spacing: 1.5px; line-height: 1;
+          }
+          .cx-hero-stars-empty { color: rgba(255, 255, 255, 0.22); }
+          .cx-hero-stars-fill {
+            position: absolute; top: 0; left: 0;
+            color: #f5b700;
+            width: 84%; overflow: hidden; white-space: nowrap;
+          }
+          .cx-hero-rating-text {
+            font-size: 12px; color: #fff;
+            font-weight: 500; line-height: 1.4; white-space: nowrap;
+          }
+          .cx-hero-dot { margin: 0 4px; color: rgba(255,255,255,.35); }
+          @media (max-width: 480px) {
+            .cx-hero-rating-text { white-space: normal; text-align: left; }
+          }
           .cx-hero-video {
             position: relative; width: 100%; max-width: 480px; aspect-ratio: 1/1;
             border: 2px solid #00d9b4; border-radius: 14px; overflow: hidden;
@@ -731,41 +844,46 @@ export default function PageData() {
           @media (max-width: 900px) {
             .cx-hero-inner { grid-template-columns: 1fr; }
             .cx-hero-left, .cx-hero-right { justify-self: center; }
-            .cx-hero-h1 { font-size: clamp(1.75rem, 7vw, 2.25rem); }
+            .cx-hero-h1 { font-size: clamp(1.75rem, 7vw, 2.25rem); white-space: normal; }
             .cx-hero-sub { font-size: 16px; }
           }
         `}</style>
       </section>
 
       {/* ── Section 2: How It Works ── */}
-      <section id="video">
+      <section id="video" style={{ paddingTop: "36px", paddingBottom: "36px" }}>
         <img className="hiw-bg-texture" src={hiwBgTexture.src} alt="" />
+        <style>{`
+          #video .hiw-h2,
+          #video .hiw-sub { white-space: nowrap; }
+          #video .hiw-header-content { width: auto; max-width: 100%; }
+          @media (max-width: 991px) {
+            #video .hiw-h2,
+            #video .hiw-sub { white-space: normal; }
+          }
+        `}</style>
 
-        <div className="hiw-inner">
+        <div className="hiw-inner" style={{ gap: "24px" }}>
           {/* Header */}
-          <div className="hiw-header-block">
-            <img className="hiw-header-bg" src={hiwHeaderBg.src} alt="" />
+          <div className="hiw-header-block" style={{ height: "auto" }}>
             <div className="hiw-header-content">
-              <div className="hiw-pill">How it works</div>
-              <h2 className="hiw-h2">Getting Started with Tokscript MCP</h2>
+              <div className="hiw-pill">Why Install</div>
+              <h2 className="hiw-h2">Built For People Who Actually Study TikTok.</h2>
               <p className="hiw-sub">
-                Integrate TokScript into your AI workflow in under 60 seconds.
-                Copy your unique MCP URL, connect it to your preferred LLM, and
-                start extracting viral data instantly.
+                Three things TikTok&apos;s interface refuses to give you, built right into the feed where you already work.
               </p>
             </div>
           </div>
 
           {/* Cards */}
-          <div className="hiw-cards-outer">
+          <div className="cx-hiw-cards-outer hiw-cards-outer">
             <div className="hiw-cards-row">
               {hiwCards.map((card, i) => (
-                <div className="hiw-card" key={i}>
+                <div className="cx-hiw-card hiw-card" key={i}>
                   <img className="hiw-card-bg-img" src={hiwCardBg.src} alt="" />
-                  <p className="hiw-step-label">{card.step}</p>
                   <h3 className="hiw-card-title">{card.title}</h3>
-                  <div className="hiw-card-img-wrap">
-                    <img src={card.img.src} alt="" />
+                  <div className="cx-hiw-card-img-wrap hiw-card-img-wrap">
+                    <img src={card.img} alt="" />
                   </div>
                   <p className="hiw-card-desc">{card.desc}</p>
                 </div>
@@ -774,11 +892,138 @@ export default function PageData() {
           </div>
 
           {/* CTA */}
-          <div className="hiw-cta">
-            <p className="hiw-cta-text">Don&apos;t have an account?</p>
-            <Link href="/app/sign-up" className="hiw-cta-btn">
-              Sign Up Today
-            </Link>
+        </div>
+      </section>
+
+      {/* ── Section 2b: The unfair advantage (alternating feature rows) ── */}
+      <section id="cx-vt-platform" className="vt-platform-section">
+        <div className="vt-platform-inner">
+          <div className="vt-platform-header">
+            <span className="vt-pill">The Unfair Advantage</span>
+            <h2 className="vt-h2">See What TikTok Won&apos;t Show You.</h2>
+            <p className="vt-sub">
+              The metrics native analytics will never surface: engagement, virality, and posting patterns, pulled live on every profile you visit.
+            </p>
+          </div>
+
+          {/* Row 1 — Real Engagement Metrics: text-card LEFT, visual RIGHT */}
+          <div className="vt-row">
+            <div className="vt-text">
+              <div className="vt-text-inner">
+                <h3 className="vt-row-title">Real Engagement Metrics</h3>
+                <p className="vt-row-body">
+                  Skip the inflated follower counts. See actual engagement broken down across views, likes, comments, shares, and bookmarks with mean and median for every metric.
+                </p>
+                <ul className="vt-list">
+                  <li>Mean and median for every metric</li>
+                  <li>Real engagement rate, not a guess</li>
+                  <li>Toggle between full library or last 15 videos</li>
+                  <li>Live on every creator profile</li>
+                </ul>
+                <a
+                  href="https://chromewebstore.google.com/detail/tokscript/ligffiaiehimfbhjflgkkfanhfjmdaoi?hl=en-US"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="vt-cta"
+                  style={{ height: "44px", gap: "8px", padding: "0 24px 0 20px" }}
+                >
+                  <img
+                    src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/figma-rows/Google_Chrome_Web_Store_icon_2015.svg.png`}
+                    alt=""
+                    aria-hidden="true"
+                    style={{ flexShrink: 0, display: "block", width: 20, height: 20, objectFit: "contain" }}
+                  />
+                  Add TokScript To Chrome
+                </a>
+              </div>
+            </div>
+            <div className="vt-visual">
+              <img
+                src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/figma-rows/Real%20Engagement%20Metrics.png?v=20260502c`}
+                alt="Real Engagement Metrics"
+                style={{ width: "100%", height: "auto", display: "block", borderRadius: "16px" }}
+              />
+            </div>
+          </div>
+
+          {/* Row 2 — The Posting Playbook: visual LEFT, text-card RIGHT */}
+          <div className="vt-row vt-row-reverse">
+            <div className="vt-visual">
+              <img
+                src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/figma-rows/The%20Posting%20Playbook.png?v=20260502c`}
+                alt="The Posting Playbook"
+                style={{ width: "100%", height: "auto", display: "block", borderRadius: "16px" }}
+              />
+            </div>
+            <div className="vt-text">
+              <div className="vt-text-inner">
+                <h3 className="vt-row-title">The Posting Playbook</h3>
+                <p className="vt-row-body">
+                  Reverse-engineer any creator&apos;s growth. See exactly when they post, how often, and which days drive their results with a full-year heatmap to track patterns over time.
+                </p>
+                <ul className="vt-list">
+                  <li>Posts per day of the week, ranked</li>
+                  <li>Daily posting frequency chart</li>
+                  <li>Full-year posting heatmap with history</li>
+                  <li>Spot the patterns that correlate with growth</li>
+                </ul>
+                <a
+                  href="https://chromewebstore.google.com/detail/tokscript/ligffiaiehimfbhjflgkkfanhfjmdaoi?hl=en-US"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="vt-cta"
+                  style={{ height: "44px", gap: "8px", padding: "0 24px 0 20px" }}
+                >
+                  <img
+                    src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/figma-rows/Google_Chrome_Web_Store_icon_2015.svg.png`}
+                    alt=""
+                    aria-hidden="true"
+                    style={{ flexShrink: 0, display: "block", width: 20, height: 20, objectFit: "contain" }}
+                  />
+                  Add TokScript To Chrome
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Row 3 — Format & Duration Intelligence: text-card LEFT, visual RIGHT */}
+          <div className="vt-row">
+            <div className="vt-text">
+              <div className="vt-text-inner">
+                <h3 className="vt-row-title">Format &amp; Duration Intelligence</h3>
+                <p className="vt-row-body">
+                  Understand the format strategy behind every creator. See the long-versus-short split and the exact video durations that cluster at a glance.
+                </p>
+                <ul className="vt-list">
+                  <li>Long vs Short percentage breakdown</li>
+                  <li>5 duration buckets (0-15s through 90s+)</li>
+                  <li>Spot the format sweet spot for any niche</li>
+                  <li>Critical for building your own format strategy</li>
+                </ul>
+                <a
+                  href="https://chromewebstore.google.com/detail/tokscript/ligffiaiehimfbhjflgkkfanhfjmdaoi?hl=en-US"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="vt-cta"
+                  style={{ height: "44px", gap: "8px", padding: "0 24px 0 20px" }}
+                >
+                  <img
+                    src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/figma-rows/Google_Chrome_Web_Store_icon_2015.svg.png`}
+                    alt=""
+                    aria-hidden="true"
+                    style={{ flexShrink: 0, display: "block", width: 20, height: 20, objectFit: "contain" }}
+                  />
+                  Add TokScript To Chrome
+                </a>
+              </div>
+            </div>
+            <div className="vt-visual">
+              <img
+                src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/figma-rows/Format%20%26%20Duration%20Intelligence.png?v=20260502c`}
+                alt="Format and Duration Intelligence"
+                style={{ width: "100%", height: "auto", display: "block", borderRadius: "16px" }}
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -789,16 +1034,13 @@ export default function PageData() {
 
         <div className="who-inner">
           {/* Header */}
-          <div className="who-header-block">
+          <div className="who-header-block cx-who-header-block" style={{ height: "auto", padding: "16px 0 0", marginBottom: "56px" }}>
             <img className="who-header-bg" src={whoHeaderBg.src} alt="" />
             <div className="who-header-content">
-              <div className="who-pill">Who It&apos;s For</div>
-              <h2 className="who-h2">Stay in the Feed</h2>
+              <div className="who-pill">Built For The Work</div>
+              <h2 className="who-h2">Who Actually Uses TokScript.</h2>
               <p className="who-sub">
-                Friction kills ideas. The Chrome Extension removes the admin
-                tax — the tab-switching, URL copying, context-loss tax — so you
-                can capture inspiration the second you see it and keep
-                scrolling.
+                The people who study TikTok like a science, and need the data to back it up.
               </p>
             </div>
           </div>
@@ -812,7 +1054,7 @@ export default function PageData() {
                   src={whoCardGridBg.src}
                   alt=""
                 />
-                <p className="who-card-title">{card.title}</p>
+                <p className="who-card-title" style={{ top: "12px" }}>{card.title}</p>
                 <div className={`who-card-img ${card.sizeClass}`}>
                   <img src={card.img.src} alt="" />
                 </div>
@@ -823,327 +1065,88 @@ export default function PageData() {
 
           {/* CTA */}
           <div className="who-cta">
-            <p className="who-cta-text">Don&apos;t have an account?</p>
-            <Link href="/app/sign-up" className="who-cta-btn">
-              Sign Up Today
-            </Link>
+            <a
+              href="https://chromewebstore.google.com/detail/tokscript/ligffiaiehimfbhjflgkkfanhfjmdaoi?hl=en-US"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="who-cta-btn"
+              style={{ width: "auto", height: "44px", padding: "0 22px 0 18px", gap: "8px", fontSize: "14.5px", borderRadius: "16px" }}
+            >
+              <img
+                src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/figma-rows/Google_Chrome_Web_Store_icon_2015.svg.png`}
+                alt=""
+                aria-hidden="true"
+                style={{ flexShrink: 0, display: "block", width: 20, height: 20, objectFit: "contain" }}
+              />
+              Add TokScript To Chrome
+            </a>
           </div>
         </div>
       </section>
 
-      {/* ── Section 4: Setup ── */}
-      <section id="setup">
-        {/* Outer card */}
-        <div className="setup-card">
-          {/* bg image */}
-          <img className="setup-bg" src={setupBg.src} alt="" />
+      {/* ── Section 3b: Testimonials slider ── */}
+      <section
+        id="cx-testimonials"
+        style={{
+          position: "relative",
+          padding: "clamp(48px, 6vw, 96px) 0",
+          backgroundImage: `url(${wfCardBg.src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(180deg, rgba(13,13,13,0.55) 0%, rgba(13,13,13,0.7) 100%)",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            maxWidth: "1280px",
+            margin: "0 auto",
+            padding: "0 clamp(20px, 4vw, 48px)",
+          }}
+        >
+          <div className="cx-testimonials-header">
+            <div className="hiw-pill">Loved By Creators</div>
+            <h2 className="hiw-h2">What People Are Saying.</h2>
+            <p className="hiw-sub">
+              Creators, marketers, and researchers using TokScript to turn TikTok scrolling into structured insight.
+            </p>
+          </div>
 
-          {/* Get Started button */}
-          <a href={signUpUrl} className="setup-cta-btn">
-            Get Started
-          </a>
-
-          {/* Inner content column */}
-          <div className="setup-content">
-            {/* Title + tab toggle */}
-            <div className="setup-title-wrap">
-              <h2 className="setup-h2">Pin It. Click It. Capture It.</h2>
-              {/* Tab toggle */}
-              <div className="setup-tabs">
-                <button
-                  className="setup-tab"
-                  onClick={() => setSetupTab("claude")}
-                  style={{
-                    border:
-                      setupTab === "claude"
-                        ? "1px solid #00f7ef"
-                        : "1.04px solid rgba(255,255,255,0.1)",
-                    background:
-                      setupTab === "claude"
-                        ? "#1c1c1c"
-                        : "radial-gradient(ellipse at bottom right,rgba(255,255,255,0.09) 0%,rgba(128,128,128,0.045) 50%,transparent 100%)",
-                  }}
-                >
-                  <img
-                    src={setupClaudeIcon.src}
-                    alt=""
-                    style={{ width: "15.5px", height: "15.5px", flexShrink: 0 }}
-                  />
-                  <span
-                    style={{
-                      fontSize: "12.8px",
-                      fontWeight: 600,
-                      color:
-                        setupTab === "claude"
-                          ? "#00f7ef"
-                          : "rgba(255,255,255,0.48)",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    For Claude
-                  </span>
-                </button>
-                <button
-                  className="setup-tab"
-                  onClick={() => setSetupTab("chatgpt")}
-                  style={{
-                    border:
-                      setupTab === "chatgpt"
-                        ? "1px solid #00f7ef"
-                        : "1.04px solid rgba(255,255,255,0.1)",
-                    background:
-                      setupTab === "chatgpt"
-                        ? "#1c1c1c"
-                        : "radial-gradient(ellipse at bottom right,rgba(255,255,255,0.09) 0%,rgba(128,128,128,0.045) 50%,transparent 100%)",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "relative",
-                      width: "15.58px",
-                      height: "15.58px",
-                      flexShrink: 0,
-                      overflow: "hidden",
-                      opacity: setupTab === "chatgpt" ? 1 : 0.7,
-                    }}
-                  >
-                    <img
-                      src={setupChatgptIcon.src}
-                      alt=""
-                      style={{
-                        position: "absolute",
-                        left: 0,
-                        top: 0,
-                        height: "99.05%",
-                        width: "336.91%",
-                        maxWidth: "none",
-                        pointerEvents: "none",
-                      }}
-                    />
-                  </div>
-                  <span
-                    style={{
-                      fontSize: "12.8px",
-                      fontWeight: 600,
-                      color:
-                        setupTab === "chatgpt"
-                          ? "#00f7ef"
-                          : "rgba(255,255,255,0.48)",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    For ChatGpt
-                  </span>
-                </button>
-              </div>
-            </div>
-
-            {/* How it works panel */}
-            <div className="setup-panel">
-              {/* Inner dark card */}
-              <div className="setup-inner-card">
-                {/* Left column: title + video */}
-                <div className="setup-left">
-                  <p className="setup-left-title">How it works</p>
-                  <p className="setup-left-sub">
-                    Paste video links and get clean transcripts in seconds.
-                  </p>
-                  {/* Setup image based on active tab */}
-                  <div
-                    className="setup-image-wrapper"
-                    onClick={() => setSetupVideoOpen(true)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <img
-                      src={
-                        setupTab === "chatgpt"
-                          ? setupImageChatgpt.src
-                          : setupImageClaude.src
-                      }
-                      alt={
-                        setupTab === "chatgpt"
-                          ? "ChatGPT setup"
-                          : "Claude setup"
-                      }
-                      className="setup-image"
-                    />
-                    <div
-                      style={{
-                        position: "absolute",
-                        left: "50%",
-                        top: "50%",
-                        transform: "translate(-50%,-50%)",
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "9999px",
-                        background: "rgba(0,0,0,0.7)",
-                        backdropFilter: "blur(2px)",
-                        WebkitBackdropFilter: "blur(2px)",
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
+          <div className="cx-testimonials-track-mask">
+            <div className="cx-testimonials-track">
+              {duplicatedTestimonials.map((t, i) => (
+                <div className="cx-testimonial-card" key={i}>
+                  <p className="cx-testimonial-quote">&ldquo;{t.description}&rdquo;</p>
+                  <div className="cx-testimonial-footer">
+                    <div className="cx-testimonial-author">
+                      <img src={t.avatar} alt="" />
+                      <div className="cx-testimonial-author-meta">
+                        <h5>{t.name}</h5>
+                        <span className="cx-testimonial-stars" aria-hidden="true">★★★★★</span>
+                      </div>
+                    </div>
+                    <div className="cx-testimonial-divider" aria-hidden />
+                    <div className="cx-testimonial-logo" aria-label="Chrome Web Store">
                       <img
-                        src={setupPlayIcon.src}
-                        alt=""
-                        style={{
-                          width: "16px",
-                          height: "16px",
-                          position: "relative",
-                          left: "1px",
-                        }}
+                        src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/figma-rows/chrome%20store.png`}
+                        alt="Chrome Web Store"
                       />
                     </div>
                   </div>
                 </div>
-
-                {/* Right column: 3 steps */}
-                <div className="setup-right">
-                  {/* Step 1 */}
-                  <div className="setup-step setup-step-1">
-                    <div
-                      style={{
-                        width: "24px",
-                        height: "24px",
-                        borderRadius: "9999px",
-                        background: "rgba(0,184,178,0.08)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontFamily: "'Roboto',sans-serif",
-                          fontSize: "10px",
-                          fontWeight: 700,
-                          color: "#12e2db",
-                        }}
-                      >
-                        1
-                      </span>
-                    </div>
-                    <div className="text-wrapper">
-                      <p className="setup-step-title">Pin it</p>
-                      <div className="url-bar-mini">
-                        <span className="url-bar-mini-text">
-                          chromewebstore.google.com/detail/tokscript
-                        </span>
-                        <button
-                          className={`url-bar-mini-copy${urlCopied ? " ok" : ""}`}
-                          onClick={copyUrl}
-                        >
-                          <span
-                            style={{
-                              display: "inline-flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              width: "11px",
-                              height: "11px",
-                              flexShrink: 0,
-                            }}
-                          >
-                            {urlCopied ? (
-                              <svg
-                                width="11"
-                                height="11"
-                                viewBox="0 0 15 15"
-                                fill="none"
-                              >
-                                <path
-                                  d="M2.5 8L5.5 11L12.5 4"
-                                  stroke="currentColor"
-                                  strokeWidth="1.5"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            ) : (
-                              <img
-                                src={copyIcon.src}
-                                alt=""
-                                style={{
-                                  width: "11px",
-                                  height: "11px",
-                                  objectFit: "contain",
-                                  display: "block",
-                                }}
-                              />
-                            )}
-                          </span>
-                          {urlCopied ? "Copied!" : "Copy"}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  {/* Step 2 */}
-                  <div className="setup-step setup-step-2">
-                    <div
-                      style={{
-                        width: "24px",
-                        height: "24px",
-                        borderRadius: "9999px",
-                        background: "rgba(0,184,178,0.08)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontFamily: "'Roboto',sans-serif",
-                          fontSize: "10px",
-                          fontWeight: 700,
-                          color: "#12e2db",
-                        }}
-                      >
-                        2
-                      </span>
-                    </div>
-                    <div className="text-wrapper">
-                      <p className="setup-step-title">Click & capture</p>
-                      <p className="setup-step-body">
-                        Hear a hook? Click the blue icon. We grab the
-                        transcript in about 2 seconds.
-                      </p>
-                    </div>
-                  </div>
-                  {/* Step 3 */}
-                  <div className="setup-step setup-step-3">
-                    <div
-                      style={{
-                        width: "24px",
-                        height: "24px",
-                        borderRadius: "9999px",
-                        background: "rgba(0,184,178,0.08)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontFamily: "'Roboto',sans-serif",
-                          fontSize: "10px",
-                          fontWeight: 700,
-                          color: "#12e2db",
-                        }}
-                      >
-                        3
-                      </span>
-                    </div>
-                    <div className="text-wrapper">
-                      <p className="setup-step-title">Stay in the feed</p>
-                      <p className="setup-step-body">
-                        Every transcript syncs to your dashboard. Keep
-                        scrolling — research without breaking flow.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -1162,7 +1165,7 @@ export default function PageData() {
               <p className="fs-sub">
                 One-click capture, keyboard shortcuts, sidebar mode, right-click
                 <br />
-                context menu, cloud sync — all designed to keep you in the feed.
+                context menu, cloud sync, all designed to keep you in the feed.
               </p>
             </div>
           </div>
@@ -1238,157 +1241,7 @@ export default function PageData() {
         </div>
       </section> */}
 
-      {/* ── Section 6: Before & After ── */}
-      <section id="beforeafter">
-        <img className="ba-bg" src={baBg.src} alt="" />
-        <div className="ba-inner">
-          {/* Header */}
-          <div className="ba-header-block">
-            <div className="ba-header-bg">
-              <img className="ba-header-bg-l2" src={baHeaderBgL2.src} alt="" />
-              <img className="ba-header-bg-l1" src={baHeaderBgL1.src} alt="" />
-            </div>
-            <div className="ba-header-content">
-              <div className="ba-pill">How It Feels</div>
-              <h2 className="ba-title">
-                From Friction-Filled Research to
-                <br />
-                Frictionless Capture
-              </h2>
-              <p className="ba-subtitle">
-                Stop breaking your scroll to copy URLs. Click the icon, capture
-                the transcript, and stay in the flow.
-              </p>
-            </div>
-          </div>
 
-          {/* Carousel */}
-          <div className="ba-carousel-outer" ref={baCarouselRef}>
-            <div
-              className="ba-track"
-              style={{
-                transform: `translateX(-${carouselIndex * (baCarouselRef.current?.offsetWidth || 1100)}px)`,
-              }}
-            >
-              {slides.map((slide, i) => (
-                <div className="ba-slide" key={i}>
-                  <p className="ba-slide-title">{slide.title}</p>
-                  <div className="ba-cards-row">
-                    <div className="ba-card ba-before">
-                      <img className="ba-card-bg" src={baCardBg.src} alt="" />
-                      <span className="ba-card-label">Before</span>
-                      <img
-                        className="ba-card-img"
-                        src={slide.beforeImg.src}
-                        alt="Before"
-                      />
-                      <p className="ba-card-desc">{slide.beforeDesc}</p>
-                    </div>
-                    <div className="ba-card ba-after">
-                      <img className="ba-card-bg" src={baCardBg.src} alt="" />
-                      <span className="ba-card-label">After</span>
-                      <img
-                        className="ba-card-img"
-                        src={slide.afterImg.src}
-                        alt="After"
-                      />
-                      <p className="ba-card-desc">{slide.afterDesc}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Nav */}
-          <div className="ba-nav">
-            <button
-              className="ba-arrow"
-              onClick={() => goToSlide(carouselIndex - 1)}
-            >
-              &#8592;
-            </button>
-            <div className="ba-dots">
-              {slides.map((_, i) => (
-                <button
-                  key={i}
-                  className={`ba-dot${carouselIndex === i ? " active" : ""}`}
-                  onClick={() => goToSlide(i)}
-                />
-              ))}
-            </div>
-            <button
-              className="ba-arrow"
-              onClick={() => goToSlide(carouselIndex + 1)}
-            >
-              &#8594;
-            </button>
-          </div>
-
-          {/* CTA */}
-          <div className="ba-cta-wrap">
-            <Link href="/pricing" className="ba-cta">
-              Deploy These Workflows
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Section 7: Workflows ── */}
-      <section id="workflows">
-        <div className="wf-card">
-          <img className="wf-card-bg" src={wfCardBg.src} alt="" />
-
-          {/* Header */}
-          <div className="wf-header">
-            <div className="wf-pill">Upgrade Your Browser</div>
-            <h2 className="wf-title">More Than a Browser. A Research Engine.</h2>
-            <p className="wf-subtitle">
-              Your Chrome is just a browser right now. Add TokScript and it
-              becomes a content research engine.
-            </p>
-          </div>
-
-          {/* Panel */}
-          <div className="wf-panel">
-            {/* Left: accordion items */}
-            <div className="wf-left">
-              {workflows.map((wf, i) => (
-                <React.Fragment key={i}>
-                  <div
-                    className={`wf-item${activeWorkflow === i ? " active" : ""}`}
-                    onClick={() => setActiveWorkflow(i)}
-                  >
-                    <div className="wf-item-header">{wf.title}</div>
-                    <p className="wf-item-desc">{wf.desc}</p>
-                  </div>
-                  {i < workflows.length - 1 && <div className="wf-divider" />}
-                </React.Fragment>
-              ))}
-            </div>
-            <div className="wf-divider d-block d-md-none" />
-
-            {/* Right: images */}
-            <div className="wf-images">
-              {workflows.map((wf, i) => (
-                <img
-                  key={i}
-                  className={`wf-img wf-img-${i}${activeWorkflow === i ? " active" : ""}`}
-                  src={wf.img.src}
-                  alt=""
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div className="wf-cta-wrap">
-            <a href={signUpUrl} className="wf-cta">
-              Sign Up Now
-            </a>
-          </div>
-        </div>
-      </section>
 
       {/* ── Section 8: FAQ ── */}
       <section id="faq">
@@ -1475,7 +1328,7 @@ export default function PageData() {
 
           {/* Help center CTA */}
           <div className="hiw-cta" style={{ marginTop: "40px" }}>
-            <p className="hiw-cta-text">Still have questions?</p>
+            <p className="hiw-cta-text">Still Have Questions?</p>
             <a
               href="https://help.tokscript.com/"
               target="_blank"
@@ -1488,70 +1341,93 @@ export default function PageData() {
         </div>
       </section>
 
-      {/* ── Section 9: CTA ── */}
-      <section id="cta">
-        <div className="cta-container">
-          {/* bg image */}
-          <img className="cta-bg" src={ctaBg.src} alt="" />
-          {/* left deco (Claude logo) */}
-          <img className="cta-logo-claude" src={ctaClaudeLogo.src} alt="" />
-          {/* right deco (ChatGPT logo) */}
-          <img className="cta-logo-chatgpt" src={ctaChatgptLogo.src} alt="" />
-          {/* content */}
-          <div className="cta-content">
-            <h2 className="cta-title">
-              Upgrade Your Browser&nbsp;
-              <br />
-              Add to Chrome
-            </h2>
-            <p className="cta-subtitle">
-              Click & capture. Keyboard shortcuts. Sidebar mode. Cloud sync.
-              <br />
-              All the little details that keep you in the feed.
-            </p>
-            <div className="cta-features">
-              {ctaFeatures.map((feat, i) => (
-                <span
-                  key={i}
+      {/* ── Footer CTA ── */}
+      <section className="mcp-cta-wrapper" style={{ padding: "40px 0" }}>
+        <div className="container">
+          <div
+            className="mcp-cta-card"
+            style={{ padding: "40px 24px 48px", maxWidth: "1080px", margin: "0 auto" }}
+          >
+            <div className="mcp-cta-grid" aria-hidden />
+            <div className="mcp-cta-glow mcp-cta-glow--left" aria-hidden />
+            <div className="mcp-cta-glow mcp-cta-glow--right" aria-hidden />
+
+            <div className="mcp-cta-inner">
+              <div className="mcp-cta-avatars cx-cta-avatars-tight">
+                <span className="mcp-cta-avatar" style={{ background: "#00b8b2" }}>
+                  <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" />
+                </span>
+                <span className="mcp-cta-avatar" style={{ background: "#a486d4" }}>
+                  <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" />
+                </span>
+                <span className="mcp-cta-avatar" style={{ background: "#f9bd24" }}>
+                  <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="" />
+                </span>
+                <span className="mcp-cta-avatar" style={{ background: "#f96b24" }}>
+                  <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" />
+                </span>
+                <span className="mcp-cta-avatar mcp-cta-avatar--count">41K+</span>
+              </div>
+
+              <p className="mcp-cta-eyebrow" style={{ whiteSpace: "nowrap" }}>
+                4.2&#9733; On The Chrome Web Store{" "}
+                <span className="cx-footer-cta-dot">·</span>{" "}
+                <span className="cx-eyebrow-creators">41K+ Creators</span>
+              </p>
+
+              <h2 className="mcp-cta-title">
+                Stop Typing Transcripts. Stop Tab-Hopping. Start Actually Researching.
+              </h2>
+              <p className="mcp-cta-subtitle">
+                Install TokScript and turn every TikTok scroll into a research session.
+              </p>
+
+              <div className="cx-footer-cta-actions">
+                <a
+                  href="https://chromewebstore.google.com/detail/tokscript/ligffiaiehimfbhjflgkkfanhfjmdaoi?hl=en-US"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cx-signup-btn"
                   style={{
-                    display: "flex",
-                    gap: "6px",
+                    display: "inline-flex",
                     alignItems: "center",
-                    color: "#fff",
+                    justifyContent: "center",
+                    gap: "8px",
+                    height: "44px",
+                    padding: "0 22px 0 18px",
+                    background: "#ffffff",
+                    color: "#06091A",
+                    fontFamily: "Inter, system-ui, sans-serif",
+                    fontSize: "14.5px",
+                    fontWeight: 500,
+                    lineHeight: "23.4px",
+                    borderRadius: "16.4px",
+                    textDecoration: "none",
+                    whiteSpace: "nowrap",
+                    cursor: "pointer",
+                    transition:
+                      "transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease",
                   }}
                 >
-                  <span style={{ color: "#00fff7", fontWeight: 700 }}>
-                    {"\u2713"}
-                  </span>{" "}
-                  {feat}
-                </span>
-              ))}
-            </div>
-            {/* URL input */}
-            <div className="cta-url-bar">
-              <span className="cta-url-text">
-                https://api.tokscript.com/mcp
-              </span>
-              <button className="cta-copy-btn" onClick={copyCtaUrl}>
-                {ctaUrlCopied ? (
-                  "\u2713 Copied!"
-                ) : (
-                  <>
-                    <svg
-                      width="12"
-                      height="12"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                    >
-                      <rect x="9" y="9" width="13" height="13" rx="2" />
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
-                    </svg>
-                    Copy URL
-                  </>
-                )}
-              </button>
+                  <img
+                    src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/figma-rows/Google_Chrome_Web_Store_icon_2015.svg.png`}
+                    alt=""
+                    aria-hidden="true"
+                    style={{
+                      flexShrink: 0,
+                      display: "block",
+                      width: 20,
+                      height: 20,
+                      objectFit: "contain",
+                    }}
+                  />
+                  Add TokScript To Chrome
+                </a>
+                <Link href="/pricing" className="cx-footer-cta-secondary">
+                  See Pricing
+                </Link>
+              </div>
+
             </div>
           </div>
         </div>
