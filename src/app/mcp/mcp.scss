@@ -2722,6 +2722,11 @@
       justify-content: center;
       gap: 16px;
       margin-top: 0;
+      background: transparent;
+      border: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-radius: 0;
     }
     .who-card {
       position: relative !important;
@@ -2730,6 +2735,11 @@
       height: auto !important;
       left: auto !important;
       top: auto !important;
+      background: #131313 !important;
+      border: none !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
     }
     .who-card-img-sm,
     .who-card-img-lg {
@@ -2939,6 +2949,11 @@
       height: auto;
       overflow: visible;
       margin-top: 0;
+      background: transparent;
+      border: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-radius: 0;
     }
     .ba-track {
       flex-direction: column;
@@ -2958,6 +2973,14 @@
     }
     .ba-card {
       width: 100%;
+      background: #131313;
+      border: none;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+    .ba-card-bg {
+      display: none;
     }
     .ba-card-img {
       position: static;
