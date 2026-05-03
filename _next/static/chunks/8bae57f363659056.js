@@ -151,85 +151,85 @@
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><svg x="7" y="7" width="14" height="14" viewBox="0 0 24 24"><path fill="#34d399" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></svg></td>
           <td class="t-name">get_tiktok_transcript</td>
           <td class="t-desc">Extract transcript and captions from a single TikTok video URL</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><rect x="7.5" y="7.5" width="13" height="13" rx="3.5" stroke="#34d399" stroke-width="1.5"/><circle cx="14" cy="14" r="3" stroke="#34d399" stroke-width="1.5"/><circle cx="17.8" cy="10.2" r=".8" fill="#34d399"/></svg></td>
           <td class="t-name">get_instagram_transcript</td>
           <td class="t-desc">Extract transcript and captions from a single Instagram video or Reel URL</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><rect x="7" y="9" width="14" height="10" rx="2.5" stroke="#34d399" stroke-width="1.5"/><path d="M12 11.8l4.5 2.2-4.5 2.2v-4.4z" fill="#34d399"/></svg></td>
           <td class="t-name">get_youtube_transcript</td>
           <td class="t-desc">Extract transcript and captions from a single YouTube video URL</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><path d="M8 10h12M8 14h10M8 18h7" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/></svg></td>
           <td class="t-name">get_bulk_transcripts</td>
           <td class="t-desc">Extract transcripts from multiple individual video URLs in a single call</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><svg x="7" y="7" width="14" height="14" viewBox="0 0 24 24"><path fill="#34d399" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></svg></td>
           <td class="t-name">get_tiktok_collection</td>
           <td class="t-desc">Process all videos from a TikTok collection or playlist URL</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><path d="M14 8v9M10.5 14l3.5 3.5 3.5-3.5M8 20h12" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
           <td class="t-name">download_video</td>
           <td class="t-desc">Download a single TikTok or Instagram video</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><path d="M14 8v9M10.5 14l3.5 3.5 3.5-3.5M8 20h12" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
           <td class="t-name">download_videos_bulk</td>
           <td class="t-desc">Download multiple TikTok or Instagram videos in one call</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><rect x="7" y="9" width="14" height="10" rx="2" stroke="#fb923c" stroke-width="1.5"/><circle cx="11" cy="13" r="1.5" stroke="#fb923c" stroke-width="1.2"/><path d="M7.5 17l3.5-3 3 2.5 2-2 3.5 3" stroke="#fb923c" stroke-width="1.2" stroke-linejoin="round"/></svg></td>
           <td class="t-name">download_cover_image</td>
           <td class="t-desc">Download the cover or thumbnail image for a single video</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><rect x="7" y="9" width="14" height="10" rx="2" stroke="#fb923c" stroke-width="1.5"/><circle cx="11" cy="13" r="1.5" stroke="#fb923c" stroke-width="1.2"/><path d="M7.5 17l3.5-3 3 2.5 2-2 3.5 3" stroke="#fb923c" stroke-width="1.2" stroke-linejoin="round"/></svg></td>
           <td class="t-name">download_cover_images_bulk</td>
           <td class="t-desc">Download cover or thumbnail images for multiple videos at once</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#2a1040"/><svg x="7" y="7" width="14" height="14" viewBox="0 0 24 24"><path fill="#a78bfa" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></svg></td>
           <td class="t-name">get_tiktok_user</td>
           <td class="t-desc">Get TikTok user profile info including followers, following, and likes</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#2a1040"/><svg x="7" y="7" width="14" height="14" viewBox="0 0 24 24"><path fill="#a78bfa" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></svg></td>
           <td class="t-name">get_tiktok_user_videos</td>
           <td class="t-desc">Retrieve all videos from a TikTok user's public profile</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><path d="M8 19v-4M12 19V11M16 19v-6M20 19V8" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/></svg></td>
           <td class="t-name">get_library_stats</td>
           <td class="t-desc">Get an overview of your TokScript library: total videos and breakdown by platform</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><rect x="8.5" y="8" width="2.5" height="12" rx="1" stroke="#60a5fa" stroke-width="1.2"/><rect x="12.75" y="8" width="2.5" height="12" rx="1" stroke="#60a5fa" stroke-width="1.2"/><rect x="17" y="8" width="2.5" height="12" rx="1" stroke="#60a5fa" stroke-width="1.2"/></svg></td>
           <td class="t-name">get_user_library</td>
           <td class="t-desc">List videos and transcripts stored in your TokScript library</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><rect x="7" y="8" width="14" height="11" rx="2" stroke="#60a5fa" stroke-width="1.5"/><path d="M12 11.8l4 2.2-4 2.2v-4.4z" fill="#60a5fa"/><path d="M10 21h8" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/></svg></td>
           <td class="t-name">get_stored_video</td>
           <td class="t-desc">Get full stored data for a specific video from your TokScript library, including transcript</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
       </tbody>
     </table>
@@ -280,61 +280,61 @@
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><path d="M9 14l2.5 2.5L19 10" stroke="#34d399" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
           <td class="t-name">Competitor Research</td>
           <td class="t-desc">Drop links from rival creators. ChatGPT pulls transcripts, engagement stats, and surfaces what's working in their content.</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><path d="M8 10h12M8 14h10M8 18h7" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/></svg></td>
           <td class="t-name">Content Repurposing</td>
           <td class="t-desc">Paste a video URL, ask ChatGPT to turn the transcript into a tweet thread, newsletter, or LinkedIn post. Done in one message.</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><rect x="7" y="9" width="14" height="10" rx="2.5" stroke="#34d399" stroke-width="1.5"/><path d="M12 11.8l4.5 2.2-4.5 2.2v-4.4z" fill="#34d399"/></svg></td>
           <td class="t-name">Viral Hook Analysis</td>
           <td class="t-desc">Feed ChatGPT 20 top-performing videos. It reads every hook and tells you exactly what pattern is driving views in your niche.</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><path d="M9 8h10M9 12h7M9 16h9" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="8" r="1" fill="#34d399"/><circle cx="7" cy="12" r="1" fill="#34d399"/><circle cx="7" cy="16" r="1" fill="#34d399"/></svg></td>
           <td class="t-name">Script Writing</td>
           <td class="t-desc">Give ChatGPT a transcript from a video that performed well. It reverse-engineers the structure and writes you a new script in the same style.</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#2a1040"/><circle cx="14" cy="12" r="4" stroke="#a78bfa" stroke-width="1.5"/><path d="M8 20c0-2.21 2.69-4 6-4s6 1.79 6 4" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round"/></svg></td>
           <td class="t-name">Creator Profiling</td>
           <td class="t-desc">Pull a creator's full video library and stats. ChatGPT builds a detailed profile — posting cadence, top topics, engagement benchmarks.</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#2a1040"/><path d="M8 19v-4M12 19V11M16 19v-6M20 19V8" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round"/></svg></td>
           <td class="t-name">Trend Reporting</td>
           <td class="t-desc">Ask ChatGPT to scan a batch of recent videos across accounts and summarize what topics, formats, and styles are gaining traction right now.</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><path d="M9 10l5 4-5 4V10z" fill="#60a5fa"/><rect x="8" y="8" width="12" height="12" rx="2.5" stroke="#60a5fa" stroke-width="1.5"/></svg></td>
           <td class="t-name">Podcast Summarisation</td>
           <td class="t-desc">Paste a long-form YouTube podcast link. ChatGPT returns a structured summary — key takeaways, timestamps, and the best quotes to share.</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><path d="M10 8h8M10 12h6M10 16h7" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/><path d="M8 8v10" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/></svg></td>
           <td class="t-name">Bulk Transcript Archive</td>
           <td class="t-desc">Drop 50 URLs at once. TokScript fetches every transcript; ChatGPT organises them into a searchable knowledge base inside the conversation.</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><path d="M8 14h12M14 9l5 5-5 5" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
           <td class="t-name">Video Download & Storage</td>
           <td class="t-desc">Ask ChatGPT to download a batch of videos with cover images in one go. Everything is saved and ready to use without leaving the conversation.</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><path d="M10 9l4 5-4 5M14 9l4 5-4 5" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
           <td class="t-name">Engagement Benchmarking</td>
           <td class="t-desc">Pull stats across a creator's last 30 videos. ChatGPT calculates average engagement, spots outliers, and tells you which content format wins.</td>
-          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
       </tbody>
     </table>
