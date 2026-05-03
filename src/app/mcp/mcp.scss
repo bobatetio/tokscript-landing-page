@@ -668,6 +668,16 @@
     );
   }
 
+  // Chrome Extension "Why Install" — no outer frame
+  .cx-hiw-cards-outer {
+    background: transparent;
+    border: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-radius: 0;
+    overflow: visible;
+  }
+
   .hiw-cards-row {
     position: absolute;
     left: 15px;
