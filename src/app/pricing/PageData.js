@@ -146,7 +146,7 @@ const FAQItem = ({ q, a }) => {
           style={{
             transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
             transition: "transform 0.3s",
-            backgroundColor: isOpen ? "#00D9B4" : "#1a1a1a",
+            backgroundColor: isOpen ? "#00B8B2" : "#1a1a1a",
             color: isOpen ? "#0a0a0a" : "#7a7a7a",
           }}
         >
@@ -263,7 +263,7 @@ export default function PricingPage({ initialProductsData }) {
     },
     {
       q: "Which platforms are supported?",
-      a: 'We currently support <a href="/" style="color:#00D9B4;text-decoration:underline">TikTok</a>, <a href="/instagram-transcript-generator" style="color:#00D9B4;text-decoration:underline">Instagram Reels</a>, and <a href="/youtube-transcript-generator" style="color:#00D9B4;text-decoration:underline">YouTube Shorts</a>. You can paste a link from any of these platforms to extract data.',
+      a: 'We currently support <a href="/" style="color:#00B8B2;text-decoration:underline">TikTok</a>, <a href="/instagram-transcript-generator" style="color:#00B8B2;text-decoration:underline">Instagram Reels</a>, and <a href="/youtube-transcript-generator" style="color:#00B8B2;text-decoration:underline">YouTube Shorts</a>. You can paste a link from any of these platforms to extract data.',
     },
     {
       q: "Is the transcript download unlimited?",
@@ -279,11 +279,11 @@ export default function PricingPage({ initialProductsData }) {
     },
     {
       q: "Can I use TokScript for my agency clients?",
-      a: 'Absolutely. Many agencies use TokScript to speed up research and scriptwriting for multiple clients. We do not charge extra for commercial use. You can also <a href="/affiliate" style="color:#00D9B4;text-decoration:underline">join our affiliate program</a> to earn 40% recurring commissions.',
+      a: 'Absolutely. Many agencies use TokScript to speed up research and scriptwriting for multiple clients. We do not charge extra for commercial use. You can also <a href="/affiliate" style="color:#00B8B2;text-decoration:underline">join our affiliate program</a> to earn 40% recurring commissions.',
     },
     {
       q: "Is there a Chrome Extension?",
-      a: 'Yes. The <a href="/features/chrome-extension" style="color:#00D9B4;text-decoration:underline">TokScript Chrome Extension</a> allows you to view transcripts and analytics directly on TikTok and Instagram while you scroll. It is included in all Paid plans.',
+      a: 'Yes. The <a href="/features/chrome-extension" style="color:#00B8B2;text-decoration:underline">TokScript Chrome Extension</a> allows you to view transcripts and analytics directly on TikTok and Instagram while you scroll. It is included in all Paid plans.',
     },
     {
       q: "What is the refund policy?",
@@ -685,7 +685,7 @@ export default function PricingPage({ initialProductsData }) {
                       <div className="calc-box-highlight"></div>
                       <div
                         style={{
-                          color: "#00D9B4",
+                          color: "#00B8B2",
                           fontWeight: 700,
                           fontSize: "12px",
                           lineHeight: "17px",
@@ -738,7 +738,7 @@ export default function PricingPage({ initialProductsData }) {
                         <Layers
                           size={12}
                           className="text-emerald-400"
-                          style={{ color: "#00D9B4" }}
+                          style={{ color: "#00B8B2" }}
                         />{" "}
                         BULK PROCESSING
                       </div>
@@ -1169,7 +1169,7 @@ export default function PricingPage({ initialProductsData }) {
                   style={{
                     fontSize: "10px",
                     lineHeight: "14px",
-                    color: "#00D9B4",
+                    color: "#00B8B2",
                     fontWeight: 700,
                     textTransform: "uppercase",
                   }}

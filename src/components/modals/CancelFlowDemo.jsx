@@ -80,8 +80,8 @@ export default function CancelFlowDemo() {
         <button
           onClick={openAnnual}
           style={{
-            backgroundColor: "rgba(0, 217, 180, 0.1)",
-            border: "1px solid rgba(0, 217, 180, 0.3)",
+            backgroundColor: "rgba(0, 184, 178, 0.1)",
+            border: "1px solid rgba(0, 184, 178, 0.3)",
             color: "#ffffff",
             padding: "1.5rem 2rem",
             borderRadius: "0.75rem",

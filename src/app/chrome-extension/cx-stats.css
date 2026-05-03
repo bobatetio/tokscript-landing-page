@@ -1,0 +1,99 @@
+/* ============================================================
+   Chrome Extension — Stats Bar (sits directly under the hero)
+   Stats laid out horizontally inside a dark rounded container
+   with diamond accents at the four corners. Responsive: row on
+   desktop, stacked column on mobile.
+   ============================================================ */
+
+#cx-stats {
+  background: #111111;
+  padding: 56px clamp(16px, 4vw, 48px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+#cx-stats .cx-stats-headline {
+  margin: 0;
+  text-align: center;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: -0.1px;
+  max-width: 800px;
+}
+
+#cx-stats .cx-stats-container {
+  position: relative;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: clamp(20px, 3vw, 40px) clamp(16px, 4vw, 48px);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: clamp(16px, 3vw, 40px);
+}
+
+/* ── Individual stat ── */
+#cx-stats .cx-stat {
+  flex: 1 1 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+#cx-stats .cx-stat-number {
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -1.4px;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+#cx-stats .cx-stat-label {
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: clamp(14px, 1.4vw, 17px);
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.1px;
+  color: rgba(255, 255, 255, 0.55);
+  max-width: 220px;
+}
+
+/* ── Tablet + mobile: stack vertically ── */
+@media (max-width: 768px) {
+  #cx-stats {
+    padding: 16px 16px 32px;
+    gap: 24px;
+  }
+  #cx-stats .cx-stats-headline {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  #cx-stats .cx-stats-container {
+    flex-direction: column;
+    gap: 32px;
+    padding: 36px 24px;
+    border-radius: 22px;
+  }
+  #cx-stats .cx-stat-number {
+    font-size: 32px;
+    letter-spacing: -1px;
+  }
+  #cx-stats .cx-stat-label {
+    font-size: 14.5px;
+  }
+  #cx-stats .cx-stats-corner {
+    width: 10px;
+    height: 10px;
+  }
+}

@@ -290,7 +290,7 @@ export default function LandingPage() {
                       Cloud Sync Status
                     </strong>
                     <span className="online-status ">
-                      <FaCircle width={12} height={12} color="#00F2EA" />
+                      <FaCircle width={12} height={12} color="#00B8B2" />
                       Online
                     </span>
                   </div>
@@ -407,7 +407,7 @@ export default function LandingPage() {
                     <div className="desktop-content">
                       <strong>
                         <IoVideocam
-                          color="#00F2EA"
+                          color="#00B8B2"
                           style={{ width: "20px", height: "20px" }}
                         />
                         HD Video
@@ -460,7 +460,7 @@ export default function LandingPage() {
                     <div className="desktop-content">
                       <strong>
                         <FaLink
-                          color="#00D9B4"
+                          color="#00B8B2"
                           style={{ width: "16px", height: "16px" }}
                         />
                         Quick URL Method

@@ -69,9 +69,9 @@
       @media screen and (max-width: 767px) {
         border: 0.5px solid transparent;
         background:
-          linear-gradient(180deg, #185e6b 0%, #0a253b 50%, #092235 100%)
+          linear-gradient(180deg, #00b8b2 0%, #0a253b 50%, #092235 100%)
             padding-box,
-          linear-gradient(180deg, #12888f 0%, #083a49 50%, #0d4958 100%)
+          linear-gradient(180deg, #00b8b2 0%, #083a49 50%, #0d4958 100%)
             border-box;
       }
 
@@ -308,7 +308,7 @@
                 background: linear-gradient(
                   90deg,
                   rgba(59, 130, 246, 0.2) 0%,
-                  rgba(0, 217, 180, 0.2) 100%
+                  rgba(0, 184, 178, 0.2) 100%
                 );
               }
 
@@ -563,9 +563,9 @@
         width: 100%;
         background: linear-gradient(
           180deg,
-          rgba(0, 217, 180, 0.024) 0%,
-          rgba(0, 217, 180, 0.008) 50%,
-          rgba(0, 217, 180, 0.014) 100%
+          rgba(0, 184, 178, 0.024) 0%,
+          rgba(0, 184, 178, 0.008) 50%,
+          rgba(0, 184, 178, 0.014) 100%
         );
         backdrop-filter: blur(20px);
         position: absolute;
@@ -836,7 +836,7 @@
   .logo-icon {
     width: 32px;
     height: 32px;
-    background: #00b694;
+    background: #00b8b2;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -935,7 +935,7 @@
   display: inline-flex;
   background: #1a1a1a;
   border: 1px solid rgb(6 182 212 / 0.3);
-  color: #00D9B4;
+  color: #00B8B2;
   font-family: $inter;
   font-size: 9px;
   line-height: 16px;
@@ -1063,7 +1063,7 @@
         background: #f59e0b;
       }
       &.teal {
-        background: #14b8a6;
+        background: #00b8b2;
       }
       &.pink {
         background: #ec4899;

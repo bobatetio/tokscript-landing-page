@@ -54,7 +54,7 @@ h1 {
     line-height: 72px;
   }
   &.cyan-pink-gradient {
-    background: linear-gradient(275.45deg, #ff5e8f 2.38%, #00D9B4 84.13%);
+    background: linear-gradient(275.45deg, #ff5e8f 2.38%, #00B8B2 84.13%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -339,9 +339,9 @@ button {
       linear-gradient(to right, #0a0a0a, #0a0a0a, #0a0a0a) padding-box,
       linear-gradient(
           180deg,
-          rgba(0, 217, 180, 0.32) 0%,
-          rgba(0, 217, 180, 0.1) 50%,
-          rgba(0, 217, 180, 0.16) 100%
+          rgba(0, 184, 178, 0.32) 0%,
+          rgba(0, 184, 178, 0.1) 50%,
+          rgba(0, 184, 178, 0.16) 100%
         )
         border-box;
     img,
@@ -563,13 +563,13 @@ button {
     }
   }
   &.btn-blue {
-    background: #00D9B4;
+    background: #00B8B2;
     border-radius: 10px;
     padding: 14px 28px;
     box-shadow:
       0 0 #0000,
       0 0 #0000,
-      0 0 30px rgba(0, 217, 180, 0.3);
+      0 0 30px rgba(0, 184, 178, 0.3);
     &:hover {
       transform: scale(1.05);
       background: #67e8f9;

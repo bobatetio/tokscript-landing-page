@@ -312,7 +312,7 @@
                       contrast(91%);
                   }
                   &.active {
-                    background: linear-gradient(to right, #00B8B2, #00b694);
+                    background: linear-gradient(to right, #00B8B2, #00b8b2);
                     box-shadow:
                       0 0 #0000,
                       0 0 #0000,
@@ -1301,7 +1301,7 @@
       margin-bottom: 16px;
 
       .icon-wrap {
-        background: linear-gradient(90deg, #00f7ef 0%, #ff004f 100%);
+        background: linear-gradient(90deg, #00b8b2 0%, #ff004f 100%);
         border-radius: 50%;
         display: flex;
         justify-content: center;
@@ -1350,7 +1350,7 @@
       margin-bottom: 16px;
 
       .progress-bar {
-        background: linear-gradient(90deg, #00f7ef 0%, #ff004f 100%);
+        background: linear-gradient(90deg, #00b8b2 0%, #ff004f 100%);
         border-radius: 20px;
       }
     }
@@ -3199,7 +3199,7 @@
   }
 
   .tab-btn.active.featured {
-    background: linear-gradient(135deg, #00B8B2, #3b82f6);
+    background: #00B8B2;
     color: #ffffff;
     box-shadow: 0 4px 14px rgba(0, 184, 178, 0.25);
   }
@@ -3341,7 +3341,7 @@
     }
   }
   .text-gradient {
-    background: linear-gradient(to bottom, #67e8f9, #00b694);
+    background: linear-gradient(to bottom, #67e8f9, #00b8b2);
     -webkit-background-clip: text;
     color: transparent;
   }
@@ -3541,7 +3541,7 @@
         .btn {
           &.btn-primary,
           &.btn-outline {
-            background: linear-gradient(to right, #00B8B2, #00b694);
+            background: linear-gradient(to right, #00B8B2, #00b8b2);
             color: #0a0a0a;
             box-shadow: 0 0 30px rgba(0, 184, 178, 0.3);
             &:hover {
@@ -3790,7 +3790,7 @@
     }
 
     .btn-primary {
-      background: linear-gradient(to right, #00B8B2, #00b694);
+      background: linear-gradient(to right, #00B8B2, #00b8b2);
       color: #0a0a0a;
       box-shadow: 0 0 30px rgba(0, 184, 178, 0.3);
     }
@@ -3816,7 +3816,7 @@
       top: -0.75rem;
       left: 50%;
       transform: translateX(-50%);
-      background: linear-gradient(to right, #00B8B2, #2dd4bf);
+      background: linear-gradient(to right, #00B8B2, #00b8b2);
       color: #0a0a0a;
       font-size: 10px;
       line-height: 1;
@@ -4932,7 +4932,7 @@
   // Override any remaining cyan text colors
   [style*="#00B8B2"],
   [style*="#00B8B2"],
-  [style*="rgb(0, 217, 180)"] {
+  [style*="rgb(0, 184, 178)"] {
     color: #f77737 !important;
   }
 
@@ -5644,7 +5644,7 @@
   // ===== GLOBAL CYAN COLOR OVERRIDE =====
   [style*="#00B8B2"],
   [style*="#00B8B2"],
-  [style*="rgb(0, 217, 180)"] {
+  [style*="rgb(0, 184, 178)"] {
     color: #ff5252 !important;
   }
 
@@ -10681,7 +10681,7 @@
         color: #00B8B2;
         border: 1px solid rgba(0, 184, 178, 0.2);
         .av3-mission__item:hover & {
-          background: #00b694;
+          background: #00b8b2;
         }
       }
     }
@@ -15795,7 +15795,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #2dd4bf;
+      color: #00b8b2;
       border: 1px solid rgba(20, 184, 166, 0.3);
     }
 
@@ -15868,7 +15868,7 @@
       font-size: 12px;
 
       svg {
-        color: #2dd4bf;
+        color: #00b8b2;
       }
     }
 
@@ -15902,8 +15902,8 @@
 
     &__popover-btn {
       width: 100%;
-      background: #14b8a6;
-      color: #0d0d0d;
+      background: #00b8b2;
+      color: #fff;
       font-size: 12px;
       font-weight: 700;
       padding: 8px 0;
@@ -15913,7 +15913,7 @@
       transition: background-color 0.2s ease;
 
       &:hover {
-        background: #2dd4bf;
+        background: #00b8b2;
       }
     }
   }
@@ -15978,7 +15978,7 @@
 
       &--teal {
         background: rgba(20, 184, 166, 0.1);
-        color: #2dd4bf;
+        color: #00b8b2;
         border-color: rgba(20, 184, 166, 0.2);
       }
 
@@ -16829,7 +16829,7 @@
     box-shadow: 0 4px 20px rgba(0, 184, 178, 0.3);
 
     &:hover {
-      background: linear-gradient(135deg, #00B8B2 0%, #00b694 100%);
+      background: linear-gradient(135deg, #00B8B2 0%, #00b8b2 100%);
       transform: translateY(-2px);
       box-shadow: 0 6px 30px rgba(0, 184, 178, 0.4);
     }
@@ -17066,7 +17066,7 @@ section h2 + p,
       height: 40px !important;
       padding: 0 22px !important;
       background: #00b8b2 !important;
-      color: #0d0d0d !important;
+      color: #fff !important;
       font-size: 14px !important;
       font-weight: 600 !important;
       border: none !important;
@@ -17472,8 +17472,8 @@ section h2 + p,
     display: inline-flex; align-items: center; gap: 6px;
     padding: 4px 10px;
     border-radius: 999px;
-    background: rgba(0,217,180,0.12);
-    border: 1px solid rgba(0,217,180,0.3);
+    background: rgba(0, 184, 178,0.12);
+    border: 1px solid rgba(0, 184, 178,0.3);
     color: #00b8b2;
     font: 600 11px/1 Inter, sans-serif;
     letter-spacing: 0.2px;
@@ -17481,7 +17481,7 @@ section h2 + p,
   .vt-mcp-dot {
     width: 6px; height: 6px; border-radius: 50%;
     background: #00b8b2;
-    box-shadow: 0 0 8px rgba(0,217,180,0.7);
+    box-shadow: 0 0 8px rgba(0, 184, 178,0.7);
   }
   .vt-mcp-row {
     display: grid;
@@ -17804,7 +17804,7 @@ $ds-font: "Inter", system-ui, sans-serif;
 
 /* ── AI Features section (redesigned) ── */
 .ai-features-section {
-  padding: 24px clamp(24px, 5vw, 64px) clamp(72px, 9vw, 112px);
+  padding: 24px clamp(24px, 5vw, 64px) 0;
   font-family: $ds-font;
 
   .ai-features-inner {
@@ -17920,7 +17920,7 @@ $ds-font: "Inter", system-ui, sans-serif;
 
   .ai-feature-card-blue   .ai-feature-icon { background: linear-gradient(135deg, rgba(64,159,255,0.20), rgba(64,159,255,0.04));  border-color: rgba(64,159,255,0.40);   box-shadow: 0 6px 22px rgba(64,159,255,0.30); }
   .ai-feature-card-purple .ai-feature-icon { background: linear-gradient(135deg, rgba(168,118,242,0.20), rgba(168,118,242,0.04)); border-color: rgba(168,118,242,0.40); box-shadow: 0 6px 22px rgba(168,118,242,0.30); }
-  .ai-feature-card-green  .ai-feature-icon { background: linear-gradient(135deg, rgba(0,217,180,0.20), rgba(0,217,180,0.04));    border-color: rgba(0,217,180,0.40);    box-shadow: 0 6px 22px rgba(0,217,180,0.30); }
+  .ai-feature-card-green  .ai-feature-icon { background: linear-gradient(135deg, rgba(0, 184, 178,0.20), rgba(0, 184, 178,0.04));    border-color: rgba(0, 184, 178,0.40);    box-shadow: 0 6px 22px rgba(0, 184, 178,0.30); }
   .ai-feature-card-yellow .ai-feature-icon { background: linear-gradient(135deg, rgba(253,189,97,0.20), rgba(253,189,97,0.04));  border-color: rgba(253,189,97,0.40);  box-shadow: 0 6px 22px rgba(253,189,97,0.30); }
   .ai-feature-card-orange .ai-feature-icon { background: linear-gradient(135deg, rgba(241,127,55,0.22), rgba(241,127,55,0.04));  border-color: rgba(241,127,55,0.45);  box-shadow: 0 6px 22px rgba(241,127,55,0.32); }
   .ai-feature-card-red    .ai-feature-icon { background: linear-gradient(135deg, rgba(228,42,84,0.22), rgba(228,42,84,0.04));    border-color: rgba(228,42,84,0.45);    box-shadow: 0 6px 22px rgba(228,42,84,0.32); }
@@ -18429,13 +18429,13 @@ $ds-font: "Inter", system-ui, sans-serif;
   }
 }
 .pc-cta-primary {
-  background: linear-gradient(180deg, #00b8b2 0%, #00b8a0 100%);
+  background: linear-gradient(180deg, #00b8b2 0%, #00b8b2 100%);
   border-color: rgba(0, 184, 178, 0.35);
   color: #04221c;
   font-weight: 600;
   box-shadow: 0 8px 22px -4px rgba(0, 184, 178, 0.4);
   &:hover:not(:disabled) {
-    background: linear-gradient(180deg, #00e4bd 0%, #00c4a8 100%);
+    background: linear-gradient(180deg, #00b8b2 0%, #00b8b2 100%);
     color: #04221c;
     box-shadow: 0 12px 28px -4px rgba(0, 184, 178, 0.5);
   }
@@ -18686,7 +18686,7 @@ $ds-font: "Inter", system-ui, sans-serif;
   border-radius: 999px;
   background: rgba(0, 184, 178, 0.18);
   border: 1px solid rgba(0, 184, 178, 0.45);
-  color: #00d9b4;
+  color: #00b8b2;
   font-family: $ds-font;
   font-size: 13px;
   font-weight: 600;
@@ -18841,16 +18841,16 @@ $ds-font: "Inter", system-ui, sans-serif;
   display: none !important;
 }
 
-/* Before & After CTA — white pill */
+/* Before & After CTA — matches .who-cta-btn (Sign Up Today) */
 .mcp-page #beforeafter .ba-cta {
-  background: #ffffff !important;
+  background: #fff !important;
   color: #0d0d0d !important;
   border-color: transparent !important;
 
   &:hover {
-    background: #ffffff !important;
+    background: #fff !important;
     color: #0d0d0d !important;
-    opacity: 0.9;
+    opacity: 0.86;
   }
 }
 

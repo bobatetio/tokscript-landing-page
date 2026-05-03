@@ -51,7 +51,7 @@ const AnimatedQualityComparison = ({ hovering }) => {
       {/* TokScript */}
       <div style={{ flex: 1, background: 'linear-gradient(to bottom, #0d0d0d, #1a1a1a)', borderRadius: '12px', border: '1px solid rgba(59, 130, 246, 0.4)', overflow: 'hidden', position: 'relative', boxShadow: hovering ? '0 10px 30px rgba(59, 130, 246, 0.3)' : 'none', transform: hovering ? 'scale(1.05)' : 'scale(1)', transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
         <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ width: '40px', height: '40px', background: 'linear-gradient(135deg, #3b82f6, #00D9B4)', borderRadius: '8px', marginBottom: '12px', boxShadow: '0 4px 12px rgba(59, 130, 246, 0.5)' }}></div>
+          <div style={{ width: '40px', height: '40px', background: 'linear-gradient(135deg, #3b82f6, #00B8B2)', borderRadius: '8px', marginBottom: '12px', boxShadow: '0 4px 12px rgba(59, 130, 246, 0.5)' }}></div>
           <div style={{ fontSize: '10px', color: '#60a5fa', fontWeight: 'bold' }}>1080p HD</div>
         </div>
         <div style={{ position: 'absolute', bottom: '12px', left: '0', width: '100%', textAlign: 'center', fontSize: '10px', color: '#93c5fd', fontWeight: 'bold' }}>TOKSCRIPT</div>
@@ -105,7 +105,7 @@ const AnimatedNoBranding = ({ hovering }) => {
       {/* Base video layer with watermark */}
       <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', opacity: 0.6 }}>
-           <div style={{ fontSize: '12px', fontWeight: '900', color: '#fff', transform: 'rotate(-15deg)', letterSpacing: '1px', textShadow: '1px 1px 0 #ef4444, -1px -1px 0 #00D9B4' }}>@TIKTOK</div>
+           <div style={{ fontSize: '12px', fontWeight: '900', color: '#fff', transform: 'rotate(-15deg)', letterSpacing: '1px', textShadow: '1px 1px 0 #ef4444, -1px -1px 0 #00B8B2' }}>@TIKTOK</div>
         </div>
       </div>
       

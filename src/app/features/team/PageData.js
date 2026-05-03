@@ -59,13 +59,13 @@ const AnimatedWorkspaceSwitcher = ({ hovering }) => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <div style={{ padding: '12px', borderRadius: '10px', background: active === 0 ? 'rgba(20, 184, 166, 0.1)' : '#1a1a1a', border: '1px solid', borderColor: active === 0 ? 'rgba(20, 184, 166, 0.4)' : 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'all 0.3s' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ width: '28px', height: '28px', borderRadius: '6px', background: 'linear-gradient(135deg, #14b8a6, #00D9B4)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '12px', fontWeight: 'bold' }}>A</div>
+            <div style={{ width: '28px', height: '28px', borderRadius: '6px', background: 'linear-gradient(135deg, #00b8b2, #00B8B2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '12px', fontWeight: 'bold' }}>A</div>
             <div>
               <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#fff' }}>Acme Agency</div>
               <div style={{ fontSize: '10px', color: '#7a7a7a' }}>14 members • 4.2k videos</div>
             </div>
           </div>
-          {active === 0 && <Check size={14} color="#14b8a6" />}
+          {active === 0 && <Check size={14} color="#00b8b2" />}
         </div>
 
         <div style={{ padding: '12px', borderRadius: '10px', background: active === 1 ? 'rgba(168, 85, 247, 0.1)' : '#1a1a1a', border: '1px solid', borderColor: active === 1 ? 'rgba(168, 85, 247, 0.4)' : 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'all 0.3s' }}>
@@ -203,7 +203,7 @@ export default function TeamCollaborationPage() {
         <section className="ts-hero">
           <div className="ts-hero-bg">
             <div className="ts-hero-grid"></div>
-            <div className="ts-glow-orb ts-glow-orb-1" style={{ background: '#14b8a6' }}></div>
+            <div className="ts-glow-orb ts-glow-orb-1" style={{ background: '#00b8b2' }}></div>
           </div>
           
           <div className="ts-container">
@@ -215,7 +215,7 @@ export default function TeamCollaborationPage() {
                 </div>
                 <h1 className="ts-hero-title">
                   One Library.<br />
-                  <span className="ts-text-gradient" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #99f6e4 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                  <span className="ts-text-gradient" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #00b8b2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                     Zero Duplicated Work.
                   </span>
                 </h1>
@@ -223,7 +223,7 @@ export default function TeamCollaborationPage() {
                   Create shared workspaces where your team accesses the same transcript library. Research once, benefit everyone. Stop pinging Slack asking "did anyone already transcribe that video?"
                 </p>
                 <div className="ts-hero-cta-wrap">
-                  <a href="/" style={{ background: '#14b8a6', color: '#000', padding: '16px 24px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', boxShadow: '0 4px 14px rgba(20, 184, 166, 0.4)' }}>
+                  <a href="/" style={{ background: '#00b8b2', color: '#fff', padding: '16px 24px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', boxShadow: '0 4px 14px rgba(20, 184, 166, 0.4)' }}>
                     Start Your Team Workspace <ArrowRight size={18} />
                   </a>
                 </div>
@@ -276,7 +276,7 @@ export default function TeamCollaborationPage() {
                         <AnimatedTeamActivity hovering={hovering} />
                       </div>
                       <div className="ts-cv-text">
-                        <div className="ts-cv-kicker" style={{ color: '#5eead4' }}>TokScript Teams</div>
+                        <div className="ts-cv-kicker" style={{ color: '#00b8b2' }}>TokScript Teams</div>
                         <h3>Collective Brainpower</h3>
                         <p>Every transcript your team extracts saves to the shared workspace. Individual research becomes searchable by the whole team. No more siloed lookups.</p>
                       </div>
@@ -296,7 +296,7 @@ export default function TeamCollaborationPage() {
             <p className="ts-section-subheading ts-text-center">Set up in minutes. Add members as you grow.</p>
             
             <div className="ts-animated-timeline">
-              <div className="ts-timeline-line"><div className="ts-timeline-line-glow" style={{ background: 'linear-gradient(to bottom, #14b8a6, #00D9B4)' }}></div></div>
+              <div className="ts-timeline-line"><div className="ts-timeline-line-glow" style={{ background: 'linear-gradient(to bottom, #00b8b2, #00B8B2)' }}></div></div>
 
               {[
                 { title: "Create Your Team Workspace", desc: "Set up a shared workspace and invite your team members. Choose a name, add collaborators by email, assign roles. Takes about 2 minutes." },
@@ -307,7 +307,7 @@ export default function TeamCollaborationPage() {
                   {(hovering) => (
                     <>
                       <div className="ts-step-node-wrap">
-                        <div className="ts-step-node" style={hovering ? { borderColor: '#5eead4', background: '#0f766e', color: '#fff', transform: 'scale(1.1)', boxShadow: '0 0 20px rgba(20,184,166,0.4)' } : {}}>{i + 1}</div>
+                        <div className="ts-step-node" style={hovering ? { borderColor: '#00b8b2', background: '#00b8b2', color: '#fff', transform: 'scale(1.1)', boxShadow: '0 0 20px rgba(20,184,166,0.4)' } : {}}>{i + 1}</div>
                       </div>
                       <div className="ts-step-card-wrap">
                         <div className="ts-step-card">
@@ -341,7 +341,7 @@ export default function TeamCollaborationPage() {
                        <AnimatedWorkspaceSwitcher hovering={hovering} />
                     </div>
                     <div className="ts-card-text-content">
-                      <div className="ts-kicker" style={{ color: '#5eead4' }}>Multiple Workspaces</div>
+                      <div className="ts-kicker" style={{ color: '#00b8b2' }}>Multiple Workspaces</div>
                       <h3>Separate Spaces for Each Client</h3>
                       <p>Create distinct workspaces for different clients, projects, or teams. Client A's research stays in Client A's workspace. No accidental cross-posting, no confidentiality concerns.</p>
                     </div>
@@ -427,7 +427,7 @@ export default function TeamCollaborationPage() {
               <p className="ts-cta-desc">
                 Your team's best research shouldn't live in personal silos. Create a shared workspace where everyone contributes.
               </p>
-              <a href="/" className="ts-btn-primary" style={{ background: '#14b8a6', color: '#000', border: 'none' }}>Start Your Team Workspace →</a>
+              <a href="/" className="ts-btn-primary" style={{ background: '#00b8b2', color: '#fff', border: 'none' }}>Start Your Team Workspace →</a>
             </div>
           </div>
         </section>

@@ -146,7 +146,7 @@ const FAQItem = ({ q, a }) => {
           style={{
             transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
             transition: "transform 0.3s",
-            backgroundColor: isOpen ? "#00D9B4" : "#1a1a1a",
+            backgroundColor: isOpen ? "#00B8B2" : "#1a1a1a",
             color: isOpen ? "#0a0a0a" : "#7a7a7a",
           }}
         >
@@ -497,7 +497,7 @@ export default function PricingPage() {
                 width: "48px",
                 height: "48px",
                 border: "3px solid #1a1a1a",
-                borderTop: "3px solid #00D9B4",
+                borderTop: "3px solid #00B8B2",
                 borderRadius: "50%",
                 animation: "spin 1s linear infinite",
                 margin: "0 auto 1rem",
@@ -652,7 +652,7 @@ export default function PricingPage() {
                       <div className="calc-box-highlight"></div>
                       <div
                         style={{
-                          color: "#00D9B4",
+                          color: "#00B8B2",
                           fontWeight: 700,
                           fontSize: "12px",
                           lineHeight: "17px",
@@ -705,7 +705,7 @@ export default function PricingPage() {
                         <Layers
                           size={12}
                           className="text-emerald-400"
-                          style={{ color: "#00D9B4" }}
+                          style={{ color: "#00B8B2" }}
                         />{" "}
                         BULK PROCESSING
                       </div>
@@ -1124,7 +1124,7 @@ export default function PricingPage() {
                   style={{
                     fontSize: "10px",
                     lineHeight: "14px",
-                    color: "#00D9B4",
+                    color: "#00B8B2",
                     fontWeight: 700,
                     textTransform: "uppercase",
                   }}

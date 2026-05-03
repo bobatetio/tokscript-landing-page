@@ -55,6 +55,8 @@ const TokToolsFeatures = dynamic(() => import("@/components/TokToolsFeatures"));
 const EnhenceExperience = dynamic(() => import("@/components/EnhenceExperience"));
 const HeroFloatingIcons = dynamic(() => import("@/components/HeroFloatingIcons"), { ssr: false });
 const WhoItsFor = dynamic(() => import("@/components/WhoItsFor"));
+const ViralMomentsCarousel = dynamic(() => import("@/components/ViralMomentsCarousel"), { ssr: false });
+const HomeSocialProof = dynamic(() => import("@/components/HomeSocialProof"), { ssr: false });
 const BeforeAfter = dynamic(() => import("@/components/BeforeAfter"), { ssr: false });
 const VideoHoverThumb = dynamic(() => import("@/components/VideoHoverThumb"), { ssr: false });
 const CounterComponent = dynamic(() => import("@/components/CounterComponent"));
@@ -1108,7 +1110,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                   <ul className="vt-list">
                     {copy.bulk.bullets.map((b, i) => <li key={i}>{b}</li>)}
                   </ul>
-                  <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                  <Link href="/pricing" className="vt-cta">Get Started now</Link>
                 </div>
               </div>
               <div className="vt-visual">
@@ -1131,7 +1133,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                     <li>Analyze creator libraries in chat</li>
                     <li>One-click setup — no API wiring required</li>
                   </ul>
-                  <Link href="/mcp" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                  <Link href="/mcp" className="vt-cta">Get Started now</Link>
                 </div>
               </div>
             </div>
@@ -1148,7 +1150,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                     <li>Series and topic-based organization</li>
                     <li>Automatic metadata preservation</li>
                   </ul>
-                  <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                  <Link href="/pricing" className="vt-cta">Get Started now</Link>
                 </div>
               </div>
               <div className="vt-visual">
@@ -1171,7 +1173,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                     <li>Re-download in TXT, XML, PDF formats</li>
                     <li>Bulk export and sharing capabilities</li>
                   </ul>
-                  <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                  <Link href="/pricing" className="vt-cta">Get Started now</Link>
                 </div>
               </div>
             </div>
@@ -1188,7 +1190,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                     <li>Multiple platform support</li>
                     <li>Original quality preservation</li>
                   </ul>
-                  <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                  <Link href="/pricing" className="vt-cta">Get Started now</Link>
                 </div>
               </div>
               <div className="vt-visual">
@@ -1208,7 +1210,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                   <ul className="vt-list">
                     {copy.quickUrl.bullets.map((b, i) => <li key={i}>{b}</li>)}
                   </ul>
-                  <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                  <Link href="/pricing" className="vt-cta">Get Started now</Link>
                 </div>
               </div>
             </div>
@@ -1225,7 +1227,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                     <li>Works on web and mobile browsers</li>
                     <li>No URL copying required</li>
                   </ul>
-                  <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                  <Link href="/pricing" className="vt-cta">Get Started now</Link>
                 </div>
               </div>
               <div className="vt-visual">
@@ -1248,7 +1250,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                     <li>Virality psychology analysis and insights</li>
                     <li>One-click content transformation</li>
                   </ul>
-                  <Link href="/pricing" className="vt-cta">Get Started now <span aria-hidden className="vt-cta-arrow">→</span></Link>
+                  <Link href="/pricing" className="vt-cta">Get Started now</Link>
                 </div>
               </div>
             </div>
@@ -1256,6 +1258,8 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
         </section>
 
         <WhoItsFor platform={platform} />
+
+        <ViralMomentsCarousel variant="home" />
 
         <div className="pricing-card-detail">
           <div className="container">
@@ -1651,18 +1655,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
             </div>
           </div>
         </section>
-        <section className="users-info-section">
-          <div className="container">
-            <div className="inner-section">
-              <div className="title-wrappe">
-                <p>
-                  {copy.statsCopy}
-                </p>
-              </div>
-              <CounterComponent />
-            </div>
-          </div>
-        </section>
+        <HomeSocialProof />
         <BeforeAfter />
         <EnhenceExperience />
         <FaqSection />

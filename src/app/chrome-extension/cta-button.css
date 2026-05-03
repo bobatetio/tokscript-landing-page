@@ -56,7 +56,7 @@
 }
 
 #cx-hero .cx-cta-btn:focus-visible {
-  outline: 2px solid #00d9b4;
+  outline: 2px solid #00b8b2;
   outline-offset: 3px;
 }
 
@@ -105,7 +105,7 @@
 }
 
 #cx-hero .cx-signup-btn:focus-visible {
-  outline: 2px solid #00d9b4;
+  outline: 2px solid #00b8b2;
   outline-offset: 3px;
 }
 
@@ -121,6 +121,7 @@
 #cx-vt-platform .vt-list li::before {
   display: block !important;
 }
+
 
 /* ============================================================
    Footer CTA action row + trust line
@@ -251,18 +252,13 @@
     align-items: center;
     text-align: center;
     gap: 16px;
+    background: #141414 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
   .mcp-page #video .cx-hiw-card .hiw-card-bg-img {
-    position: absolute;
-    top: -1px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 360px;
-    height: 220px;
-    object-fit: cover;
-    pointer-events: none;
-    z-index: 0;
+    display: none !important;
   }
   .mcp-page #video .cx-hiw-card .hiw-card-title {
     position: static;
@@ -296,7 +292,12 @@
     right: auto;
     margin: 0;
     padding: 0;
-    line-height: 1.5;
+    font-size: 14.5px !important;
+    line-height: 1.55;
+  }
+  .mcp-page #video .cx-hiw-card .hiw-card-title {
+    font-size: 17px;
+    font-weight: 700;
   }
 }
 
@@ -444,9 +445,21 @@
     font-size: 14.5px !important;
     line-height: 1.55 !important;
   }
+  .mcp-page #who .who-card {
+    background: #141414 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
   .mcp-page #who .who-card-title {
-    font-size: 15px !important;
-    font-weight: 600;
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    padding: 18px 16px 8px !important;
+  }
+  .mcp-page #who .who-card-desc {
+    font-size: 14.5px !important;
+    line-height: 1.55 !important;
+    padding: 8px 16px 18px !important;
   }
   .mcp-page #who .who-cta-btn {
     height: 44px !important;

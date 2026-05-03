@@ -72,6 +72,8 @@ export default function Header({ t }) {
   const [bannerDismissed, setBannerDismissed] = useState(false);
   const [featuresOpen, setFeaturesOpen] = useState(false);
   const featuresTimeoutRef = React.useRef(null);
+  const [mcpOpen, setMcpOpen] = useState(false);
+  const mcpTimeoutRef = React.useRef(null);
   const wrapperRef = useRef(null);
   const [spacerHeight, setSpacerHeight] = useState(0);
 
@@ -265,8 +267,77 @@ export default function Header({ t }) {
           <li className="pricing-nav-item">
             <Link href="/pricing">{t?.header?.nav?.pricing || "Pricing"}</Link>
           </li>
-          <li>
-            <Link href="/mcp">MCP</Link>
+          <li
+            className="mcp-dropdown-wrapper"
+            onMouseEnter={() => {
+              clearTimeout(mcpTimeoutRef.current);
+              setMcpOpen(true);
+            }}
+            onMouseLeave={() => {
+              mcpTimeoutRef.current = setTimeout(
+                () => setMcpOpen(false),
+                150,
+              );
+            }}
+          >
+            <Link
+              href="/mcp"
+              className="mcp-toggle"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setMcpOpen(false);
+              }}
+            >
+              MCP
+              <svg
+                className="mcp-toggle-caret"
+                width="10"
+                height="6"
+                viewBox="0 0 10 6"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M1 1L5 5L9 1"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Link>
+            <div className={`mcp-menu ${mcpOpen ? "is-open" : ""}`}>
+              <Link
+                href="/claude"
+                className="mcp-menu-item"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setMcpOpen(false);
+                }}
+              >
+                <img
+                  className="mcp-menu-icon"
+                  src={bannerClaudeIcon.src}
+                  alt=""
+                />
+                <span className="mcp-menu-label-text">Claude</span>
+              </Link>
+              <Link
+                href="/chatgpt"
+                className="mcp-menu-item"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setMcpOpen(false);
+                }}
+              >
+                <img
+                  className="mcp-menu-icon"
+                  src={bannerChatgptIcon.src}
+                  alt=""
+                />
+                <span className="mcp-menu-label-text">ChatGPT</span>
+              </Link>
+            </div>
           </li>
           <li className="affiliate-nav-item">
             <Link href="/affiliate">

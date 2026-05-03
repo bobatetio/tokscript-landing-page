@@ -54,8 +54,8 @@ const AnimatedUrlImport = ({ hovering }) => {
   return (
     <div style={{ width: '280px', height: '180px', background: 'linear-gradient(180deg, #0d0d0d 0%, #0a0a0a 100%)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 10px 30px rgba(0,0,0,0.5)' }}>
       {/* Input Bar */}
-      <div style={{ background: '#1a1a1a', border: step >= 1 ? '1px solid #00D9B4' : '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 12px', display: 'flex', alignItems: 'center', gap: '8px', transition: 'all 0.3s' }}>
-        <LinkIcon size={14} color={step >= 1 ? "#00D9B4" : "#7a7a7a"} />
+      <div style={{ background: '#1a1a1a', border: step >= 1 ? '1px solid #00B8B2' : '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 12px', display: 'flex', alignItems: 'center', gap: '8px', transition: 'all 0.3s' }}>
+        <LinkIcon size={14} color={step >= 1 ? "#00B8B2" : "#7a7a7a"} />
         <span style={{ fontSize: '11px', color: step >= 1 ? '#e6e6e6' : '#7a7a7a', fontFamily: 'monospace', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {step >= 1 ? "tiktok.com/@creator/video/1234..." : "Paste video URL here..."}
         </span>
@@ -80,9 +80,9 @@ const AnimatedUrlImport = ({ hovering }) => {
               key="loaded"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              style={{ width: '100%', height: '100%', background: '#1a1a1a', borderRadius: '8px', border: '1px solid rgba(0, 217, 180, 0.3)', display: 'flex', alignItems: 'center', padding: '12px', gap: '12px' }}
+              style={{ width: '100%', height: '100%', background: '#1a1a1a', borderRadius: '8px', border: '1px solid rgba(0, 184, 178, 0.3)', display: 'flex', alignItems: 'center', padding: '12px', gap: '12px' }}
             >
-              <div style={{ width: '48px', height: '72px', background: 'linear-gradient(135deg, #00D9B4 0%, #00b694 100%)', borderRadius: '6px', position: 'relative' }}>
+              <div style={{ width: '48px', height: '72px', background: 'linear-gradient(135deg, #00B8B2 0%, #00b8b2 100%)', borderRadius: '6px', position: 'relative' }}>
                 <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <PlaySquare size={16} color="#fff" />
                 </div>
@@ -91,8 +91,8 @@ const AnimatedUrlImport = ({ hovering }) => {
                 <div style={{ width: '80%', height: '6px', background: '#e6e6e6', borderRadius: '3px' }} />
                 <div style={{ width: '60%', height: '6px', background: '#7a7a7a', borderRadius: '3px' }} />
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
-                  <CheckCircle2 size={10} color="#00D9B4" />
-                  <span style={{ fontSize: '8px', color: '#00D9B4' }}>Ready to extract</span>
+                  <CheckCircle2 size={10} color="#00B8B2" />
+                  <span style={{ fontSize: '8px', color: '#00B8B2' }}>Ready to extract</span>
                 </div>
               </div>
             </motion.div>
@@ -109,10 +109,10 @@ const AnimatedExtractionSpeed = ({ hovering }) => {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Zap size={14} color="#00D9B4" />
+          <Zap size={14} color="#00B8B2" />
           <span style={{ fontSize: '11px', color: '#fff', fontWeight: '500' }}>Extracting...</span>
         </div>
-        <span style={{ fontSize: '10px', color: '#00D9B4', fontFamily: 'monospace' }}>1.2s</span>
+        <span style={{ fontSize: '10px', color: '#00B8B2', fontFamily: 'monospace' }}>1.2s</span>
       </div>
 
       {/* Waveform to Text Area */}
@@ -123,7 +123,7 @@ const AnimatedExtractionSpeed = ({ hovering }) => {
           initial={{ left: 0 }}
           animate={hovering ? { left: '100%' } : { left: 0 }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-          style={{ position: 'absolute', top: 0, bottom: 0, width: '2px', background: '#00D9B4', boxShadow: '0 0 12px #00D9B4', zIndex: 10 }}
+          style={{ position: 'absolute', top: 0, bottom: 0, width: '2px', background: '#00B8B2', boxShadow: '0 0 12px #00B8B2', zIndex: 10 }}
         />
 
         {/* Fake Waveform */}
@@ -169,7 +169,7 @@ const AnimatedCopyPaste = ({ hovering }) => {
         <motion.div
           initial={{ opacity: 0, scale: 0.9, y: 10 }}
           animate={hovering ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.9, y: 10 }}
-          style={{ position: 'absolute', bottom: '12px', right: '12px', background: '#00D9B4', color: '#0a0a0a', padding: '6px 10px', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0, 217, 180, 0.4)' }}
+          style={{ position: 'absolute', bottom: '12px', right: '12px', background: '#00B8B2', color: '#fff', padding: '6px 10px', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0, 184, 178, 0.4)' }}
         >
           <Copy size={12} />
           <span style={{ fontSize: '10px', fontWeight: 'bold' }}>Copy All</span>
@@ -218,18 +218,18 @@ export default function TranscriptGeneratorPage() {
         <section className="ts-hero">
           <div className="ts-hero-bg">
             <div className="ts-hero-grid"></div>
-            <div className="ts-glow-orb ts-glow-orb-1" style={{ background: '#00D9B4' }}></div>
+            <div className="ts-glow-orb ts-glow-orb-1" style={{ background: '#00B8B2' }}></div>
           </div>
           
           <div className="ts-container">
             <div className="ts-hero-split">
               <div className="ts-hero-content">
-                <div className="ts-kicker-badge" style={{ borderColor: 'rgba(0, 217, 180, 0.3)', background: 'rgba(0, 217, 180, 0.1)' }}>
-                  <FileText size={14} color="#00D9B4" />
-                  <span style={{ color: '#ccfbf1' }}>TRANSCRIPT GENERATOR</span>
+                <div className="ts-kicker-badge" style={{ borderColor: 'rgba(0, 184, 178, 0.3)', background: 'rgba(0, 184, 178, 0.1)' }}>
+                  <FileText size={14} color="#00B8B2" />
+                  <span style={{ color: '#00b8b2' }}>TRANSCRIPT GENERATOR</span>
                 </div>
                 <h1 className="ts-hero-title" style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', lineHeight: '1.1' }}>
-                  <span className="ts-text-gradient" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #ccfbf1 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                  <span className="ts-text-gradient" style={{ background: 'linear-gradient(135deg, #ffffff 0%, #00b8b2 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                     Video to Text in Seconds.
                   </span>
                 </h1>
@@ -237,13 +237,13 @@ export default function TranscriptGeneratorPage() {
                   Stop pausing and typing. Paste a link and get the exact script from any TikTok, Reel, or Short instantly.
                 </p>
                 <div className="ts-hero-cta-wrap">
-                  <a href="/" style={{ background: '#00D9B4', color: '#0a0a0a', padding: '16px 24px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', boxShadow: '0 4px 14px rgba(0, 217, 180, 0.4)' }}>
+                  <a href="/" style={{ background: '#00B8B2', color: '#fff', padding: '16px 24px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', boxShadow: '0 4px 14px rgba(0, 184, 178, 0.4)' }}>
                     Get Your Transcript <ArrowRight size={18} />
                   </a>
                 </div>
               </div>
               <div className="ts-hero-visual">
-                <div className="ts-hv-glass-panel" style={{ background: 'rgba(13, 13, 13, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(0, 217, 180, 0.2)' }}>
+                <div className="ts-hv-glass-panel" style={{ background: 'rgba(13, 13, 13, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(0, 184, 178, 0.2)' }}>
                   <AnimatedExtractionSpeed hovering={true} />
                 </div>
               </div>
@@ -290,7 +290,7 @@ export default function TranscriptGeneratorPage() {
                         <AnimatedExtractionSpeed hovering={hovering} />
                       </div>
                       <div className="ts-cv-text">
-                        <div className="ts-cv-kicker" style={{ color: '#00D9B4' }}>TokScript</div>
+                        <div className="ts-cv-kicker" style={{ color: '#00B8B2' }}>TokScript</div>
                         <h3>Instant Extraction</h3>
                         <p>One click pulls the exact transcript out of the video immediately. Zero manual work. Absolute accuracy.</p>
                       </div>
@@ -310,7 +310,7 @@ export default function TranscriptGeneratorPage() {
             <p className="ts-section-subheading ts-text-center">Get your transcript in three simple steps.</p>
             
             <div className="ts-animated-timeline">
-              <div className="ts-timeline-line"><div className="ts-timeline-line-glow" style={{ background: 'linear-gradient(to bottom, #00D9B4, #00b694)' }}></div></div>
+              <div className="ts-timeline-line"><div className="ts-timeline-line-glow" style={{ background: 'linear-gradient(to bottom, #00B8B2, #00b8b2)' }}></div></div>
 
               {[
                 { title: "Copy Link", desc: "Grab the URL from any TikTok, Instagram Reel, or YouTube Short." },
@@ -321,7 +321,7 @@ export default function TranscriptGeneratorPage() {
                   {(hovering) => (
                     <>
                       <div className="ts-step-node-wrap">
-                        <div className="ts-step-node" style={hovering ? { borderColor: '#00D9B4', background: '#083344', color: '#fff', transform: 'scale(1.1)', boxShadow: '0 0 20px rgba(0,217,180,0.4)' } : {}}>{i + 1}</div>
+                        <div className="ts-step-node" style={hovering ? { borderColor: '#00B8B2', background: '#083344', color: '#fff', transform: 'scale(1.1)', boxShadow: '0 0 20px rgba(0, 184, 178,0.4)' } : {}}>{i + 1}</div>
                       </div>
                       <div className="ts-step-card-wrap">
                         <div className="ts-step-card">
@@ -342,7 +342,7 @@ export default function TranscriptGeneratorPage() {
 
         {/* VISUAL BENTO GRIDS */}
         <section className="ts-bento-section">
-          <div className="ts-bg-aurora" style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(0,217,180,0.15) 0%, transparent 70%)' }}></div>
+          <div className="ts-bg-aurora" style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(0, 184, 178,0.15) 0%, transparent 70%)' }}></div>
           <div className="ts-container">
             <h2 className="ts-section-heading ts-text-center">Extract fast. Create faster.</h2>
             <p className="ts-section-subheading ts-text-center">Everything you need to turn inspiration into actual text.</p>
@@ -351,11 +351,11 @@ export default function TranscriptGeneratorPage() {
               <HoverStateWrapper className="ts-feature-card-v4-wrap">
                 {(hovering) => (
                   <>
-                    <div className="ts-card-graphic" style={{ height: '240px', background: 'radial-gradient(ellipse at center, rgba(0, 217, 180, 0.15) 0%, transparent 70%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="ts-card-graphic" style={{ height: '240px', background: 'radial-gradient(ellipse at center, rgba(0, 184, 178, 0.15) 0%, transparent 70%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                        <AnimatedUrlImport hovering={hovering} />
                     </div>
                     <div className="ts-card-text-content">
-                      <div className="ts-kicker" style={{ color: '#00D9B4' }}>Feature</div>
+                      <div className="ts-kicker" style={{ color: '#00B8B2' }}>Feature</div>
                       <h3>Simple Link Import</h3>
                       <p>Just copy the video link and paste it. No downloading files, no clunky uploads. We handle the extraction instantly from the URL.</p>
                     </div>
@@ -370,7 +370,7 @@ export default function TranscriptGeneratorPage() {
                       <AnimatedExtractionSpeed hovering={hovering} />
                     </div>
                     <div className="ts-card-text-content">
-                      <div className="ts-kicker" style={{ color: '#00D9B4' }}>Feature</div>
+                      <div className="ts-kicker" style={{ color: '#00B8B2' }}>Feature</div>
                       <h3>Lightning Fast</h3>
                       <p>Don't wait around. Our engine pulls the exact text out of the video in seconds, saving you hours of manual transcription work.</p>
                     </div>
@@ -385,7 +385,7 @@ export default function TranscriptGeneratorPage() {
                       <AnimatedCopyPaste hovering={hovering} />
                     </div>
                     <div className="ts-card-text-content">
-                      <div className="ts-kicker" style={{ color: '#00D9B4' }}>Feature</div>
+                      <div className="ts-kicker" style={{ color: '#00B8B2' }}>Feature</div>
                       <h3>1-Click Copy</h3>
                       <p>Hit the copy button and paste the perfectly formatted transcript directly into your notes, scripts, or content planners.</p>
                     </div>
@@ -424,12 +424,12 @@ export default function TranscriptGeneratorPage() {
         <section className="ts-section ts-final-cta" style={{ background: '#0a0a0a' }}>
           <div className="ts-container ts-container-narrow">
             <div className="ts-cta-box">
-              <div className="ts-cta-glow" style={{ background: 'radial-gradient(ellipse at top, rgba(0, 217, 180, 0.4) 0%, transparent 70%)' }}></div>
+              <div className="ts-cta-glow" style={{ background: 'radial-gradient(ellipse at top, rgba(0, 184, 178, 0.4) 0%, transparent 70%)' }}></div>
               <h2 className="ts-cta-title">Stop typing manually.</h2>
               <p className="ts-cta-desc">
                 Paste a link and get the exact transcript from any video instantly.
               </p>
-              <a href="/" className="ts-btn-primary" style={{ background: '#00D9B4', color: '#0a0a0a', border: 'none' }}>Get Your First Transcript →</a>
+              <a href="/" className="ts-btn-primary" style={{ background: '#00B8B2', color: '#fff', border: 'none' }}>Get Your First Transcript →</a>
             </div>
           </div>
         </section>

@@ -10,9 +10,9 @@
   --text-secondary: #7a7a7a; /* slate-400 */
   --text-muted: #7a7a7a; /* slate-500 */
 
-  --accent-cyan: #00D9B4;
-  --accent-cyan-dim: rgba(0, 217, 180, 0.1);
-  --accent-cyan-glow: rgba(0, 217, 180, 0.3);
+  --accent-cyan: #00B8B2;
+  --accent-cyan-dim: rgba(0, 184, 178, 0.1);
+  --accent-cyan-glow: rgba(0, 184, 178, 0.3);
 
   --border-color: rgba(26, 26, 26, 0.6);
   --border-hover: rgba(58, 58, 58, 0.6);
@@ -79,7 +79,7 @@
 }
 
 .tab-btn.active.featured {
-  background: linear-gradient(to right, #00D9B4, #3b82f6);
+  background: #00B8B2;
   color: white;
 }
 
@@ -180,7 +180,7 @@
 }
 
 .text-gradient {
-  background: linear-gradient(to bottom, #67e8f9, #00b694);
+  background: linear-gradient(to bottom, #67e8f9, #00b8b2);
   -webkit-background-clip: text;
   color: transparent;
 }
@@ -266,7 +266,7 @@
 }
 
 .stats-footer {
-  background: rgba(0, 217, 180, 0.05);
+  background: rgba(0, 184, 178, 0.05);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   padding: 0.5rem;
   display: flex;
@@ -347,7 +347,7 @@
 /* Featured Card Styles */
 .pricing-card.featured {
   background: var(--bg-card-featured);
-  border-color: rgba(0, 217, 180, 0.5);
+  border-color: rgba(0, 184, 178, 0.5);
   box-shadow: 0 25px 50px -12px rgba(8, 145, 178, 0.25);
   z-index: 20;
 }
@@ -364,8 +364,8 @@
   border-radius: 1.6rem;
   background: linear-gradient(
     to bottom,
-    rgba(0, 217, 180, 0.5),
-    rgba(0, 217, 180, 0.1),
+    rgba(0, 184, 178, 0.5),
+    rgba(0, 184, 178, 0.1),
     transparent
   );
   z-index: -10;
@@ -445,7 +445,7 @@
     rgba(13, 13, 13, 0.9),
     rgba(13, 13, 13, 0.5)
   );
-  border: 1px solid rgba(0, 217, 180, 0.2);
+  border: 1px solid rgba(0, 184, 178, 0.2);
   border-radius: 0.5rem;
   text-align: center;
   position: relative;
@@ -461,7 +461,7 @@
 .calc-box-highlight {
   position: absolute;
   inset: 0;
-  background: rgba(0, 217, 180, 0.05);
+  background: rgba(0, 184, 178, 0.05);
 }
 
 /* Feature Lists */
@@ -572,13 +572,13 @@
 }
 
 .btn-primary {
-  background: linear-gradient(to right, #00D9B4, #00b694);
+  background: linear-gradient(to right, #00B8B2, #00b8b2);
   color: #0a0a0a;
-  box-shadow: 0 0 30px rgba(0, 217, 180, 0.3);
+  box-shadow: 0 0 30px rgba(0, 184, 178, 0.3);
 }
 .btn-primary:hover {
-  background: linear-gradient(to right, #67e8f9, #00D9B4);
-  box-shadow: 0 0 50px rgba(0, 217, 180, 0.5);
+  background: linear-gradient(to right, #67e8f9, #00B8B2);
+  box-shadow: 0 0 50px rgba(0, 184, 178, 0.5);
   transform: scale(1.02);
 }
 .btn-outline {
@@ -597,7 +597,7 @@
   top: -0.75rem;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(to right, #00D9B4, #2dd4bf);
+  background: linear-gradient(to right, #00B8B2, #00b8b2);
   color: #0a0a0a;
   font-size: 0.5rem;
   font-weight: 900;
@@ -608,7 +608,7 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 217, 180, 0.4);
+  box-shadow: 0 10px 15px -3px rgba(0, 184, 178, 0.4);
   border: 4px solid var(--bg-dark);
 }
 @media (min-width: 768px) {
@@ -637,8 +637,8 @@
 
 .faq-item.open {
   background: rgba(13, 13, 13, 0.8);
-  border-color: rgba(0, 217, 180, 0.3);
-  box-shadow: 0 4px 20px -10px rgba(0, 217, 180, 0.2);
+  border-color: rgba(0, 184, 178, 0.3);
+  box-shadow: 0 4px 20px -10px rgba(0, 184, 178, 0.2);
 }
 .faq-header {
   padding: 1rem;
@@ -786,7 +786,7 @@
   left: 0;
   width: 100%;
   height: 4px;
-  background: linear-gradient(to right, #00D9B4, #2563eb);
+  background: linear-gradient(to right, #00B8B2, #2563eb);
 }
 .testimonial-text {
   font-size: 1.125rem;

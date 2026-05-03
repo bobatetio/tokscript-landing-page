@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import "../mcp/mcp.scss";
 import "./cta-button.css";
 import "./cx-testimonials.css";
+import "./cx-stats.css";
 
 const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
 const VideoLightbox = dynamic(
@@ -105,7 +106,7 @@ const sparkles = [
     left: "230px",
     w: "2px",
     bg: "#fff",
-    shadow: "0 0 4px 2px rgba(0,217,180,.9)",
+    shadow: "0 0 4px 2px rgba(0, 184, 178,.9)",
   },
   {
     dx: "40px",
@@ -113,8 +114,8 @@ const sparkles = [
     delay: ".5s",
     left: "270px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 4px 2px rgba(0,217,180,.8)",
+    bg: "#00b8b2",
+    shadow: "0 0 4px 2px rgba(0, 184, 178,.8)",
   },
   {
     dx: "-20px",
@@ -131,8 +132,8 @@ const sparkles = [
     delay: ".2s",
     left: "220px",
     w: "3px",
-    bg: "#00d9b4",
-    shadow: "0 0 5px 2px rgba(0,217,180,.6)",
+    bg: "#00b8b2",
+    shadow: "0 0 5px 2px rgba(0, 184, 178,.6)",
   },
   {
     dx: "-80px",
@@ -149,8 +150,8 @@ const sparkles = [
     delay: ".8s",
     left: "240px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 5px 2px rgba(0,217,180,.7)",
+    bg: "#00b8b2",
+    shadow: "0 0 5px 2px rgba(0, 184, 178,.7)",
   },
   {
     dx: "-50px",
@@ -159,7 +160,7 @@ const sparkles = [
     left: "260px",
     w: "2px",
     bg: "#fff",
-    shadow: "0 0 4px 2px rgba(0,217,180,.5)",
+    shadow: "0 0 4px 2px rgba(0, 184, 178,.5)",
   },
   {
     dx: "90px",
@@ -167,8 +168,8 @@ const sparkles = [
     delay: ".3s",
     left: "200px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 4px 2px rgba(0,217,180,.9)",
+    bg: "#00b8b2",
+    shadow: "0 0 4px 2px rgba(0, 184, 178,.9)",
   },
   {
     dx: "-30px",
@@ -185,8 +186,8 @@ const sparkles = [
     delay: "2.3s",
     left: "245px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 5px 2px rgba(0,217,180,.8)",
+    bg: "#00b8b2",
+    shadow: "0 0 5px 2px rgba(0, 184, 178,.8)",
   },
   {
     dx: "-70px",
@@ -203,8 +204,8 @@ const sparkles = [
     delay: "1.2s",
     left: "235px",
     w: "3px",
-    bg: "#00d9b4",
-    shadow: "0 0 6px 3px rgba(0,217,180,.5)",
+    bg: "#00b8b2",
+    shadow: "0 0 6px 3px rgba(0, 184, 178,.5)",
   },
   {
     dx: "-45px",
@@ -221,8 +222,8 @@ const sparkles = [
     delay: "1.9s",
     left: "180px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 4px 2px rgba(0,217,180,.8)",
+    bg: "#00b8b2",
+    shadow: "0 0 4px 2px rgba(0, 184, 178,.8)",
   },
   {
     dx: "-15px",
@@ -239,8 +240,8 @@ const sparkles = [
     delay: ".9s",
     left: "215px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 5px 2px rgba(0,217,180,.7)",
+    bg: "#00b8b2",
+    shadow: "0 0 5px 2px rgba(0, 184, 178,.7)",
   },
   {
     dx: "-90px",
@@ -249,7 +250,7 @@ const sparkles = [
     left: "285px",
     w: "2px",
     bg: "#fff",
-    shadow: "0 0 4px 2px rgba(0,217,180,.6)",
+    shadow: "0 0 4px 2px rgba(0, 184, 178,.6)",
   },
   {
     dx: "35px",
@@ -257,8 +258,8 @@ const sparkles = [
     delay: "2.1s",
     left: "300px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 4px 2px rgba(0,217,180,.9)",
+    bg: "#00b8b2",
+    shadow: "0 0 4px 2px rgba(0, 184, 178,.9)",
   },
   {
     dx: "-55px",
@@ -275,8 +276,8 @@ const sparkles = [
     delay: "1.1s",
     left: "265px",
     w: "3px",
-    bg: "#00d9b4",
-    shadow: "0 0 6px 3px rgba(0,217,180,.6)",
+    bg: "#00b8b2",
+    shadow: "0 0 6px 3px rgba(0, 184, 178,.6)",
   },
   {
     dx: "-35px",
@@ -293,8 +294,8 @@ const sparkles = [
     delay: "1.6s",
     left: "340px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 4px 2px rgba(0,217,180,.7)",
+    bg: "#00b8b2",
+    shadow: "0 0 4px 2px rgba(0, 184, 178,.7)",
   },
   {
     dx: "-75px",
@@ -311,8 +312,8 @@ const sparkles = [
     delay: "2.4s",
     left: "280px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 5px 2px rgba(0,217,180,.5)",
+    bg: "#00b8b2",
+    shadow: "0 0 5px 2px rgba(0, 184, 178,.5)",
   },
 ];
 
@@ -663,18 +664,35 @@ export default function PageData() {
   // Scroll-driven feature spotlight: fade non-centered rows in #cx-vt-platform
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const rows = document.querySelectorAll("#cx-vt-platform .vt-row");
-    if (!rows.length) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          entry.target.classList.toggle("vt-row-active", entry.isIntersecting);
-        });
-      },
-      { threshold: 0, rootMargin: "-38% 0px -38% 0px" },
-    );
-    rows.forEach((r) => obs.observe(r));
-    return () => obs.disconnect();
+
+    let obs;
+    const attach = () => {
+      const rows = document.querySelectorAll("#cx-vt-platform .vt-row");
+      if (!rows.length) return false;
+      obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            entry.target.classList.toggle(
+              "vt-row-active",
+              entry.isIntersecting,
+            );
+          });
+        },
+        { threshold: 0, rootMargin: "-25% 0px -25% 0px" },
+      );
+      rows.forEach((r) => obs.observe(r));
+      return true;
+    };
+
+    // Attach now, but if rows haven't rendered yet, retry on next frame.
+    if (!attach()) {
+      const raf = requestAnimationFrame(() => attach());
+      return () => {
+        cancelAnimationFrame(raf);
+        obs?.disconnect();
+      };
+    }
+    return () => obs?.disconnect();
   }, []);
 
   // Filter skills
@@ -832,8 +850,8 @@ export default function PageData() {
           }
           .cx-hero-video {
             position: relative; width: 100%; max-width: 480px; aspect-ratio: 1/1;
-            border: 2px solid #00d9b4; border-radius: 14px; overflow: hidden;
-            background: #1a1a1a; box-shadow: 0 0 40px rgba(0,217,180,.06);
+            border: 2px solid #00b8b2; border-radius: 14px; overflow: hidden;
+            background: #1a1a1a; box-shadow: 0 0 40px rgba(0, 184, 178,.06);
           }
           .cx-hero-video iframe {
             position: absolute; top: -60px; left: -38.9%;
@@ -883,7 +901,7 @@ export default function PageData() {
                   <img className="hiw-card-bg-img" src={hiwCardBg.src} alt="" />
                   <h3 className="hiw-card-title">{card.title}</h3>
                   <div className="cx-hiw-card-img-wrap hiw-card-img-wrap">
-                    <img src={card.img} alt="" />
+                    <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}${card.img}`} alt="" />
                   </div>
                   <p className="hiw-card-desc">{card.desc}</p>
                 </div>
@@ -1025,6 +1043,64 @@ export default function PageData() {
               />
             </div>
           </div>
+
+          {/* Row 4 — Transcripts In Bulk, From Anywhere: visual LEFT, text-card RIGHT */}
+          <div className="vt-row vt-row-reverse">
+            <div className="vt-visual">
+              <img
+                src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/figma-rows/bulk%20and%20collections%20link%20paste.png?v=20260502c`}
+                alt="Transcripts In Bulk, From Anywhere"
+                style={{ width: "100%", height: "auto", display: "block", borderRadius: "16px" }}
+              />
+            </div>
+            <div className="vt-text">
+              <div className="vt-text-inner">
+                <h3 className="vt-row-title">Built For Bulk Research</h3>
+                <p className="vt-row-body">
+                  Copy any TikTok transcript to your clipboard, download HD videos without watermarks, and save cover images in original quality, all from the same panel. Or paste up to 50 TikTok links at once and drop them straight into a folder of your choice.
+                </p>
+                <ul className="vt-list">
+                  <li>One-click transcript, HD video, and cover image</li>
+                  <li>Up to 50 TikTok links per bulk paste</li>
+                  <li>One collection link pulls every video inside</li>
+                  <li>Transcripts land straight in your dashboard</li>
+                </ul>
+                <a
+                  href="https://chromewebstore.google.com/detail/tokscript/ligffiaiehimfbhjflgkkfanhfjmdaoi?hl=en-US"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="vt-cta"
+                  style={{ height: "44px", gap: "8px", padding: "0 24px 0 20px" }}
+                >
+                  <img
+                    src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/figma-rows/Google_Chrome_Web_Store_icon_2015.svg.png`}
+                    alt=""
+                    aria-hidden="true"
+                    style={{ flexShrink: 0, display: "block", width: 20, height: 20, objectFit: "contain" }}
+                  />
+                  Add TokScript To Chrome
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Dashboard spotlight (mirrors home page #up-running) ── */}
+      <section id="up-running" className="up-running-section">
+        <div className="ur-inner">
+          <div className="ur-header">
+            <span className="ur-pill">Your Dashboard</span>
+            <h2 className="ur-title">Where Your Research Actually Comes Together.</h2>
+            <p className="ur-sub">Everything you collect on TikTok flows into your TokScript dashboard. Transcripts, videos, profiles, and stats all in one place.</p>
+          </div>
+          <div className="ur-video">
+            <iframe
+              src="https://www.youtube.com/embed/5m37dBH-G_g?autoplay=1&mute=1&loop=1&playlist=5m37dBH-G_g&controls=0&rel=0&modestbranding=1&playsinline=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0"
+              allow="autoplay; encrypted-media"
+              title="TokScript dashboard — where your research comes together"
+            ></iframe>
+          </div>
         </div>
       </section>
 
@@ -1080,6 +1156,28 @@ export default function PageData() {
               />
               Add TokScript To Chrome
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Stats bar (sits just before testimonials) ── */}
+      <section id="cx-stats">
+        <div className="cx-stats-container">
+          <div className="cx-stat">
+            <div className="cx-stat-number">2.6M+</div>
+            <div className="cx-stat-label">Videos Processed</div>
+          </div>
+          <div className="cx-stat">
+            <div className="cx-stat-number">190K+</div>
+            <div className="cx-stat-label">Profiles Downloaded</div>
+          </div>
+          <div className="cx-stat">
+            <div className="cx-stat-number">120K+</div>
+            <div className="cx-stat-label">Hours Saved</div>
+          </div>
+          <div className="cx-stat">
+            <div className="cx-stat-number">84M+</div>
+            <div className="cx-stat-label">Minutes of Videos Total</div>
           </div>
         </div>
       </section>
@@ -1265,7 +1363,7 @@ export default function PageData() {
                 fontSize: "12px",
                 color: "#fff",
                 background:
-                  "linear-gradient(#0d0d0d,#0d0d0d) padding-box,linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box",
+                  "linear-gradient(#0d0d0d,#0d0d0d) padding-box,linear-gradient(135deg,#00b8b2,rgba(255,255,255,.12)) border-box",
                 border: "0.5px solid transparent",
               }}
             >
@@ -1309,7 +1407,7 @@ export default function PageData() {
             </div>
           </div>
 
-          <div className="faq-list reveal">
+          <div className="faq-list">
             {faqs.map((faq, i) => (
               <div className="faq-item" key={i}>
                 <button

@@ -136,7 +136,7 @@ const AnimatedBatchAudit = ({ hovering }) => {
         </div>
       </div>
       
-      <div style={{ padding: '16px', background: 'rgba(0, 217, 180, 0.1)', border: '1px solid rgba(0, 217, 180, 0.3)', borderRadius: '12px', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ padding: '16px', background: 'rgba(0, 184, 178, 0.1)', border: '1px solid rgba(0, 184, 178, 0.3)', borderRadius: '12px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'relative', zIndex: 2, fontSize: '14px', fontWeight: 'bold', color: '#fff', marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
           <span>TokScript Processing</span>
           <span style={{ color: '#7dd3fc' }}>{progress}%</span>
@@ -228,7 +228,7 @@ const AnimatedTrendHunting = ({ hovering }) => {
         <motion.div
           key={i}
           initial={{ height: '10px', background: '#1a1a1a' }}
-          animate={hovering ? { height: `${h}px`, background: i > 3 ? '#2dd4bf' : '#2a2a2a' } : { height: '10px', background: '#1a1a1a' }}
+          animate={hovering ? { height: `${h}px`, background: i > 3 ? '#00b8b2' : '#2a2a2a' } : { height: '10px', background: '#1a1a1a' }}
           transition={{ duration: 0.5, delay: i * 0.1 }}
           style={{ flex: 1, borderRadius: '4px 4px 0 0' }}
         />
@@ -237,7 +237,7 @@ const AnimatedTrendHunting = ({ hovering }) => {
         initial={{ opacity: 0 }}
         animate={hovering ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.5, delay: 0.8 }}
-        style={{ position: 'absolute', top: '0', right: '0', background: 'rgba(45, 212, 191, 0.2)', color: '#2dd4bf', padding: '2px 6px', borderRadius: '4px', fontSize: '8px', fontWeight: 'bold' }}
+        style={{ position: 'absolute', top: '0', right: '0', background: 'rgba(45, 212, 191, 0.2)', color: '#00b8b2', padding: '2px 6px', borderRadius: '4px', fontSize: '8px', fontWeight: 'bold' }}
       >
         TRENDING
       </motion.div>
@@ -290,7 +290,7 @@ export default function BulkImportPage() {
         <section className="ts-hero">
           <div className="ts-hero-bg">
             <div className="ts-hero-grid"></div>
-            <div className="ts-glow-orb ts-glow-orb-1" style={{ background: '#00D9B4' }}></div>
+            <div className="ts-glow-orb ts-glow-orb-1" style={{ background: '#00B8B2' }}></div>
           </div>
           
           <div className="ts-container">
@@ -310,13 +310,13 @@ export default function BulkImportPage() {
                   Paste a list of URLs. Click process. Walk away. TokScript extracts every transcript in the background and notifies you when your library is ready.
                 </p>
                 <div className="ts-hero-cta-wrap">
-                  <a href="/" style={{ background: '#00D9B4', color: '#fff', padding: '16px 24px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', boxShadow: '0 4px 14px rgba(0, 217, 180, 0.4)' }}>
+                  <a href="/" style={{ background: '#00B8B2', color: '#fff', padding: '16px 24px', borderRadius: '8px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', boxShadow: '0 4px 14px rgba(0, 184, 178, 0.4)' }}>
                     Start Batch <ArrowRight size={18} />
                   </a>
                 </div>
               </div>
               <div className="ts-hero-visual">
-                <div className="ts-hv-glass-panel" style={{ background: 'rgba(13, 13, 13, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(0, 217, 180, 0.2)' }}>
+                <div className="ts-hv-glass-panel" style={{ background: 'rgba(13, 13, 13, 0.85)', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: '0 24px 48px rgba(0,0,0,0.8), 0 0 80px rgba(0, 184, 178, 0.2)' }}>
                   <AnimatedBulkProcessing hovering={true} />
                 </div>
               </div>
@@ -425,7 +425,7 @@ export default function BulkImportPage() {
               <HoverStateWrapper className="ts-bento-card-visual ts-span-2-desktop">
                 {(hovering) => (
                   <>
-                    <div className="ts-card-graphic" style={{ background: 'radial-gradient(ellipse at center, rgba(0, 217, 180, 0.15) 0%, transparent 70%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="ts-card-graphic" style={{ background: 'radial-gradient(ellipse at center, rgba(0, 184, 178, 0.15) 0%, transparent 70%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                        <AnimatedErrorHandling hovering={hovering} />
                     </div>
                     <div className="ts-card-text-content">
@@ -524,7 +524,7 @@ export default function BulkImportPage() {
         <section className="ts-section ts-final-cta" style={{ background: '#0a0a0a' }}>
           <div className="ts-container ts-container-narrow">
             <div className="ts-cta-box">
-              <div className="ts-cta-glow" style={{ background: 'radial-gradient(ellipse at top, rgba(0, 217, 180, 0.4) 0%, transparent 70%)' }}></div>
+              <div className="ts-cta-glow" style={{ background: 'radial-gradient(ellipse at top, rgba(0, 184, 178, 0.4) 0%, transparent 70%)' }}></div>
               <h2 className="ts-cta-title">Ready to scale up?</h2>
               <p className="ts-cta-desc">
                 Stop pasting links one by one. Process your entire backlog today.

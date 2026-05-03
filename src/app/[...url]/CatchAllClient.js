@@ -1544,7 +1544,7 @@ export default function LandingPage({ params }) {
                             <div className="calc-box-highlight"></div>
                             <div
                               style={{
-                                color: "#00D9B4",
+                                color: "#00B8B2",
                                 fontWeight: 700,
                                 fontSize: "12px",
                                 lineHeight: "17px",
@@ -1597,7 +1597,7 @@ export default function LandingPage({ params }) {
                               <Layers
                                 size={12}
                                 className="text-emerald-400"
-                                style={{ color: "#00D9B4" }}
+                                style={{ color: "#00B8B2" }}
                               />{" "}
                               BULK PROCESSING
                             </div>

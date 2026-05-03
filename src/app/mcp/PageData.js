@@ -103,7 +103,7 @@ const sparkles = [
     left: "230px",
     w: "2px",
     bg: "#fff",
-    shadow: "0 0 4px 2px rgba(0,217,180,.9)",
+    shadow: "0 0 4px 2px rgba(0, 184, 178,.9)",
   },
   {
     dx: "40px",
@@ -111,8 +111,8 @@ const sparkles = [
     delay: ".5s",
     left: "270px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 4px 2px rgba(0,217,180,.8)",
+    bg: "#00b8b2",
+    shadow: "0 0 4px 2px rgba(0, 184, 178,.8)",
   },
   {
     dx: "-20px",
@@ -129,8 +129,8 @@ const sparkles = [
     delay: ".2s",
     left: "220px",
     w: "3px",
-    bg: "#00d9b4",
-    shadow: "0 0 5px 2px rgba(0,217,180,.6)",
+    bg: "#00b8b2",
+    shadow: "0 0 5px 2px rgba(0, 184, 178,.6)",
   },
   {
     dx: "-80px",
@@ -147,8 +147,8 @@ const sparkles = [
     delay: ".8s",
     left: "240px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 5px 2px rgba(0,217,180,.7)",
+    bg: "#00b8b2",
+    shadow: "0 0 5px 2px rgba(0, 184, 178,.7)",
   },
   {
     dx: "-50px",
@@ -157,7 +157,7 @@ const sparkles = [
     left: "260px",
     w: "2px",
     bg: "#fff",
-    shadow: "0 0 4px 2px rgba(0,217,180,.5)",
+    shadow: "0 0 4px 2px rgba(0, 184, 178,.5)",
   },
   {
     dx: "90px",
@@ -165,8 +165,8 @@ const sparkles = [
     delay: ".3s",
     left: "200px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 4px 2px rgba(0,217,180,.9)",
+    bg: "#00b8b2",
+    shadow: "0 0 4px 2px rgba(0, 184, 178,.9)",
   },
   {
     dx: "-30px",
@@ -183,8 +183,8 @@ const sparkles = [
     delay: "2.3s",
     left: "245px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 5px 2px rgba(0,217,180,.8)",
+    bg: "#00b8b2",
+    shadow: "0 0 5px 2px rgba(0, 184, 178,.8)",
   },
   {
     dx: "-70px",
@@ -201,8 +201,8 @@ const sparkles = [
     delay: "1.2s",
     left: "235px",
     w: "3px",
-    bg: "#00d9b4",
-    shadow: "0 0 6px 3px rgba(0,217,180,.5)",
+    bg: "#00b8b2",
+    shadow: "0 0 6px 3px rgba(0, 184, 178,.5)",
   },
   {
     dx: "-45px",
@@ -219,8 +219,8 @@ const sparkles = [
     delay: "1.9s",
     left: "180px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 4px 2px rgba(0,217,180,.8)",
+    bg: "#00b8b2",
+    shadow: "0 0 4px 2px rgba(0, 184, 178,.8)",
   },
   {
     dx: "-15px",
@@ -237,8 +237,8 @@ const sparkles = [
     delay: ".9s",
     left: "215px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 5px 2px rgba(0,217,180,.7)",
+    bg: "#00b8b2",
+    shadow: "0 0 5px 2px rgba(0, 184, 178,.7)",
   },
   {
     dx: "-90px",
@@ -247,7 +247,7 @@ const sparkles = [
     left: "285px",
     w: "2px",
     bg: "#fff",
-    shadow: "0 0 4px 2px rgba(0,217,180,.6)",
+    shadow: "0 0 4px 2px rgba(0, 184, 178,.6)",
   },
   {
     dx: "35px",
@@ -255,8 +255,8 @@ const sparkles = [
     delay: "2.1s",
     left: "300px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 4px 2px rgba(0,217,180,.9)",
+    bg: "#00b8b2",
+    shadow: "0 0 4px 2px rgba(0, 184, 178,.9)",
   },
   {
     dx: "-55px",
@@ -273,8 +273,8 @@ const sparkles = [
     delay: "1.1s",
     left: "265px",
     w: "3px",
-    bg: "#00d9b4",
-    shadow: "0 0 6px 3px rgba(0,217,180,.6)",
+    bg: "#00b8b2",
+    shadow: "0 0 6px 3px rgba(0, 184, 178,.6)",
   },
   {
     dx: "-35px",
@@ -291,8 +291,8 @@ const sparkles = [
     delay: "1.6s",
     left: "340px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 4px 2px rgba(0,217,180,.7)",
+    bg: "#00b8b2",
+    shadow: "0 0 4px 2px rgba(0, 184, 178,.7)",
   },
   {
     dx: "-75px",
@@ -309,8 +309,8 @@ const sparkles = [
     delay: "2.4s",
     left: "280px",
     w: "2px",
-    bg: "#00d9b4",
-    shadow: "0 0 5px 2px rgba(0,217,180,.5)",
+    bg: "#00b8b2",
+    shadow: "0 0 5px 2px rgba(0, 184, 178,.5)",
   },
 ];
 
@@ -888,7 +888,7 @@ export default function PageData() {
                   style={{
                     border:
                       setupTab === "claude"
-                        ? "1px solid #00f7ef"
+                        ? "1px solid #00b8b2"
                         : "1.04px solid rgba(255,255,255,0.1)",
                     background:
                       setupTab === "claude"
@@ -907,7 +907,7 @@ export default function PageData() {
                       fontWeight: 600,
                       color:
                         setupTab === "claude"
-                          ? "#00f7ef"
+                          ? "#00b8b2"
                           : "rgba(255,255,255,0.48)",
                       whiteSpace: "nowrap",
                     }}
@@ -921,7 +921,7 @@ export default function PageData() {
                   style={{
                     border:
                       setupTab === "chatgpt"
-                        ? "1px solid #00f7ef"
+                        ? "1px solid #00b8b2"
                         : "1.04px solid rgba(255,255,255,0.1)",
                     background:
                       setupTab === "chatgpt"
@@ -959,7 +959,7 @@ export default function PageData() {
                       fontWeight: 600,
                       color:
                         setupTab === "chatgpt"
-                          ? "#00f7ef"
+                          ? "#00b8b2"
                           : "rgba(255,255,255,0.48)",
                       whiteSpace: "nowrap",
                     }}
@@ -1051,7 +1051,7 @@ export default function PageData() {
                           fontFamily: "'Roboto',sans-serif",
                           fontSize: "10px",
                           fontWeight: 700,
-                          color: "#12e2db",
+                          color: "#00b8b2",
                         }}
                       >
                         1
@@ -1128,7 +1128,7 @@ export default function PageData() {
                           fontFamily: "'Roboto',sans-serif",
                           fontSize: "10px",
                           fontWeight: 700,
-                          color: "#12e2db",
+                          color: "#00b8b2",
                         }}
                       >
                         2
@@ -1160,7 +1160,7 @@ export default function PageData() {
                           fontFamily: "'Roboto',sans-serif",
                           fontSize: "10px",
                           fontWeight: 700,
-                          color: "#12e2db",
+                          color: "#00b8b2",
                         }}
                       >
                         3
@@ -1444,7 +1444,7 @@ export default function PageData() {
                 fontSize: "12px",
                 color: "#fff",
                 background:
-                  "linear-gradient(#0d0d0d,#0d0d0d) padding-box,linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box",
+                  "linear-gradient(#0d0d0d,#0d0d0d) padding-box,linear-gradient(135deg,#00b8b2,rgba(255,255,255,.12)) border-box",
                 border: "0.5px solid transparent",
               }}
             >
@@ -1553,7 +1553,7 @@ export default function PageData() {
                     color: "#fff",
                   }}
                 >
-                  <span style={{ color: "#00fff7", fontWeight: 700 }}>
+                  <span style={{ color: "#00b8b2", fontWeight: 700 }}>
                     {"\u2713"}
                   </span>{" "}
                   {feat}
