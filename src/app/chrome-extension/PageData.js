@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
+import HomeSocialProof from "@/components/HomeSocialProof";
 import "../mcp/mcp.scss";
 import "./cta-button.css";
 import "./cx-testimonials.css";
@@ -1160,27 +1161,8 @@ export default function PageData() {
         </div>
       </section>
 
-      {/* ── Stats bar (sits just before testimonials) ── */}
-      <section id="cx-stats">
-        <div className="cx-stats-container">
-          <div className="cx-stat">
-            <div className="cx-stat-number">2.6M+</div>
-            <div className="cx-stat-label">Videos Processed</div>
-          </div>
-          <div className="cx-stat">
-            <div className="cx-stat-number">190K+</div>
-            <div className="cx-stat-label">Profiles Downloaded</div>
-          </div>
-          <div className="cx-stat">
-            <div className="cx-stat-number">120K+</div>
-            <div className="cx-stat-label">Hours Saved</div>
-          </div>
-          <div className="cx-stat">
-            <div className="cx-stat-number">84M+</div>
-            <div className="cx-stat-label">Minutes of Videos Total</div>
-          </div>
-        </div>
-      </section>
+      {/* ── Stats bar (replicated from homepage HomeSocialProof) ── */}
+      <HomeSocialProof />
 
       {/* ── Section 3b: Testimonials slider ── */}
       <section
