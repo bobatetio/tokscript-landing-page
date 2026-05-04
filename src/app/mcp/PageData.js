@@ -1,10 +1,12 @@
 "use client";
 import StaticPageFrame from "@/components/StaticPageFrame";
 
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 export default function PageData() {
   return (
     <StaticPageFrame
-      src="/tokscriptmcp-pages/mcp.html"
+      src={`${BASE}/tokscriptmcp-pages/mcp.html`}
       title="TokScript MCP"
     />
   );
