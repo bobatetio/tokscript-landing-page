@@ -18178,10 +18178,10 @@ $ds-font: "Inter", system-ui, sans-serif;
    ────────────────────────────────────────────────────────────────────────── */
 .pc-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
   width: 100%;
-  max-width: 1180px;
+  max-width: 1320px;
   margin: 0 auto;
   align-items: stretch;
 }
