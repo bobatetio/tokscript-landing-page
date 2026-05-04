@@ -301,11 +301,7 @@
   }
 }
 
-/* Footer slightly brighter than the section above (#0d0d0d) so the
-   boundary is visible. Chrome-extension page only. */
-.mcp-page .footer-section {
-  background-color: #1A1A1A;
-}
+/* Use the universal footer background (matches the rest of the site). */
 
 /* Force the "41K+ Creators" span in the footer-CTA eyebrow to
    match the rest of the line exactly (same color, font, weight,

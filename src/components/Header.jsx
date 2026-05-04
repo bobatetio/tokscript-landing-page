@@ -67,6 +67,8 @@ const FeatureIcons = {
 
 export default function Header({ t }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [drawerFeaturesOpen, setDrawerFeaturesOpen] = useState(false);
+  const [drawerMcpOpen, setDrawerMcpOpen] = useState(false);
   const [user, setUser] = useState(null);
   const location = typeof window !== "undefined" ? window.location : null;
   const [bannerDismissed, setBannerDismissed] = useState(false);
@@ -116,6 +118,46 @@ export default function Header({ t }) {
       document.body.classList.remove("active");
     };
   }, [mobileMenuOpen]);
+
+  // Close drawer on ESC
+  useEffect(() => {
+    if (!mobileMenuOpen) return undefined;
+    const onKey = (e) => {
+      if (e.key === "Escape") setMobileMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [mobileMenuOpen]);
+
+  // Reset sub-popups when drawer closes
+  useEffect(() => {
+    if (!mobileMenuOpen) {
+      setDrawerFeaturesOpen(false);
+      setDrawerMcpOpen(false);
+    }
+  }, [mobileMenuOpen]);
+
+  const featuresPopRef = useRef(null);
+  const mcpPopRef = useRef(null);
+
+  // Click-outside to close anchored sub-popups
+  useEffect(() => {
+    if (!drawerFeaturesOpen && !drawerMcpOpen) return undefined;
+    const onDown = (e) => {
+      if (drawerFeaturesOpen && featuresPopRef.current && !featuresPopRef.current.contains(e.target)) {
+        setDrawerFeaturesOpen(false);
+      }
+      if (drawerMcpOpen && mcpPopRef.current && !mcpPopRef.current.contains(e.target)) {
+        setDrawerMcpOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("touchstart", onDown);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("touchstart", onDown);
+    };
+  }, [drawerFeaturesOpen, drawerMcpOpen]);
 
   const handleLogout = async () => {
     try {
@@ -445,7 +487,7 @@ export default function Header({ t }) {
           <li>
             <Link
               href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/signin`}
-              className="white"
+              className="tk-login-btn"
             >
               {t?.header?.auth?.login || "Log In"}
             </Link>
@@ -453,7 +495,7 @@ export default function Header({ t }) {
           <li>
             <Link
               href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up`}
-              className="btn-style has-shadow w-500"
+              className="tk-getstarted-btn"
             >
               {t?.header?.auth?.getStarted || "Get Started"}
             </Link>
@@ -545,44 +587,297 @@ export default function Header({ t }) {
                   ) : (
                     <Link
                       href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up`}
-                      className="btn-style has-shadow w-500"
+                      className="tk-getstarted-btn"
                     >
-                      {t?.header?.auth?.signUp || "Sign Up"}
+                      {t?.header?.auth?.getStarted || "Get Started"}
                     </Link>
                   )}
 
-                  {mobileMenuOpen ? (
+                  <div className="mobile-hamburger">
                     <button
-                      className="close-menu"
-                      onClick={() => setMobileMenuOpen(false)}
+                      className={`menu-icon-btn${mobileMenuOpen ? " is-open" : ""}`}
+                      aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                      aria-expanded={mobileMenuOpen}
+                      onClick={() => setMobileMenuOpen((v) => !v)}
                     >
-                      &times;
-                    </button>
-                  ) : (
-                    <div className="mobile-hamburger">
-                      <button
-                        className="hamburger-btn"
-                        aria-label="Open menu"
-                        onClick={() => setMobileMenuOpen(true)}
+                      <svg
+                        className="menu-icon menu-icon-bars"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
                       >
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                      </button>
-                    </div>
-                  )}
+                        <line x1="4" y1="7" x2="20" y2="7" />
+                        <line x1="4" y1="17" x2="20" y2="17" />
+                      </svg>
+                      <svg
+                        className="menu-icon menu-icon-close"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          {/* Mobile menu drawer/overlay */}
+          {/* Mobile/tablet drawer — slide-in from right, flat list */}
           {mobileMenuOpen && (
-            <div className="mobile-menu-overlay">
-              <div className="mobile-menu-content">
-                <div className="menu-wrapper">{menuContent}</div>
-                <div className="right-menu-wrapper">{rightMenuContent}</div>
-              </div>
-            </div>
+            <>
+              <div
+                className="mobile-drawer-backdrop"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-hidden="true"
+              />
+              <aside
+                className="mobile-drawer"
+                role="dialog"
+                aria-modal="true"
+                aria-label="Site menu"
+              >
+                <div className="mobile-drawer-topbar">
+                  <Link
+                    href="/"
+                    className="mobile-drawer-logo"
+                    onClick={() => setMobileMenuOpen(false)}
+                    aria-label="TokScript home"
+                  >
+                    <Image src={logo} alt="TokScript" priority />
+                  </Link>
+                  <button
+                    type="button"
+                    className="menu-icon-btn is-open mobile-drawer-close"
+                    onClick={() => setMobileMenuOpen(false)}
+                    aria-label="Close menu"
+                  >
+                    <svg
+                      className="menu-icon menu-icon-close"
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <line x1="6" y1="6" x2="18" y2="18" />
+                      <line x1="18" y1="6" x2="6" y2="18" />
+                    </svg>
+                  </button>
+                </div>
+
+                <ul className="mobile-drawer-list">
+                  <li>
+                    <Link
+                      href="/"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {t?.header?.nav?.home || "Home"}
+                    </Link>
+                  </li>
+
+                  <li className="mobile-drawer-has-popup" ref={featuresPopRef}>
+                    <button
+                      type="button"
+                      className="mobile-drawer-toggle"
+                      onClick={() => {
+                        setDrawerMcpOpen(false);
+                        setDrawerFeaturesOpen((v) => !v);
+                      }}
+                      aria-haspopup="menu"
+                      aria-expanded={drawerFeaturesOpen}
+                    >
+                      <span>{t?.header?.nav?.features || "Features"}</span>
+                      <svg
+                        className="mobile-drawer-caret"
+                        width="12"
+                        height="8"
+                        viewBox="0 0 12 8"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M1 1.5L6 6.5L11 1.5"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                    {drawerFeaturesOpen && (
+                      <div className="mobile-drawer-popup" role="menu">
+                        <ul className="mobile-drawer-sublist">
+                          {features.map((feature) => (
+                            <li key={feature.slug}>
+                              <Link
+                                href={feature.path}
+                                onClick={() => {
+                                  setDrawerFeaturesOpen(false);
+                                  setMobileMenuOpen(false);
+                                }}
+                              >
+                                {feature.title}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </li>
+
+                  <li>
+                    <Link
+                      href="/pricing"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {t?.header?.nav?.pricing || "Pricing"}
+                    </Link>
+                  </li>
+
+                  <li className="mobile-drawer-has-popup" ref={mcpPopRef}>
+                    <button
+                      type="button"
+                      className="mobile-drawer-toggle"
+                      onClick={() => {
+                        setDrawerFeaturesOpen(false);
+                        setDrawerMcpOpen((v) => !v);
+                      }}
+                      aria-haspopup="menu"
+                      aria-expanded={drawerMcpOpen}
+                    >
+                      <span>MCP</span>
+                      <svg
+                        className="mobile-drawer-caret"
+                        width="12"
+                        height="8"
+                        viewBox="0 0 12 8"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M1 1.5L6 6.5L11 1.5"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                    {drawerMcpOpen && (
+                      <div className="mobile-drawer-popup" role="menu">
+                        <ul className="mobile-drawer-sublist">
+                          <li>
+                            <Link
+                              href="/mcp"
+                              onClick={() => {
+                                setDrawerMcpOpen(false);
+                                setMobileMenuOpen(false);
+                              }}
+                            >
+                              Overview
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/claude"
+                              onClick={() => {
+                                setDrawerMcpOpen(false);
+                                setMobileMenuOpen(false);
+                              }}
+                            >
+                              Claude
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/chatgpt"
+                              onClick={() => {
+                                setDrawerMcpOpen(false);
+                                setMobileMenuOpen(false);
+                              }}
+                            >
+                              ChatGPT
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+                  </li>
+
+                  <li>
+                    <Link
+                      href="/affiliate"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {t?.header?.nav?.affiliate || "Affiliate"}
+                    </Link>
+                  </li>
+
+                  <li>
+                    <a
+                      href={
+                        location?.pathname === "/pricing" ? "#faq" : "/#faqs"
+                      }
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {t?.header?.nav?.faqs || "FAQs"}
+                    </a>
+                  </li>
+
+                </ul>
+
+                <div className="mobile-drawer-auth">
+                  {user ? (
+                    <a
+                      href="#"
+                      className="tk-login-btn mobile-drawer-auth-btn"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setMobileMenuOpen(false);
+                        handleLogout();
+                      }}
+                    >
+                      {t?.header?.nav?.logout || "Logout"}
+                    </a>
+                  ) : (
+                    <>
+                      <Link
+                        href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/signin`}
+                        className="tk-login-btn mobile-drawer-auth-btn"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {t?.header?.auth?.login || "Log In"}
+                      </Link>
+                      <Link
+                        href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up`}
+                        className="tk-getstarted-btn mobile-drawer-auth-btn"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {t?.header?.auth?.getStarted || "Get Started"}
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </aside>
+            </>
           )}
         </header>
         {!bannerDismissed && (

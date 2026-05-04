@@ -44,7 +44,7 @@ export const features = [
   },
   {
     slug: "chrome-extension",
-    path: "/features/chrome-extension",
+    path: "/chrome-extension",
     title: "Chrome Extension",
     shortDescription: "Extract without leaving TikTok",
     color: "#3b82f6", // blue

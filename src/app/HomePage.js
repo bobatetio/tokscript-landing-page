@@ -13,7 +13,7 @@ import downloadIcon from "../assets/images/icons/download-lg.svg";
 import generateIcon from "../assets/images/icons/generate-viral.svg";
 import scriptIcon from "../assets/images/icons/script.svg";
 import analyzeImg from "../assets/images/icons/analyze.svg";
-import { IoLockClosed, FaBolt, FaChevronDown, TbBrandTiktok, TbBrandInstagram, TbBrandYoutube, HiLanguage } from "@/components/Icons";
+import { IoLockClosed, FaBolt, FaSearch, FaChevronDown, FaTiktok, FaInstagram, FaYoutube, HiLanguage } from "@/components/Icons";
 const Footer = dynamic(() => import("../components/Footer"));
 import Link from "next/link";
 import Image from "next/image";
@@ -891,6 +891,18 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
       <Header />
       <main className="inner-page">
         <div className="banner-section">
+          <div className="banner-flare" aria-hidden="true">
+            <img
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}${
+                platform === "instagram"
+                  ? "/figma-rows/Instagram%20Flare.png"
+                  : platform === "youtube"
+                    ? "/figma-rows/Youtube%20Flare.png"
+                    : "/assets/chatgpt-hero-flare.png"
+              }`}
+              alt=""
+            />
+          </div>
           <HeroFloatingIcons />
           <div className="container">
             <div className="inner-section">
@@ -992,12 +1004,14 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                       onClick={handleSendClick}
                       disabled={isLoading || isBulkProcessing}
                     >
-                      <FaBolt />
-                      {isLoading || isBulkProcessing
-                        ? "Processing..."
-                        : videoLink.trim()
-                          ? "Download"
-                          : "Scan Video"}
+                      <FaSearch />
+                      {(() => {
+                        if (isLoading || isBulkProcessing) return "Processing...";
+                        const linkCount = videoLink
+                          .split(/[\s,]+/)
+                          .filter(Boolean).length;
+                        return linkCount > 1 ? "Scan Videos" : "Scan Video";
+                      })()}
                     </button>
                   </div>
                 </div>
@@ -1006,17 +1020,17 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
               <div className="social-platform-buttons">
                 <span className="platform-label">Supports:</span>
                 <span className="platform-btn">
-                  <TbBrandTiktok />
+                  <FaTiktok />
                   TikTok
                 </span>
                 <span className="platform-separator">·</span>
                 <span className="platform-btn">
-                  <TbBrandInstagram />
+                  <FaInstagram />
                   Reels
                 </span>
                 <span className="platform-separator">·</span>
                 <span className="platform-btn">
-                  <TbBrandYoutube />
+                  <FaYoutube />
                   Shorts
                 </span>
               </div>
