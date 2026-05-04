@@ -1,0 +1,2721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TokScript MCP — AI Integration</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d0d0d;
+      --s1: #141414;
+      --s2: #1a1a1a;
+      --s3: #1f1f1f;
+      --teal: #00D9B4;
+      --teal12: rgba(0,217,180,.12);
+      --teal25: rgba(0,217,180,.25);
+      --teal06: rgba(0,217,180,.06);
+      --teal40: rgba(0,217,180,.4);
+      --white: #fff;
+      --muted: rgba(255,255,255,.48);
+      --muted2: rgba(255,255,255,.26);
+      --border: rgba(255,255,255,.07);
+      --r: 14px;
+      --font: 'Inter', system-ui, sans-serif;
+    }
+    html { scroll-behavior: smooth; scroll-snap-type: y proximity; overflow-y: scroll; }
+    section { scroll-snap-align: start; }
+    body { background: var(--bg); color: var(--white); font-family: var(--font); line-height: 1.65; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: var(--font); cursor: pointer; }
+    img { display: block; }
+
+    /* Grid overlay — circular fade: hidden at center, visible at edges */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 80px 80px;
+      -webkit-mask-image: radial-gradient(ellipse 65% 65% at 50% 50%, transparent 0%, transparent 45%, black 85%);
+      mask-image: radial-gradient(ellipse 65% 65% at 50% 50%, transparent 0%, transparent 45%, black 85%);
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 68px;
+      background: rgba(13,13,13,.88); backdrop-filter: blur(20px);
+      border-bottom: none;
+    }
+    .nav-logo img { height: 28px; width: auto; }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a { font-size: 14px; color: rgba(255,255,255,.8); transition: color .2s; white-space: nowrap; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a.active { color: var(--white); font-weight: 500; position: relative; }
+    .nav-links a.active::after {
+      content: ''; position: absolute; left: 50%; transform: translateX(-50%); bottom: -8px;
+      width: 40px; height: 2px; border-radius: 2px;
+      background: linear-gradient(90deg, transparent, #00D9B4, transparent);
+      box-shadow: 0 0 8px rgba(0,217,180,.8), 0 0 16px rgba(0,217,180,.4);
+    }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .btn-ghost { height: 38px; padding: 0 18px; border: 1px solid rgba(255,255,255,.2); border-radius: 14px; background: transparent; color: var(--white); font-size: 14px; font-weight: 500; transition: border-color .2s, background .2s; }
+    .btn-ghost:hover { border-color: rgba(255,255,255,.4); background: rgba(255,255,255,.05); }
+    .btn-solid { height: 36px; padding: 0 20px; background: var(--white); border: none; border-radius: 14px; color: #0d0d0d; font-size: 14px; font-weight: 600; transition: opacity .2s; }
+    .btn-solid:hover { opacity: .86; }
+
+    /* ── Nav Dropdown ── */
+    .nav-dropdown { position: relative; display: flex; align-items: center; }
+    .nav-dropdown-trigger {
+      font-size: 14px; color: rgba(255,255,255,.8); background: none; border: none;
+      display: flex; align-items: center; gap: 5px; cursor: pointer; padding: 0;
+      font-family: var(--font); font-weight: 500; color: var(--white);
+      transition: color .2s; white-space: nowrap; position: relative;
+    }
+    .nav-dropdown-trigger::after {
+      content: ''; position: absolute; left: 50%; transform: translateX(-50%); bottom: -8px;
+      width: 40px; height: 2px; border-radius: 2px;
+      background: linear-gradient(90deg, transparent, #00D9B4, transparent);
+      box-shadow: 0 0 8px rgba(0,217,180,.8), 0 0 16px rgba(0,217,180,.4);
+    }
+    .nav-dropdown-trigger svg { width: 12px; height: 12px; transition: transform .2s; }
+    .nav-dropdown:hover .nav-dropdown-trigger svg { transform: rotate(180deg); }
+    .nav-dropdown-menu {
+      position: absolute; top: calc(100% + 8px); left: 50%;
+      min-width: 180px;
+      background: #181818; border: 1px solid rgba(255,255,255,.1); border-radius: 14px;
+      padding: 6px; box-shadow: 0 16px 40px rgba(0,0,0,.6);
+      opacity: 0; pointer-events: none; transform: translateX(-50%) translateY(-4px);
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    /* Transparent bridge fills the gap so hover isn't lost mid-mouse-move */
+    .nav-dropdown-menu::before {
+      content: ''; position: absolute; top: -16px; left: 0; right: 0; height: 16px;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu {
+      opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0);
+    }
+    .nav-dropdown-menu a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px; border-radius: 9px; font-size: 13px; font-weight: 500;
+      color: rgba(255,255,255,.8); transition: background .15s, color .15s;
+    }
+    .nav-dropdown-menu a:hover { background: rgba(255,255,255,.07); color: #fff; }
+    .nav-dropdown-menu a img { width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0; }
+    .nav-dropdown-menu a img[src*="88f10f22"] { border-radius: 0; }
+
+    /* ── Layout ── */
+    section { position: relative; z-index: 1; padding: 96px 24px; overflow: hidden; }
+    section.alt { background: var(--s1); }
+    .wrap { max-width: 1080px; margin: 0 auto; }
+    .sec-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+    .sec-tag::before { content: ''; display: block; width: 18px; height: 1.5px; background: var(--teal); }
+    .sec-title { font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 800; letter-spacing: -.035em; line-height: 1.12; margin-bottom: 14px; }
+    .sec-sub { color: var(--muted); max-width: 520px; font-size: 1rem; }
+
+    /* ── HERO ── */
+    #hero { height: 100vh; position: relative; overflow: hidden; scroll-snap-align: start; }
+    .hero-body {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      padding-top: 12px; width: 100%;
+    }
+    /* Flare — Figma 224:372: bright point at BOTTOM, glow upward. Bottom must equal video card top. */
+    .hero-flare {
+      position: absolute; left: 50%; top: 112px;
+      transform: translateX(-50%);
+      width: 650px; height: 360px;
+      pointer-events: none; z-index: 1;
+    }
+    .hero-flare img { width: 100%; height: 100%; display: block; object-fit: cover; }
+    /* Floating AI logos */
+    .hero-claude-logo {
+      position: absolute; left: 75px; top: 92px;
+      width: 106px; height: 106px;
+      pointer-events: none; z-index: 4;
+    }
+    .hero-chatgpt-logo {
+      position: absolute; right: 48px; top: 116px;
+      width: 133px; height: 135px;
+      pointer-events: none; z-index: 4;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #202223; border-radius: 50px;
+      height: 35px; padding: 0 16px 0 10px;
+      font-size: 10.9px; font-weight: 500;
+      color: #fff; margin-bottom: 10px; position: relative; z-index: 1;
+    }
+    .badge img { width: 17px; height: 17px; }
+    h1 {
+      font-size: 58px; font-weight: 700; letter-spacing: -1.8px; line-height: 64px;
+      margin-bottom: 12px; position: relative; z-index: 1; color: #fff;
+    }
+    .hero-sub { font-size: 17px; color: rgba(255,255,255,.8); max-width: 889px; margin: 0 auto 8px; position: relative; z-index: 1; line-height: 32px; font-weight: 400; }
+    /* URL bar */
+    .url-bar {
+      display: flex; align-items: center;
+      width: 507px; height: 48px;
+      background: #0d0d0d; border: 2px solid #e1dbdb; border-radius: 16px;
+      padding: 0 4px 0 16px; position: relative; z-index: 2;
+    }
+    .url-bar-text { flex: 1; font-size: 14px; color: #d4d4d4; font-weight: 400; white-space: nowrap; overflow: hidden; text-align: left; }
+    .url-bar-copy {
+      display: flex; align-items: center; gap: 6px;
+      height: 36px; padding: 0 16px;
+      background: #fff; border: none; border-radius: 14px;
+      color: #06091a; font-size: 14px; font-weight: 500; cursor: pointer; flex-shrink: 0;
+      font-family: var(--font); transition: opacity .2s;
+    }
+    .url-bar-copy:hover { opacity: .85; }
+    .url-bar-copy.ok { color: #00b694; }
+    /* Video preview card — top must equal flare bottom (112+360=472) */
+    .hero-video {
+      position: absolute; left: 50%; top: 472px;
+      transform: translateX(-50%);
+      width: calc(100% - 360px); max-width: 1080px;
+      aspect-ratio: 1080/607.5;
+      border: 2px solid #00d9b4; border-radius: 14px; overflow: hidden;
+      background: #1a1a1a;
+      box-shadow: 0 0 40px rgba(0,217,180,.06);
+      z-index: 2;
+    }
+    .hero-video-bg {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      top: -25.75px; bottom: 21.75px;
+      aspect-ratio: 2160/1215; pointer-events: none;
+    }
+    .hero-video-bg img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; max-width: none; pointer-events: none;
+    }
+    .hero-video-glow {
+      position: absolute; inset: -14px -1px 12px -1px;
+      background: radial-gradient(ellipse 76.226px 77.068px at 539px 544.95px, rgba(0,217,180,.05) 0%, rgba(0,217,180,0) 65%);
+    }
+    .hero-video-fade {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 40%;
+      background: linear-gradient(to bottom, transparent 0%, rgba(13,13,13,.98) 100%);
+    }
+    .hero-play-btn {
+      /* Vertically centered on the video card: video starts at top:472px, height = width × 0.5625 */
+      position: absolute;
+      left: 50%;
+      top: calc(472px + min(100% - 360px, 1080px) * 0.28125);
+      transform: translate(-50%, -50%);
+      width: 72px; height: 72px;
+      background: #fff; border: none; border-radius: 50%; padding: 0; cursor: pointer;
+      z-index: 6;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .hero-play-btn:hover {
+      transform: translate(-50%, -50%) scale(1.12);
+      box-shadow: 0 0 0 12px rgba(255,255,255,0.12), 0 6px 32px rgba(0,0,0,0.5);
+      background: #f0f0f0;
+    }
+    .hero-play-btn:active {
+      transform: translate(-50%, -50%) scale(1.04);
+    }
+    .hero-play-btn::after {
+      content: '';
+      display: block;
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 11px 0 11px 20px;
+      border-color: transparent transparent transparent #0d0d0d;
+      margin-left: 4px;
+    }
+    /* Sparkles */
+    @keyframes sparkle-rise {
+      0%   { transform: translate(0, 0) scale(1);   opacity: 0; }
+      15%  { opacity: 1; }
+      80%  { opacity: .6; }
+      100% { transform: translate(var(--dx), -140px) scale(0); opacity: 0; }
+    }
+    .hero-sparkles {
+      position: absolute; left: 50%; top: 412px;
+      transform: translateX(-50%);
+      width: 500px; height: 0;
+      pointer-events: none; z-index: 1;
+    }
+    .hero-sparkles span {
+      position: absolute;
+      border-radius: 50%;
+      animation: sparkle-rise var(--dur) ease-out var(--delay) infinite;
+      opacity: 0;
+    }
+    /* Cross/star shape via box-shadow */
+    .hero-sparkles span::before,
+    .hero-sparkles span::after {
+      content: '';
+      position: absolute;
+      background: inherit;
+      border-radius: 2px;
+    }
+    .hero-sparkles span::before { width: 100%; height: 30%; top: 35%; left: 0; }
+    .hero-sparkles span::after  { width: 30%; height: 100%; top: 0; left: 35%; }
+
+    /* Fade hero bottom into next section */
+    .hero-bottom-fade {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 290px; z-index: 3; pointer-events: none;
+      background: linear-gradient(to bottom, transparent 0%, #0d0d0d 80%);
+    }
+    .terminal-copy.ok { color: #00D9B4; }
+
+    /* ── HOW IT WORKS ── */
+    #video {
+      background: #0d0d0d; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      padding: 80px 20px;
+    }
+    .hiw-bg-texture {
+      position: absolute; left: 50%; top: 0; transform: translateX(-50%);
+      width: 1440px; height: 100%; pointer-events: none; z-index: 0; object-fit: cover;
+    }
+    .hiw-inner {
+      width: 1100px; max-width: 100%;
+      display: flex; flex-direction: column; align-items: center; gap: 40px;
+      position: relative; z-index: 2;
+    }
+    /* Header */
+    .hiw-header-block {
+      position: relative; width: 884px; max-width: 100%; height: 148px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hiw-header-bg {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; pointer-events: none;
+    }
+    .hiw-header-content {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      text-align: center; width: 694px;
+    }
+    .hiw-pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: linear-gradient(#0d0d0d, #0d0d0d) padding-box,
+                  linear-gradient(135deg, #00d9b4, rgba(255,255,255,0.12)) border-box;
+      border: 0.5px solid transparent; border-radius: 20px;
+      padding: 0 10px; height: 22px; font-size: 12px; color: #fff;
+    }
+    .hiw-h2 {
+      font-size: 40px; font-weight: 800; letter-spacing: -1.4px; line-height: 1.12; color: #fff;
+    }
+    .hiw-sub { font-size: 16px; color: rgba(255,255,255,.7); line-height: 1.65; max-width: 730px; }
+    /* Cards outer wrapper */
+    .hiw-cards-outer {
+      position: relative; width: 100%; height: 357px;
+      border-radius: 27px; border: 1.04px solid rgba(255,255,255,.1);
+      backdrop-filter: blur(20.8px); -webkit-backdrop-filter: blur(20.8px);
+      overflow: hidden;
+      background: radial-gradient(ellipse at 104% 100%, rgba(255,255,255,.09) 0%, rgba(128,128,128,.045) 50%, transparent 100%);
+    }
+    .hiw-cards-row {
+      position: absolute; left: 15px; top: 14px;
+      display: flex; gap: 10px;
+    }
+    /* Individual card */
+    .hiw-card {
+      width: 350px; height: 326px; flex-shrink: 0;
+      border-radius: 19px; border: 1.04px solid rgba(255,255,255,.1);
+      backdrop-filter: none; -webkit-backdrop-filter: none;
+      overflow: hidden; position: relative;
+      background: #1a1a1a;
+    }
+    .hiw-card-bg-img {
+      position: absolute; left: 50%; top: -1px; transform: translateX(-50%);
+      width: 350px; height: 275px; object-fit: cover; pointer-events: none;
+    }
+    .hiw-step-label {
+      position: absolute; top: 15px; left: 0; right: 0; text-align: center;
+      font-size: 10.9px; font-weight: 500; letter-spacing: 1.088px;
+      text-transform: uppercase; color: rgba(255,255,255,.44); white-space: nowrap;
+    }
+    .hiw-card-title {
+      position: absolute; top: 33px; left: 0; right: 0; text-align: center;
+      font-size: 14.7px; font-weight: 700; color: #fff;
+    }
+    .hiw-card-img-wrap {
+      position: absolute; left: 15px; top: 72px; width: 318px; height: 182px; overflow: hidden; border-radius: 10px;
+    }
+    .hiw-card-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hiw-card-desc {
+      position: absolute; left: 20px; right: 20px; bottom: 18px;
+      text-align: center; font-size: 13.3px; color: rgba(255,255,255,.8); line-height: 21.25px;
+    }
+    /* CTA */
+    .hiw-cta { display: flex; flex-direction: column; align-items: center; gap: 11px; }
+    .hiw-cta-text { font-size: 14.1px; color: rgba(255,255,255,.48); }
+    .hiw-cta-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #fff; color: #06091a; font-size: 14px; font-weight: 500;
+      border-radius: 14px; width: 146px; height: 36px; transition: opacity .2s;
+    }
+    .hiw-cta-btn:hover { opacity: .86; }
+
+    /* ── FREE SKILLS ── */
+    #freeskills {
+      background: #0d0d0d; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; padding: 80px 20px;
+    }
+    .fs-bg-bottom {
+      position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
+      width: 1344px; height: 585px; object-fit: cover; pointer-events: none; z-index: 0;
+    }
+    .fs-inner {
+      width: 1160px; max-width: 100%;
+      display: flex; flex-direction: column; align-items: center; gap: 40px;
+      position: relative; z-index: 2;
+    }
+    /* Header */
+    .fs-header-block {
+      position: relative; width: 883px; max-width: 100%; height: auto;
+      display: flex; justify-content: center;
+    }
+    .fs-header-bg {
+      position: absolute; left: 50%; top: 0; transform: translateX(-50%);
+      width: 883px; height: 100%; object-fit: cover; pointer-events: none;
+    }
+    .fs-header-content {
+      position: relative; top: auto; left: auto; transform: none;
+      width: 694px; max-width: 100%; z-index: 1; padding: 60px 20px 8px;
+      display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;
+    }
+    .fs-pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: linear-gradient(#0d0d0d,#0d0d0d) padding-box,
+                  linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box;
+      border: 0.5px solid transparent; border-radius: 20px;
+      padding: 0 10px; height: 22px; font-size: 12px; color: #fff;
+    }
+    .fs-h2 {
+      font-size: 40px; font-weight: 800; letter-spacing: -1.4px; line-height: 1.12; color: #fff;
+    }
+    .fs-sub { font-size: 16px; color: rgba(255,255,255,.7); line-height: 1.65; }
+    /* Cards row */
+    .fs-cards { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; justify-content: center; width: 100%; }
+    .fs-card {
+      background: #141414; border: 1px solid #2a2a2a; border-radius: 16px;
+      width: 372px; flex-shrink: 0; overflow: hidden; display: flex; flex-direction: column;
+    }
+    .fs-card-banner { width: 100%; height: 64px; overflow: hidden; flex-shrink: 0; }
+    .fs-card-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .fs-card-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 16px; height: 40px; flex-shrink: 0;
+    }
+    .fs-card-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 999px; padding: 0 10px; height: 22px;
+      font-size: 11px; font-weight: 500; color: #fff;
+    }
+    .fs-card-badge img { width: 12px; height: 12px; object-fit: contain; }
+    .fs-card-meta-right { display: flex; align-items: center; gap: 10px; }
+    .fs-card-uses { font-size: 11px; color: rgba(255,255,255,.44); }
+    .fs-card-icons { display: flex; gap: 8px; }
+    .fs-card-icons img { width: 14px; height: 14px; object-fit: contain; opacity: .5; }
+    .fs-card-body { padding: 10px 16px 0; flex: 1; }
+    .fs-card-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .fs-card-desc { font-size: 12px; color: rgba(255,255,255,.6); line-height: 1.6; margin-bottom: 10px; }
+    .fs-card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    .fs-card-tag {
+      font-size: 11px; color: rgba(255,255,255,.5);
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 999px; padding: 2px 10px;
+    }
+    .fs-card-prompt {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 8px; padding: 10px 12px; margin-bottom: 8px;
+      font-size: 11px; color: rgba(255,255,255,.45); line-height: 1.65;
+      max-height: 72px; overflow: hidden; position: relative;
+    }
+    .fs-card-show {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 500; color: #00b8b2;
+      background: none; border: none; cursor: pointer; padding: 0; margin-bottom: 12px;
+      font-family: var(--font);
+    }
+    .fs-card-actions {
+      display: flex; gap: 6px; padding: 10px 16px 14px; border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .fs-tabs { display: inline-flex; align-items: center; gap: 4px; padding: 3px; border-radius: 79px; border: 1.04px solid rgba(255,255,255,0.1); backdrop-filter: blur(20.8px); -webkit-backdrop-filter: blur(20.8px); background: radial-gradient(ellipse at bottom right, rgba(255,255,255,0.09) 0%, rgba(128,128,128,0.045) 50%, transparent 100%); }
+    .fs-tab { display: inline-flex; align-items: center; height: 31px; padding: 0 18px; border-radius: 64px; border: 1.04px solid transparent; background: transparent; font-size: 12.8px; font-weight: 600; color: rgba(255,255,255,0.48); cursor: pointer; font-family: var(--font); white-space: nowrap; transition: color .2s, background .2s, border-color .2s; }
+    .fs-tab-active { border-color: #12d8b6; background: linear-gradient(135deg, rgba(18,226,219,1) 0%, rgba(14,169,164,0.75) 25%, rgba(9,113,109,0.5) 50%, rgba(5,56,55,0.25) 75%, transparent 100%); color: #00f7ef; }
+    .fs-card.hidden { display: none; }
+    .fs-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      height: 30px; border-radius: 10px; font-size: 11px; font-weight: 500;
+      cursor: pointer; font-family: var(--font); white-space: nowrap;
+      border: 1px solid #262626; color: #d1d5db; background: transparent;
+      padding: 0 13px;
+    }
+    .fs-btn-copy { background: #1a1a1a; border-color: #2a2a2a; color: #fff; }
+    .fs-btn img { width: 14px; height: 14px; object-fit: contain; }
+    /* CTA */
+    .fs-cta {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #fff; color: #06091a; font-size: 14px; font-weight: 500;
+      border-radius: 14px; padding: 0 28px; height: 37px;
+      border: none; cursor: pointer; font-family: var(--font); transition: opacity .2s;
+      white-space: nowrap;
+    }
+    .fs-cta:hover { opacity: .86; }
+
+    /* ── AI AGENTS ── */
+    #aiagents {
+      background: #0d0d0d; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; padding: 80px 20px;
+    }
+    .aa-inner { display: flex; flex-direction: column; align-items: center; gap: 22px; width: 1070px; }
+    .aa-top { display: flex; flex-direction: column; align-items: center; gap: 24px; width: 100%; }
+    .aa-header-wrap { position: relative; width: 717px; height: 268px; }
+    .aa-header-bg-outer { position: absolute; inset: 0 80px 30px 80px; border-radius: 200px; overflow: hidden; }
+    .aa-header-bg-l1 { position: absolute; left: 0; top: 0; width: 557px; height: 238px; object-fit: cover; z-index: 1; }
+    .aa-header-bg-l2 { position: absolute; inset: 0 -80px -30px -80px; width: calc(100% + 160px); height: calc(100% + 30px); object-fit: cover; z-index: 0; }
+    .aa-header-content { position: absolute; top: 43px; left: 50%; transform: translateX(-50%); width: 694px; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 11px; }
+    .aa-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 400; color: #fff;
+      background: linear-gradient(#0d0d0d,#0d0d0d) padding-box, linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box;
+      border: 0.5px solid transparent;
+    }
+    .aa-pill-dot { width: 6px; height: 6px; border-radius: 50%; background: #00d9b4; display: inline-block; }
+    .aa-header-text { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .aa-title { font-size: 40px; font-weight: 800; color: #fff; letter-spacing: -1.4px; line-height: 1.12; margin: 0; width: 518px; }
+    .aa-subtitle { font-size: 16px; color: rgba(255,255,255,0.48); margin: 0; line-height: 1.65; width: 730px; }
+    .aa-cards-row { display: flex; gap: 10px; align-items: center; width: 100%; }
+    .aa-card {
+      position: relative; width: 350px; height: 321px; flex-shrink: 0;
+      backdrop-filter: blur(20.8px); border: 1.04px solid rgba(255,255,255,0.1);
+      border-radius: 19px; overflow: hidden;
+      background: radial-gradient(ellipse at bottom right, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+    }
+    .aa-card-bg { position: absolute; left: 50%; top: -1px; transform: translateX(-50%); width: 350px; height: 275px; object-fit: cover; z-index: 0; pointer-events: none; }
+    .aa-card-title { position: absolute; top: 26px; left: 50%; transform: translateX(-50%); font-size: 16.8px; font-weight: 700; color: #fff; white-space: nowrap; z-index: 2; }
+    .aa-card-img { position: absolute; top: 62px; left: 15px; width: 318px; height: 182px; object-fit: cover; border-radius: 6px; z-index: 1; }
+    .aa-card-desc { position: absolute; top: 262px; left: 50%; transform: translateX(-50%); width: 310px; text-align: center; font-size: 13.8px; color: rgba(255,255,255,0.48); line-height: 1.65; z-index: 2; }
+    .aa-cta {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 186px; height: 36px;
+      background: #fff; color: #06091a; font-size: 14px; font-weight: 500;
+      border: none; border-radius: 14px; cursor: pointer; text-decoration: none;
+    }
+    .aa-cta:hover { opacity: .86; }
+
+    /* ── BEFORE & AFTER ── */
+    #beforeafter {
+      background: #0d0d0d; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; padding: 80px 20px;
+    }
+    .ba-bg { position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; width: 1344px; height: 585px; object-fit: cover; pointer-events: none; z-index: 0; }
+    .ba-inner { display: flex; flex-direction: column; align-items: center; gap: 40px; width: 1100px; position: relative; z-index: 1; }
+    .ba-header-block { position: relative; width: 883px; max-width: 100%; height: auto; overflow: hidden; }
+    .ba-header-bg { position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: 883px; height: 100%; overflow: hidden; border-radius: 200px; }
+    .ba-header-bg-l1 { position: absolute; left: 0; top: 0; width: 723px; height: 290px; object-fit: cover; z-index: 1; }
+    .ba-header-bg-l2 { position: absolute; inset: 0 -80px -30px -80px; width: calc(100% + 160px); height: calc(100% + 30px); object-fit: cover; z-index: 0; }
+    .ba-header-content { position: relative; top: auto; left: auto; transform: none; width: 730px; max-width: 100%; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 64px 0 8px; }
+    .ba-pill {
+      display: inline-flex; align-items: center; padding: 5px 14px; border-radius: 20px;
+      font-size: 12px; color: #fff;
+      background: linear-gradient(#0d0d0d,#0d0d0d) padding-box, linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box;
+      border: 0.5px solid transparent;
+    }
+    .ba-title { font-size: 40px; font-weight: 800; color: #fff; letter-spacing: -1.4px; line-height: 1.12; margin: 0; }
+    .ba-subtitle { font-size: 16px; color: rgba(255,255,255,0.7); margin: 0; line-height: 1.65; }
+    .ba-carousel-outer {
+      width: 1100px; height: 483px; border-radius: 27px;
+      backdrop-filter: blur(20.8px);
+      border: 1.04px solid rgba(255,255,255,0.1);
+      background: radial-gradient(ellipse at bottom right, rgba(255,255,255,0.09) 0%, rgba(128,128,128,0.045) 50%, transparent 100%);
+      overflow: hidden; position: relative; margin-top: 0;
+    }
+    .ba-track { display: flex; transition: transform 0.42s cubic-bezier(.4,0,.2,1); height: 100%; }
+    .ba-slide { width: 1100px; flex-shrink: 0; padding: 18px 12px 14px; display: flex; flex-direction: column; gap: 0; box-sizing: border-box; }
+    .ba-slide-title { font-size: 24px; font-weight: 600; color: #fff; letter-spacing: -1.4px; text-align: center; line-height: 37px; height: 37px; margin-bottom: 25px; flex-shrink: 0; }
+    .ba-cards-row { display: flex; gap: 12px; height: 389px; }
+    .ba-card {
+      flex: 1; border-radius: 19px;
+      backdrop-filter: blur(20.8px); border: 1.04px solid rgba(255,255,255,0.1);
+      background: radial-gradient(ellipse at bottom right, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+      position: relative; overflow: hidden;
+    }
+    .ba-card-bg { position: absolute; left: 50%; top: -1px; transform: translateX(-50%); width: 350px; height: 275px; object-fit: cover; pointer-events: none; z-index: 0; }
+    .ba-card-label { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); font-size: 14.7px; font-weight: 700; color: #fff; white-space: nowrap; z-index: 2; }
+    .ba-card-img { position: absolute; top: 47px; left: 15px; width: 497px; height: 273px; object-fit: cover; border-radius: 6px; z-index: 1; }
+    .ba-card-desc { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); width: 418px; font-size: 13.3px; color: rgba(255,255,255,0.8); text-align: center; line-height: 1.6; z-index: 2; }
+    .ba-card.ba-after .ba-card-desc { color: #fff; width: 370px; font-size: 13.1px; }
+    .ba-nav { display: flex; align-items: center; gap: 16px; margin-top: 24px; }
+    .ba-arrow { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; transition: background .2s; flex-shrink: 0; }
+    .ba-arrow:hover { background: rgba(255,255,255,0.15); }
+    .ba-dots { display: flex; gap: 8px; }
+    .ba-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.25); cursor: pointer; transition: background .2s; border: none; padding: 0; }
+    .ba-dot.active { background: #fff; }
+    .ba-cta-wrap { margin-top: 32px; }
+    .ba-cta { display: inline-flex; align-items: center; justify-content: center; width: 209px; height: 36px; background: #fff; color: #06091a; font-size: 14px; font-weight: 500; border: none; border-radius: 14px; cursor: pointer; text-decoration: none; }
+    .ba-cta:hover { opacity: .86; }
+
+    /* ── WORKFLOWS ── */
+    #workflows {
+      background: #0d0d0d;
+      display: flex; align-items: center; justify-content: center; padding: 80px 20px;
+    }
+    .wf-card {
+      position: relative; width: 1079px; max-width: 100%;
+      background: #212121; border-radius: 20px; overflow: hidden;
+    }
+    .wf-card-bg {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+      width: 100%; height: 100%; min-height: 641px; object-fit: cover;
+      pointer-events: none; z-index: 0;
+    }
+    .wf-inner {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 28px; padding: 64px 40px 44px;
+    }
+    .wf-header {
+      text-align: center; width: 694px; max-width: 100%;
+      display: flex; flex-direction: column; align-items: center; gap: 11px;
+    }
+    .wf-pill {
+      display: inline-flex; align-items: center; padding: 5px 14px; border-radius: 20px;
+      font-size: 12px; color: #fff;
+      background: linear-gradient(#0d0d0d,#0d0d0d) padding-box, linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box;
+      border: 0.5px solid transparent;
+    }
+    .wf-title { font-size: 40px; font-weight: 800; color: #fff; letter-spacing: -1.4px; line-height: 1.12; margin: 0; }
+    .wf-subtitle { font-size: 16px; color: rgba(255,255,255,0.48); margin: 0; line-height: 1.65; max-width: 730px; }
+    .wf-panel {
+      width: 795px; max-width: 100%;
+      border-radius: 27px;
+      backdrop-filter: blur(20.8px); -webkit-backdrop-filter: blur(20.8px);
+      border: 1.04px solid rgba(255,255,255,0.1);
+      background: radial-gradient(ellipse at bottom right, rgba(0,0,0,0.59) 0%, rgba(0,0,0,0.4) 100%);
+      overflow: hidden; display: flex;
+    }
+    .wf-left {
+      flex: 1; min-width: 0; padding: 28px 26px;
+      display: flex; flex-direction: column; justify-content: center; gap: 0;
+    }
+    .wf-item { cursor: pointer; }
+    .wf-item-header {
+      font-size: 18px; font-weight: 600; color: #fff; letter-spacing: -1.4px;
+      line-height: 1.71; min-height: 37px; display: flex; align-items: center;
+      opacity: 0.55; transition: opacity .25s;
+    }
+    .wf-item.active .wf-item-header { opacity: 1; }
+    .wf-item-desc {
+      font-size: 13.3px; color: rgba(255,255,255,0.75); line-height: 1.55;
+      max-height: 0; overflow: hidden; transition: max-height .35s ease, opacity .3s;
+      opacity: 0; margin: 0;
+    }
+    .wf-item.active .wf-item-desc { max-height: 80px; opacity: 1; }
+    .wf-divider { height: 1px; background: rgba(255,255,255,0.12); margin: 13px 0; }
+    .wf-images { width: 320px; flex-shrink: 0; position: relative; height: 286px; }
+    .wf-img { position: absolute; object-fit: contain; opacity: 0; transition: opacity .3s; pointer-events: none; }
+    .wf-img.active { opacity: 1; }
+    .wf-img-0 { width: 195.5px; height: 218px; left: 52px; top: 30px; }
+    .wf-img-1 { width: 298.5px; height: 227px; left: 0; top: 21px; }
+    .wf-img-2 { width: 187.5px; height: 221px; left: 56px; top: 30px; }
+    .wf-cta {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 177px; height: 36px;
+      background: #fff; color: #06091a; font-size: 14px; font-weight: 500;
+      border: none; border-radius: 14px; cursor: pointer; text-decoration: none;
+    }
+    .wf-cta:hover { opacity: .86; }
+
+    /* ── STATS ── */
+    #stats { }
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border-radius: var(--r); overflow: hidden; margin-top: 52px; }
+    .stat-box { background: var(--s1); padding: 40px 32px; text-align: center; }
+    .stat-num { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -.04em; color: var(--teal); margin-bottom: 6px; display: block; }
+    .stat-label { font-size: .84rem; color: var(--muted); }
+
+    /* ── SKILLS ── */
+    #skills { }
+    .filter-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 36px; margin-bottom: 32px; }
+    .filter-btn {
+      padding: 7px 16px; border-radius: 20px; font-size: .8rem; font-weight: 600;
+      background: var(--s2); border: 1px solid var(--border); color: var(--muted);
+      transition: all .2s;
+    }
+    .filter-btn:hover { border-color: var(--teal25); color: var(--white); }
+    .filter-btn.on { background: var(--teal12); border-color: var(--teal25); color: var(--teal); }
+    .skills-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    .skill-card {
+      background: var(--s1); border: 1px solid var(--border); border-radius: var(--r);
+      padding: 24px 22px; display: flex; flex-direction: column; gap: 10px;
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+      cursor: pointer; text-decoration: none; color: inherit;
+    }
+    .skill-card:hover { border-color: var(--teal25); transform: translateY(-3px); box-shadow: 0 0 24px rgba(0,217,180,.07); }
+    .skill-card[data-hidden] { display: none; }
+    .skill-top { display: flex; align-items: center; justify-content: space-between; }
+    .skill-cat { font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--teal); }
+    .tier { font-size: .65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 5px; }
+    .tier.free { background: rgba(0,217,180,.1); color: var(--teal); border: 1px solid rgba(0,217,180,.2); }
+    .tier.paid { background: rgba(255,255,255,.05); color: var(--muted2); border: 1px solid var(--border); }
+    .skill-card h4 { font-size: .95rem; font-weight: 700; }
+    .skill-card p { font-size: .83rem; color: var(--muted); line-height: 1.55; flex: 1; }
+    .skill-arrow { font-size: .75rem; color: var(--teal); opacity: 0; transition: opacity .2s; align-self: flex-end; }
+    .skill-card:hover .skill-arrow { opacity: 1; }
+
+    /* ── PROMPTS TABS ── */
+    #prompts { }
+    .tab-nav { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 40px; margin-bottom: 32px; }
+    .tab-btn {
+      padding: 8px 18px; border-radius: 10px; font-size: .82rem; font-weight: 600;
+      background: var(--s2); border: 1px solid var(--border); color: var(--muted);
+      transition: all .2s;
+    }
+    .tab-btn:hover { border-color: var(--teal25); color: var(--white); }
+    .tab-btn.on { background: var(--teal12); border-color: var(--teal25); color: var(--teal); }
+    .tab-panel { display: none; }
+    .tab-panel.on { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .chat-bubble {
+      background: var(--s2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 22px 24px;
+    }
+    .chat-bubble.user { border-color: var(--teal25); }
+    .chat-label { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+    .chat-label.u { color: var(--teal); }
+    .chat-label.a { color: var(--muted2); }
+    .chat-bubble p, .chat-bubble pre { font-size: .88rem; color: var(--muted); line-height: 1.7; white-space: pre-wrap; }
+    .chat-bubble strong { color: var(--white); }
+
+    /* ── AGENTS ── */
+    #agents { }
+    .agents-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 52px; }
+    .agent-card {
+      background: var(--s1); border: 1px solid var(--border); border-radius: var(--r);
+      padding: 32px 28px; position: relative; overflow: hidden;
+      transition: border-color .25s, transform .25s;
+    }
+    .agent-card:hover { border-color: var(--teal25); transform: translateY(-3px); }
+    .agent-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--teal), transparent); opacity: 0; transition: opacity .3s; }
+    .agent-card:hover::after { opacity: .55; }
+    .agent-icon { font-size: 1.8rem; margin-bottom: 16px; filter: drop-shadow(0 0 10px rgba(0,217,180,.4)); }
+    .agent-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 9px; }
+    .agent-card p { font-size: .86rem; color: var(--muted); line-height: 1.65; }
+    .agent-glow { position: absolute; bottom: -50px; right: -50px; width: 160px; height: 160px; background: radial-gradient(circle, rgba(0,217,180,.07) 0%, transparent 70%); pointer-events: none; }
+
+    /* ── BEFORE / AFTER ── */
+    #ba { }
+    .ba-grid { display: grid; grid-template-columns: repeat(1,1fr); gap: 14px; margin-top: 52px; }
+    .ba-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .ba-label-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 6px; }
+    .ba-lbl { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: 6px 14px; border-radius: 6px; text-align: center; }
+    .ba-lbl.before { background: rgba(255,255,255,.05); color: var(--muted); }
+    .ba-lbl.after { background: rgba(0,217,180,.1); color: var(--teal); }
+    .ba-card { background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); padding: 22px 20px; }
+    .ba-card.after { border-color: rgba(0,217,180,.2); }
+    .ba-topic { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted2); margin-bottom: 10px; }
+    .ba-card h4 { font-size: .9rem; font-weight: 700; margin-bottom: 6px; }
+    .ba-card p { font-size: .82rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── TOOL TABLE ── */
+    #tools { }
+    .tool-table { width: 100%; border-collapse: collapse; margin-top: 44px; font-size: .86rem; }
+    .tool-table th { text-align: left; padding: 12px 16px; font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted2); border-bottom: 1px solid var(--border); }
+    .tool-table td { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,.04); vertical-align: top; }
+    .tool-table tr:hover td { background: rgba(255,255,255,.02); }
+    .cat-row td { background: var(--s1); padding: 10px 16px; }
+    .cat-row td span { font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--teal); }
+    .t-name { font-weight: 600; color: var(--white); }
+    .t-desc { color: var(--muted); }
+    .t-tier { }
+    .t-tier.free { color: var(--teal); font-weight: 600; }
+    .t-tier.paid { color: var(--muted2); }
+
+    /* ── WHO ── */
+    #who {
+      background: #0d0d0d; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; padding: 80px 20px;
+    }
+    .who-bg-spiral {
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%,-50%) rotate(8.68deg);
+      width: 1634px; height: 1602px;
+      pointer-events: none; z-index: 0; object-fit: cover;
+      opacity: 0.4; filter: blur(50px);
+    }
+    .who-inner {
+      width: 1100px; max-width: 100%;
+      display: flex; flex-direction: column; align-items: center; gap: 40px;
+      position: relative; z-index: 2;
+    }
+    /* Header */
+    .who-header-block {
+      position: relative; width: 717px; height: auto;
+      display: flex; align-items: flex-start; justify-content: center; padding: 33px 0 8px;
+    }
+    .who-header-bg {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; pointer-events: none;
+    }
+    .who-header-content {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;
+    }
+    .who-pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: linear-gradient(#0d0d0d,#0d0d0d) padding-box,
+                  linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box;
+      border: 0.5px solid transparent; border-radius: 20px;
+      padding: 0 10px; height: 22px; font-size: 12px; color: #fff;
+    }
+    .who-h2 {
+      font-size: 40px; font-weight: 800; letter-spacing: -1.4px; line-height: 1.12;
+      color: #fff; max-width: 568px;
+    }
+    .who-sub {
+      font-size: 16px; color: rgba(255,255,255,.48); line-height: 1.65; max-width: 730px;
+    }
+    /* Cards outer */
+    .who-cards-outer {
+      position: relative; width: 1100px; max-width: 100%; height: 815px; margin-top: 0;
+      border-radius: 27px; border: 1.04px solid rgba(255,255,255,.1);
+      backdrop-filter: blur(20.8px); -webkit-backdrop-filter: blur(20.8px);
+      overflow: hidden;
+      background: radial-gradient(ellipse at 104% 100%, rgba(255,255,255,.09) 0%, rgba(128,128,128,.045) 50%, transparent 100%);
+    }
+    /* Individual cards */
+    .who-card {
+      position: absolute; border-radius: 19px;
+      border: 1.04px solid rgba(255,255,255,.1);
+      backdrop-filter: none; -webkit-backdrop-filter: none;
+      overflow: hidden;
+      background: #1a1a1a;
+    }
+    .who-card-1 { width: 350px; height: 389px; left: 12px;  top: 13px;  }
+    .who-card-2 { width: 350px; height: 389px; left: 372px; top: 13px;  }
+    .who-card-3 { width: 350px; height: 389px; left: 732px; top: 13px;  }
+    .who-card-4 { width: 529px; height: 389px; left: 12px;  top: 411px; }
+    .who-card-5 { width: 529px; height: 389px; left: 553px; top: 411px; }
+    .who-card-grid-bg {
+      position: absolute; left: 50%; top: -1px; transform: translateX(-50%);
+      width: 350px; height: 275px; object-fit: cover; pointer-events: none;
+    }
+    .who-card-title {
+      position: absolute; top: 15px; left: 0; right: 0;
+      text-align: center; font-size: 14.7px; font-weight: 700; color: #fff;
+    }
+    .who-card-img {
+      position: absolute; left: 15px; overflow: hidden; border-radius: 10px;
+    }
+    .who-card-img-sm { top: 46px; width: 318px; height: 272px; }
+    .who-card-img-lg { top: 47px; width: 497px; height: 273px; }
+    .who-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .who-card-desc {
+      position: absolute; left: 20px; right: 20px; bottom: 18px;
+      text-align: center; font-size: 13.3px; color: rgba(255,255,255,.8); line-height: 21.25px;
+    }
+    /* CTA */
+    .who-cta { display: flex; flex-direction: column; align-items: center; gap: 11px; margin-top: 40px; }
+    .who-cta-text { font-size: 14.1px; color: rgba(255,255,255,.48); }
+    .who-cta-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #fff; color: #06091a; font-size: 14px; font-weight: 500;
+      border-radius: 14px; width: 146px; height: 36px; transition: opacity .2s;
+    }
+    .who-cta-btn:hover { opacity: .86; }
+
+    /* ── PLATFORMS ── */
+    #platforms { }
+    .plat-row { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 48px; }
+    .plat-card { display: flex; flex-direction: column; align-items: center; gap: 10px; background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); padding: 28px 32px; min-width: 140px; transition: border-color .2s; }
+    .plat-card.live { border-color: var(--teal25); }
+    .plat-card.soon { opacity: .45; }
+    .plat-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+    .plat-name { font-size: .9rem; font-weight: 700; }
+    .plat-status { font-size: .7rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+    .plat-card.live .plat-status { color: var(--teal); }
+    .plat-card.soon .plat-status { color: var(--muted2); }
+    .plat-note { text-align: center; margin-top: 28px; font-size: .9rem; color: var(--muted); }
+
+    /* ── INCLUDED ── */
+    #included { }
+    .inc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 52px; }
+    .inc-card { background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); padding: 24px 22px; }
+    .inc-card h4 { font-size: .9rem; font-weight: 700; margin-bottom: 12px; color: var(--white); }
+    .inc-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .inc-list li { font-size: .82rem; color: var(--muted); display: flex; gap: 8px; align-items: flex-start; }
+    .inc-list li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; font-size: .78rem; margin-top: 1px; }
+
+    /* ── FAQ ── */
+    #faq { padding: 80px 24px; }
+    .faq-list { margin-top: 48px; border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q {
+      width: 100%; text-align: left; background: none; border: none; color: var(--white);
+      padding: 20px 24px; font-size: .92rem; font-weight: 600;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      transition: background .2s;
+    }
+    .faq-q:hover { background: rgba(255,255,255,.02); }
+    .faq-q.open { color: var(--teal); }
+    .faq-icon { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: .75rem; transition: transform .3s, border-color .2s; color: var(--muted); }
+    .faq-q.open .faq-icon { transform: rotate(45deg); border-color: var(--teal); color: var(--teal); }
+    .faq-a { display: none; padding: 0 24px 20px; font-size: .88rem; color: var(--muted); line-height: 1.7; }
+    .faq-a.open { display: block; }
+
+    /* ── PRICING / CTA ── */
+    #cta { text-align: center; }
+
+    /* ── CTA ONE PLAN ── */
+    #cta-oneplan {
+      background: #0d0d0d; display: flex; align-items: center;
+      justify-content: center; padding: 80px 20px; overflow: hidden;
+    }
+    .ctap-outer {
+      position: relative; width: 1200px; max-width: 100%;
+      border-radius: 20px; overflow: hidden;
+    }
+    .ctap-bg {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+      width: 100%; height: 100%; min-height: 600px; object-fit: cover;
+      pointer-events: none; z-index: 0;
+    }
+    .ctap-deco-left {
+      position: absolute; left: 31px; top: 174px; width: 97px; height: 134px;
+      object-fit: contain; z-index: 1; pointer-events: none;
+    }
+    .ctap-deco-right {
+      position: absolute; right: 32px; top: 213px; width: 132px; height: 134px;
+      object-fit: contain; z-index: 1; pointer-events: none;
+    }
+    .ctap-content {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 22px; text-align: center; padding: 103px 40px 80px;
+    }
+    .ctap-title {
+      font-size: 72px; font-weight: 500; letter-spacing: -0.8px; line-height: 1; margin: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.6), #fff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .ctap-desc {
+      font-size: 15.2px; color: #fff; margin: 0; line-height: 1.65; max-width: 700px;
+    }
+    .ctap-checks {
+      display: flex; gap: 9px; align-items: center;
+      flex-wrap: wrap; justify-content: center; font-size: 12.5px;
+    }
+    .ctap-check { display: flex; gap: 6px; align-items: center; color: #fff; }
+    .ctap-tick { color: #00fff7; font-weight: 700; }
+    .ctap-url-bar {
+      width: 507px; max-width: 100%; height: 48px;
+      background: #0d0d0d; border: 2px solid #e1dbdb; border-radius: 16px;
+      display: flex; align-items: center;
+      padding: 0 4px 0 14px; box-sizing: border-box;
+    }
+    .ctap-url-text {
+      flex: 1; font-size: 14px; color: #d4d4d4;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .ctap-url-btn {
+      flex-shrink: 0; width: 114px; height: 36px; background: #fff; color: #06091a;
+      font-size: 14px; font-weight: 500; border: none; border-radius: 14px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      gap: 6px; font-family: var(--font); transition: opacity .2s;
+    }
+    .ctap-url-btn:hover { opacity: .86; }
+    @media (max-width: 820px) {
+      #cta-oneplan { padding: 60px 16px; }
+      .ctap-deco-left, .ctap-deco-right { display: none; }
+      .ctap-content { padding: 60px 32px 56px; gap: 20px; }
+      .ctap-title { font-size: clamp(36px, 7vw, 64px); }
+      .ctap-desc { font-size: 14px; }
+      .ctap-url-bar { width: 100%; }
+    }
+    @media (max-width: 640px) {
+      .ctap-content { padding: 48px 20px 48px; }
+      .ctap-title { font-size: clamp(28px, 9vw, 46px); }
+      .ctap-checks { font-size: 11.5px; gap: 8px; }
+    }
+
+    /* ── FOOTER ── */
+    .ft-root {
+      background: #0d0d0d; padding: 40px 20px 0;
+      display: flex; flex-direction: column; align-items: center; gap: 40px;
+    }
+    .ft-top {
+      width: 100%; max-width: 1146px;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 40px;
+    }
+    .ft-brand {
+      display: flex; flex-direction: column; gap: 20px; width: 277px; flex-shrink: 0;
+    }
+    .ft-brand-logo {
+      height: 56px; width: 140px; display: flex; align-items: flex-end;
+    }
+    .ft-brand-desc {
+      font-size: 14px; color: #9ca3af; line-height: 1.625; margin: 0; max-width: 266px;
+    }
+    .ft-nav {
+      display: flex; gap: 32px; flex: 1; justify-content: flex-end;
+    }
+    .ft-nav-col {
+      display: flex; flex-direction: column; gap: 16px; min-width: 120px;
+    }
+    .ft-nav-head {
+      font-size: 14px; font-weight: 700; color: #fff; line-height: 1.43;
+    }
+    .ft-nav-links {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .ft-nav-links a {
+      font-size: 14px; color: #9ca3af; text-decoration: none; line-height: 1.43;
+    }
+    .ft-nav-links a:hover { color: #fff; }
+    .ft-bottom {
+      width: 100%; border-top: 1px solid #262626;
+      padding: 33px 20px 40px; display: flex; flex-direction: column;
+      align-items: center; gap: 24px; box-sizing: border-box;
+    }
+    .ft-bottom-inner {
+      width: 100%; max-width: 960px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .ft-social {
+      display: flex; gap: 20px; align-items: center;
+    }
+    .ft-social a {
+      display: flex; align-items: center; width: 20px; height: 20px;
+    }
+    .ft-copyright {
+      font-size: 14px; color: #9ca3af; white-space: nowrap;
+    }
+    .ft-disclaimer {
+      width: 100%; max-width: 960px;
+    }
+    .ft-disclaimer p {
+      font-size: 12px; color: #9ca3af; margin: 0; line-height: 1.625;
+    }
+    @media (max-width: 820px) {
+      .ft-top { flex-direction: column; align-items: center; gap: 32px; }
+      .ft-brand { width: 100%; align-items: center; text-align: center; }
+      .ft-brand-desc { text-align: center; }
+      .ft-nav { justify-content: center; gap: 40px; }
+      .ft-nav-col { align-items: center; text-align: center; }
+      .ft-bottom-inner { flex-direction: column; align-items: center; gap: 16px; }
+      .ft-copyright { white-space: normal; text-align: center; }
+      .ft-disclaimer p { text-align: center; }
+    }
+
+    .cta-card {
+      background: var(--s1); border: 1px solid var(--teal25); border-radius: 24px;
+      padding: 72px 40px; position: relative; overflow: hidden;
+      box-shadow: 0 0 60px rgba(0,217,180,.06);
+    }
+    .cta-card::before {
+      content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 2px; height: 180px;
+      background: linear-gradient(to top, transparent, var(--teal)); filter: blur(1px);
+    }
+    .cta-card::after {
+      content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 500px; height: 200px;
+      background: radial-gradient(ellipse at 50% 100%, rgba(0,217,180,.08) 0%, transparent 70%);
+    }
+    .price-block { position: relative; z-index: 1; margin-bottom: 6px; }
+    .price-main { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -.04em; color: var(--white); }
+    .price-note { font-size: .88rem; color: var(--teal); font-weight: 600; margin-top: 6px; }
+    .cta-card h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; letter-spacing: -.03em; margin-bottom: 12px; position: relative; z-index: 1; }
+    .cta-card > p { color: var(--muted); margin-bottom: 28px; font-size: .95rem; max-width: 560px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; }
+    .cta-features { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 36px; position: relative; z-index: 1; }
+    .cta-feat { font-size: .78rem; color: var(--muted2); display: flex; align-items: center; gap: 6px; }
+    .cta-feat::before { content: '✓'; color: var(--teal); font-weight: 700; }
+    .cta-url-row { display: flex; justify-content: center; margin-bottom: 16px; position: relative; z-index: 1; }
+    .btn-teal { display: inline-flex; align-items: center; gap: 8px; background: var(--teal); color: #0d0d0d; font-weight: 700; font-size: .9rem; padding: 13px 30px; border-radius: 12px; border: none; transition: opacity .2s, transform .15s; box-shadow: 0 0 28px rgba(0,217,180,.28); }
+    .btn-teal:hover { opacity: .86; transform: translateY(-2px); }
+    .cta-sub { font-size: .82rem; color: var(--muted2); position: relative; z-index: 1; }
+    .cta-sub a { color: var(--teal); border-bottom: 1px solid rgba(0,217,180,.3); }
+    .cta-sub a:hover { border-color: var(--teal); }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; font-size: .8rem; color: var(--muted2); position: relative; z-index: 1; }
+
+    /* ── Scroll animations ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .fu  { animation: fadeUp .65s ease both; }
+    .fu1 { animation-delay: .08s; } .fu2 { animation-delay: .18s; } .fu3 { animation-delay: .3s; } .fu4 { animation-delay: .44s; }
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* ── SETUP SECTION ── */
+    #setup {
+      background: #0d0d0d; display: flex; align-items: center; justify-content: center;
+      padding: 80px 20px;
+    }
+    .setup-card {
+      position: relative; width: 1080px; max-width: 100%;
+      background: #1a1a1a; border-radius: 20px; overflow: hidden;
+    }
+    .setup-bg {
+      position: absolute; left: 0; top: 12.5px;
+      width: 100%; height: 100%; object-fit: cover; pointer-events: none; z-index: 0;
+    }
+    .setup-inner {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 32px; padding: 40px 24px 36px;
+    }
+    .setup-header {
+      display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%;
+    }
+    .setup-title {
+      font-size: 40px; font-weight: 800; color: #fff;
+      letter-spacing: -1.4px; line-height: 1.12; margin: 0; text-align: center;
+    }
+    .setup-tabs {
+      display: inline-flex; align-items: center; gap: 4px;
+      height: 38px; padding: 0 3.5px; border-radius: 79px;
+      border: 1.04px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(20.8px); -webkit-backdrop-filter: blur(20.8px);
+      background: radial-gradient(ellipse at bottom right, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+    }
+    .setup-tab {
+      display: flex; align-items: center; gap: 4px;
+      height: 31px; padding: 0 16px; border-radius: 64px;
+      border: 1.04px solid rgba(255,255,255,0.1);
+      background: radial-gradient(ellipse at bottom right, rgba(255,255,255,0.09) 0%, rgba(128,128,128,0.045) 50%, transparent 100%);
+      backdrop-filter: blur(20.8px); -webkit-backdrop-filter: blur(20.8px);
+      cursor: pointer; font-family: var(--font);
+    }
+    .setup-tab span {
+      font-size: 12.8px; font-weight: 600; color: rgba(255,255,255,0.48); white-space: nowrap;
+    }
+    .setup-tab.setup-tab-active { border-color: #00f7ef; background: #1c1c1c; }
+    .setup-tab.setup-tab-active span { color: #00f7ef; }
+    .chatgpt-icon-wrap {
+      position: relative; width: 15.58px; height: 15.58px; flex-shrink: 0; overflow: hidden; opacity: 0.7;
+    }
+    .chatgpt-icon-wrap img {
+      position: absolute; left: 0; top: 0; height: 99.05%; width: 336.91%; max-width: none; pointer-events: none;
+    }
+    /* Panel */
+    .setup-panel {
+      width: 653px; max-width: 100%;
+      border-radius: 27px; border: 1.04px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(20.8px); -webkit-backdrop-filter: blur(20.8px);
+      background: radial-gradient(ellipse at bottom right, rgba(255,255,255,0.09) 0%, rgba(128,128,128,0.045) 50%, transparent 100%);
+      padding: 10px;
+    }
+    .setup-panel-inner {
+      background: #1f1f1f; border: 1px solid #333; border-radius: 16px;
+      display: flex; overflow: hidden; min-height: 254px;
+    }
+    .setup-left {
+      width: 316px; flex-shrink: 0; border-right: 1px solid #333;
+      padding: 20px; display: flex; flex-direction: column;
+    }
+    .setup-left-title {
+      font-family: var(--font); font-size: 14px; font-weight: 700; color: #fff; margin: 0 0 6px;
+    }
+    .setup-left-sub {
+      font-family: var(--font); font-size: 10.8px; color: rgba(255,255,255,0.8);
+      margin: 0; line-height: 1.6;
+    }
+    .setup-video {
+      position: relative; aspect-ratio: 274 / 154;
+      background: #f3f4f6; border-radius: 14px; overflow: hidden; margin-top: auto; margin-top: 16px;
+    }
+    .setup-video-thumb {
+      position: absolute; width: 100%; height: 133%; top: -16.66%; left: 0;
+      object-fit: cover; opacity: 0.8; pointer-events: none;
+    }
+    .setup-video-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.1); }
+    .setup-play-btn {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+      width: 40px; height: 40px; border-radius: 9999px; background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .setup-play-btn img { width: 16px; height: 16px; position: relative; left: 1px; }
+    .setup-right {
+      flex: 1; padding: 24px 16px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .setup-step { display: flex; align-items: flex-start; gap: 12px; }
+    .setup-step-num {
+      width: 24px; height: 24px; border-radius: 9999px;
+      background: rgba(0,184,178,0.08); display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-family: var(--font); font-size: 10px; font-weight: 700; color: #12e2db;
+    }
+    .setup-step-title {
+      font-family: var(--font); font-size: 12px; font-weight: 700; color: #fff;
+      margin: 2px 0 4px; white-space: nowrap;
+    }
+    .setup-step-desc {
+      font-family: var(--font); font-size: 11px; color: rgba(255,255,255,0.8);
+      margin: 0; line-height: 1.65;
+    }
+    .setup-cta-btn {
+      width: 186px; height: 36px; background: #fff; border: none; border-radius: 14px;
+      font-family: var(--font); font-size: 14px; font-weight: 500; color: #06091a; cursor: pointer;
+    }
+    .setup-cta-btn:hover { opacity: .86; }
+    /* Setup responsive */
+    @media (max-width: 820px) {
+      #setup { padding: 60px 16px; }
+      .setup-title { font-size: clamp(24px, 5vw, 36px); }
+      .setup-panel { width: 100%; }
+      .setup-panel-inner { flex-direction: column; min-height: auto; }
+      .setup-left { width: 100%; border-right: none; border-bottom: 1px solid #333; }
+      .setup-right { padding: 20px 16px; justify-content: flex-start; gap: 20px; }
+    }
+    @media (max-width: 480px) {
+      #setup { padding: 48px 12px; }
+      .setup-title { font-size: 22px; }
+      .setup-card { border-radius: 16px; }
+    }
+
+    /* ── Hamburger + Mobile Nav ── */
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 8px; z-index: 400;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: #fff; border-radius: 2px; transition: all .25s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-nav {
+      display: none; position: fixed;
+      top: 68px; left: 0; right: 0; bottom: 0;
+      background: rgba(13,13,13,.97); backdrop-filter: blur(20px);
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 28px; z-index: 200; padding: 24px;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-size: 20px; font-weight: 600; color: rgba(255,255,255,.8);
+      text-decoration: none; transition: color .2s;
+    }
+    .mobile-nav a:hover, .mobile-nav a.active { color: #00D9B4; }
+    .mobile-nav-actions {
+      display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 8px; width: 100%;
+    }
+    .mobile-nav-actions .btn-ghost,
+    .mobile-nav-actions .btn-solid {
+      width: 200px; display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1140px) {
+      .hiw-inner { width: 100%; gap: 28px; }
+      .hiw-header-block { width: 100%; }
+      .hiw-cards-outer { overflow: visible; }
+      .fs-inner { width: 100%; gap: 28px; }
+      .fs-header-block { width: 100%; }
+      .ba-inner { width: 100%; gap: 28px; }
+      .ba-header-block { width: 100%; }
+      .ba-carousel-outer { width: 100%; }
+      .ba-slide { min-width: 100%; width: 100%; }
+      .ba-card-img { width: calc(100% - 30px) !important; }
+      .ba-card-desc { width: calc(100% - 32px) !important; }
+      .ba-card.ba-after .ba-card-desc { width: calc(100% - 32px) !important; }
+      .who-inner { width: 100%; gap: 28px; }
+      .who-header-block { width: 100%; }
+      .who-cards-outer { width: 100%; }
+    }
+
+    @media (max-width: 960px) {
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .skills-grid, .agents-grid, .wf-grid, .who-grid, .inc-grid { grid-template-columns: repeat(2,1fr); }
+      .tab-panel.on { grid-template-columns: 1fr; }
+      .steps-row { grid-template-columns: 1fr; }
+      /* FS cards: 2-col */
+      .fs-card { width: calc(50% - 10px); }
+    }
+
+    @media (max-width: 820px) {
+      /* Nav */
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .nav-actions { display: none; }
+      .nav-hamburger { display: flex; }
+
+      /* Hero */
+      #hero { height: auto; min-height: 100svh; overflow: visible; display: flex; flex-direction: column; align-items: center; padding-bottom: 48px; }
+      .hero-body { padding-top: 84px; z-index: 5; width: 100%; }
+      h1 { font-size: clamp(28px, 7vw, 48px); letter-spacing: -1px; line-height: 1.15; }
+      .hero-sub { font-size: 15px; max-width: 90%; }
+      .hero-claude-logo { display: none; }
+      .hero-chatgpt-logo { display: none; }
+      .hero-flare { position: relative; left: auto; top: auto; transform: none; width: 100%; height: 120px; order: 2; margin: -70px 0 0; z-index: 3; }
+      .hero-flare img { object-fit: contain; object-position: center bottom; }
+      .hero-sparkles { display: none; }
+      .hero-body { order: 1; }
+      .hero-video { position: relative; left: auto; top: auto; transform: none; width: calc(100% - 40px); margin: 0 auto; order: 3; z-index: 2; }
+      .hero-play-btn { display: none; }
+      .url-bar { width: min(507px, calc(100vw - 40px)); }
+
+      /* HIW */
+      .hiw-inner { gap: 24px; }
+      .hiw-header-block { height: auto; padding: 24px 0; display: flex; align-items: center; justify-content: center; }
+      .hiw-header-bg { height: 100%; }
+      .hiw-header-content { width: 90%; }
+      .hiw-h2 { font-size: clamp(24px, 5vw, 40px); }
+      .hiw-sub { font-size: 14px; }
+      .hiw-cards-outer { height: auto !important; overflow: visible; }
+      .hiw-cards-row { position: relative; left: 0; top: 0; padding: 12px; flex-direction: column; width: 100%; gap: 12px; }
+      .hiw-card { width: 100% !important; height: 326px !important; flex-shrink: 0; }
+      .hiw-card-img-wrap { width: calc(100% - 30px) !important; }
+
+      /* Who header */
+      .who-inner { gap: 24px; }
+      .who-header-block { height: auto; padding: 32px 0; display: flex; align-items: flex-start; justify-content: center; }
+      .who-header-content { width: 90%; }
+      .who-h2 { font-size: clamp(24px, 5vw, 40px); max-width: 90%; }
+      .who-sub { max-width: 90%; }
+      /* Who cards — stack vertically */
+      .who-cards-outer {
+        height: auto; padding: 12px;
+        display: flex; flex-direction: column; gap: 12px;
+        overflow: visible;
+      }
+      .who-card {
+        position: relative !important;
+        left: 0 !important; top: 0 !important;
+        width: 100% !important; height: 340px !important;
+        border-radius: 16px;
+      }
+      .who-card-img-sm { width: calc(100% - 30px) !important; height: 220px !important; }
+      .who-card-img-lg { width: calc(100% - 30px) !important; height: 220px !important; }
+
+      /* Free skills */
+      .fs-inner { gap: 24px; }
+      .fs-header-block { min-height: 0; }
+      .fs-header-content { width: 90%; }
+      .fs-h2 { font-size: clamp(24px, 5vw, 40px); }
+      .fs-card { width: 100%; }
+      .fs-tabs { flex-wrap: wrap; justify-content: center; }
+
+      /* Before & After — header */
+      .ba-inner { gap: 24px; }
+      .ba-header-block { overflow: hidden; }
+      .ba-header-bg { width: 100%; }
+      .ba-header-content { padding: 40px 0 16px; width: 100%; }
+      .ba-title { font-size: clamp(22px, 5vw, 40px); }
+      .ba-subtitle { font-size: 14px; }
+      /* Before & After — carousel */
+      .ba-carousel-outer { width: 100%; height: auto !important; overflow: hidden; margin-top: 16px; }
+      .ba-track { height: auto; }
+      .ba-slide { min-width: 100%; width: 100% !important; height: auto !important; flex-shrink: 0; padding: 16px 14px 16px; }
+      .ba-slide-title { height: auto; line-height: 1.3; margin-bottom: 14px; font-size: 20px; }
+      .ba-cards-row { flex-direction: column; height: auto !important; gap: 10px; }
+      .ba-card { height: 340px !important; flex: none; width: 100%; }
+      .ba-card-img { width: calc(100% - 30px) !important; height: 192px !important; }
+      .ba-card-desc { width: calc(100% - 32px) !important; font-size: 12px; line-height: 1.5; }
+      .ba-card.ba-after .ba-card-desc { width: calc(100% - 32px) !important; }
+
+      /* Workflows */
+      #workflows { padding: 60px 16px; }
+      .wf-inner { padding: 48px 24px 40px; gap: 24px; }
+      .wf-title { font-size: clamp(22px, 4vw, 36px); }
+      .wf-subtitle { font-size: 14px; }
+      .wf-panel { width: 100%; flex-direction: column; }
+      .wf-left { padding: 24px 20px; justify-content: flex-start; }
+      .wf-item-header { font-size: 16px; }
+      .wf-images { width: 100%; height: 260px; border-top: 1px solid rgba(255,255,255,0.1); }
+      .wf-img-0 { left: 50%; top: 50%; transform: translate(-50%,-50%); width: 156px; height: 174px; }
+      .wf-img-1 { left: 50%; top: 50%; transform: translate(-50%,-50%); width: 240px; height: 182px; }
+      .wf-img-2 { left: 50%; top: 50%; transform: translate(-50%,-50%); width: 150px; height: 177px; }
+
+      /* FAQ */
+      #faq { padding: 60px 16px; }
+
+      /* Footer */
+      footer { flex-direction: column; gap: 8px; text-align: center; padding: 24px 20px; }
+
+      /* CTA */
+      .cta-card { padding: 48px 20px; }
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 0 16px; }
+      section { padding: 64px 16px; }
+
+      /* Hero */
+      #hero { height: auto; min-height: 100svh; overflow: visible; display: flex; flex-direction: column; align-items: center; padding-bottom: 48px; }
+      .hero-body { padding-top: 84px; z-index: 5; width: 100%; }
+      h1 { font-size: clamp(26px, 8vw, 36px); line-height: 1.15; }
+      .hero-sub { font-size: 14px; }
+      .hero-flare { position: relative; left: auto; top: auto; transform: none; width: 100%; height: 120px; order: 2; margin: -70px 0 0; z-index: 3; }
+      .hero-flare img { object-fit: contain; object-position: center bottom; }
+      .hero-sparkles { display: none; }
+      .hero-body { order: 1; }
+      .hero-video { position: relative; left: auto; top: auto; transform: none; width: calc(100vw - 32px); margin: 0 auto; order: 3; z-index: 2; }
+      .hero-play-btn { display: none; }
+      .url-bar { width: calc(100vw - 32px); }
+
+      /* HIW */
+      .hiw-inner { gap: 20px; }
+      .hiw-h2 { font-size: 24px; }
+      /* Who */
+      .who-inner { gap: 20px; }
+      .who-card { height: 310px !important; }
+      .who-card-img-sm { height: 190px !important; }
+      .who-card-img-lg { height: 190px !important; }
+
+      /* FS cards: single col */
+      .fs-inner { gap: 20px; }
+      .fs-card { width: 100%; }
+
+      /* Before & After smaller cards on mobile */
+      .ba-inner { gap: 20px; }
+      .ba-card { height: 310px !important; }
+      .ba-card-img { height: 172px !important; }
+      .ba-slide-title { font-size: 18px; }
+
+      /* Workflows smaller mobile */
+      .wf-images { height: 240px; }
+
+      /* General grids */
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .skills-grid, .agents-grid, .wf-grid, .who-grid, .inc-grid { grid-template-columns: 1fr; }
+      .ba-row { grid-template-columns: 1fr; }
+      .ba-label-row { grid-template-columns: 1fr; }
+      .plat-row { gap: 10px; }
+      .cta-card { padding: 40px 16px; }
+
+      /* Footer disclaimer */
+      footer > div { width: 100% !important; }
+      footer p { width: 100% !important; }
+    }
+
+    @media (max-width: 480px) {
+      /* Tightest mobile */
+      h1 { font-size: clamp(22px, 8vw, 30px); }
+      .hero-play-btn { display: none; }
+      /* Workflows: hide image panel on very small screens */
+      .wf-images { display: none; }
+      .wf-panel { border-radius: 16px; }
+    }
+
+    /* ── TOOLS ── */
+    #tools { padding: 80px 24px; background: #0d0d0d; }
+    .tools-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; flex-direction: column; align-items: center; gap: 40px;
+    }
+    .tools-header-block {
+      position: relative; width: 884px; max-width: 100%; height: auto;
+      display: flex; justify-content: center;
+    }
+    .tools-header-bg {
+      position: absolute; left: 50%; top: 0; transform: translateX(-50%);
+      width: 884px; height: 100%; object-fit: cover; pointer-events: none;
+    }
+    .tools-header-content {
+      position: relative; z-index: 1; padding: clamp(32px, 6vw, 60px) 20px 8px;
+      display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;
+      width: 694px; max-width: 100%;
+    }
+    .tools-pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: linear-gradient(#0d0d0d,#0d0d0d) padding-box,
+                  linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box;
+      border: 0.5px solid transparent; border-radius: 20px;
+      padding: 0 10px; height: 22px; font-size: 12px; color: #fff;
+    }
+    .tools-h2 {
+      font-size: clamp(24px, 5vw, 40px); font-weight: 800; letter-spacing: -1.4px; line-height: 1.12; color: #fff; margin: 0;
+    }
+    .tools-sub {
+      font-size: clamp(13px, 2vw, 16px); color: rgba(255,255,255,0.7); line-height: 1.65; max-width: 900px; margin: 0; white-space: normal;
+    }
+    .tools-table {
+      width: 100%; max-width: 900px;
+      border-collapse: collapse;
+      font-family: var(--font);
+    }
+    .tools-table thead tr {
+      border-bottom: 1px solid rgba(0,217,180,0.3);
+    }
+    .tools-table thead th {
+      padding: 12px 16px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: rgba(255,255,255,0.4);
+      text-align: left;
+    }
+    .tools-table .t-icon { width: 44px; padding: 10px 8px 10px 0; vertical-align: middle; }
+    .tools-table .t-icon svg { display: block; }
+    .tools-table tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: background .15s ease;
+    }
+    .tools-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+    .tools-table tbody td {
+      padding: 14px 16px; vertical-align: middle;
+    }
+    .tools-table .t-icon {
+      width: 48px; text-align: center; padding: 10px 8px;
+    }
+    .tools-table .t-icon img {
+      width: 32px; height: 32px; object-fit: contain; display: inline-block;
+    }
+    .tools-table .t-name {
+      font-size: 13px; font-weight: 600; color: #fff;
+      font-family: var(--font);
+      white-space: nowrap;
+    }
+    .tools-table .t-desc {
+      font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.5;
+    }
+    .tools-table .t-check {
+      width: 80px; text-align: center; white-space: nowrap;
+    }
+    .tools-table thead th.t-check { text-align: center; }
+    .tools-table .t-check svg { display: inline-block; }
+    @media (max-width: 820px) {
+      .tools-inner { gap: 28px; }
+      .tools-table .t-desc { font-size: 12px; }
+    }
+    @media (max-width: 640px) {
+      .tools-table { table-layout: fixed; width: 100%; }
+      .tools-table thead th {
+        padding: 10px 6px;
+        font-size: 10px; letter-spacing: 0.05em;
+      }
+      .tools-table .t-icon { width: 32px; padding: 8px 4px 8px 0; }
+      .tools-table .t-icon svg,
+      .tools-table .t-icon img { width: 24px; height: 24px; }
+      .tools-table .t-name {
+        font-size: 11px; white-space: normal; word-break: break-all;
+        padding-bottom: 2px;
+      }
+      .tools-table .t-desc { font-size: 11px; color: rgba(255,255,255,0.45); }
+      .tools-table .t-check { width: 40px; }
+      .tools-table tbody td { padding: 10px 4px; }
+    }
+
+    /* ── Video modal ── */
+    .video-modal {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.88);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s ease;
+    }
+    .video-modal.open { opacity: 1; pointer-events: auto; }
+    .video-modal-inner {
+      position: relative;
+      width: min(90vw, 1080px);
+      aspect-ratio: 16/9;
+    }
+    .video-modal-inner iframe {
+      width: 100%; height: 100%; border: none; border-radius: 12px; display: block;
+    }
+    .video-modal-close {
+      position: absolute; top: -44px; right: 0;
+      background: none; border: none; color: #fff; font-size: 28px;
+      line-height: 1; cursor: pointer; opacity: .7;
+      transition: opacity .2s;
+    }
+    .video-modal-close:hover { opacity: 1; }
+  </style>
+<style>html,body{margin:0;padding:0;background:#0d0d0d;}</style></head>
+<body>
+
+<!-- NAV -->
+
+
+<!-- Mobile Nav Overlay -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="http://localhost:3000/">Home</a>
+  <a href="#">Features</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="claude.html" style="padding-left:24px;font-size:13px;opacity:.8;">↳ Claude MCP</a>
+  <a href="chatgpt.html" style="padding-left:24px;font-size:13px;opacity:.8;">↳ ChatGPT MCP</a>
+  <a href="#">FAQs</a>
+  <a href="#">Affiliates</a>
+  <div class="mobile-nav-actions">
+    <button class="btn-ghost">Log in</button>
+    <button class="btn-solid">Get Started</button>
+  </div>
+</div>
+
+<!-- ① HERO -->
+<section id="hero">
+
+  <!-- Floating AI logos -->
+  <img class="hero-claude-logo"  src="https://www.figma.com/api/mcp/asset/15633fe5-d074-40b6-a434-b5c89e0ade10" alt="Claude" />
+  <img class="hero-chatgpt-logo" src="https://www.figma.com/api/mcp/asset/5cddc206-6492-4245-8194-8bbcec43d48c" alt="ChatGPT" />
+
+  <!-- Flare — Figma 224:372: bright point at bottom, glow shines upward, bottom sits on top of video card -->
+  <div class="hero-flare">
+    <img src="https://www.figma.com/api/mcp/asset/13e28e53-838d-44e8-adb7-910cbe6902cc" alt="" />
+  </div>
+
+  <!-- Main content -->
+  <div class="hero-body">
+    <div class="badge">
+      <img src="https://www.figma.com/api/mcp/asset/24116ba1-34a2-4ed8-a936-7a322c55f912" alt="" />
+      New Feature
+    </div>
+    <h1>Tokscript now works inside<br>Claude and ChatGPT</h1>
+    <p class="hero-sub">Ask your AI to pull transcripts, generate hooks, analyze virality, and research creators from any TikTok, Instagram Reel, or YouTube Short. Directly in conversation.</p>
+    <div class="url-bar">
+      <span class="url-bar-text">api.tokscript.com/mcp</span>
+      <button class="url-bar-copy" id="urlCopy" onclick="copyUrl()">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;flex-shrink:0;">
+          <img src="https://www.figma.com/api/mcp/asset/07184b29-b259-4524-a9ff-5945239d4623" alt="" style="width:15px;height:15px;object-fit:contain;display:block;" />
+        </span>
+        Copy
+      </button>
+    </div>
+  </div>
+
+  <!-- Video card — Figma 257:502 -->
+  <div class="hero-video">
+    <div class="hero-video-glow"></div>
+    <div class="hero-video-bg">
+      <img src="https://www.figma.com/api/mcp/asset/6ad9a0c8-2e48-44df-b8cc-8eef9a3decdc" alt="" />
+    </div>
+    <div class="hero-video-fade"></div>
+  </div>
+
+  <!-- Play button — sits above the video card, independently positioned in #hero -->
+  <button class="hero-play-btn" aria-label="Play video" onclick="openVideoModal()"></button>
+
+  <!-- Fade into next section -->
+  <!-- Sparkles rising from flare -->
+  <div class="hero-sparkles">
+    <span style="--dx:-60px;--dur:2.8s;--delay:0s;   left:230px; width:2px; height:2px; background:#fff;    box-shadow:0 0 4px 2px rgba(0,217,180,.9);"></span>
+    <span style="--dx: 40px;--dur:3.2s;--delay:.5s;  left:270px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 4px 2px rgba(0,217,180,.8);"></span>
+    <span style="--dx:-20px;--dur:2.5s;--delay:1s;   left:250px; width:2px; height:2px; background:#fff;    box-shadow:0 0 4px 2px rgba(255,255,255,.5);"></span>
+    <span style="--dx: 70px;--dur:3.6s;--delay:.2s;  left:220px; width:3px; height:3px; background:#00d9b4; box-shadow:0 0 5px 2px rgba(0,217,180,.6);"></span>
+    <span style="--dx:-80px;--dur:2.9s;--delay:1.4s; left:290px; width:2px; height:2px; background:#fff;    box-shadow:0 0 3px 1px rgba(255,255,255,.7);"></span>
+    <span style="--dx: 30px;--dur:3.1s;--delay:.8s;  left:240px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 5px 2px rgba(0,217,180,.7);"></span>
+    <span style="--dx:-50px;--dur:2.6s;--delay:2s;   left:260px; width:2px; height:2px; background:#fff;    box-shadow:0 0 4px 2px rgba(0,217,180,.5);"></span>
+    <span style="--dx: 90px;--dur:3.4s;--delay:.3s;  left:200px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 4px 2px rgba(0,217,180,.9);"></span>
+    <span style="--dx:-30px;--dur:2.7s;--delay:1.7s; left:310px; width:2px; height:2px; background:#fff;    box-shadow:0 0 4px 2px rgba(255,255,255,.4);"></span>
+    <span style="--dx: 55px;--dur:3.0s;--delay:2.3s; left:245px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 5px 2px rgba(0,217,180,.8);"></span>
+    <span style="--dx:-70px;--dur:3.3s;--delay:.6s;  left:275px; width:2px; height:2px; background:#fff;    box-shadow:0 0 3px 1px rgba(255,255,255,.6);"></span>
+    <span style="--dx: 20px;--dur:2.4s;--delay:1.2s; left:235px; width:3px; height:3px; background:#00d9b4; box-shadow:0 0 6px 3px rgba(0,217,180,.5);"></span>
+    <span style="--dx:-45px;--dur:3.5s;--delay:.4s;  left:320px; width:2px; height:2px; background:#fff;    box-shadow:0 0 4px 2px rgba(255,255,255,.7);"></span>
+    <span style="--dx: 65px;--dur:2.6s;--delay:1.9s; left:180px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 4px 2px rgba(0,217,180,.8);"></span>
+    <span style="--dx:-15px;--dur:3.0s;--delay:2.6s; left:255px; width:2px; height:2px; background:#fff;    box-shadow:0 0 3px 1px rgba(255,255,255,.5);"></span>
+    <span style="--dx: 50px;--dur:2.8s;--delay:.9s;  left:215px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 5px 2px rgba(0,217,180,.7);"></span>
+    <span style="--dx:-90px;--dur:3.2s;--delay:1.5s; left:285px; width:2px; height:2px; background:#fff;    box-shadow:0 0 4px 2px rgba(0,217,180,.6);"></span>
+    <span style="--dx: 35px;--dur:2.7s;--delay:2.1s; left:300px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 4px 2px rgba(0,217,180,.9);"></span>
+    <span style="--dx:-55px;--dur:3.4s;--delay:.1s;  left:195px; width:2px; height:2px; background:#fff;    box-shadow:0 0 3px 1px rgba(255,255,255,.6);"></span>
+    <span style="--dx: 80px;--dur:2.9s;--delay:1.1s; left:265px; width:3px; height:3px; background:#00d9b4; box-shadow:0 0 6px 3px rgba(0,217,180,.6);"></span>
+    <span style="--dx:-35px;--dur:3.1s;--delay:2.8s; left:225px; width:2px; height:2px; background:#fff;    box-shadow:0 0 4px 2px rgba(255,255,255,.5);"></span>
+    <span style="--dx: 10px;--dur:2.5s;--delay:1.6s; left:340px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 4px 2px rgba(0,217,180,.7);"></span>
+    <span style="--dx:-75px;--dur:3.6s;--delay:.7s;  left:170px; width:2px; height:2px; background:#fff;    box-shadow:0 0 3px 1px rgba(255,255,255,.8);"></span>
+    <span style="--dx: 45px;--dur:2.3s;--delay:2.4s; left:280px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 5px 2px rgba(0,217,180,.5);"></span>
+  </div>
+
+  <div class="hero-bottom-fade"></div>
+</section>
+
+<!-- ② HOW IT WORKS -->
+<section id="video">
+
+  <!-- Background sparkle texture -->
+  <img class="hiw-bg-texture" src="https://www.figma.com/api/mcp/asset/2b163638-2152-4c3b-ae07-9f6c3c50979e" alt="" />
+
+  <div class="hiw-inner">
+
+    <!-- Header — Figma 333:1780 -->
+    <div class="hiw-header-block">
+      <img class="hiw-header-bg" src="https://www.figma.com/api/mcp/asset/5d25df35-2e39-4f61-9c25-4735056082a2" alt="" />
+      <div class="hiw-header-content">
+        <div class="hiw-pill">How it works</div>
+        <h2 class="hiw-h2">Getting Started with Tokscript MCP</h2>
+        <p class="hiw-sub">Integrate TokScript into your AI workflow in under 60 seconds. Copy your unique MCP URL, connect it to your preferred LLM, and start extracting viral data instantly.</p>
+      </div>
+    </div>
+
+    <!-- Cards — Figma 271:636 -->
+    <div class="hiw-cards-outer">
+      <div class="hiw-cards-row">
+
+        <!-- Card 1: Copy the URL — Figma 271:638 -->
+        <div class="hiw-card">
+          <img class="hiw-card-bg-img" src="https://www.figma.com/api/mcp/asset/dfebd223-205f-4f36-aaea-4dd19a30f48e" alt="" />
+          <p class="hiw-step-label">Step 01</p>
+          <h3 class="hiw-card-title">Copy the URL above</h3>
+          <div class="hiw-card-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/d565668a-d5ae-4424-9ba6-5ae0076864f3" alt="" />
+          </div>
+          <p class="hiw-card-desc">Hit the copy button, one URL is all it takes to link TokScript to your AI.</p>
+        </div>
+
+        <!-- Card 2: Open Claude or ChatGPT — Figma 271:672 -->
+        <div class="hiw-card">
+          <img class="hiw-card-bg-img" src="https://www.figma.com/api/mcp/asset/dfebd223-205f-4f36-aaea-4dd19a30f48e" alt="" />
+          <p class="hiw-step-label">Step 02</p>
+          <h3 class="hiw-card-title">Open Claude or ChatGPT</h3>
+          <div class="hiw-card-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/4ca71d5b-3437-42af-8ff3-fa7fd8ed67d7" alt="" />
+          </div>
+          <p class="hiw-card-desc">Go to Settings → Connectors → Add Custom Connector, then paste the URL.</p>
+        </div>
+
+        <!-- Card 3: Log in. Done. — Figma 271:689 -->
+        <div class="hiw-card">
+          <img class="hiw-card-bg-img" src="https://www.figma.com/api/mcp/asset/dfebd223-205f-4f36-aaea-4dd19a30f48e" alt="" />
+          <p class="hiw-step-label">Step 03</p>
+          <h3 class="hiw-card-title">Log in. Done.</h3>
+          <div class="hiw-card-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/298b8764-d629-431c-9f1d-4282805945dd" alt="" />
+          </div>
+          <p class="hiw-card-desc">Authenticate with your TokScript account. Your entire library is now in your AI.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="hiw-cta">
+      <p class="hiw-cta-text">Don't have an account?</p>
+      <a href="https://tokscript.com/pricing" target="_blank" rel="noopener" class="hiw-cta-btn">Sign Up Today</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ⑩ WHO -->
+<section id="who">
+
+  <!-- Background spiral — Figma 337:2542 -->
+  <img class="who-bg-spiral" src="https://www.figma.com/api/mcp/asset/83e80a9a-aad8-46d8-af51-76de7456113f" alt="" />
+
+  <div class="who-inner">
+
+    <!-- Header — Figma 329:724 -->
+    <div class="who-header-block">
+      <img class="who-header-bg" src="https://www.figma.com/api/mcp/asset/4515975e-50c9-4823-a3f6-54eccb2a24d9" alt="" />
+      <div class="who-header-content">
+        <div class="who-pill">Who It's For</div>
+        <h2 class="who-h2">Built for Anyone Who Works With Short-Form Video</h2>
+        <p class="who-sub">TokScript MCP bridges the gap between viral trends and structured content data. Move beyond manual research with a unified intelligence layer built for your existing AI workspace.</p>
+      </div>
+    </div>
+
+    <!-- Cards outer — Figma 291:559 -->
+    <div class="who-cards-outer">
+
+      <!-- Card 1: Brand Marketers — Figma 291:561 -->
+      <div class="who-card who-card-1">
+        <img class="who-card-grid-bg" src="https://www.figma.com/api/mcp/asset/84f109d8-a2df-4777-9438-2307a4a7398f" alt="" />
+        <p class="who-card-title">Brand Marketers</p>
+        <div class="who-card-img who-card-img-sm">
+          <img src="https://www.figma.com/api/mcp/asset/5814f026-16c0-44ee-8b2f-9e2a1da19190" alt="" />
+        </div>
+        <p class="who-card-desc">Competitive intelligence through precise transcript and messaging analysis.</p>
+      </div>
+
+      <!-- Card 2: Researchers — Figma 298:372 -->
+      <div class="who-card who-card-2">
+        <img class="who-card-grid-bg" src="https://www.figma.com/api/mcp/asset/84f109d8-a2df-4777-9438-2307a4a7398f" alt="" />
+        <p class="who-card-title">Researchers</p>
+        <div class="who-card-img who-card-img-sm">
+          <img src="https://www.figma.com/api/mcp/asset/fad902d7-98d6-4644-aff8-bf8b056725ac" alt="" />
+        </div>
+        <p class="who-card-desc">Large-scale data extraction to identify patterns and emerging tropes.</p>
+      </div>
+
+      <!-- Card 3: UGC Marketplaces — Figma 298:383 -->
+      <div class="who-card who-card-3">
+        <img class="who-card-grid-bg" src="https://www.figma.com/api/mcp/asset/84f109d8-a2df-4777-9438-2307a4a7398f" alt="" />
+        <p class="who-card-title">UGC Marketplaces</p>
+        <div class="who-card-img who-card-img-sm">
+          <img src="https://www.figma.com/api/mcp/asset/fbde0140-d547-4d97-b4c5-b6df7bd8300e" alt="" />
+        </div>
+        <p class="who-card-desc">Provide your creator network with high-performing templates from real-time data.</p>
+      </div>
+
+      <!-- Card 4: Solo Creator — Figma 291:637 -->
+      <div class="who-card who-card-4">
+        <img class="who-card-grid-bg" src="https://www.figma.com/api/mcp/asset/84f109d8-a2df-4777-9438-2307a4a7398f" alt="" />
+        <p class="who-card-title">Solo Creator</p>
+        <div class="who-card-img who-card-img-lg">
+          <img src="https://www.figma.com/api/mcp/asset/e27ffe74-8257-4429-81f5-79f776d41554" alt="" />
+        </div>
+        <p class="who-card-desc">Instant conversion from viral trends to structured, actionable scripts.</p>
+      </div>
+
+      <!-- Card 5: Agencies — Figma 298:394 -->
+      <div class="who-card who-card-5">
+        <img class="who-card-grid-bg" src="https://www.figma.com/api/mcp/asset/84f109d8-a2df-4777-9438-2307a4a7398f" alt="" />
+        <p class="who-card-title">Agencies</p>
+        <div class="who-card-img who-card-img-lg">
+          <img src="https://www.figma.com/api/mcp/asset/a893de35-e301-4718-871c-f36c4b5253be" alt="" />
+        </div>
+        <p class="who-card-desc">Automating high-performing script templates for creator rosters.</p>
+      </div>
+
+    </div>
+
+    <!-- CTA -->
+    <div class="who-cta">
+      <p class="who-cta-text">Don't have an account?</p>
+      <a href="https://tokscript.com/pricing" target="_blank" rel="noopener" class="who-cta-btn">Sign Up Today</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- THE SETUP -->
+<section id="setup">
+  <div class="setup-card">
+
+    <!-- bg image -->
+    <img class="setup-bg" src="https://www.figma.com/api/mcp/asset/55d1f224-9ff7-444e-81b9-91343fb46080" alt="" />
+
+    <div class="setup-inner">
+
+      <!-- Title + tab toggle -->
+      <div class="setup-header">
+        <h2 class="setup-title">How To Set Tokscript MCP Up</h2>
+        <div class="setup-tabs">
+          <button onclick="setTab('claude')" id="tabClaude" class="setup-tab setup-tab-active">
+            <img src="https://www.figma.com/api/mcp/asset/35582d2f-52af-4aa4-a221-05923d5afe32" alt="" style="width:15.5px;height:15.5px;flex-shrink:0;" />
+            <span>For Claude</span>
+          </button>
+          <button onclick="setTab('chatgpt')" id="tabChatgpt" class="setup-tab">
+            <div class="chatgpt-icon-wrap"><img src="https://www.figma.com/api/mcp/asset/d7789fdc-c95b-4f1a-a55c-4d2ab14e569f" alt="" /></div>
+            <span>For ChatGpt</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- How it works panel -->
+      <div class="setup-panel">
+        <div class="setup-panel-inner">
+
+          <!-- Left: video -->
+          <div class="setup-left">
+            <p class="setup-left-title">How it works</p>
+            <p class="setup-left-sub">Paste video links and get clean transcripts in seconds.</p>
+            <div class="setup-video">
+              <img class="setup-video-thumb" src="https://www.figma.com/api/mcp/asset/cc6ca7a4-9591-4fef-b7a6-c52876aaaa17" alt="" />
+              <div class="setup-video-overlay"></div>
+              <div class="setup-play-btn">
+                <img src="https://www.figma.com/api/mcp/asset/ba9145f4-d840-4546-ba6c-e1305c7b5572" alt="" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: 3 steps -->
+          <div class="setup-right">
+            <div class="setup-step">
+              <div class="setup-step-num">1</div>
+              <div>
+                <p class="setup-step-title">Paste links</p>
+                <p class="setup-step-desc">Drop up to 50 video URLs from any supported platform.</p>
+              </div>
+            </div>
+            <div class="setup-step">
+              <div class="setup-step-num">2</div>
+              <div>
+                <p class="setup-step-title">AI transcribes</p>
+                <p class="setup-step-desc">Our engine extracts audio and generates a clean transcript.</p>
+              </div>
+            </div>
+            <div class="setup-step">
+              <div class="setup-step-num">3</div>
+              <div>
+                <p class="setup-step-title">Save &amp; export</p>
+                <p class="setup-step-desc">Results land in your library — export as TXT, MD, PDF or DOCX.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <button class="setup-cta-btn">Get Started</button>
+
+    </div>
+  </div>
+</section>
+
+<!-- FREE SKILLS -->
+<section id="freeskills">
+
+  <img class="fs-bg-bottom" src="https://www.figma.com/api/mcp/asset/3381effb-dfe9-435d-86a3-fd8adab6e6a9" alt="" />
+
+  <div class="fs-inner">
+
+    <!-- Header — Figma 340:2652 -->
+    <div class="fs-header-block">
+      <img class="fs-header-bg" src="https://www.figma.com/api/mcp/asset/7273b33a-791e-4324-8a47-9188e1ebe38c" alt="" />
+      <div class="fs-header-content">
+        <div class="fs-pill">Free Skills</div>
+        <h2 class="fs-h2">Try It Today With Free Skills</h2>
+        <p class="fs-sub">Pre-built prompts you can drop into Claude or ChatGPT right now. Pick one,<br>copy the prompt, and start.</p>
+      </div>
+    </div>
+
+    <!-- Tab selector -->
+    <div class="fs-tabs">
+      <button class="fs-tab fs-tab-active" onclick="filterSkills('all',this)">All</button>
+      <button class="fs-tab" onclick="filterSkills('summary',this)">Summary</button>
+      <button class="fs-tab" onclick="filterSkills('hooks',this)">Hooks</button>
+      <button class="fs-tab" onclick="filterSkills('repurpose',this)">Repurpose</button>
+      <button class="fs-tab" onclick="filterSkills('engagement',this)">Engagement</button>
+    </div>
+
+    <!-- Cards -->
+    <div class="fs-cards" id="fsCards">
+
+      <!-- Card 1: Executive Summary -->
+      <div class="fs-card" data-category="summary">
+        <div class="fs-card-banner">
+          <img src="https://www.figma.com/api/mcp/asset/300b8093-5ef8-4a3e-a398-47b56712fdd1" alt="" />
+        </div>
+        <div class="fs-card-meta">
+          <div class="fs-card-badge">
+            <img src="https://www.figma.com/api/mcp/asset/e3fd1331-50b3-471d-a836-4fbf08f13331" alt="" />
+            Summary
+          </div>
+          <div class="fs-card-meta-right">
+            <span class="fs-card-uses">11.3k uses</span>
+            <div class="fs-card-icons">
+              <img src="https://www.figma.com/api/mcp/asset/ba1a4a4c-aa5a-4541-af90-2ae5805cb90d" alt="" />
+              <img src="https://www.figma.com/api/mcp/asset/7c8a6251-8829-451d-b11c-450f85b807a3" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="fs-card-body">
+          <p class="fs-card-title">Executive Summary</p>
+          <p class="fs-card-desc">Condense any transcript into a crisp 3-paragraph summary with key takeaways.</p>
+          <div class="fs-card-tags">
+            <span class="fs-card-tag">Summary</span>
+            <span class="fs-card-tag">Productivity</span>
+          </div>
+          <div class="fs-card-prompt">You are a senior communications consultant who specialises in distilling complex content into clear, executive-ready briefings. Your task is to produce a...</div>
+          <button class="fs-card-show">→ Show full prompt</button>
+        </div>
+        <div class="fs-card-actions">
+          <button class="fs-btn fs-btn-copy">
+            <img src="https://www.figma.com/api/mcp/asset/e9bc7785-f9c9-4bfb-805a-0fa6055f54db" alt="" /> Copy
+          </button>
+          <button class="fs-btn" style="flex:1;">
+            <img src="https://www.figma.com/api/mcp/asset/1c323257-268a-4ad0-8a15-41218499bd38" alt="" /> Download Skill
+          </button>
+          <button class="fs-btn">
+            <img src="https://www.figma.com/api/mcp/asset/9b5c3421-34eb-45f3-ada9-cf7fb79b9962" alt="" /> Download
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 2: Viral Hook Generator -->
+      <div class="fs-card" data-category="hooks">
+        <div class="fs-card-banner">
+          <img src="https://www.figma.com/api/mcp/asset/3f80cd69-5fed-484e-9eb4-f5c7949f9b29" alt="" />
+        </div>
+        <div class="fs-card-meta">
+          <div class="fs-card-badge">
+            <img src="https://www.figma.com/api/mcp/asset/45fb4d40-cfa4-4a5d-9ed2-6e78b927bd70" alt="" />
+            Hooks
+          </div>
+          <div class="fs-card-meta-right">
+            <span class="fs-card-uses">8.4k uses</span>
+            <div class="fs-card-icons">
+              <img src="https://www.figma.com/api/mcp/asset/ba1a4a4c-aa5a-4541-af90-2ae5805cb90d" alt="" />
+              <img src="https://www.figma.com/api/mcp/asset/7c8a6251-8829-451d-b11c-450f85b807a3" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="fs-card-body">
+          <p class="fs-card-title">Viral Hook Generator</p>
+          <p class="fs-card-desc">Turn your transcript into 5 scroll-stopping opening hooks that grab attention in the first 3 seconds.</p>
+          <div class="fs-card-tags">
+            <span class="fs-card-tag">TikTok</span>
+            <span class="fs-card-tag">Reels</span>
+            <span class="fs-card-tag">Viral</span>
+          </div>
+          <div class="fs-card-prompt">You are a world-class viral content strategist with deep expertise in short-form video psychology, scroll-stopping copywriting, and platform-specific audience behaviour...</div>
+          <button class="fs-card-show">→ Show full prompt</button>
+        </div>
+        <div class="fs-card-actions">
+          <button class="fs-btn fs-btn-copy">
+            <img src="https://www.figma.com/api/mcp/asset/e9bc7785-f9c9-4bfb-805a-0fa6055f54db" alt="" /> Copy
+          </button>
+          <button class="fs-btn" style="flex:1;">
+            <img src="https://www.figma.com/api/mcp/asset/1c323257-268a-4ad0-8a15-41218499bd38" alt="" /> Download Skill
+          </button>
+          <button class="fs-btn">
+            <img src="https://www.figma.com/api/mcp/asset/9b5c3421-34eb-45f3-ada9-cf7fb79b9962" alt="" /> Download
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 3: Action Items Extractor -->
+      <div class="fs-card" data-category="summary">
+        <div class="fs-card-banner">
+          <img src="https://www.figma.com/api/mcp/asset/300b8093-5ef8-4a3e-a398-47b56712fdd1" alt="" />
+        </div>
+        <div class="fs-card-meta">
+          <div class="fs-card-badge">
+            <img src="https://www.figma.com/api/mcp/asset/e3fd1331-50b3-471d-a836-4fbf08f13331" alt="" />
+            Summary
+          </div>
+          <div class="fs-card-meta-right">
+            <span class="fs-card-uses">6.9k uses</span>
+            <div class="fs-card-icons">
+              <img src="https://www.figma.com/api/mcp/asset/ba1a4a4c-aa5a-4541-af90-2ae5805cb90d" alt="" />
+              <img src="https://www.figma.com/api/mcp/asset/7c8a6251-8829-451d-b11c-450f85b807a3" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="fs-card-body">
+          <p class="fs-card-title">Action Items Extractor</p>
+          <p class="fs-card-desc">Pull every explicit and implied action item from a transcript into a clean task list.</p>
+          <div class="fs-card-tags">
+            <span class="fs-card-tag">Productivity</span>
+            <span class="fs-card-tag">Tasks</span>
+            <span class="fs-card-tag">Meeting</span>
+          </div>
+          <div class="fs-card-prompt">You are a professional executive assistant and project manager who has mastered turning messy meeting recordings and video transcripts into crisp, accountable...</div>
+          <button class="fs-card-show">→ Show full prompt</button>
+        </div>
+        <div class="fs-card-actions">
+          <button class="fs-btn fs-btn-copy">
+            <img src="https://www.figma.com/api/mcp/asset/e9bc7785-f9c9-4bfb-805a-0fa6055f54db" alt="" /> Copy
+          </button>
+          <button class="fs-btn" style="flex:1;">
+            <img src="https://www.figma.com/api/mcp/asset/1c323257-268a-4ad0-8a15-41218499bd38" alt="" /> Download Skill
+          </button>
+          <button class="fs-btn">
+            <img src="https://www.figma.com/api/mcp/asset/9b5c3421-34eb-45f3-ada9-cf7fb79b9962" alt="" /> Download
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 4: LinkedIn Thread Converter -->
+      <div class="fs-card" data-category="repurpose">
+        <div class="fs-card-banner">
+          <img src="https://www.figma.com/api/mcp/asset/ac3cc381-1554-4310-a23a-ec7bea10501b" alt="" />
+        </div>
+        <div class="fs-card-meta">
+          <div class="fs-card-badge">
+            <img src="https://www.figma.com/api/mcp/asset/f0662edf-c008-4372-92f3-99db0ab5e6ee" alt="" />
+            Repurpose
+          </div>
+          <div class="fs-card-meta-right">
+            <span class="fs-card-uses">6.2k uses</span>
+            <div class="fs-card-icons">
+              <img src="https://www.figma.com/api/mcp/asset/83fe4246-4129-4c70-a8ec-395e7ce4efcd" alt="" />
+              <img src="https://www.figma.com/api/mcp/asset/a56a6724-365e-4dc8-bd8c-4d19b4992e1a" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="fs-card-body">
+          <p class="fs-card-title">LinkedIn Thread Converter</p>
+          <p class="fs-card-desc">Convert a video transcript into a high-performing LinkedIn carousel or text thread.</p>
+          <div class="fs-card-tags">
+            <span class="fs-card-tag">LinkedIn</span>
+            <span class="fs-card-tag">B2B</span>
+            <span class="fs-card-tag">Thread</span>
+          </div>
+          <div class="fs-card-prompt">You are a B2B LinkedIn content expert who has helped dozens of thought leaders grow to 50,000+ followers. Your task is to transform the transcript below into a high-performing 7-part LinkedIn text thread...</div>
+          <button class="fs-card-show">→ Show full prompt</button>
+        </div>
+        <div class="fs-card-actions">
+          <button class="fs-btn fs-btn-copy">
+            <img src="https://www.figma.com/api/mcp/asset/c076512d-47f0-459d-8e35-9f6df12ac59c" alt="" /> Copy
+          </button>
+          <button class="fs-btn" style="flex:1;">
+            <img src="https://www.figma.com/api/mcp/asset/e66a7f9e-70d6-4e38-b899-df04d1e3230b" alt="" /> Download Skill
+          </button>
+          <button class="fs-btn">
+            <img src="https://www.figma.com/api/mcp/asset/1af158b3-d12a-4ea8-ab80-174bbe8544c8" alt="" /> Download
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 5: Comment Bait Questions -->
+      <div class="fs-card" data-category="engagement">
+        <div class="fs-card-banner">
+          <img src="https://www.figma.com/api/mcp/asset/52a5eeb4-6807-4207-9c7f-d75b1ed8a276" alt="" />
+        </div>
+        <div class="fs-card-meta">
+          <div class="fs-card-badge">
+            <img src="https://www.figma.com/api/mcp/asset/85adf981-0d7a-44df-b762-127b0dd925f2" alt="" />
+            Engagement
+          </div>
+          <div class="fs-card-meta-right">
+            <span class="fs-card-uses">5.5k uses</span>
+            <div class="fs-card-icons">
+              <img src="https://www.figma.com/api/mcp/asset/83fe4246-4129-4c70-a8ec-395e7ce4efcd" alt="" />
+              <img src="https://www.figma.com/api/mcp/asset/a56a6724-365e-4dc8-bd8c-4d19b4992e1a" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="fs-card-body">
+          <p class="fs-card-title">Comment Bait Questions</p>
+          <p class="fs-card-desc">Generate 10 engagement-driving questions to pin as a comment or use in a caption.</p>
+          <div class="fs-card-tags">
+            <span class="fs-card-tag">Comments</span>
+            <span class="fs-card-tag">Engagement</span>
+            <span class="fs-card-tag">Community</span>
+          </div>
+          <div class="fs-card-prompt">You are a social media engagement specialist who has grown comment sections to thousands of replies. Generate 10 high-engagement questions from the transcript below that bait genuine responses...</div>
+          <button class="fs-card-show">→ Show full prompt</button>
+        </div>
+        <div class="fs-card-actions">
+          <button class="fs-btn fs-btn-copy">
+            <img src="https://www.figma.com/api/mcp/asset/c076512d-47f0-459d-8e35-9f6df12ac59c" alt="" /> Copy
+          </button>
+          <button class="fs-btn" style="flex:1;">
+            <img src="https://www.figma.com/api/mcp/asset/e66a7f9e-70d6-4e38-b899-df04d1e3230b" alt="" /> Download Skill
+          </button>
+          <button class="fs-btn">
+            <img src="https://www.figma.com/api/mcp/asset/1af158b3-d12a-4ea8-ab80-174bbe8544c8" alt="" /> Download
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 6: Twitter/X Thread (10 posts) -->
+      <div class="fs-card" data-category="repurpose">
+        <div class="fs-card-banner">
+          <img src="https://www.figma.com/api/mcp/asset/ac3cc381-1554-4310-a23a-ec7bea10501b" alt="" />
+        </div>
+        <div class="fs-card-meta">
+          <div class="fs-card-badge">
+            <img src="https://www.figma.com/api/mcp/asset/f0662edf-c008-4372-92f3-99db0ab5e6ee" alt="" />
+            Repurpose
+          </div>
+          <div class="fs-card-meta-right">
+            <span class="fs-card-uses">5.0k uses</span>
+            <div class="fs-card-icons">
+              <img src="https://www.figma.com/api/mcp/asset/83fe4246-4129-4c70-a8ec-395e7ce4efcd" alt="" />
+              <img src="https://www.figma.com/api/mcp/asset/19971403-5861-4c3f-9170-171a84ba77aa" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="fs-card-body">
+          <p class="fs-card-title">Twitter/X Thread (10 posts)</p>
+          <p class="fs-card-desc">Transform a transcript into a tightly-crafted 10-post Twitter/X thread built for engagement.</p>
+          <div class="fs-card-tags">
+            <span class="fs-card-tag">Twitter/X</span>
+            <span class="fs-card-tag">Thread</span>
+            <span class="fs-card-tag">Virality</span>
+          </div>
+          <div class="fs-card-prompt">You are a viral Twitter/X strategist who has built threads with 10M+ impressions. Transform the transcript below into a punchy 10-post thread optimised for maximum reach and retweets...</div>
+          <button class="fs-card-show">→ Show full prompt</button>
+        </div>
+        <div class="fs-card-actions">
+          <button class="fs-btn fs-btn-copy">
+            <img src="https://www.figma.com/api/mcp/asset/c076512d-47f0-459d-8e35-9f6df12ac59c" alt="" /> Copy
+          </button>
+          <button class="fs-btn" style="flex:1;">
+            <img src="https://www.figma.com/api/mcp/asset/e66a7f9e-70d6-4e38-b899-df04d1e3230b" alt="" /> Download Skill
+          </button>
+          <button class="fs-btn">
+            <img src="https://www.figma.com/api/mcp/asset/1af158b3-d12a-4ea8-ab80-174bbe8544c8" alt="" /> Download
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CTA -->
+    <a href="https://tokscript.com/pricing" target="_blank" rel="noopener" class="fs-cta">Sign Up Today To Access More Skills</a>
+
+  </div>
+</section>
+
+<!-- BEFORE & AFTER -->
+<section id="beforeafter">
+  <img class="ba-bg" src="https://www.figma.com/api/mcp/asset/e64a3b91-370c-4c96-a1d3-ec95dea1b795" alt="" />
+  <div class="ba-inner">
+
+    <!-- Header -->
+    <div class="ba-header-block">
+      <div class="ba-header-bg">
+        <img class="ba-header-bg-l2" src="https://www.figma.com/api/mcp/asset/3b162cff-12d1-4421-9111-6d14a342c23f" alt="" />
+        <img class="ba-header-bg-l1" src="https://www.figma.com/api/mcp/asset/2cb3683b-a1b0-4979-96d9-4b7f860b6499" alt="" />
+      </div>
+      <div class="ba-header-content">
+        <div class="ba-pill">Before &amp; After</div>
+        <h2 class="ba-title">From Manual Guesswork to<br>Automated Viral Systems</h2>
+        <p class="ba-subtitle">Replace manual research with automated viral systems. Build data-backed scripts and scale your creative output in seconds.</p>
+      </div>
+    </div>
+
+    <!-- Carousel -->
+    <div class="ba-carousel-outer">
+      <div class="ba-track" id="baTrack">
+
+        <!-- Slide 1: Competitor Intelligence -->
+        <div class="ba-slide">
+          <p class="ba-slide-title">Competitor Intelligence</p>
+          <div class="ba-cards-row">
+            <div class="ba-card ba-before">
+              <img class="ba-card-bg" src="https://www.figma.com/api/mcp/asset/36a0e707-f1f6-4949-9baf-f8b4031758c2" alt="" />
+              <span class="ba-card-label">Before</span>
+              <img class="ba-card-img" src="https://www.figma.com/api/mcp/asset/6255efb0-88bc-4382-8352-cc2d17e46eb5" alt="Before" />
+              <p class="ba-card-desc">Open 10 tabs, watch videos, take notes by hand, try to spot patterns across creators in your niche.</p>
+            </div>
+            <div class="ba-card ba-after">
+              <img class="ba-card-bg" src="https://www.figma.com/api/mcp/asset/36a0e707-f1f6-4949-9baf-f8b4031758c2" alt="" />
+              <span class="ba-card-label">After</span>
+              <img class="ba-card-img" src="https://www.figma.com/api/mcp/asset/70de06f0-02f4-405a-8f77-63b0cc6b328f" alt="After" />
+              <p class="ba-card-desc">"Research the top 5 creators in my niche and tell me what they have in common." Done in under 30 seconds.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2: Rapid Scripting -->
+        <div class="ba-slide">
+          <p class="ba-slide-title">Rapid Scripting</p>
+          <div class="ba-cards-row">
+            <div class="ba-card ba-before">
+              <img class="ba-card-bg" src="https://www.figma.com/api/mcp/asset/36a0e707-f1f6-4949-9baf-f8b4031758c2" alt="" />
+              <span class="ba-card-label">Before</span>
+              <img class="ba-card-img" src="https://www.figma.com/api/mcp/asset/e1af7437-a85d-4281-a6c5-bf87bb34e720" alt="Before" />
+              <p class="ba-card-desc">Try to remember what made your last video work, guess at a hook, write something, delete it, start over.</p>
+            </div>
+            <div class="ba-card ba-after">
+              <img class="ba-card-bg" src="https://www.figma.com/api/mcp/asset/36a0e707-f1f6-4949-9baf-f8b4031758c2" alt="" />
+              <span class="ba-card-label">After</span>
+              <img class="ba-card-img" src="https://www.figma.com/api/mcp/asset/0d6bcb7d-4da4-4985-afd4-ef2076d1d359" alt="After" />
+              <p class="ba-card-desc">Pull your top 5 scripts, generate 20 hooks, pick the best one, and have a full script written in one conversation.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3: Automated Briefing -->
+        <div class="ba-slide">
+          <p class="ba-slide-title">Automated Briefing</p>
+          <div class="ba-cards-row">
+            <div class="ba-card ba-before">
+              <img class="ba-card-bg" src="https://www.figma.com/api/mcp/asset/36a0e707-f1f6-4949-9baf-f8b4031758c2" alt="" />
+              <span class="ba-card-label">Before</span>
+              <img class="ba-card-img" src="https://www.figma.com/api/mcp/asset/170382c5-71c2-4066-94c6-84851b6378a8" alt="Before" />
+              <p class="ba-card-desc">Spend hours writing briefs with no real data, guessing at structures that might work based on intuition alone.</p>
+            </div>
+            <div class="ba-card ba-after">
+              <img class="ba-card-bg" src="https://www.figma.com/api/mcp/asset/36a0e707-f1f6-4949-9baf-f8b4031758c2" alt="" />
+              <span class="ba-card-label">After</span>
+              <img class="ba-card-img" src="https://www.figma.com/api/mcp/asset/0e95f449-37bd-4a85-b834-b150231ab057" alt="After" />
+              <p class="ba-card-desc">Analyze top-performing content in your niche and get a proven brief structure ready in 10 minutes.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="ba-nav">
+      <button class="ba-arrow" id="baPrev">&#8592;</button>
+      <div class="ba-dots">
+        <button class="ba-dot active" data-idx="0"></button>
+        <button class="ba-dot" data-idx="1"></button>
+        <button class="ba-dot" data-idx="2"></button>
+      </div>
+      <button class="ba-arrow" id="baNext">&#8594;</button>
+    </div>
+
+    <!-- CTA -->
+    <div class="ba-cta-wrap">
+      <a href="#" class="ba-cta">Deploy These Workflows</a>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function() {
+  const track = document.getElementById('baTrack');
+  const outer = track.parentElement;
+  const dots = document.querySelectorAll('.ba-dot');
+  let cur = 0, total = 3;
+  function slideWidth() { return outer.offsetWidth; }
+  function go(n) {
+    cur = (n + total) % total;
+    track.style.transform = 'translateX(-' + (cur * slideWidth()) + 'px)';
+    dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+  }
+  document.getElementById('baNext').addEventListener('click', () => go(cur + 1));
+  document.getElementById('baPrev').addEventListener('click', () => go(cur - 1));
+  dots.forEach(d => d.addEventListener('click', () => go(+d.dataset.idx)));
+  window.addEventListener('resize', () => go(cur));
+})();
+</script>
+
+<!-- WORKFLOWS -->
+<section id="workflows">
+  <div class="wf-card">
+
+    <img class="wf-card-bg" src="https://www.figma.com/api/mcp/asset/2eafc0bd-8627-4816-9584-298e09542af8" alt="" />
+
+    <div class="wf-inner">
+
+      <!-- Header -->
+      <div class="wf-header">
+        <div class="wf-pill">Workflows</div>
+        <h2 class="wf-title">Real Workflows, Not Isolated Tools</h2>
+        <p class="wf-subtitle">The power isn't in individual tools. It's in chaining them together in a single conversation.</p>
+      </div>
+
+      <!-- Panel: accordion + images -->
+      <div class="wf-panel">
+
+        <!-- Left: accordion -->
+        <div class="wf-left">
+          <div class="wf-item active" data-wf="0">
+            <div class="wf-item-header">Weekly Competitor Intelligence Report</div>
+            <p class="wf-item-desc">Analyze the top 5 creators to instantly decode viral hooks. Sync with trending sounds for three content strategies.</p>
+          </div>
+          <div class="wf-divider"></div>
+          <div class="wf-item" data-wf="1">
+            <div class="wf-item-header">Content Idea to Ready-to-Shoot Script</div>
+            <p class="wf-item-desc">Turn any content idea into a fully structured, ready-to-shoot script with hooks, body, and CTA — all in one conversation.</p>
+          </div>
+          <div class="wf-divider"></div>
+          <div class="wf-item" data-wf="2">
+            <div class="wf-item-header">Brand Partnership Creator Research</div>
+            <p class="wf-item-desc">Shortlist niche creators to compare engagement and content fit. Analyze audience breakdowns to generate data-backed pitch briefs.</p>
+          </div>
+        </div>
+
+        <!-- Right: images -->
+        <div class="wf-images">
+          <img class="wf-img wf-img-0 active" data-wf="0" src="https://www.figma.com/api/mcp/asset/5d8007e8-ca54-40f3-b171-cc450577b37f" alt="" />
+          <img class="wf-img wf-img-1" data-wf="1" src="https://www.figma.com/api/mcp/asset/cf9c0780-91d6-4d09-9c72-1a9750c84915" alt="" />
+          <img class="wf-img wf-img-2" data-wf="2" src="https://www.figma.com/api/mcp/asset/90b89fbc-a45f-4561-aa8a-519a9ef25924" alt="" />
+        </div>
+
+      </div>
+
+      <!-- CTA -->
+      <a href="#" class="wf-cta">Sign Up Now</a>
+
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const items = document.querySelectorAll('.wf-item');
+  const imgs  = document.querySelectorAll('.wf-img');
+  items.forEach(item => {
+    item.addEventListener('click', function() {
+      const idx = this.dataset.wf;
+      items.forEach(i => i.classList.remove('active'));
+      imgs.forEach(i  => i.classList.remove('active'));
+      this.classList.add('active');
+      document.querySelector('.wf-img[data-wf="' + idx + '"]').classList.add('active');
+    });
+  });
+})();
+</script>
+
+
+<!-- ⑬ TOOLS -->
+<section id="tools">
+  <div class="tools-inner">
+
+    <!-- Header -->
+    <div class="tools-header-block">
+      <img class="tools-header-bg" src="https://www.figma.com/api/mcp/asset/4b4a8b9d-2113-4a2a-aaf8-f45a920bf6cf" alt="" />
+      <div class="tools-header-content">
+        <div class="tools-pill">Tools</div>
+        <h2 class="tools-h2">14 Tools Available</h2>
+        <p class="tools-sub">Every tool your agent needs to transcribe content, download videos, and analyze creator libraries.</p>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <table class="tools-table reveal">
+      <thead>
+        <tr>
+          <th style="width:44px;"></th>
+          <th>Tools</th>
+          <th>Description</th>
+          <th class="t-check">Included</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><svg x="7" y="7" width="14" height="14" viewBox="0 0 24 24"><path fill="#34d399" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></svg></td>
+          <td class="t-name">get_tiktok_transcript</td>
+          <td class="t-desc">Extract transcript and captions from a single TikTok video URL</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><rect x="7.5" y="7.5" width="13" height="13" rx="3.5" stroke="#34d399" stroke-width="1.5"/><circle cx="14" cy="14" r="3" stroke="#34d399" stroke-width="1.5"/><circle cx="17.8" cy="10.2" r=".8" fill="#34d399"/></svg></td>
+          <td class="t-name">get_instagram_transcript</td>
+          <td class="t-desc">Extract transcript and captions from a single Instagram video or Reel URL</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><rect x="7" y="9" width="14" height="10" rx="2.5" stroke="#34d399" stroke-width="1.5"/><path d="M12 11.8l4.5 2.2-4.5 2.2v-4.4z" fill="#34d399"/></svg></td>
+          <td class="t-name">get_youtube_transcript</td>
+          <td class="t-desc">Extract transcript and captions from a single YouTube video URL</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><path d="M8 10h12M8 14h10M8 18h7" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/></svg></td>
+          <td class="t-name">get_bulk_transcripts</td>
+          <td class="t-desc">Extract transcripts from multiple individual video URLs in a single call</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><svg x="7" y="7" width="14" height="14" viewBox="0 0 24 24"><path fill="#34d399" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></svg></td>
+          <td class="t-name">get_tiktok_collection</td>
+          <td class="t-desc">Process all videos from a TikTok collection or playlist URL</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><path d="M14 8v9M10.5 14l3.5 3.5 3.5-3.5M8 20h12" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-name">download_video</td>
+          <td class="t-desc">Download a single TikTok or Instagram video</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><path d="M14 8v9M10.5 14l3.5 3.5 3.5-3.5M8 20h12" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-name">download_videos_bulk</td>
+          <td class="t-desc">Download multiple TikTok or Instagram videos in one call</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><rect x="7" y="9" width="14" height="10" rx="2" stroke="#fb923c" stroke-width="1.5"/><circle cx="11" cy="13" r="1.5" stroke="#fb923c" stroke-width="1.2"/><path d="M7.5 17l3.5-3 3 2.5 2-2 3.5 3" stroke="#fb923c" stroke-width="1.2" stroke-linejoin="round"/></svg></td>
+          <td class="t-name">download_cover_image</td>
+          <td class="t-desc">Download the cover or thumbnail image for a single video</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><rect x="7" y="9" width="14" height="10" rx="2" stroke="#fb923c" stroke-width="1.5"/><circle cx="11" cy="13" r="1.5" stroke="#fb923c" stroke-width="1.2"/><path d="M7.5 17l3.5-3 3 2.5 2-2 3.5 3" stroke="#fb923c" stroke-width="1.2" stroke-linejoin="round"/></svg></td>
+          <td class="t-name">download_cover_images_bulk</td>
+          <td class="t-desc">Download cover or thumbnail images for multiple videos at once</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#2a1040"/><svg x="7" y="7" width="14" height="14" viewBox="0 0 24 24"><path fill="#a78bfa" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></svg></td>
+          <td class="t-name">get_tiktok_user</td>
+          <td class="t-desc">Get TikTok user profile info including followers, following, and likes</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#2a1040"/><svg x="7" y="7" width="14" height="14" viewBox="0 0 24 24"><path fill="#a78bfa" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></svg></td>
+          <td class="t-name">get_tiktok_user_videos</td>
+          <td class="t-desc">Retrieve all videos from a TikTok user's public profile</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><path d="M8 19v-4M12 19V11M16 19v-6M20 19V8" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/></svg></td>
+          <td class="t-name">get_library_stats</td>
+          <td class="t-desc">Get an overview of your TokScript library: total videos and breakdown by platform</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><rect x="8.5" y="8" width="2.5" height="12" rx="1" stroke="#60a5fa" stroke-width="1.2"/><rect x="12.75" y="8" width="2.5" height="12" rx="1" stroke="#60a5fa" stroke-width="1.2"/><rect x="17" y="8" width="2.5" height="12" rx="1" stroke="#60a5fa" stroke-width="1.2"/></svg></td>
+          <td class="t-name">get_user_library</td>
+          <td class="t-desc">List videos and transcripts stored in your TokScript library</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><rect x="7" y="8" width="14" height="11" rx="2" stroke="#60a5fa" stroke-width="1.5"/><path d="M12 11.8l4 2.2-4 2.2v-4.4z" fill="#60a5fa"/><path d="M10 21h8" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/></svg></td>
+          <td class="t-name">get_stored_video</td>
+          <td class="t-desc">Get full stored data for a specific video from your TokScript library, including transcript</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- ⑭ FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:11px;text-align:center;margin-bottom:40px;">
+      <div style="display:inline-flex;align-items:center;padding:5px 14px;border-radius:20px;font-size:12px;color:#fff;background:linear-gradient(#0d0d0d,#0d0d0d) padding-box,linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box;border:0.5px solid transparent;">FAQ</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:20px;">
+        <h2 style="font-size:clamp(24px,5vw,40px);font-weight:800;color:#fff;letter-spacing:-1.4px;line-height:1.12;margin:0;max-width:568px;">Frequently Asked Questions</h2>
+        <p style="font-size:16px;color:rgba(255,255,255,0.48);margin:0;line-height:1.65;max-width:730px;">The power isn't in individual tools. It's in chaining them together in a single conversation.</p>
+      </div>
+    </div>
+    <div class="faq-list reveal" id="faqList">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What is the TokScript connector?<span class="faq-icon">+</span></button>
+        <div class="faq-a">The TokScript connector is a URL you paste into Claude or ChatGPT that gives your AI direct access to TokScript's tools. Once connected, your AI can pull transcripts, research creators, find trending content, and run AI agents — all from inside your normal chat.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Do I need a paid plan to use it?<span class="faq-icon">+</span></button>
+        <div class="faq-a">The connector is included with any TokScript plan starting at $10/month or $39/year. Some individual tools are marked Free — those work on all plans. The AI agents and advanced tools require a paid subscription.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I connect it to Claude?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Copy the URL at the top of this page. In Claude, go to Settings → Connectors → Add Custom Connector, paste the URL, and follow the login prompt. The whole process takes under 2 minutes.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I connect it to ChatGPT?<span class="faq-icon">+</span></button>
+        <div class="faq-a">In ChatGPT, go to the GPT builder or your settings panel, find the Connectors or Actions section, and paste the TokScript URL. You'll be prompted to log in with your TokScript account to complete the connection.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What video platforms does it support?<span class="faq-icon">+</span></button>
+        <div class="faq-a">TokScript works with TikTok, Instagram Reels, and YouTube Shorts. Just paste any video URL into your AI conversation and TokScript handles the rest.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How fast is it?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Average response time is under 3 seconds for most tools. Transcript generation and bulk processing may take slightly longer depending on video length and volume.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is there a limit on how many videos I can process?<span class="faq-icon">+</span></button>
+        <div class="faq-a">No per-use credits or hard caps on standard usage. Bulk processing supports up to 20 videos per conversation. For large-scale research or automation, reach out to the team.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What languages are supported?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Transcripts are available in 100+ languages. The AI agents and analysis tools work in English, with additional language support being added regularly.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is my data secure?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Yes. TokScript only processes the specific video URLs or creator handles you mention in conversation. No browsing history, personal data, or unrelated information is accessed or stored.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Can my whole team use it?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Each TokScript account connects individually to your AI tool of choice. For team accounts or agency access, check the pricing page for multi-seat options.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Does it work with Cursor or Windsurf?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Claude and ChatGPT are live now. Support for Cursor, Windsurf, and other AI tools is coming soon. Join the waitlist on the pricing page to be notified first.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Do I need to know which tool to use?<span class="faq-icon">+</span></button>
+        <div class="faq-a">No. Just ask your AI a question in plain language — "Why did this video go viral?" or "Find trending sounds in the fitness niche" — and it automatically picks and runs the right TokScript tool behind the scenes.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Can I build my own workflows?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Yes. Because everything runs through natural conversation, you can chain multiple tools in sequence just by asking follow-up questions. Many users build repeatable weekly research workflows entirely in Claude or ChatGPT.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What's the difference between free and paid tools?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Free tools include basic transcript retrieval, video stats, creator profiles, keyword search, and hashtag stats. Paid tools include all three AI agents, trending data, bulk processing, comment analysis, and advanced creator intelligence.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">I'm already a TokScript subscriber. What do I do?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Just copy the connector URL at the top of this page, paste it into Claude or ChatGPT, and log in with your existing TokScript account. No upgrade needed — it's included in your current plan.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I get help if something isn't working?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Visit the help center at tokscript.com/help or reach out through the in-app chat. Paid subscribers get priority support with typical response times under a few hours.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA: ONE PLAN -->
+<section id="cta-oneplan">
+  <div class="ctap-outer">
+
+    <img class="ctap-bg" src="https://www.figma.com/api/mcp/asset/3553c35f-dc4b-4cba-bf67-47ca8f98bd75" alt="" />
+    <img class="ctap-deco-left" src="https://www.figma.com/api/mcp/asset/6b875296-7434-43b4-8bba-18102b5abe89" alt="" />
+    <img class="ctap-deco-right" src="https://www.figma.com/api/mcp/asset/9a37443b-5d82-4376-99dc-70ff428c4314" alt="" />
+
+    <div class="ctap-content">
+      <h2 class="ctap-title">One Plan.&nbsp;<br>Unlimited Intelligence.</h2>
+      <p class="ctap-desc">Unlimited transcripts. All three AI agents. Bulk processing. HD downloads.<br>Creator intelligence. 100+ languages. Claude and ChatGPT.</p>
+      <div class="ctap-checks">
+        <span class="ctap-check"><span class="ctap-tick">✓</span> No credits</span>
+        <span class="ctap-check"><span class="ctap-tick">✓</span> No per-use charges</span>
+        <span class="ctap-check"><span class="ctap-tick">✓</span> Cancel anytime</span>
+        <span class="ctap-check"><span class="ctap-tick">✓</span> 28 tools included</span>
+        <span class="ctap-check"><span class="ctap-tick">✓</span> Claude + ChatGPT</span>
+      </div>
+      <div class="ctap-url-bar">
+        <span class="ctap-url-text">https://api.tokscript.com/mcp</span>
+        <button onclick="copyCtaUrl(this)" class="ctap-url-btn">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copy URL
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+
+<script>
+function copyCtaUrl(btn) {
+  navigator.clipboard.writeText('https://api.tokscript.com/mcp').catch(() => {});
+  btn.textContent = '✓ Copied!';
+  setTimeout(() => {
+    btn.innerHTML = '<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy URL';
+  }, 2000);
+}
+</script>
+
+<!-- Video modal -->
+<div class="video-modal" id="videoModal" onclick="handleModalClick(event)">
+  <div class="video-modal-inner">
+    <button class="video-modal-close" onclick="closeVideoModal()" aria-label="Close">&#x2715;</button>
+    <iframe id="videoFrame" src="" frameborder="0"
+      allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+      allowfullscreen></iframe>
+  </div>
+</div>
+
+<script>
+  /* ── Copy URL ── */
+  function copyUrl() {
+    const btn = document.getElementById('urlCopy');
+    navigator.clipboard.writeText('https://api.tokscript.com/mcp').catch(() => {});
+    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 8L5.5 11L12.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Copied!';
+    btn.classList.add('ok');
+    setTimeout(() => {
+      btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M3 10H2C1.44772 10 1 9.55228 1 9V2C1 1.44772 1.44772 1 2 1H9C9.55228 1 10 1.44772 10 2V3" stroke="currentColor" stroke-width="1.2"/></svg> Copy';
+      btn.classList.remove('ok');
+    }, 2000);
+  }
+
+  /* ── Copy URL ── */
+  function copyURL(inputId, btnId) {
+    const val = document.getElementById(inputId).value;
+    const btn = document.getElementById(btnId);
+    navigator.clipboard.writeText(val).catch(() => {});
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('ok');
+    setTimeout(() => {
+      btn.innerHTML = '<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy URL';
+      btn.classList.remove('ok');
+    }, 2000);
+  }
+
+  /* ── Skills filter ── */
+  function filterSkills(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    document.querySelectorAll('.skill-card').forEach(card => {
+      const match = cat === 'all' || card.dataset.cat === cat;
+      card.toggleAttribute('data-hidden', !match);
+      card.style.display = match ? '' : 'none';
+    });
+  }
+
+  /* ── Tabs ── */
+  function switchTab(idx, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('on'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('on'));
+    btn.classList.add('on');
+    document.getElementById('tab' + idx).classList.add('on');
+  }
+
+  /* ── Setup tab toggle ── */
+  function setTab(tab) {
+    const claude  = document.getElementById('tabClaude');
+    const chatgpt = document.getElementById('tabChatgpt');
+    const isC = tab === 'claude';
+    claude.style.border  = isC ? '1px solid #00f7ef' : '1.04px solid rgba(255,255,255,0.1)';
+    claude.style.background = isC ? '#1c1c1c' : 'radial-gradient(ellipse at bottom right,rgba(255,255,255,0.09) 0%,rgba(128,128,128,0.045) 50%,transparent 100%)';
+    claude.querySelector('span').style.color = isC ? '#00f7ef' : 'rgba(255,255,255,0.48)';
+    chatgpt.style.border = isC ? '1.04px solid rgba(255,255,255,0.1)' : '1px solid #00f7ef';
+    chatgpt.style.background = isC ? 'radial-gradient(ellipse at bottom right,rgba(255,255,255,0.09) 0%,rgba(128,128,128,0.045) 50%,transparent 100%)' : '#1c1c1c';
+    chatgpt.querySelector('span').style.color = isC ? 'rgba(255,255,255,0.48)' : '#00f7ef';
+    chatgpt.querySelector('div').style.opacity = isC ? '0.7' : '1';
+  }
+
+  /* ── FAQ accordion ── */
+  function filterSkills(cat, btn) {
+    document.querySelectorAll('.fs-tab').forEach(t => t.classList.remove('fs-tab-active'));
+    btn.classList.add('fs-tab-active');
+    document.querySelectorAll('#fsCards .fs-card').forEach(card => {
+      card.classList.toggle('hidden', cat !== 'all' && card.dataset.category !== cat);
+    });
+  }
+
+  function toggleFaq(btn) {
+    const isOpen = btn.classList.contains('open');
+    document.querySelectorAll('.faq-q.open').forEach(q => {
+      q.classList.remove('open');
+      q.nextElementSibling.classList.remove('open');
+    });
+    if (!isOpen) {
+      btn.classList.add('open');
+      btn.nextElementSibling.classList.add('open');
+    }
+  }
+
+
+  /* ── Video modal ── */
+  var VIDEO_ID = 'lfpVSGkCKcc';
+
+  function openVideoModal() {
+    document.getElementById('videoFrame').src =
+      'https://www.youtube.com/embed/' + VIDEO_ID + '?autoplay=1&rel=0';
+    document.getElementById('videoModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeVideoModal() {
+    document.getElementById('videoModal').classList.remove('open');
+    document.getElementById('videoFrame').src = '';
+    document.body.style.overflow = '';
+  }
+  function handleModalClick(e) {
+    if (e.target === document.getElementById('videoModal')) closeVideoModal();
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeVideoModal();
+  });
+
+  /* ── Mobile nav toggle ── */
+  function toggleMobileNav() {
+    const nav = document.getElementById('mobileNav');
+    const btn = document.getElementById('navHamburger');
+    const isOpen = nav.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+  // Close mobile nav on link click
+  document.querySelectorAll('.mobile-nav a').forEach(a => {
+    a.addEventListener('click', () => {
+      document.getElementById('mobileNav').classList.remove('open');
+      document.getElementById('navHamburger').classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  /* ── Scroll reveal ── */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (i % 6) * 0.07 + 's';
+    io.observe(el);
+  });
+</script>
+</body>
+</html>
