@@ -1,39 +1,30 @@
-"use client";
+import PageData from "./PageData";
 
-import { useEffect } from "react";
-import Header from "../../components/Header";
-import { bodyHtml, pageScript, jsonLd } from "./content";
-import "./claude.css";
+export const metadata = {
+  title: "TokScript on Claude | TikTok Research Inside Your AI",
+  description:
+    "Connect TokScript to Claude. Pull TikTok transcripts, generate hooks, analyze virality, and research creators inside your Claude conversation.",
+  alternates: {
+    canonical: "https://tokscript.com/claude",
+  },
+  openGraph: {
+    title: "TokScript on Claude",
+    description:
+      "Connect TokScript to Claude. Research TikTok inside your AI conversation.",
+    url: "https://tokscript.com/claude",
+    siteName: "TokScript",
+    images: [
+      {
+        url: "https://tokscript.com/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "TokScript on Claude",
+      },
+    ],
+    type: "website",
+  },
+};
 
 export default function ClaudePage() {
-  useEffect(() => {
-    // Execute the page's interactive scripts after the body HTML is in the DOM.
-    // The script attaches click handlers, copy-button helpers (on window for inline onclick),
-    // platform tab switching, logo rotation, and the platform-word rotator.
-    const scriptEl = document.createElement("script");
-    scriptEl.textContent = pageScript;
-    scriptEl.setAttribute("data-tokscript-claude-runtime", "1");
-    document.body.appendChild(scriptEl);
-
-    return () => {
-      // Clean up the injected script tag on unmount; intervals declared in the IIFEs
-      // continue running until full page navigation, which matches the original static
-      // behavior (the original page never tore them down either).
-      scriptEl.remove();
-    };
-  }, []);
-
-  return (
-    <>
-      <Header />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: jsonLd }}
-      />
-      <div
-        className="claude-page-body"
-        dangerouslySetInnerHTML={{ __html: bodyHtml }}
-      />
-    </>
-  );
+  return <PageData />;
 }

@@ -19693,8 +19693,10 @@ $ds-font: "Inter", system-ui, sans-serif;
   }
 }
 
-/* ── Hero Scan Video button — platform colour overrides ── */
-.landing-page.platform-instagram .chat-input-container .send-btn {
+/* ── Hero Scan Video button — platform colour overrides ──
+   Inactive state inherits the base muted look (dark bg, faded text/icon).
+   Only the .active state gets the platform colour, matching the TikTok pattern. */
+.landing-page.platform-instagram .chat-input-container .send-btn.active {
   background: #f77737 !important;
   background-color: #f77737 !important;
   border-color: #f77737 !important;
@@ -19706,8 +19708,7 @@ $ds-font: "Inter", system-ui, sans-serif;
     color: #ffffff !important;
   }
 
-  &:hover.active,
-  &.active:hover {
+  &:hover {
     background: #db5e22 !important;
     background-color: #db5e22 !important;
     border-color: #db5e22 !important;
@@ -19716,7 +19717,7 @@ $ds-font: "Inter", system-ui, sans-serif;
   }
 }
 
-.landing-page.platform-youtube .chat-input-container .send-btn {
+.landing-page.platform-youtube .chat-input-container .send-btn.active {
   background: #e53935 !important;
   background-color: #e53935 !important;
   border-color: #e53935 !important;
@@ -19728,8 +19729,7 @@ $ds-font: "Inter", system-ui, sans-serif;
     color: #ffffff !important;
   }
 
-  &:hover.active,
-  &.active:hover {
+  &:hover {
     background: #c62828 !important;
     background-color: #c62828 !important;
     border-color: #c62828 !important;

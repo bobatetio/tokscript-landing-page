@@ -1,1617 +1,2544 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
-import "./mcp.scss";
 
 const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
-const VideoLightbox = dynamic(
-  () => import("@/components/modals/VideoLightbox"),
-  { ssr: false },
-);
 
-// Hero Section
-import heroClaudeLogo from "../../../assets_updated/images/mcp/hero-claude-logo.png";
-import heroChatgptLogo from "../../../assets_updated/images/mcp/hero-chatgpt-logo.png";
-import heroFlare from "../../../assets_updated/images/mcp/hero-flare.png";
-import badgeIcon from "../../../assets_updated/images/mcp/badge-icon.svg";
-import copyIcon from "../../../assets_updated/images/mcp/copy-icon.svg";
-import heroVideoBg from "../../../assets_updated/images/mcp/hero-video-bg.png";
-import playButtonIcon from "../../../assets_updated/images/mcp/play-button-icon.svg";
+const STATIC_CSS = `
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;.tsm-mcp 400;500;600;700;800&display=swap');
+    *, .tsm-mcp::before, .tsm-mcp::after { box-sizing: border-box; margin: 0; padding: 0; }
+    .tsm-mcp {
+      --bg: #0d0d0d;
+      --s1: #141414;
+      --s2: #1a1a1a;
+      --s3: #1f1f1f;
+      --teal: #00D9B4;
+      --teal12: rgba(0,217,180,.12);
+      --teal25: rgba(0,217,180,.25);
+      --teal06: rgba(0,217,180,.06);
+      --teal40: rgba(0,217,180,.4);
+      --white: #fff;
+      --muted: rgba(255,255,255,.48);
+      --muted2: rgba(255,255,255,.26);
+      --border: rgba(255,255,255,.07);
+      --r: 14px;
+      --font: 'Inter', system-ui, sans-serif;
+    }
+    .tsm-mcp { scroll-behavior: smooth; scroll-snap-type: y proximity; overflow-y: scroll; }
+    .tsm-mcp section { scroll-snap-align: start; }
+    .tsm-mcp { background: var(--bg); color: var(--white); font-family: var(--font); line-height: 1.65; overflow-x: hidden; }
+    .tsm-mcp a { color: inherit; text-decoration: none; }
+    .tsm-mcp button { font-family: var(--font); cursor: pointer; }
+    .tsm-mcp img { display: block; }
 
-// How It Works Section
-import hiwBgTexture from "../../../assets_updated/images/mcp/hiw-bg-texture.png";
-import hiwHeaderBg from "../../../assets_updated/images/mcp/hiw-header-bg.png";
-import hiwCardBg from "../../../assets_updated/images/mcp/hiw-card-bg.png";
-import hiwStep1Img from "../../../assets_updated/images/mcp/hiw-step1-img.png";
-import hiwStep2Img from "../../../assets_updated/images/mcp/hiw-step2-img.png";
-import hiwStep3Img from "../../../assets_updated/images/mcp/hiw-step3-img.png";
+    .tsm-mcp /* Grid overlay — circular fade: hidden at center, .tsm-mcp visible at edges */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 80px 80px;
+      -webkit-mask-image: radial-gradient(ellipse 65% 65% at 50% 50%, transparent 0%, transparent 45%, black 85%);
+      mask-image: radial-gradient(ellipse 65% 65% at 50% 50%, transparent 0%, transparent 45%, black 85%);
+    }
 
-// Who It's For Section
-import whoBgSpiral from "../../../assets_updated/images/mcp/who-bg-spiral.png";
-import whoHeaderBg from "../../../assets_updated/images/mcp/who-header-bg.png";
-import whoCardGridBg from "../../../assets_updated/images/mcp/who-card-grid-bg.png";
-import whoBrandMarketers from "../../../assets_updated/images/mcp/who-brand-marketers.png";
-import whoResearchers from "../../../assets_updated/images/mcp/who-researchers.png";
-import whoUgcMarketplaces from "../../../assets_updated/images/mcp/who-ugc-marketplaces.png";
-import whoSoloCreator from "../../../assets_updated/images/mcp/who-solo-creator.png";
-import whoAgencies from "../../../assets_updated/images/mcp/who-agencies.png";
+    .tsm-mcp /* ── Nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 68px;
+      background: rgba(13,13,13,.88); backdrop-filter: blur(20px);
+      border-bottom: none;
+    }
+    .tsm-mcp .nav-logo img { height: 28px; width: auto; }
+    .tsm-mcp .nav-links { display: flex; align-items: center; gap: 32px; }
+    .tsm-mcp .nav-links a { font-size: 14px; color: rgba(255,255,255,.8); transition: color .2s; white-space: nowrap; }
+    .tsm-mcp .nav-links a:hover { color: var(--white); }
+    .tsm-mcp .nav-links a.active { color: var(--white); font-weight: 500; position: relative; }
+    .tsm-mcp .nav-links a.active::after {
+      content: ''; position: absolute; left: 50%; transform: translateX(-50%); bottom: -8px;
+      width: 40px; height: 2px; border-radius: 2px;
+      background: linear-gradient(90deg, transparent, #00D9B4, transparent);
+      box-shadow: 0 0 8px rgba(0,217,180,.8), 0 0 16px rgba(0,217,180,.4);
+    }
+    .tsm-mcp .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .tsm-mcp .btn-ghost { height: 38px; padding: 0 18px; border: 1px solid rgba(255,255,255,.2); border-radius: 14px; background: transparent; color: var(--white); font-size: 14px; font-weight: 500; transition: border-color .2s, background .2s; }
+    .tsm-mcp .btn-ghost:hover { border-color: rgba(255,255,255,.4); background: rgba(255,255,255,.05); }
+    .tsm-mcp .btn-solid { height: 36px; padding: 0 20px; background: var(--white); border: none; border-radius: 14px; color: #0d0d0d; font-size: 14px; font-weight: 600; transition: opacity .2s; }
+    .tsm-mcp .btn-solid:hover { opacity: .86; }
 
-// Setup Section
-import setupBg from "../../../assets_updated/images/mcp/setup-bg.png";
-import setupClaudeIcon from "../../../assets_updated/images/mcp/setup-claude-icon.svg";
-import setupChatgptIcon from "../../../assets_updated/images/mcp/setup-chatgpt-icon.png";
-import setupVideoThumb from "../../../assets_updated/images/mcp/setup-video-thumb.png";
-import setupPlayIcon from "../../../assets_updated/images/mcp/setup-play-icon.svg";
-import setupImageClaude from "../../../assets_updated/images/mcp/setupImageClaude.png";
-import setupImageChatgpt from "../../../assets_updated/images/mcp/setutImageChatgpt.png";
+    .tsm-mcp /* ── Nav Dropdown ── */
+    .nav-dropdown { position: relative; display: flex; align-items: center; }
+    .tsm-mcp .nav-dropdown-trigger {
+      font-size: 14px; color: rgba(255,255,255,.8); background: none; border: none;
+      display: flex; align-items: center; gap: 5px; cursor: pointer; padding: 0;
+      font-family: var(--font); font-weight: 500; color: var(--white);
+      transition: color .2s; white-space: nowrap; position: relative;
+    }
+    .tsm-mcp .nav-dropdown-trigger::after {
+      content: ''; position: absolute; left: 50%; transform: translateX(-50%); bottom: -8px;
+      width: 40px; height: 2px; border-radius: 2px;
+      background: linear-gradient(90deg, transparent, #00D9B4, transparent);
+      box-shadow: 0 0 8px rgba(0,217,180,.8), 0 0 16px rgba(0,217,180,.4);
+    }
+    .tsm-mcp .nav-dropdown-trigger svg { width: 12px; height: 12px; transition: transform .2s; }
+    .tsm-mcp .nav-dropdown:hover .nav-dropdown-trigger svg { transform: rotate(180deg); }
+    .tsm-mcp .nav-dropdown-menu {
+      position: absolute; top: calc(100% + 8px); left: 50%;
+      min-width: 180px;
+      background: #181818; border: 1px solid rgba(255,255,255,.1); border-radius: 14px;
+      padding: 6px; box-shadow: 0 16px 40px rgba(0,0,0,.6);
+      opacity: 0; pointer-events: none; transform: translateX(-50%) translateY(-4px);
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .tsm-mcp /* Transparent bridge fills the gap so hover isn't lost mid-mouse-move */
+    .nav-dropdown-menu::before {
+      content: ''; position: absolute; top: -16px; left: 0; right: 0; height: 16px;
+    }
+    .tsm-mcp .nav-dropdown:hover .nav-dropdown-menu {
+      opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0);
+    }
+    .tsm-mcp .nav-dropdown-menu a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px; border-radius: 9px; font-size: 13px; font-weight: 500;
+      color: rgba(255,255,255,.8); transition: background .15s, color .15s;
+    }
+    .tsm-mcp .nav-dropdown-menu a:hover { background: rgba(255,255,255,.07); color: #fff; }
+    .tsm-mcp .nav-dropdown-menu a img { width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0; }
+    .tsm-mcp .nav-dropdown-menu a img[src*="88f10f22"] { border-radius: 0; }
 
-// Free Skills Section
-import fsBgBottom from "../../../assets_updated/images/mcp/fs-bg-bottom.png";
-import fsHeaderBg from "../../../assets_updated/images/mcp/fs-header-bg.png";
-import fsBannerSummary from "../../../assets_updated/images/mcp/fs-banner-summary.jpg";
-import fsBadgeSummary from "../../../assets_updated/images/mcp/fs-badge-summary.svg";
-import fsBannerHooks from "../../../assets_updated/images/mcp/fs-banner-hooks.jpg";
-import fsBadgeHooks from "../../../assets_updated/images/mcp/fs-badge-hooks.svg";
-import fsBannerRepurpose from "../../../assets_updated/images/mcp/fs-banner-repurpose.jpg";
-import fsBadgeRepurpose from "../../../assets_updated/images/mcp/fs-badge-repurpose.svg";
-import fsBannerEngagement from "../../../assets_updated/images/mcp/fs-banner-engagement.jpg";
-import fsBadgeEngagement from "../../../assets_updated/images/mcp/fs-badge-engagement.svg";
-import fsIconClaude from "../../../assets_updated/images/mcp/fs-icon-claude.svg";
-import fsIconChatgpt from "../../../assets_updated/images/mcp/fs-icon-chatgpt.svg";
-import fsIconLinkedin from "../../../assets_updated/images/mcp/fs-icon-linkedin.svg";
-import fsIconX from "../../../assets_updated/images/mcp/fs-icon-x.svg";
-import fsIconTwitter from "../../../assets_updated/images/mcp/fs-icon-twitter.svg";
-import fsCopyIcon from "../../../assets_updated/images/mcp/fs-copy-icon.svg";
-import fsDownloadSkill from "../../../assets_updated/images/mcp/fs-download-skill.svg";
-import fsDownload from "../../../assets_updated/images/mcp/fs-download.svg";
-import fsCopyIconAlt from "../../../assets_updated/images/mcp/fs-copy-icon-alt.svg";
-import fsDownloadSkillAlt from "../../../assets_updated/images/mcp/fs-download-skill-alt.svg";
-import fsDownloadAlt from "../../../assets_updated/images/mcp/fs-download-alt.svg";
+    .tsm-mcp /* ── Layout ── */
+    section { position: relative; z-index: 1; padding: 96px 24px; overflow: hidden; }
+    .tsm-mcp section.alt { background: var(--s1); }
+    .tsm-mcp .wrap { max-width: 1080px; margin: 0 auto; }
+    .tsm-mcp .sec-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+    .tsm-mcp .sec-tag::before { content: ''; display: block; width: 18px; height: 1.5px; background: var(--teal); }
+    .tsm-mcp .sec-title { font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 800; letter-spacing: -.035em; line-height: 1.12; margin-bottom: 14px; }
+    .tsm-mcp .sec-sub { color: var(--muted); max-width: 520px; font-size: 1rem; }
 
-// Before & After Section
-import baBg from "../../../assets_updated/images/mcp/ba-bg.png";
-import baHeaderBgL2 from "../../../assets_updated/images/mcp/ba-header-bg-l2.png";
-import baHeaderBgL1 from "../../../assets_updated/images/mcp/ba-header-bg-l1.png";
-import baCardBg from "../../../assets_updated/images/mcp/ba-card-bg.png";
-import baBeforeCompetitor from "../../../assets_updated/images/mcp/ba-before-competitor.png";
-import baAfterCompetitor from "../../../assets_updated/images/mcp/ba-after-competitor.png";
-import baBeforeScripting from "../../../assets_updated/images/mcp/ba-before-scripting.png";
-import baAfterScripting from "../../../assets_updated/images/mcp/ba-after-scripting.png";
-import baBeforeBriefing from "../../../assets_updated/images/mcp/ba-before-briefing.png";
-import baAfterBriefing from "../../../assets_updated/images/mcp/ba-after-briefing.png";
+    .tsm-mcp /* ── HERO ── */
+    #hero { height: 100vh; position: relative; overflow: hidden; scroll-snap-align: start; }
+    .tsm-mcp .hero-body {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      padding-top: 12px; width: 100%;
+    }
+    .tsm-mcp /* Flare — Figma 224:372: bright point at BOTTOM, .tsm-mcp glow upward. Bottom must equal video card top. */
+    .hero-flare {
+      position: absolute; left: 50%; top: 112px;
+      transform: translateX(-50%);
+      width: 650px; height: 360px;
+      pointer-events: none; z-index: 1;
+    }
+    .tsm-mcp .hero-flare img { width: 100%; height: 100%; display: block; object-fit: cover; }
+    .tsm-mcp /* Floating AI logos */
+    .hero-claude-logo {
+      position: absolute; left: 75px; top: 92px;
+      width: 106px; height: 106px;
+      pointer-events: none; z-index: 4;
+    }
+    .tsm-mcp .hero-chatgpt-logo {
+      position: absolute; right: 48px; top: 116px;
+      width: 133px; height: 135px;
+      pointer-events: none; z-index: 4;
+    }
+    .tsm-mcp .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #202223; border-radius: 50px;
+      height: 35px; padding: 0 16px 0 10px;
+      font-size: 10.9px; font-weight: 500;
+      color: #fff; margin-bottom: 10px; position: relative; z-index: 1;
+    }
+    .tsm-mcp .badge img { width: 17px; height: 17px; }
+    .tsm-mcp h1 {
+      font-size: 58px; font-weight: 700; letter-spacing: -1.8px; line-height: 64px;
+      margin-bottom: 12px; position: relative; z-index: 1; color: #fff;
+    }
+    .tsm-mcp .hero-sub { font-size: 17px; color: rgba(255,255,255,.8); max-width: 889px; margin: 0 auto 8px; position: relative; z-index: 1; line-height: 32px; font-weight: 400; }
+    .tsm-mcp /* URL bar */
+    .url-bar {
+      display: flex; align-items: center;
+      width: 507px; height: 48px;
+      background: #0d0d0d; border: 2px solid #e1dbdb; border-radius: 16px;
+      padding: 0 4px 0 16px; position: relative; z-index: 2;
+    }
+    .tsm-mcp .url-bar-text { flex: 1; font-size: 14px; color: #d4d4d4; font-weight: 400; white-space: nowrap; overflow: hidden; text-align: left; }
+    .tsm-mcp .url-bar-copy {
+      display: flex; align-items: center; gap: 6px;
+      height: 36px; padding: 0 16px;
+      background: #fff; border: none; border-radius: 14px;
+      color: #06091a; font-size: 14px; font-weight: 500; cursor: pointer; flex-shrink: 0;
+      font-family: var(--font); transition: opacity .2s;
+    }
+    .tsm-mcp .url-bar-copy:hover { opacity: .85; }
+    .tsm-mcp .url-bar-copy.ok { color: #00b694; }
+    .tsm-mcp /* Video preview card — top must equal flare bottom (112+360=472) */
+    .hero-video {
+      position: absolute; left: 50%; top: 472px;
+      transform: translateX(-50%);
+      width: calc(100% - 360px); max-width: 1080px;
+      aspect-ratio: 1080/607.5;
+      border: 2px solid #00d9b4; border-radius: 14px; overflow: hidden;
+      background: #1a1a1a;
+      box-shadow: 0 0 40px rgba(0,217,180,.06);
+      z-index: 2;
+    }
+    .tsm-mcp .hero-video-bg {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      top: -25.75px; bottom: 21.75px;
+      aspect-ratio: 2160/1215; pointer-events: none;
+    }
+    .tsm-mcp .hero-video-bg img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; max-width: none; pointer-events: none;
+    }
+    .tsm-mcp .hero-video-glow {
+      position: absolute; inset: -14px -1px 12px -1px;
+      background: radial-gradient(ellipse 76.226px 77.068px at 539px 544.95px, rgba(0,217,180,.05) 0%, rgba(0,217,180,0) 65%);
+    }
+    .tsm-mcp .hero-video-fade {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 40%;
+      background: linear-gradient(to bottom, transparent 0%, rgba(13,13,13,.98) 100%);
+    }
+    .tsm-mcp .hero-play-btn {
+      /* Vertically centered on the video card: video starts at top:472px, height = width × 0.5625 */
+      position: absolute;
+      left: 50%;
+      top: calc(472px + min(100% - 360px, 1080px) * 0.28125);
+      transform: translate(-50%, -50%);
+      width: 72px; height: 72px;
+      background: #fff; border: none; border-radius: 50%; padding: 0; cursor: pointer;
+      z-index: 6;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .tsm-mcp .hero-play-btn:hover {
+      transform: translate(-50%, -50%) scale(1.12);
+      box-shadow: 0 0 0 12px rgba(255,255,255,0.12), 0 6px 32px rgba(0,0,0,0.5);
+      background: #f0f0f0;
+    }
+    .tsm-mcp .hero-play-btn:active {
+      transform: translate(-50%, -50%) scale(1.04);
+    }
+    .tsm-mcp .hero-play-btn::after {
+      content: '';
+      display: block;
+      width: 0; height: 0;
+      border-style: solid;
+      border-width: 11px 0 11px 20px;
+      border-color: transparent transparent transparent #0d0d0d;
+      margin-left: 4px;
+    }
+    .tsm-mcp /* Sparkles */
+    @keyframes sparkle-rise {
+      0%   { transform: translate(0, 0) scale(1);   opacity: 0; }
+      15%  { opacity: 1; }
+      80%  { opacity: .6; }
+      100% { transform: translate(var(--dx), -140px) scale(0); opacity: 0; }
+    }
+    .tsm-mcp .hero-sparkles {
+      position: absolute; left: 50%; top: 412px;
+      transform: translateX(-50%);
+      width: 500px; height: 0;
+      pointer-events: none; z-index: 1;
+    }
+    .tsm-mcp .hero-sparkles span {
+      position: absolute;
+      border-radius: 50%;
+      animation: sparkle-rise var(--dur) ease-out var(--delay) infinite;
+      opacity: 0;
+    }
+    .tsm-mcp /* Cross/star shape via box-shadow */
+    .hero-sparkles span::before, .tsm-mcp .hero-sparkles span::after {
+      content: '';
+      position: absolute;
+      background: inherit;
+      border-radius: 2px;
+    }
+    .tsm-mcp .hero-sparkles span::before { width: 100%; height: 30%; top: 35%; left: 0; }
+    .tsm-mcp .hero-sparkles span::after { width: 30%; height: 100%; top: 0; left: 35%; }
 
-// Workflows Section
-import wfCardBg from "../../../assets_updated/images/mcp/wf-card-bg.png";
-import wfImg0 from "../../../assets_updated/images/mcp/wf-img-0.png";
-import wfImg1 from "../../../assets_updated/images/mcp/wf-img-1.png";
-import wfImg2 from "../../../assets_updated/images/mcp/wf-img-2.png";
+    .tsm-mcp /* Fade hero bottom into next section */
+    .hero-bottom-fade {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 290px; z-index: 3; pointer-events: none;
+      background: linear-gradient(to bottom, transparent 0%, #0d0d0d 80%);
+    }
+    .tsm-mcp .terminal-copy.ok { color: #00D9B4; }
 
-// CTA Section
-import ctaBg from "../../../assets_updated/images/mcp/cta-bg.png";
-import ctaClaudeLogo from "../../../assets_updated/images/mcp/cta-claude-logo.png";
-import ctaChatgptLogo from "../../../assets_updated/images/mcp/cta-chatgpt-logo.png";
+    .tsm-mcp /* ── HOW IT WORKS ── */
+    #video {
+      background: #0d0d0d; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      padding: 80px 20px;
+    }
+    .tsm-mcp .hiw-bg-texture {
+      position: absolute; left: 50%; top: 0; transform: translateX(-50%);
+      width: 1440px; height: 100%; pointer-events: none; z-index: 0; object-fit: cover;
+    }
+    .tsm-mcp .hiw-inner {
+      width: 1100px; max-width: 100%;
+      display: flex; flex-direction: column; align-items: center; gap: 40px;
+      position: relative; z-index: 2;
+    }
+    .tsm-mcp /* Header */
+    .hiw-header-block {
+      position: relative; width: 884px; max-width: 100%; height: 148px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tsm-mcp .hiw-header-bg {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; pointer-events: none;
+    }
+    .tsm-mcp .hiw-header-content {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      text-align: center; width: 694px;
+    }
+    .tsm-mcp .hiw-pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: linear-gradient(#0d0d0d, #0d0d0d) padding-box,
+                  linear-gradient(135deg, #00d9b4, rgba(255,255,255,0.12)) border-box;
+      border: 0.5px solid transparent; border-radius: 20px;
+      padding: 0 10px; height: 22px; font-size: 12px; color: #fff;
+    }
+    .tsm-mcp .hiw-h2 {
+      font-size: 40px; font-weight: 800; letter-spacing: -1.4px; line-height: 1.12; color: #fff;
+    }
+    .tsm-mcp .hiw-sub { font-size: 16px; color: rgba(255,255,255,.7); line-height: 1.65; max-width: 730px; }
+    .tsm-mcp /* Cards outer wrapper */
+    .hiw-cards-outer {
+      position: relative; width: 100%; height: 357px;
+      border-radius: 27px; border: 1.04px solid rgba(255,255,255,.1);
+      backdrop-filter: blur(20.8px); -webkit-backdrop-filter: blur(20.8px);
+      overflow: hidden;
+      background: radial-gradient(ellipse at 104% 100%, rgba(255,255,255,.09) 0%, rgba(128,128,128,.045) 50%, transparent 100%);
+    }
+    .tsm-mcp .hiw-cards-row {
+      position: absolute; left: 15px; top: 14px;
+      display: flex; gap: 10px;
+    }
+    .tsm-mcp /* Individual card */
+    .hiw-card {
+      width: 350px; height: 326px; flex-shrink: 0;
+      border-radius: 19px; border: 1.04px solid rgba(255,255,255,.1);
+      backdrop-filter: none; -webkit-backdrop-filter: none;
+      overflow: hidden; position: relative;
+      background: #1a1a1a;
+    }
+    .tsm-mcp .hiw-card-bg-img {
+      position: absolute; left: 50%; top: -1px; transform: translateX(-50%);
+      width: 350px; height: 275px; object-fit: cover; pointer-events: none;
+    }
+    .tsm-mcp .hiw-step-label {
+      position: absolute; top: 15px; left: 0; right: 0; text-align: center;
+      font-size: 10.9px; font-weight: 500; letter-spacing: 1.088px;
+      text-transform: uppercase; color: rgba(255,255,255,.44); white-space: nowrap;
+    }
+    .tsm-mcp .hiw-card-title {
+      position: absolute; top: 33px; left: 0; right: 0; text-align: center;
+      font-size: 14.7px; font-weight: 700; color: #fff;
+    }
+    .tsm-mcp .hiw-card-img-wrap {
+      position: absolute; left: 15px; top: 72px; width: 318px; height: 182px; overflow: hidden; border-radius: 10px;
+    }
+    .tsm-mcp .hiw-card-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .tsm-mcp .hiw-card-desc {
+      position: absolute; left: 20px; right: 20px; bottom: 18px;
+      text-align: center; font-size: 13.3px; color: rgba(255,255,255,.8); line-height: 21.25px;
+    }
+    .tsm-mcp /* CTA */
+    .hiw-cta { display: flex; flex-direction: column; align-items: center; gap: 11px; }
+    .tsm-mcp .hiw-cta-text { font-size: 14.1px; color: rgba(255,255,255,.48); }
+    .tsm-mcp .hiw-cta-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #fff; color: #06091a; font-size: 14px; font-weight: 500;
+      border-radius: 14px; width: 146px; height: 36px; transition: opacity .2s;
+    }
+    .tsm-mcp .hiw-cta-btn:hover { opacity: .86; }
 
-// ── Data Arrays ──
+    .tsm-mcp /* ── FREE SKILLS ── */
+    #freeskills {
+      background: #0d0d0d; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; padding: 80px 20px;
+    }
+    .tsm-mcp .fs-bg-bottom {
+      position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
+      width: 1344px; height: 585px; object-fit: cover; pointer-events: none; z-index: 0;
+    }
+    .tsm-mcp .fs-inner {
+      width: 1160px; max-width: 100%;
+      display: flex; flex-direction: column; align-items: center; gap: 40px;
+      position: relative; z-index: 2;
+    }
+    .tsm-mcp /* Header */
+    .fs-header-block {
+      position: relative; width: 883px; max-width: 100%; height: auto;
+      display: flex; justify-content: center;
+    }
+    .tsm-mcp .fs-header-bg {
+      position: absolute; left: 50%; top: 0; transform: translateX(-50%);
+      width: 883px; height: 100%; object-fit: cover; pointer-events: none;
+    }
+    .tsm-mcp .fs-header-content {
+      position: relative; top: auto; left: auto; transform: none;
+      width: 694px; max-width: 100%; z-index: 1; padding: 60px 20px 8px;
+      display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;
+    }
+    .tsm-mcp .fs-pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: linear-gradient(#0d0d0d,#0d0d0d) padding-box,
+                  linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box;
+      border: 0.5px solid transparent; border-radius: 20px;
+      padding: 0 10px; height: 22px; font-size: 12px; color: #fff;
+    }
+    .tsm-mcp .fs-h2 {
+      font-size: 40px; font-weight: 800; letter-spacing: -1.4px; line-height: 1.12; color: #fff;
+    }
+    .tsm-mcp .fs-sub { font-size: 16px; color: rgba(255,255,255,.7); line-height: 1.65; }
+    .tsm-mcp /* Cards row */
+    .fs-cards { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; justify-content: center; width: 100%; }
+    .tsm-mcp .fs-card {
+      background: #141414; border: 1px solid #2a2a2a; border-radius: 16px;
+      width: 372px; flex-shrink: 0; overflow: hidden; display: flex; flex-direction: column;
+    }
+    .tsm-mcp .fs-card-banner { width: 100%; height: 64px; overflow: hidden; flex-shrink: 0; }
+    .tsm-mcp .fs-card-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .tsm-mcp .fs-card-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 16px; height: 40px; flex-shrink: 0;
+    }
+    .tsm-mcp .fs-card-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 999px; padding: 0 10px; height: 22px;
+      font-size: 11px; font-weight: 500; color: #fff;
+    }
+    .tsm-mcp .fs-card-badge img { width: 12px; height: 12px; object-fit: contain; }
+    .tsm-mcp .fs-card-meta-right { display: flex; align-items: center; gap: 10px; }
+    .tsm-mcp .fs-card-uses { font-size: 11px; color: rgba(255,255,255,.44); }
+    .tsm-mcp .fs-card-icons { display: flex; gap: 8px; }
+    .tsm-mcp .fs-card-icons img { width: 14px; height: 14px; object-fit: contain; opacity: .5; }
+    .tsm-mcp .fs-card-body { padding: 10px 16px 0; flex: 1; }
+    .tsm-mcp .fs-card-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .tsm-mcp .fs-card-desc { font-size: 12px; color: rgba(255,255,255,.6); line-height: 1.6; margin-bottom: 10px; }
+    .tsm-mcp .fs-card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    .tsm-mcp .fs-card-tag {
+      font-size: 11px; color: rgba(255,255,255,.5);
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 999px; padding: 2px 10px;
+    }
+    .tsm-mcp .fs-card-prompt {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 8px; padding: 10px 12px; margin-bottom: 8px;
+      font-size: 11px; color: rgba(255,255,255,.45); line-height: 1.65;
+      max-height: 72px; overflow: hidden; position: relative;
+    }
+    .tsm-mcp .fs-card-show {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 500; color: #00b8b2;
+      background: none; border: none; cursor: pointer; padding: 0; margin-bottom: 12px;
+      font-family: var(--font);
+    }
+    .tsm-mcp .fs-card-actions {
+      display: flex; gap: 6px; padding: 10px 16px 14px; border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .tsm-mcp .fs-tabs { display: inline-flex; align-items: center; gap: 4px; padding: 3px; border-radius: 79px; border: 1.04px solid rgba(255,255,255,0.1); backdrop-filter: blur(20.8px); -webkit-backdrop-filter: blur(20.8px); background: radial-gradient(ellipse at bottom right, rgba(255,255,255,0.09) 0%, rgba(128,128,128,0.045) 50%, transparent 100%); }
+    .tsm-mcp .fs-tab { display: inline-flex; align-items: center; height: 31px; padding: 0 18px; border-radius: 64px; border: 1.04px solid transparent; background: transparent; font-size: 12.8px; font-weight: 600; color: rgba(255,255,255,0.48); cursor: pointer; font-family: var(--font); white-space: nowrap; transition: color .2s, background .2s, border-color .2s; }
+    .tsm-mcp .fs-tab-active { border-color: #12d8b6; background: linear-gradient(135deg, rgba(18,226,219,1) 0%, rgba(14,169,164,0.75) 25%, rgba(9,113,109,0.5) 50%, rgba(5,56,55,0.25) 75%, transparent 100%); color: #00f7ef; }
+    .tsm-mcp .fs-card.hidden { display: none; }
+    .tsm-mcp .fs-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      height: 30px; border-radius: 10px; font-size: 11px; font-weight: 500;
+      cursor: pointer; font-family: var(--font); white-space: nowrap;
+      border: 1px solid #262626; color: #d1d5db; background: transparent;
+      padding: 0 13px;
+    }
+    .tsm-mcp .fs-btn-copy { background: #1a1a1a; border-color: #2a2a2a; color: #fff; }
+    .tsm-mcp .fs-btn img { width: 14px; height: 14px; object-fit: contain; }
+    .tsm-mcp /* CTA */
+    .fs-cta {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #fff; color: #06091a; font-size: 14px; font-weight: 500;
+      border-radius: 14px; padding: 0 28px; height: 37px;
+      border: none; cursor: pointer; font-family: var(--font); transition: opacity .2s;
+      white-space: nowrap;
+    }
+    .tsm-mcp .fs-cta:hover { opacity: .86; }
 
-const sparkles = [
-  {
-    dx: "-60px",
-    dur: "2.8s",
-    delay: "0s",
-    left: "230px",
-    w: "2px",
-    bg: "#fff",
-    shadow: "0 0 4px 2px rgba(0, 184, 178,.9)",
-  },
-  {
-    dx: "40px",
-    dur: "3.2s",
-    delay: ".5s",
-    left: "270px",
-    w: "2px",
-    bg: "#00b8b2",
-    shadow: "0 0 4px 2px rgba(0, 184, 178,.8)",
-  },
-  {
-    dx: "-20px",
-    dur: "2.5s",
-    delay: "1s",
-    left: "250px",
-    w: "2px",
-    bg: "#fff",
-    shadow: "0 0 4px 2px rgba(255,255,255,.5)",
-  },
-  {
-    dx: "70px",
-    dur: "3.6s",
-    delay: ".2s",
-    left: "220px",
-    w: "3px",
-    bg: "#00b8b2",
-    shadow: "0 0 5px 2px rgba(0, 184, 178,.6)",
-  },
-  {
-    dx: "-80px",
-    dur: "2.9s",
-    delay: "1.4s",
-    left: "290px",
-    w: "2px",
-    bg: "#fff",
-    shadow: "0 0 3px 1px rgba(255,255,255,.7)",
-  },
-  {
-    dx: "30px",
-    dur: "3.1s",
-    delay: ".8s",
-    left: "240px",
-    w: "2px",
-    bg: "#00b8b2",
-    shadow: "0 0 5px 2px rgba(0, 184, 178,.7)",
-  },
-  {
-    dx: "-50px",
-    dur: "2.6s",
-    delay: "2s",
-    left: "260px",
-    w: "2px",
-    bg: "#fff",
-    shadow: "0 0 4px 2px rgba(0, 184, 178,.5)",
-  },
-  {
-    dx: "90px",
-    dur: "3.4s",
-    delay: ".3s",
-    left: "200px",
-    w: "2px",
-    bg: "#00b8b2",
-    shadow: "0 0 4px 2px rgba(0, 184, 178,.9)",
-  },
-  {
-    dx: "-30px",
-    dur: "2.7s",
-    delay: "1.7s",
-    left: "310px",
-    w: "2px",
-    bg: "#fff",
-    shadow: "0 0 4px 2px rgba(255,255,255,.4)",
-  },
-  {
-    dx: "55px",
-    dur: "3.0s",
-    delay: "2.3s",
-    left: "245px",
-    w: "2px",
-    bg: "#00b8b2",
-    shadow: "0 0 5px 2px rgba(0, 184, 178,.8)",
-  },
-  {
-    dx: "-70px",
-    dur: "3.3s",
-    delay: ".6s",
-    left: "275px",
-    w: "2px",
-    bg: "#fff",
-    shadow: "0 0 3px 1px rgba(255,255,255,.6)",
-  },
-  {
-    dx: "20px",
-    dur: "2.4s",
-    delay: "1.2s",
-    left: "235px",
-    w: "3px",
-    bg: "#00b8b2",
-    shadow: "0 0 6px 3px rgba(0, 184, 178,.5)",
-  },
-  {
-    dx: "-45px",
-    dur: "3.5s",
-    delay: ".4s",
-    left: "320px",
-    w: "2px",
-    bg: "#fff",
-    shadow: "0 0 4px 2px rgba(255,255,255,.7)",
-  },
-  {
-    dx: "65px",
-    dur: "2.6s",
-    delay: "1.9s",
-    left: "180px",
-    w: "2px",
-    bg: "#00b8b2",
-    shadow: "0 0 4px 2px rgba(0, 184, 178,.8)",
-  },
-  {
-    dx: "-15px",
-    dur: "3.0s",
-    delay: "2.6s",
-    left: "255px",
-    w: "2px",
-    bg: "#fff",
-    shadow: "0 0 3px 1px rgba(255,255,255,.5)",
-  },
-  {
-    dx: "50px",
-    dur: "2.8s",
-    delay: ".9s",
-    left: "215px",
-    w: "2px",
-    bg: "#00b8b2",
-    shadow: "0 0 5px 2px rgba(0, 184, 178,.7)",
-  },
-  {
-    dx: "-90px",
-    dur: "3.2s",
-    delay: "1.5s",
-    left: "285px",
-    w: "2px",
-    bg: "#fff",
-    shadow: "0 0 4px 2px rgba(0, 184, 178,.6)",
-  },
-  {
-    dx: "35px",
-    dur: "2.7s",
-    delay: "2.1s",
-    left: "300px",
-    w: "2px",
-    bg: "#00b8b2",
-    shadow: "0 0 4px 2px rgba(0, 184, 178,.9)",
-  },
-  {
-    dx: "-55px",
-    dur: "3.4s",
-    delay: ".1s",
-    left: "195px",
-    w: "2px",
-    bg: "#fff",
-    shadow: "0 0 3px 1px rgba(255,255,255,.6)",
-  },
-  {
-    dx: "80px",
-    dur: "2.9s",
-    delay: "1.1s",
-    left: "265px",
-    w: "3px",
-    bg: "#00b8b2",
-    shadow: "0 0 6px 3px rgba(0, 184, 178,.6)",
-  },
-  {
-    dx: "-35px",
-    dur: "3.1s",
-    delay: "2.8s",
-    left: "225px",
-    w: "2px",
-    bg: "#fff",
-    shadow: "0 0 4px 2px rgba(255,255,255,.5)",
-  },
-  {
-    dx: "10px",
-    dur: "2.5s",
-    delay: "1.6s",
-    left: "340px",
-    w: "2px",
-    bg: "#00b8b2",
-    shadow: "0 0 4px 2px rgba(0, 184, 178,.7)",
-  },
-  {
-    dx: "-75px",
-    dur: "3.6s",
-    delay: ".7s",
-    left: "170px",
-    w: "2px",
-    bg: "#fff",
-    shadow: "0 0 3px 1px rgba(255,255,255,.8)",
-  },
-  {
-    dx: "45px",
-    dur: "2.3s",
-    delay: "2.4s",
-    left: "280px",
-    w: "2px",
-    bg: "#00b8b2",
-    shadow: "0 0 5px 2px rgba(0, 184, 178,.5)",
-  },
-];
+    .tsm-mcp /* ── AI AGENTS ── */
+    #aiagents {
+      background: #0d0d0d; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; padding: 80px 20px;
+    }
+    .tsm-mcp .aa-inner { display: flex; flex-direction: column; align-items: center; gap: 22px; width: 1070px; }
+    .tsm-mcp .aa-top { display: flex; flex-direction: column; align-items: center; gap: 24px; width: 100%; }
+    .tsm-mcp .aa-header-wrap { position: relative; width: 717px; height: 268px; }
+    .tsm-mcp .aa-header-bg-outer { position: absolute; inset: 0 80px 30px 80px; border-radius: 200px; overflow: hidden; }
+    .tsm-mcp .aa-header-bg-l1 { position: absolute; left: 0; top: 0; width: 557px; height: 238px; object-fit: cover; z-index: 1; }
+    .tsm-mcp .aa-header-bg-l2 { position: absolute; inset: 0 -80px -30px -80px; width: calc(100% + 160px); height: calc(100% + 30px); object-fit: cover; z-index: 0; }
+    .tsm-mcp .aa-header-content { position: absolute; top: 43px; left: 50%; transform: translateX(-50%); width: 694px; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 11px; }
+    .tsm-mcp .aa-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 400; color: #fff;
+      background: linear-gradient(#0d0d0d,#0d0d0d) padding-box, linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box;
+      border: 0.5px solid transparent;
+    }
+    .tsm-mcp .aa-pill-dot { width: 6px; height: 6px; border-radius: 50%; background: #00d9b4; display: inline-block; }
+    .tsm-mcp .aa-header-text { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .tsm-mcp .aa-title { font-size: 40px; font-weight: 800; color: #fff; letter-spacing: -1.4px; line-height: 1.12; margin: 0; width: 518px; }
+    .tsm-mcp .aa-subtitle { font-size: 16px; color: rgba(255,255,255,0.48); margin: 0; line-height: 1.65; width: 730px; }
+    .tsm-mcp .aa-cards-row { display: flex; gap: 10px; align-items: center; width: 100%; }
+    .tsm-mcp .aa-card {
+      position: relative; width: 350px; height: 321px; flex-shrink: 0;
+      backdrop-filter: blur(20.8px); border: 1.04px solid rgba(255,255,255,0.1);
+      border-radius: 19px; overflow: hidden;
+      background: radial-gradient(ellipse at bottom right, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+    }
+    .tsm-mcp .aa-card-bg { position: absolute; left: 50%; top: -1px; transform: translateX(-50%); width: 350px; height: 275px; object-fit: cover; z-index: 0; pointer-events: none; }
+    .tsm-mcp .aa-card-title { position: absolute; top: 26px; left: 50%; transform: translateX(-50%); font-size: 16.8px; font-weight: 700; color: #fff; white-space: nowrap; z-index: 2; }
+    .tsm-mcp .aa-card-img { position: absolute; top: 62px; left: 15px; width: 318px; height: 182px; object-fit: cover; border-radius: 6px; z-index: 1; }
+    .tsm-mcp .aa-card-desc { position: absolute; top: 262px; left: 50%; transform: translateX(-50%); width: 310px; text-align: center; font-size: 13.8px; color: rgba(255,255,255,0.48); line-height: 1.65; z-index: 2; }
+    .tsm-mcp .aa-cta {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 186px; height: 36px;
+      background: #fff; color: #06091a; font-size: 14px; font-weight: 500;
+      border: none; border-radius: 14px; cursor: pointer; text-decoration: none;
+    }
+    .tsm-mcp .aa-cta:hover { opacity: .86; }
 
-const hiwCards = [
-  {
-    step: "Step 01",
-    title: "Copy the URL above",
-    img: hiwStep1Img,
-    desc: "Hit the copy button, one URL is all it takes to link TokScript to your AI.",
-  },
-  {
-    step: "Step 02",
-    title: "Open Claude or ChatGPT",
-    img: hiwStep2Img,
-    desc: "Go to Settings \u2192 Connectors \u2192 Add Custom Connector, then paste the URL.",
-  },
-  {
-    step: "Step 03",
-    title: "Log in. Done.",
-    img: hiwStep3Img,
-    desc: "Authenticate with your TokScript account. Your entire library is now in your AI.",
-  },
-];
+    .tsm-mcp /* ── BEFORE & AFTER ── */
+    #beforeafter {
+      background: #0d0d0d; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; padding: 80px 20px;
+    }
+    .tsm-mcp .ba-bg { position: absolute; left: 50%; transform: translateX(-50%); bottom: 0; width: 1344px; height: 585px; object-fit: cover; pointer-events: none; z-index: 0; }
+    .tsm-mcp .ba-inner { display: flex; flex-direction: column; align-items: center; gap: 40px; width: 1100px; position: relative; z-index: 1; }
+    .tsm-mcp .ba-header-block { position: relative; width: 883px; max-width: 100%; height: auto; overflow: hidden; }
+    .tsm-mcp .ba-header-bg { position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: 883px; height: 100%; overflow: hidden; border-radius: 200px; }
+    .tsm-mcp .ba-header-bg-l1 { position: absolute; left: 0; top: 0; width: 723px; height: 290px; object-fit: cover; z-index: 1; }
+    .tsm-mcp .ba-header-bg-l2 { position: absolute; inset: 0 -80px -30px -80px; width: calc(100% + 160px); height: calc(100% + 30px); object-fit: cover; z-index: 0; }
+    .tsm-mcp .ba-header-content { position: relative; top: auto; left: auto; transform: none; width: 730px; max-width: 100%; z-index: 1; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 64px 0 8px; }
+    .tsm-mcp .ba-pill {
+      display: inline-flex; align-items: center; padding: 5px 14px; border-radius: 20px;
+      font-size: 12px; color: #fff;
+      background: linear-gradient(#0d0d0d,#0d0d0d) padding-box, linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box;
+      border: 0.5px solid transparent;
+    }
+    .tsm-mcp .ba-title { font-size: 40px; font-weight: 800; color: #fff; letter-spacing: -1.4px; line-height: 1.12; margin: 0; }
+    .tsm-mcp .ba-subtitle { font-size: 16px; color: rgba(255,255,255,0.7); margin: 0; line-height: 1.65; }
+    .tsm-mcp .ba-carousel-outer {
+      width: 1100px; height: 483px; border-radius: 27px;
+      backdrop-filter: blur(20.8px);
+      border: 1.04px solid rgba(255,255,255,0.1);
+      background: radial-gradient(ellipse at bottom right, rgba(255,255,255,0.09) 0%, rgba(128,128,128,0.045) 50%, transparent 100%);
+      overflow: hidden; position: relative; margin-top: 0;
+    }
+    .tsm-mcp .ba-track { display: flex; transition: transform 0.42s cubic-bezier(.4,0,.2,1); height: 100%; }
+    .tsm-mcp .ba-slide { width: 1100px; flex-shrink: 0; padding: 18px 12px 14px; display: flex; flex-direction: column; gap: 0; box-sizing: border-box; }
+    .tsm-mcp .ba-slide-title { font-size: 24px; font-weight: 600; color: #fff; letter-spacing: -1.4px; text-align: center; line-height: 37px; height: 37px; margin-bottom: 25px; flex-shrink: 0; }
+    .tsm-mcp .ba-cards-row { display: flex; gap: 12px; height: 389px; }
+    .tsm-mcp .ba-card {
+      flex: 1; border-radius: 19px;
+      backdrop-filter: blur(20.8px); border: 1.04px solid rgba(255,255,255,0.1);
+      background: radial-gradient(ellipse at bottom right, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+      position: relative; overflow: hidden;
+    }
+    .tsm-mcp .ba-card-bg { position: absolute; left: 50%; top: -1px; transform: translateX(-50%); width: 350px; height: 275px; object-fit: cover; pointer-events: none; z-index: 0; }
+    .tsm-mcp .ba-card-label { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); font-size: 14.7px; font-weight: 700; color: #fff; white-space: nowrap; z-index: 2; }
+    .tsm-mcp .ba-card-img { position: absolute; top: 47px; left: 15px; width: 497px; height: 273px; object-fit: cover; border-radius: 6px; z-index: 1; }
+    .tsm-mcp .ba-card-desc { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); width: 418px; font-size: 13.3px; color: rgba(255,255,255,0.8); text-align: center; line-height: 1.6; z-index: 2; }
+    .tsm-mcp .ba-card.ba-after .ba-card-desc { color: #fff; width: 370px; font-size: 13.1px; }
+    .tsm-mcp .ba-nav { display: flex; align-items: center; gap: 16px; margin-top: 24px; }
+    .tsm-mcp .ba-arrow { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; transition: background .2s; flex-shrink: 0; }
+    .tsm-mcp .ba-arrow:hover { background: rgba(255,255,255,0.15); }
+    .tsm-mcp .ba-dots { display: flex; gap: 8px; }
+    .tsm-mcp .ba-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.25); cursor: pointer; transition: background .2s; border: none; padding: 0; }
+    .tsm-mcp .ba-dot.active { background: #fff; }
+    .tsm-mcp .ba-cta-wrap { margin-top: 32px; }
+    .tsm-mcp .ba-cta { display: inline-flex; align-items: center; justify-content: center; width: 209px; height: 36px; background: #fff; color: #06091a; font-size: 14px; font-weight: 500; border: none; border-radius: 14px; cursor: pointer; text-decoration: none; }
+    .tsm-mcp .ba-cta:hover { opacity: .86; }
 
-const whoCards = [
-  {
-    num: 1,
-    title: "Brand Marketers",
-    img: whoBrandMarketers,
-    desc: "Competitive intelligence through precise transcript and messaging analysis.",
-    sizeClass: "who-card-img-sm",
-  },
-  {
-    num: 2,
-    title: "Researchers",
-    img: whoResearchers,
-    desc: "Large-scale data extraction to identify patterns and emerging tropes.",
-    sizeClass: "who-card-img-sm",
-  },
-  {
-    num: 3,
-    title: "UGC Marketplaces",
-    img: whoUgcMarketplaces,
-    desc: "Provide your creator network with high-performing templates from real-time data.",
-    sizeClass: "who-card-img-sm",
-  },
-  {
-    num: 4,
-    title: "Solo Creator",
-    img: whoSoloCreator,
-    desc: "Instant conversion from viral trends to structured, actionable scripts.",
-    sizeClass: "who-card-img-lg",
-  },
-  {
-    num: 5,
-    title: "Agencies",
-    img: whoAgencies,
-    desc: "Automating high-performing script templates for creator rosters.",
-    sizeClass: "who-card-img-lg",
-  },
-];
+    .tsm-mcp /* ── WORKFLOWS ── */
+    #workflows {
+      background: #0d0d0d;
+      display: flex; align-items: center; justify-content: center; padding: 80px 20px;
+    }
+    .tsm-mcp .wf-card {
+      position: relative; width: 1079px; max-width: 100%;
+      background: #212121; border-radius: 20px; overflow: hidden;
+    }
+    .tsm-mcp .wf-card-bg {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+      width: 100%; height: 100%; min-height: 641px; object-fit: cover;
+      pointer-events: none; z-index: 0;
+    }
+    .tsm-mcp .wf-inner {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 28px; padding: 64px 40px 44px;
+    }
+    .tsm-mcp .wf-header {
+      text-align: center; width: 694px; max-width: 100%;
+      display: flex; flex-direction: column; align-items: center; gap: 11px;
+    }
+    .tsm-mcp .wf-pill {
+      display: inline-flex; align-items: center; padding: 5px 14px; border-radius: 20px;
+      font-size: 12px; color: #fff;
+      background: linear-gradient(#0d0d0d,#0d0d0d) padding-box, linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box;
+      border: 0.5px solid transparent;
+    }
+    .tsm-mcp .wf-title { font-size: 40px; font-weight: 800; color: #fff; letter-spacing: -1.4px; line-height: 1.12; margin: 0; }
+    .tsm-mcp .wf-subtitle { font-size: 16px; color: rgba(255,255,255,0.48); margin: 0; line-height: 1.65; max-width: 730px; }
+    .tsm-mcp .wf-panel {
+      width: 795px; max-width: 100%;
+      border-radius: 27px;
+      backdrop-filter: blur(20.8px); -webkit-backdrop-filter: blur(20.8px);
+      border: 1.04px solid rgba(255,255,255,0.1);
+      background: radial-gradient(ellipse at bottom right, rgba(0,0,0,0.59) 0%, rgba(0,0,0,0.4) 100%);
+      overflow: hidden; display: flex;
+    }
+    .tsm-mcp .wf-left {
+      flex: 1; min-width: 0; padding: 28px 26px;
+      display: flex; flex-direction: column; justify-content: center; gap: 0;
+    }
+    .tsm-mcp .wf-item { cursor: pointer; }
+    .tsm-mcp .wf-item-header {
+      font-size: 18px; font-weight: 600; color: #fff; letter-spacing: -1.4px;
+      line-height: 1.71; min-height: 37px; display: flex; align-items: center;
+      opacity: 0.55; transition: opacity .25s;
+    }
+    .tsm-mcp .wf-item.active .wf-item-header { opacity: 1; }
+    .tsm-mcp .wf-item-desc {
+      font-size: 13.3px; color: rgba(255,255,255,0.75); line-height: 1.55;
+      max-height: 0; overflow: hidden; transition: max-height .35s ease, opacity .3s;
+      opacity: 0; margin: 0;
+    }
+    .tsm-mcp .wf-item.active .wf-item-desc { max-height: 80px; opacity: 1; }
+    .tsm-mcp .wf-divider { height: 1px; background: rgba(255,255,255,0.12); margin: 13px 0; }
+    .tsm-mcp .wf-images { width: 320px; flex-shrink: 0; position: relative; height: 286px; }
+    .tsm-mcp .wf-img { position: absolute; object-fit: contain; opacity: 0; transition: opacity .3s; pointer-events: none; }
+    .tsm-mcp .wf-img.active { opacity: 1; }
+    .tsm-mcp .wf-img-0 { width: 195.5px; height: 218px; left: 52px; top: 30px; }
+    .tsm-mcp .wf-img-1 { width: 298.5px; height: 227px; left: 0; top: 21px; }
+    .tsm-mcp .wf-img-2 { width: 187.5px; height: 221px; left: 56px; top: 30px; }
+    .tsm-mcp .wf-cta {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 177px; height: 36px;
+      background: #fff; color: #06091a; font-size: 14px; font-weight: 500;
+      border: none; border-radius: 14px; cursor: pointer; text-decoration: none;
+    }
+    .tsm-mcp .wf-cta:hover { opacity: .86; }
 
-const skills = [
-  {
-    category: "summary",
-    banner: fsBannerSummary,
-    badge: fsBadgeSummary,
-    badgeLabel: "Summary",
-    uses: "11.3k uses",
-    icons: [fsIconClaude, fsIconChatgpt],
-    title: "Executive Summary",
-    desc: "Condense any transcript into a crisp 3-paragraph summary with key takeaways.",
-    tags: ["Summary", "Productivity"],
-    prompt:
-      "You are a senior communications consultant who specialises in distilling complex content into clear, executive-ready briefings. Your task is to produce a...",
-    copyIcon: fsCopyIcon,
-    downloadSkillIcon: fsDownloadSkill,
-    downloadIcon: fsDownload,
-  },
-  {
-    category: "hooks",
-    banner: fsBannerHooks,
-    badge: fsBadgeHooks,
-    badgeLabel: "Hooks",
-    uses: "8.4k uses",
-    icons: [fsIconClaude, fsIconChatgpt],
-    title: "Viral Hook Generator",
-    desc: "Turn your transcript into 5 scroll-stopping opening hooks that grab attention in the first 3 seconds.",
-    tags: ["TikTok", "Reels", "Viral"],
-    prompt:
-      "You are a world-class viral content strategist with deep expertise in short-form video psychology, scroll-stopping copywriting, and platform-specific audience behaviour...",
-    copyIcon: fsCopyIcon,
-    downloadSkillIcon: fsDownloadSkill,
-    downloadIcon: fsDownload,
-  },
-  {
-    category: "summary",
-    banner: fsBannerSummary,
-    badge: fsBadgeSummary,
-    badgeLabel: "Summary",
-    uses: "6.9k uses",
-    icons: [fsIconClaude, fsIconChatgpt],
-    title: "Action Items Extractor",
-    desc: "Pull every explicit and implied action item from a transcript into a clean task list.",
-    tags: ["Productivity", "Tasks", "Meeting"],
-    prompt:
-      "You are a professional executive assistant and project manager who has mastered turning messy meeting recordings and video transcripts into crisp, accountable...",
-    copyIcon: fsCopyIcon,
-    downloadSkillIcon: fsDownloadSkill,
-    downloadIcon: fsDownload,
-  },
-  {
-    category: "repurpose",
-    banner: fsBannerRepurpose,
-    badge: fsBadgeRepurpose,
-    badgeLabel: "Repurpose",
-    uses: "6.2k uses",
-    icons: [fsIconLinkedin, fsIconX],
-    title: "LinkedIn Thread Converter",
-    desc: "Convert a video transcript into a high-performing LinkedIn carousel or text thread.",
-    tags: ["LinkedIn", "B2B", "Thread"],
-    prompt:
-      "You are a B2B LinkedIn content expert who has helped dozens of thought leaders grow to 50,000+ followers. Your task is to transform the transcript below into a high-performing 7-part LinkedIn text thread...",
-    copyIcon: fsCopyIconAlt,
-    downloadSkillIcon: fsDownloadSkillAlt,
-    downloadIcon: fsDownloadAlt,
-  },
-  {
-    category: "engagement",
-    banner: fsBannerEngagement,
-    badge: fsBadgeEngagement,
-    badgeLabel: "Engagement",
-    uses: "5.5k uses",
-    icons: [fsIconLinkedin, fsIconX],
-    title: "Comment Bait Questions",
-    desc: "Generate 10 engagement-driving questions to pin as a comment or use in a caption.",
-    tags: ["Comments", "Engagement", "Community"],
-    prompt:
-      "You are a social media engagement specialist who has grown comment sections to thousands of replies. Generate 10 high-engagement questions from the transcript below that bait genuine responses...",
-    copyIcon: fsCopyIconAlt,
-    downloadSkillIcon: fsDownloadSkillAlt,
-    downloadIcon: fsDownloadAlt,
-  },
-  {
-    category: "repurpose",
-    banner: fsBannerRepurpose,
-    badge: fsBadgeRepurpose,
-    badgeLabel: "Repurpose",
-    uses: "5.0k uses",
-    icons: [fsIconLinkedin, fsIconTwitter],
-    title: "Twitter/X Thread (10 posts)",
-    desc: "Transform a transcript into a tightly-crafted 10-post Twitter/X thread built for engagement.",
-    tags: ["Twitter/X", "Thread", "Virality"],
-    prompt:
-      "You are a viral Twitter/X strategist who has built threads with 10M+ impressions. Transform the transcript below into a punchy 10-post thread optimised for maximum reach and retweets...",
-    copyIcon: fsCopyIconAlt,
-    downloadSkillIcon: fsDownloadSkillAlt,
-    downloadIcon: fsDownloadAlt,
-  },
-];
+    .tsm-mcp /* ── STATS ── */
+    #stats { }
+    .tsm-mcp .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border-radius: var(--r); overflow: hidden; margin-top: 52px; }
+    .tsm-mcp .stat-box { background: var(--s1); padding: 40px 32px; text-align: center; }
+    .tsm-mcp .stat-num { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -.04em; color: var(--teal); margin-bottom: 6px; display: block; }
+    .tsm-mcp .stat-label { font-size: .84rem; color: var(--muted); }
 
-const slides = [
-  {
-    title: "Competitor Intelligence",
-    beforeImg: baBeforeCompetitor,
-    afterImg: baAfterCompetitor,
-    beforeDesc:
-      "Open 10 tabs, watch videos, take notes by hand, try to spot patterns across creators in your niche.",
-    afterDesc:
-      "\u201CResearch the top 5 creators in my niche and tell me what they have in common.\u201D Done in under 30 seconds.",
-  },
-  {
-    title: "Rapid Scripting",
-    beforeImg: baBeforeScripting,
-    afterImg: baAfterScripting,
-    beforeDesc:
-      "Try to remember what made your last video work, guess at a hook, write something, delete it, start over.",
-    afterDesc:
-      "Pull your top 5 scripts, generate 20 hooks, pick the best one, and have a full script written in one conversation.",
-  },
-  {
-    title: "Automated Briefing",
-    beforeImg: baBeforeBriefing,
-    afterImg: baAfterBriefing,
-    beforeDesc:
-      "Spend hours writing briefs with no real data, guessing at structures that might work based on intuition alone.",
-    afterDesc:
-      "Analyze top-performing content in your niche and get a proven brief structure ready in 10 minutes.",
-  },
-];
+    .tsm-mcp /* ── SKILLS ── */
+    #skills { }
+    .tsm-mcp .filter-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 36px; margin-bottom: 32px; }
+    .tsm-mcp .filter-btn {
+      padding: 7px 16px; border-radius: 20px; font-size: .8rem; font-weight: 600;
+      background: var(--s2); border: 1px solid var(--border); color: var(--muted);
+      transition: all .2s;
+    }
+    .tsm-mcp .filter-btn:hover { border-color: var(--teal25); color: var(--white); }
+    .tsm-mcp .filter-btn.on { background: var(--teal12); border-color: var(--teal25); color: var(--teal); }
+    .tsm-mcp .skills-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    .tsm-mcp .skill-card {
+      background: var(--s1); border: 1px solid var(--border); border-radius: var(--r);
+      padding: 24px 22px; display: flex; flex-direction: column; gap: 10px;
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+      cursor: pointer; text-decoration: none; color: inherit;
+    }
+    .tsm-mcp .skill-card:hover { border-color: var(--teal25); transform: translateY(-3px); box-shadow: 0 0 24px rgba(0,217,180,.07); }
+    .tsm-mcp .skill-card[data-hidden] { display: none; }
+    .tsm-mcp .skill-top { display: flex; align-items: center; justify-content: space-between; }
+    .tsm-mcp .skill-cat { font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--teal); }
+    .tsm-mcp .tier { font-size: .65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 5px; }
+    .tsm-mcp .tier.free { background: rgba(0,217,180,.1); color: var(--teal); border: 1px solid rgba(0,217,180,.2); }
+    .tsm-mcp .tier.paid { background: rgba(255,255,255,.05); color: var(--muted2); border: 1px solid var(--border); }
+    .tsm-mcp .skill-card h4 { font-size: .95rem; font-weight: 700; }
+    .tsm-mcp .skill-card p { font-size: .83rem; color: var(--muted); line-height: 1.55; flex: 1; }
+    .tsm-mcp .skill-arrow { font-size: .75rem; color: var(--teal); opacity: 0; transition: opacity .2s; align-self: flex-end; }
+    .tsm-mcp .skill-card:hover .skill-arrow { opacity: 1; }
 
-const workflows = [
-  {
-    title: "Weekly Competitor Intelligence Report",
-    desc: "Analyze the top 5 creators to instantly decode viral hooks. Sync with trending sounds for three content strategies.",
-    img: wfImg0,
-  },
-  {
-    title: "Content Idea to Ready-to-Shoot Script",
-    desc: "Turn any content idea into a fully structured, ready-to-shoot script with hooks, body, and CTA, all in one conversation.",
-    img: wfImg1,
-  },
-  {
-    title: "Brand Partnership Creator Research",
-    desc: "Shortlist niche creators to compare engagement and content fit. Analyze audience breakdowns to generate data-backed pitch briefs.",
-    img: wfImg2,
-  },
-];
+    .tsm-mcp /* ── PROMPTS TABS ── */
+    #prompts { }
+    .tsm-mcp .tab-nav { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 40px; margin-bottom: 32px; }
+    .tsm-mcp .tab-btn {
+      padding: 8px 18px; border-radius: 10px; font-size: .82rem; font-weight: 600;
+      background: var(--s2); border: 1px solid var(--border); color: var(--muted);
+      transition: all .2s;
+    }
+    .tsm-mcp .tab-btn:hover { border-color: var(--teal25); color: var(--white); }
+    .tsm-mcp .tab-btn.on { background: var(--teal12); border-color: var(--teal25); color: var(--teal); }
+    .tsm-mcp .tab-panel { display: none; }
+    .tsm-mcp .tab-panel.on { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .tsm-mcp .chat-bubble {
+      background: var(--s2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 22px 24px;
+    }
+    .tsm-mcp .chat-bubble.user { border-color: var(--teal25); }
+    .tsm-mcp .chat-label { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+    .tsm-mcp .chat-label.u { color: var(--teal); }
+    .tsm-mcp .chat-label.a { color: var(--muted2); }
+    .tsm-mcp .chat-bubble p, .tsm-mcp .chat-bubble pre { font-size: .88rem; color: var(--muted); line-height: 1.7; white-space: pre-wrap; }
+    .tsm-mcp .chat-bubble strong { color: var(--white); }
 
-const faqs = [
-  {
-    q: "How do I get a TikTok video transcript inside ChatGPT or Claude?",
-    a: "Connect your TokScript account using our MCP connector, then paste any TikTok, Instagram Reel, or YouTube Short URL directly into the chat. The AI returns the full transcript with timestamps, engagement stats, hashtags, audio info, and metadata instantly. No extensions, no tab switching. Just paste the link and ask.",
-  },
-  {
-    q: "Can I bulk transcribe multiple TikTok videos at once with AI?",
-    a: "Yes. Paste up to 50 video URLs into a single message and the connector transcribes them all automatically. You can mix TikTok, Instagram, and YouTube links in the same batch. You can also paste a TikTok collection or playlist URL to import and transcribe every video in it. Bulk features require a Pro or Premium plan.",
-  },
-  {
-    q: "What data does TokScript return through the MCP connector?",
-    a: "Every video returns the full transcript, title, author, duration, views, likes, comments, shares, bookmarks, publish date, hashtags, audio track name, audio URL, and thumbnail. For TikTok profiles, you get follower count, following count, total likes, and video count. It's the complete dataset, same as what you get on the website.",
-  },
-  {
-    q: "Is TokScript's MCP connector free to use?",
-    a: "Yes, the connector works on every plan including Free. Free users get 5 transcriptions per day with full data per video. Pro and Premium ($39/year or $10/month) unlock unlimited transcriptions, bulk processing, collection imports, HD video downloads, and bulk cover image downloads. All MCP usage counts against your regular plan limits.",
-  },
-  {
-    q: "Can I download TikTok videos without watermarks using Claude or ChatGPT?",
-    a: "Yes. Ask the AI to download any TikTok or Instagram video and you'll get an HD download link with no watermark. Bulk downloads support up to 50 videos per request. YouTube video downloads are not supported due to platform restrictions, but YouTube transcription and cover image downloads work fine. Video downloads require Pro or Premium.",
-  },
-  {
-    q: "Is my data secure when using TokScript through Claude or ChatGPT?",
-    a: "Yes. You log in directly on TokScript's servers through OAuth, so your credentials are never shared with the AI platform. All data flows through encrypted servers with the same security as the TokScript website. You can revoke access anytime from your AI platform's settings.",
-  },
-  {
-    q: "What's the difference between using TokScript on the website versus through AI?",
-    a: 'Same engine, same data, same quality. The difference is that through AI you type what you want in plain English instead of clicking buttons. The real power is chained analysis: "transcribe these 20 videos and tell me which hooks performed best" and the AI handles the entire workflow in one conversation. Your library syncs across both, so anything saved on the website shows up in AI and vice versa.',
-  },
-  {
-    q: "Does it work with Cursor or Windsurf?",
-    a: "Claude and ChatGPT are live now. Support for Cursor, Windsurf, and other AI tools is coming soon. Join the waitlist on the pricing page to be notified first.",
-  },
-  {
-    q: "I'm already a TokScript subscriber. What do I do?",
-    a: "Just copy the connector URL at the top of this page, paste it into Claude or ChatGPT, and log in with your existing TokScript account. No upgrade needed, it's included in your current plan.",
-  },
-];
+    .tsm-mcp /* ── AGENTS ── */
+    #agents { }
+    .tsm-mcp .agents-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 52px; }
+    .tsm-mcp .agent-card {
+      background: var(--s1); border: 1px solid var(--border); border-radius: var(--r);
+      padding: 32px 28px; position: relative; overflow: hidden;
+      transition: border-color .25s, transform .25s;
+    }
+    .tsm-mcp .agent-card:hover { border-color: var(--teal25); transform: translateY(-3px); }
+    .tsm-mcp .agent-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--teal), transparent); opacity: 0; transition: opacity .3s; }
+    .tsm-mcp .agent-card:hover::after { opacity: .55; }
+    .tsm-mcp .agent-icon { font-size: 1.8rem; margin-bottom: 16px; filter: drop-shadow(0 0 10px rgba(0,217,180,.4)); }
+    .tsm-mcp .agent-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 9px; }
+    .tsm-mcp .agent-card p { font-size: .86rem; color: var(--muted); line-height: 1.65; }
+    .tsm-mcp .agent-glow { position: absolute; bottom: -50px; right: -50px; width: 160px; height: 160px; background: radial-gradient(circle, rgba(0,217,180,.07) 0%, transparent 70%); pointer-events: none; }
 
-const ctaFeatures = [
-  "No credits",
-  "No per-use charges",
-  "Cancel anytime",
-  "28 tools included",
-  "Claude + ChatGPT",
-];
+    .tsm-mcp /* ── BEFORE / AFTER ── */
+    #ba { }
+    .tsm-mcp .ba-grid { display: grid; grid-template-columns: repeat(1,1fr); gap: 14px; margin-top: 52px; }
+    .tsm-mcp .ba-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .tsm-mcp .ba-label-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 6px; }
+    .tsm-mcp .ba-lbl { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: 6px 14px; border-radius: 6px; text-align: center; }
+    .tsm-mcp .ba-lbl.before { background: rgba(255,255,255,.05); color: var(--muted); }
+    .tsm-mcp .ba-lbl.after { background: rgba(0,217,180,.1); color: var(--teal); }
+    .tsm-mcp .ba-card { background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); padding: 22px 20px; }
+    .tsm-mcp .ba-card.after { border-color: rgba(0,217,180,.2); }
+    .tsm-mcp .ba-topic { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted2); margin-bottom: 10px; }
+    .tsm-mcp .ba-card h4 { font-size: .9rem; font-weight: 700; margin-bottom: 6px; }
+    .tsm-mcp .ba-card p { font-size: .82rem; color: var(--muted); line-height: 1.6; }
 
-// ── Component ──
+    .tsm-mcp /* ── TOOL TABLE ── */
+    #tools { }
+    .tsm-mcp .tool-table { width: 100%; border-collapse: collapse; margin-top: 44px; font-size: .86rem; }
+    .tsm-mcp .tool-table th { text-align: left; padding: 12px 16px; font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted2); border-bottom: 1px solid var(--border); }
+    .tsm-mcp .tool-table td { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,.04); vertical-align: top; }
+    .tsm-mcp .tool-table tr:hover td { background: rgba(255,255,255,.02); }
+    .tsm-mcp .cat-row td { background: var(--s1); padding: 10px 16px; }
+    .tsm-mcp .cat-row td span { font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--teal); }
+    .tsm-mcp .t-name { font-weight: 600; color: var(--white); }
+    .tsm-mcp .t-desc { color: var(--muted); }
+    .tsm-mcp .t-tier { }
+    .tsm-mcp .t-tier.free { color: var(--teal); font-weight: 600; }
+    .tsm-mcp .t-tier.paid { color: var(--muted2); }
+
+    .tsm-mcp /* ── WHO ── */
+    #who {
+      background: #0d0d0d; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; padding: 80px 20px;
+    }
+    .tsm-mcp .who-bg-spiral {
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%,-50%) rotate(8.68deg);
+      width: 1634px; height: 1602px;
+      pointer-events: none; z-index: 0; object-fit: cover;
+      opacity: 0.4; filter: blur(50px);
+    }
+    .tsm-mcp .who-inner {
+      width: 1100px; max-width: 100%;
+      display: flex; flex-direction: column; align-items: center; gap: 40px;
+      position: relative; z-index: 2;
+    }
+    .tsm-mcp /* Header */
+    .who-header-block {
+      position: relative; width: 717px; height: auto;
+      display: flex; align-items: flex-start; justify-content: center; padding: 33px 0 8px;
+    }
+    .tsm-mcp .who-header-bg {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; pointer-events: none;
+    }
+    .tsm-mcp .who-header-content {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;
+    }
+    .tsm-mcp .who-pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: linear-gradient(#0d0d0d,#0d0d0d) padding-box,
+                  linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box;
+      border: 0.5px solid transparent; border-radius: 20px;
+      padding: 0 10px; height: 22px; font-size: 12px; color: #fff;
+    }
+    .tsm-mcp .who-h2 {
+      font-size: 40px; font-weight: 800; letter-spacing: -1.4px; line-height: 1.12;
+      color: #fff; max-width: 568px;
+    }
+    .tsm-mcp .who-sub {
+      font-size: 16px; color: rgba(255,255,255,.48); line-height: 1.65; max-width: 730px;
+    }
+    .tsm-mcp /* Cards outer */
+    .who-cards-outer {
+      position: relative; width: 1100px; max-width: 100%; height: 815px; margin-top: 0;
+      border-radius: 27px; border: 1.04px solid rgba(255,255,255,.1);
+      backdrop-filter: blur(20.8px); -webkit-backdrop-filter: blur(20.8px);
+      overflow: hidden;
+      background: radial-gradient(ellipse at 104% 100%, rgba(255,255,255,.09) 0%, rgba(128,128,128,.045) 50%, transparent 100%);
+    }
+    .tsm-mcp /* Individual cards */
+    .who-card {
+      position: absolute; border-radius: 19px;
+      border: 1.04px solid rgba(255,255,255,.1);
+      backdrop-filter: none; -webkit-backdrop-filter: none;
+      overflow: hidden;
+      background: #1a1a1a;
+    }
+    .tsm-mcp .who-card-1 { width: 350px; height: 389px; left: 12px;  top: 13px;  }
+    .tsm-mcp .who-card-2 { width: 350px; height: 389px; left: 372px; top: 13px;  }
+    .tsm-mcp .who-card-3 { width: 350px; height: 389px; left: 732px; top: 13px;  }
+    .tsm-mcp .who-card-4 { width: 529px; height: 389px; left: 12px;  top: 411px; }
+    .tsm-mcp .who-card-5 { width: 529px; height: 389px; left: 553px; top: 411px; }
+    .tsm-mcp .who-card-grid-bg {
+      position: absolute; left: 50%; top: -1px; transform: translateX(-50%);
+      width: 350px; height: 275px; object-fit: cover; pointer-events: none;
+    }
+    .tsm-mcp .who-card-title {
+      position: absolute; top: 15px; left: 0; right: 0;
+      text-align: center; font-size: 14.7px; font-weight: 700; color: #fff;
+    }
+    .tsm-mcp .who-card-img {
+      position: absolute; left: 15px; overflow: hidden; border-radius: 10px;
+    }
+    .tsm-mcp .who-card-img-sm { top: 46px; width: 318px; height: 272px; }
+    .tsm-mcp .who-card-img-lg { top: 47px; width: 497px; height: 273px; }
+    .tsm-mcp .who-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .tsm-mcp .who-card-desc {
+      position: absolute; left: 20px; right: 20px; bottom: 18px;
+      text-align: center; font-size: 13.3px; color: rgba(255,255,255,.8); line-height: 21.25px;
+    }
+    .tsm-mcp /* CTA */
+    .who-cta { display: flex; flex-direction: column; align-items: center; gap: 11px; margin-top: 40px; }
+    .tsm-mcp .who-cta-text { font-size: 14.1px; color: rgba(255,255,255,.48); }
+    .tsm-mcp .who-cta-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #fff; color: #06091a; font-size: 14px; font-weight: 500;
+      border-radius: 14px; width: 146px; height: 36px; transition: opacity .2s;
+    }
+    .tsm-mcp .who-cta-btn:hover { opacity: .86; }
+
+    .tsm-mcp /* ── PLATFORMS ── */
+    #platforms { }
+    .tsm-mcp .plat-row { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 48px; }
+    .tsm-mcp .plat-card { display: flex; flex-direction: column; align-items: center; gap: 10px; background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); padding: 28px 32px; min-width: 140px; transition: border-color .2s; }
+    .tsm-mcp .plat-card.live { border-color: var(--teal25); }
+    .tsm-mcp .plat-card.soon { opacity: .45; }
+    .tsm-mcp .plat-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+    .tsm-mcp .plat-name { font-size: .9rem; font-weight: 700; }
+    .tsm-mcp .plat-status { font-size: .7rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+    .tsm-mcp .plat-card.live .plat-status { color: var(--teal); }
+    .tsm-mcp .plat-card.soon .plat-status { color: var(--muted2); }
+    .tsm-mcp .plat-note { text-align: center; margin-top: 28px; font-size: .9rem; color: var(--muted); }
+
+    .tsm-mcp /* ── INCLUDED ── */
+    #included { }
+    .tsm-mcp .inc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 52px; }
+    .tsm-mcp .inc-card { background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); padding: 24px 22px; }
+    .tsm-mcp .inc-card h4 { font-size: .9rem; font-weight: 700; margin-bottom: 12px; color: var(--white); }
+    .tsm-mcp .inc-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .tsm-mcp .inc-list li { font-size: .82rem; color: var(--muted); display: flex; gap: 8px; align-items: flex-start; }
+    .tsm-mcp .inc-list li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; font-size: .78rem; margin-top: 1px; }
+
+    .tsm-mcp /* ── FAQ ── */
+    #faq { padding: 80px 24px; }
+    .tsm-mcp .faq-list { margin-top: 48px; border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .tsm-mcp .faq-item { border-bottom: 1px solid var(--border); }
+    .tsm-mcp .faq-item:last-child { border-bottom: none; }
+    .tsm-mcp .faq-q {
+      width: 100%; text-align: left; background: none; border: none; color: var(--white);
+      padding: 20px 24px; font-size: .92rem; font-weight: 600;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      transition: background .2s;
+    }
+    .tsm-mcp .faq-q:hover { background: rgba(255,255,255,.02); }
+    .tsm-mcp .faq-q.open { color: var(--teal); }
+    .tsm-mcp .faq-icon { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: .75rem; transition: transform .3s, border-color .2s; color: var(--muted); }
+    .tsm-mcp .faq-q.open .faq-icon { transform: rotate(45deg); border-color: var(--teal); color: var(--teal); }
+    .tsm-mcp .faq-a { display: none; padding: 0 24px 20px; font-size: .88rem; color: var(--muted); line-height: 1.7; }
+    .tsm-mcp .faq-a.open { display: block; }
+
+    .tsm-mcp /* ── PRICING / CTA ── */
+    #cta { text-align: center; }
+
+    .tsm-mcp /* ── CTA ONE PLAN ── */
+    #cta-oneplan {
+      background: #0d0d0d; display: flex; align-items: center;
+      justify-content: center; padding: 80px 20px; overflow: hidden;
+    }
+    .tsm-mcp .ctap-outer {
+      position: relative; width: 1200px; max-width: 100%;
+      border-radius: 20px; overflow: hidden;
+    }
+    .tsm-mcp .ctap-bg {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+      width: 100%; height: 100%; min-height: 600px; object-fit: cover;
+      pointer-events: none; z-index: 0;
+    }
+    .tsm-mcp .ctap-deco-left {
+      position: absolute; left: 31px; top: 174px; width: 97px; height: 134px;
+      object-fit: contain; z-index: 1; pointer-events: none;
+    }
+    .tsm-mcp .ctap-deco-right {
+      position: absolute; right: 32px; top: 213px; width: 132px; height: 134px;
+      object-fit: contain; z-index: 1; pointer-events: none;
+    }
+    .tsm-mcp .ctap-content {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 22px; text-align: center; padding: 103px 40px 80px;
+    }
+    .tsm-mcp .ctap-title {
+      font-size: 72px; font-weight: 500; letter-spacing: -0.8px; line-height: 1; margin: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.6), #fff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .tsm-mcp .ctap-desc {
+      font-size: 15.2px; color: #fff; margin: 0; line-height: 1.65; max-width: 700px;
+    }
+    .tsm-mcp .ctap-checks {
+      display: flex; gap: 9px; align-items: center;
+      flex-wrap: wrap; justify-content: center; font-size: 12.5px;
+    }
+    .tsm-mcp .ctap-check { display: flex; gap: 6px; align-items: center; color: #fff; }
+    .tsm-mcp .ctap-tick { color: #00fff7; font-weight: 700; }
+    .tsm-mcp .ctap-url-bar {
+      width: 507px; max-width: 100%; height: 48px;
+      background: #0d0d0d; border: 2px solid #e1dbdb; border-radius: 16px;
+      display: flex; align-items: center;
+      padding: 0 4px 0 14px; box-sizing: border-box;
+    }
+    .tsm-mcp .ctap-url-text {
+      flex: 1; font-size: 14px; color: #d4d4d4;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .tsm-mcp .ctap-url-btn {
+      flex-shrink: 0; width: 114px; height: 36px; background: #fff; color: #06091a;
+      font-size: 14px; font-weight: 500; border: none; border-radius: 14px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      gap: 6px; font-family: var(--font); transition: opacity .2s;
+    }
+    .tsm-mcp .ctap-url-btn:hover { opacity: .86; }
+    @media (max-width: 820px) {
+      .tsm-mcp #cta-oneplan { padding: 60px 16px; }
+      .tsm-mcp .ctap-deco-left, .tsm-mcp .ctap-deco-right { display: none; }
+      .tsm-mcp .ctap-content { padding: 60px 32px 56px; gap: 20px; }
+      .tsm-mcp .ctap-title { font-size: clamp(36px, 7vw, 64px); }
+      .tsm-mcp .ctap-desc { font-size: 14px; }
+      .tsm-mcp .ctap-url-bar { width: 100%; }
+    }
+    @media (max-width: 640px) {
+      .tsm-mcp .ctap-content { padding: 48px 20px 48px; }
+      .tsm-mcp .ctap-title { font-size: clamp(28px, 9vw, 46px); }
+      .tsm-mcp .ctap-checks { font-size: 11.5px; gap: 8px; }
+    }
+
+    .tsm-mcp /* ── FOOTER ── */
+    .ft-root {
+      background: #0d0d0d; padding: 40px 20px 0;
+      display: flex; flex-direction: column; align-items: center; gap: 40px;
+    }
+    .tsm-mcp .ft-top {
+      width: 100%; max-width: 1146px;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 40px;
+    }
+    .tsm-mcp .ft-brand {
+      display: flex; flex-direction: column; gap: 20px; width: 277px; flex-shrink: 0;
+    }
+    .tsm-mcp .ft-brand-logo {
+      height: 56px; width: 140px; display: flex; align-items: flex-end;
+    }
+    .tsm-mcp .ft-brand-desc {
+      font-size: 14px; color: #9ca3af; line-height: 1.625; margin: 0; max-width: 266px;
+    }
+    .tsm-mcp .ft-nav {
+      display: flex; gap: 32px; flex: 1; justify-content: flex-end;
+    }
+    .tsm-mcp .ft-nav-col {
+      display: flex; flex-direction: column; gap: 16px; min-width: 120px;
+    }
+    .tsm-mcp .ft-nav-head {
+      font-size: 14px; font-weight: 700; color: #fff; line-height: 1.43;
+    }
+    .tsm-mcp .ft-nav-links {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .tsm-mcp .ft-nav-links a {
+      font-size: 14px; color: #9ca3af; text-decoration: none; line-height: 1.43;
+    }
+    .tsm-mcp .ft-nav-links a:hover { color: #fff; }
+    .tsm-mcp .ft-bottom {
+      width: 100%; border-top: 1px solid #262626;
+      padding: 33px 20px 40px; display: flex; flex-direction: column;
+      align-items: center; gap: 24px; box-sizing: border-box;
+    }
+    .tsm-mcp .ft-bottom-inner {
+      width: 100%; max-width: 960px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .tsm-mcp .ft-social {
+      display: flex; gap: 20px; align-items: center;
+    }
+    .tsm-mcp .ft-social a {
+      display: flex; align-items: center; width: 20px; height: 20px;
+    }
+    .tsm-mcp .ft-copyright {
+      font-size: 14px; color: #9ca3af; white-space: nowrap;
+    }
+    .tsm-mcp .ft-disclaimer {
+      width: 100%; max-width: 960px;
+    }
+    .tsm-mcp .ft-disclaimer p {
+      font-size: 12px; color: #9ca3af; margin: 0; line-height: 1.625;
+    }
+    @media (max-width: 820px) {
+      .tsm-mcp .ft-top { flex-direction: column; align-items: center; gap: 32px; }
+      .tsm-mcp .ft-brand { width: 100%; align-items: center; text-align: center; }
+      .tsm-mcp .ft-brand-desc { text-align: center; }
+      .tsm-mcp .ft-nav { justify-content: center; gap: 40px; }
+      .tsm-mcp .ft-nav-col { align-items: center; text-align: center; }
+      .tsm-mcp .ft-bottom-inner { flex-direction: column; align-items: center; gap: 16px; }
+      .tsm-mcp .ft-copyright { white-space: normal; text-align: center; }
+      .tsm-mcp .ft-disclaimer p { text-align: center; }
+    }
+
+    .tsm-mcp .cta-card {
+      background: var(--s1); border: 1px solid var(--teal25); border-radius: 24px;
+      padding: 72px 40px; position: relative; overflow: hidden;
+      box-shadow: 0 0 60px rgba(0,217,180,.06);
+    }
+    .tsm-mcp .cta-card::before {
+      content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 2px; height: 180px;
+      background: linear-gradient(to top, transparent, var(--teal)); filter: blur(1px);
+    }
+    .tsm-mcp .cta-card::after {
+      content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 500px; height: 200px;
+      background: radial-gradient(ellipse at 50% 100%, rgba(0,217,180,.08) 0%, transparent 70%);
+    }
+    .tsm-mcp .price-block { position: relative; z-index: 1; margin-bottom: 6px; }
+    .tsm-mcp .price-main { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -.04em; color: var(--white); }
+    .tsm-mcp .price-note { font-size: .88rem; color: var(--teal); font-weight: 600; margin-top: 6px; }
+    .tsm-mcp .cta-card h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; letter-spacing: -.03em; margin-bottom: 12px; position: relative; z-index: 1; }
+    .tsm-mcp .cta-card > p { color: var(--muted); margin-bottom: 28px; font-size: .95rem; max-width: 560px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; }
+    .tsm-mcp .cta-features { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 36px; position: relative; z-index: 1; }
+    .tsm-mcp .cta-feat { font-size: .78rem; color: var(--muted2); display: flex; align-items: center; gap: 6px; }
+    .tsm-mcp .cta-feat::before { content: '✓'; color: var(--teal); font-weight: 700; }
+    .tsm-mcp .cta-url-row { display: flex; justify-content: center; margin-bottom: 16px; position: relative; z-index: 1; }
+    .tsm-mcp .btn-teal { display: inline-flex; align-items: center; gap: 8px; background: var(--teal); color: #0d0d0d; font-weight: 700; font-size: .9rem; padding: 13px 30px; border-radius: 12px; border: none; transition: opacity .2s, transform .15s; box-shadow: 0 0 28px rgba(0,217,180,.28); }
+    .tsm-mcp .btn-teal:hover { opacity: .86; transform: translateY(-2px); }
+    .tsm-mcp .cta-sub { font-size: .82rem; color: var(--muted2); position: relative; z-index: 1; }
+    .tsm-mcp .cta-sub a { color: var(--teal); border-bottom: 1px solid rgba(0,217,180,.3); }
+    .tsm-mcp .cta-sub a:hover { border-color: var(--teal); }
+
+    .tsm-mcp /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; font-size: .8rem; color: var(--muted2); position: relative; z-index: 1; }
+
+    .tsm-mcp /* ── Scroll animations ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .tsm-mcp .fu { animation: fadeUp .65s ease both; }
+    .tsm-mcp .fu1 { animation-delay: .08s; } .tsm-mcp .fu2 { animation-delay: .18s; } .tsm-mcp .fu3 { animation-delay: .3s; } .tsm-mcp .fu4 { animation-delay: .44s; }
+    .tsm-mcp .reveal { opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease; }
+    .tsm-mcp .reveal.in { opacity: 1; transform: translateY(0); }
+
+    .tsm-mcp /* ── SETUP SECTION ── */
+    #setup {
+      background: #0d0d0d; display: flex; align-items: center; justify-content: center;
+      padding: 80px 20px;
+    }
+    .tsm-mcp .setup-card {
+      position: relative; width: 1080px; max-width: 100%;
+      background: #1a1a1a; border-radius: 20px; overflow: hidden;
+    }
+    .tsm-mcp .setup-bg {
+      position: absolute; left: 0; top: 12.5px;
+      width: 100%; height: 100%; object-fit: cover; pointer-events: none; z-index: 0;
+    }
+    .tsm-mcp .setup-inner {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 32px; padding: 40px 24px 36px;
+    }
+    .tsm-mcp .setup-header {
+      display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%;
+    }
+    .tsm-mcp .setup-title {
+      font-size: 40px; font-weight: 800; color: #fff;
+      letter-spacing: -1.4px; line-height: 1.12; margin: 0; text-align: center;
+    }
+    .tsm-mcp .setup-tabs {
+      display: inline-flex; align-items: center; gap: 4px;
+      height: 38px; padding: 0 3.5px; border-radius: 79px;
+      border: 1.04px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(20.8px); -webkit-backdrop-filter: blur(20.8px);
+      background: radial-gradient(ellipse at bottom right, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+    }
+    .tsm-mcp .setup-tab {
+      display: flex; align-items: center; gap: 4px;
+      height: 31px; padding: 0 16px; border-radius: 64px;
+      border: 1.04px solid rgba(255,255,255,0.1);
+      background: radial-gradient(ellipse at bottom right, rgba(255,255,255,0.09) 0%, rgba(128,128,128,0.045) 50%, transparent 100%);
+      backdrop-filter: blur(20.8px); -webkit-backdrop-filter: blur(20.8px);
+      cursor: pointer; font-family: var(--font);
+    }
+    .tsm-mcp .setup-tab span {
+      font-size: 12.8px; font-weight: 600; color: rgba(255,255,255,0.48); white-space: nowrap;
+    }
+    .tsm-mcp .setup-tab.setup-tab-active { border-color: #00f7ef; background: #1c1c1c; }
+    .tsm-mcp .setup-tab.setup-tab-active span { color: #00f7ef; }
+    .tsm-mcp .chatgpt-icon-wrap {
+      position: relative; width: 15.58px; height: 15.58px; flex-shrink: 0; overflow: hidden; opacity: 0.7;
+    }
+    .tsm-mcp .chatgpt-icon-wrap img {
+      position: absolute; left: 0; top: 0; height: 99.05%; width: 336.91%; max-width: none; pointer-events: none;
+    }
+    .tsm-mcp /* Panel */
+    .setup-panel {
+      width: 653px; max-width: 100%;
+      border-radius: 27px; border: 1.04px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(20.8px); -webkit-backdrop-filter: blur(20.8px);
+      background: radial-gradient(ellipse at bottom right, rgba(255,255,255,0.09) 0%, rgba(128,128,128,0.045) 50%, transparent 100%);
+      padding: 10px;
+    }
+    .tsm-mcp .setup-panel-inner {
+      background: #1f1f1f; border: 1px solid #333; border-radius: 16px;
+      display: flex; overflow: hidden; min-height: 254px;
+    }
+    .tsm-mcp .setup-left {
+      width: 316px; flex-shrink: 0; border-right: 1px solid #333;
+      padding: 20px; display: flex; flex-direction: column;
+    }
+    .tsm-mcp .setup-left-title {
+      font-family: var(--font); font-size: 14px; font-weight: 700; color: #fff; margin: 0 0 6px;
+    }
+    .tsm-mcp .setup-left-sub {
+      font-family: var(--font); font-size: 10.8px; color: rgba(255,255,255,0.8);
+      margin: 0; line-height: 1.6;
+    }
+    .tsm-mcp .setup-video {
+      position: relative; aspect-ratio: 274 / 154;
+      background: #f3f4f6; border-radius: 14px; overflow: hidden; margin-top: auto; margin-top: 16px;
+    }
+    .tsm-mcp .setup-video-thumb {
+      position: absolute; width: 100%; height: 133%; top: -16.66%; left: 0;
+      object-fit: cover; opacity: 0.8; pointer-events: none;
+    }
+    .tsm-mcp .setup-video-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.1); }
+    .tsm-mcp .setup-play-btn {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+      width: 40px; height: 40px; border-radius: 9999px; background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tsm-mcp .setup-play-btn img { width: 16px; height: 16px; position: relative; left: 1px; }
+    .tsm-mcp .setup-right {
+      flex: 1; padding: 24px 16px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .tsm-mcp .setup-step { display: flex; align-items: flex-start; gap: 12px; }
+    .tsm-mcp .setup-step-num {
+      width: 24px; height: 24px; border-radius: 9999px;
+      background: rgba(0,184,178,0.08); display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-family: var(--font); font-size: 10px; font-weight: 700; color: #12e2db;
+    }
+    .tsm-mcp .setup-step-title {
+      font-family: var(--font); font-size: 12px; font-weight: 700; color: #fff;
+      margin: 2px 0 4px; white-space: nowrap;
+    }
+    .tsm-mcp .setup-step-desc {
+      font-family: var(--font); font-size: 11px; color: rgba(255,255,255,0.8);
+      margin: 0; line-height: 1.65;
+    }
+    .tsm-mcp .setup-cta-btn {
+      width: 186px; height: 36px; background: #fff; border: none; border-radius: 14px;
+      font-family: var(--font); font-size: 14px; font-weight: 500; color: #06091a; cursor: pointer;
+    }
+    .tsm-mcp .setup-cta-btn:hover { opacity: .86; }
+    .tsm-mcp /* Setup responsive */
+    @media (max-width: 820px) {
+      #setup { padding: 60px 16px; }
+      .setup-title { font-size: clamp(24px, 5vw, 36px); }
+      .setup-panel { width: 100%; }
+      .setup-panel-inner { flex-direction: column; min-height: auto; }
+      .setup-left { width: 100%; border-right: none; border-bottom: 1px solid #333; }
+      .setup-right { padding: 20px 16px; justify-content: flex-start; gap: 20px; }
+    }
+    @media (max-width: 480px) {
+      .tsm-mcp #setup { padding: 48px 12px; }
+      .tsm-mcp .setup-title { font-size: 22px; }
+      .tsm-mcp .setup-card { border-radius: 16px; }
+    }
+
+    .tsm-mcp /* ── Hamburger + Mobile Nav ── */
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 8px; z-index: 400;
+    }
+    .tsm-mcp .nav-hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: #fff; border-radius: 2px; transition: all .25s;
+    }
+    .tsm-mcp .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .tsm-mcp .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .tsm-mcp .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .tsm-mcp .mobile-nav {
+      display: none; position: fixed;
+      top: 68px; left: 0; right: 0; bottom: 0;
+      background: rgba(13,13,13,.97); backdrop-filter: blur(20px);
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 28px; z-index: 200; padding: 24px;
+    }
+    .tsm-mcp .mobile-nav.open { display: flex; }
+    .tsm-mcp .mobile-nav a {
+      font-size: 20px; font-weight: 600; color: rgba(255,255,255,.8);
+      text-decoration: none; transition: color .2s;
+    }
+    .tsm-mcp .mobile-nav a:hover, .tsm-mcp .mobile-nav a.active { color: #00D9B4; }
+    .tsm-mcp .mobile-nav-actions {
+      display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 8px; width: 100%;
+    }
+    .tsm-mcp .mobile-nav-actions .btn-ghost, .tsm-mcp .mobile-nav-actions .btn-solid {
+      width: 200px; display: flex; align-items: center; justify-content: center;
+    }
+
+    .tsm-mcp /* ── Responsive ── */
+    @media (max-width: 1140px) {
+      .hiw-inner { width: 100%; gap: 28px; }
+      .hiw-header-block { width: 100%; }
+      .hiw-cards-outer { overflow: visible; }
+      .fs-inner { width: 100%; gap: 28px; }
+      .fs-header-block { width: 100%; }
+      .ba-inner { width: 100%; gap: 28px; }
+      .ba-header-block { width: 100%; }
+      .ba-carousel-outer { width: 100%; }
+      .ba-slide { min-width: 100%; width: 100%; }
+      .ba-card-img { width: calc(100% - 30px) !important; }
+      .ba-card-desc { width: calc(100% - 32px) !important; }
+      .ba-card.ba-after .ba-card-desc { width: calc(100% - 32px) !important; }
+      .who-inner { width: 100%; gap: 28px; }
+      .who-header-block { width: 100%; }
+      .who-cards-outer { width: 100%; }
+    }
+
+    @media (max-width: 960px) {
+      .tsm-mcp .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .tsm-mcp .skills-grid, .tsm-mcp .agents-grid, .tsm-mcp .wf-grid, .tsm-mcp .who-grid, .tsm-mcp .inc-grid { grid-template-columns: repeat(2,1fr); }
+      .tsm-mcp .tab-panel.on { grid-template-columns: 1fr; }
+      .tsm-mcp .steps-row { grid-template-columns: 1fr; }
+      .tsm-mcp /* FS cards: 2-col */
+      .fs-card { width: calc(50% - 10px); }
+    }
+
+    @media (max-width: 820px) {
+      .tsm-mcp /* Nav */
+      nav { padding: 0 20px; }
+      .tsm-mcp .nav-links { display: none; }
+      .tsm-mcp .nav-actions { display: none; }
+      .tsm-mcp .nav-hamburger { display: flex; }
+
+      .tsm-mcp /* Hero */
+      #hero { height: auto; min-height: 100svh; overflow: visible; display: flex; flex-direction: column; align-items: center; padding-bottom: 48px; }
+      .tsm-mcp .hero-body { padding-top: 84px; z-index: 5; width: 100%; }
+      .tsm-mcp h1 { font-size: clamp(28px, 7vw, 48px); letter-spacing: -1px; line-height: 1.15; }
+      .tsm-mcp .hero-sub { font-size: 15px; max-width: 90%; }
+      .tsm-mcp .hero-claude-logo { display: none; }
+      .tsm-mcp .hero-chatgpt-logo { display: none; }
+      .tsm-mcp .hero-flare { position: relative; left: auto; top: auto; transform: none; width: 100%; height: 120px; order: 2; margin: -70px 0 0; z-index: 3; }
+      .tsm-mcp .hero-flare img { object-fit: contain; object-position: center bottom; }
+      .tsm-mcp .hero-sparkles { display: none; }
+      .tsm-mcp .hero-body { order: 1; }
+      .tsm-mcp .hero-video { position: relative; left: auto; top: auto; transform: none; width: calc(100% - 40px); margin: 0 auto; order: 3; z-index: 2; }
+      .tsm-mcp .hero-play-btn { display: none; }
+      .tsm-mcp .url-bar { width: min(507px, calc(100vw - 40px)); }
+
+      .tsm-mcp /* HIW */
+      .hiw-inner { gap: 24px; }
+      .tsm-mcp .hiw-header-block { height: auto; padding: 24px 0; display: flex; align-items: center; justify-content: center; }
+      .tsm-mcp .hiw-header-bg { height: 100%; }
+      .tsm-mcp .hiw-header-content { width: 90%; }
+      .tsm-mcp .hiw-h2 { font-size: clamp(24px, 5vw, 40px); }
+      .tsm-mcp .hiw-sub { font-size: 14px; }
+      .tsm-mcp .hiw-cards-outer { height: auto !important; overflow: visible; }
+      .tsm-mcp .hiw-cards-row { position: relative; left: 0; top: 0; padding: 12px; flex-direction: column; width: 100%; gap: 12px; }
+      .tsm-mcp .hiw-card { width: 100% !important; height: 326px !important; flex-shrink: 0; }
+      .tsm-mcp .hiw-card-img-wrap { width: calc(100% - 30px) !important; }
+
+      .tsm-mcp /* Who header */
+      .who-inner { gap: 24px; }
+      .tsm-mcp .who-header-block { height: auto; padding: 32px 0; display: flex; align-items: flex-start; justify-content: center; }
+      .tsm-mcp .who-header-content { width: 90%; }
+      .tsm-mcp .who-h2 { font-size: clamp(24px, 5vw, 40px); max-width: 90%; }
+      .tsm-mcp .who-sub { max-width: 90%; }
+      .tsm-mcp /* Who cards — stack vertically */
+      .who-cards-outer {
+        height: auto; padding: 12px;
+        display: flex; flex-direction: column; gap: 12px;
+        overflow: visible;
+      }
+      .tsm-mcp .who-card {
+        position: relative !important;
+        left: 0 !important; top: 0 !important;
+        width: 100% !important; height: 340px !important;
+        border-radius: 16px;
+      }
+      .tsm-mcp .who-card-img-sm { width: calc(100% - 30px) !important; height: 220px !important; }
+      .tsm-mcp .who-card-img-lg { width: calc(100% - 30px) !important; height: 220px !important; }
+
+      .tsm-mcp /* Free skills */
+      .fs-inner { gap: 24px; }
+      .tsm-mcp .fs-header-block { min-height: 0; }
+      .tsm-mcp .fs-header-content { width: 90%; }
+      .tsm-mcp .fs-h2 { font-size: clamp(24px, 5vw, 40px); }
+      .tsm-mcp .fs-card { width: 100%; }
+      .tsm-mcp .fs-tabs { flex-wrap: wrap; justify-content: center; }
+
+      .tsm-mcp /* Before & After — header */
+      .ba-inner { gap: 24px; }
+      .tsm-mcp .ba-header-block { overflow: hidden; }
+      .tsm-mcp .ba-header-bg { width: 100%; }
+      .tsm-mcp .ba-header-content { padding: 40px 0 16px; width: 100%; }
+      .tsm-mcp .ba-title { font-size: clamp(22px, 5vw, 40px); }
+      .tsm-mcp .ba-subtitle { font-size: 14px; }
+      .tsm-mcp /* Before & After — carousel */
+      .ba-carousel-outer { width: 100%; height: auto !important; overflow: hidden; margin-top: 16px; }
+      .tsm-mcp .ba-track { height: auto; }
+      .tsm-mcp .ba-slide { min-width: 100%; width: 100% !important; height: auto !important; flex-shrink: 0; padding: 16px 14px 16px; }
+      .tsm-mcp .ba-slide-title { height: auto; line-height: 1.3; margin-bottom: 14px; font-size: 20px; }
+      .tsm-mcp .ba-cards-row { flex-direction: column; height: auto !important; gap: 10px; }
+      .tsm-mcp .ba-card { height: 340px !important; flex: none; width: 100%; }
+      .tsm-mcp .ba-card-img { width: calc(100% - 30px) !important; height: 192px !important; }
+      .tsm-mcp .ba-card-desc { width: calc(100% - 32px) !important; font-size: 12px; line-height: 1.5; }
+      .tsm-mcp .ba-card.ba-after .ba-card-desc { width: calc(100% - 32px) !important; }
+
+      .tsm-mcp /* Workflows */
+      #workflows { padding: 60px 16px; }
+      .tsm-mcp .wf-inner { padding: 48px 24px 40px; gap: 24px; }
+      .tsm-mcp .wf-title { font-size: clamp(22px, 4vw, 36px); }
+      .tsm-mcp .wf-subtitle { font-size: 14px; }
+      .tsm-mcp .wf-panel { width: 100%; flex-direction: column; }
+      .tsm-mcp .wf-left { padding: 24px 20px; justify-content: flex-start; }
+      .tsm-mcp .wf-item-header { font-size: 16px; }
+      .tsm-mcp .wf-images { width: 100%; height: 260px; border-top: 1px solid rgba(255,255,255,0.1); }
+      .tsm-mcp .wf-img-0 { left: 50%; top: 50%; transform: translate(-50%,-50%); width: 156px; height: 174px; }
+      .tsm-mcp .wf-img-1 { left: 50%; top: 50%; transform: translate(-50%,-50%); width: 240px; height: 182px; }
+      .tsm-mcp .wf-img-2 { left: 50%; top: 50%; transform: translate(-50%,-50%); width: 150px; height: 177px; }
+
+      .tsm-mcp /* FAQ */
+      #faq { padding: 60px 16px; }
+
+      .tsm-mcp /* Footer */
+      footer { flex-direction: column; gap: 8px; text-align: center; padding: 24px 20px; }
+
+      .tsm-mcp /* CTA */
+      .cta-card { padding: 48px 20px; }
+    }
+
+    @media (max-width: 640px) {
+      .tsm-mcp nav { padding: 0 16px; }
+      .tsm-mcp section { padding: 64px 16px; }
+
+      .tsm-mcp /* Hero */
+      #hero { height: auto; min-height: 100svh; overflow: visible; display: flex; flex-direction: column; align-items: center; padding-bottom: 48px; }
+      .tsm-mcp .hero-body { padding-top: 84px; z-index: 5; width: 100%; }
+      .tsm-mcp h1 { font-size: clamp(26px, 8vw, 36px); line-height: 1.15; }
+      .tsm-mcp .hero-sub { font-size: 14px; }
+      .tsm-mcp .hero-flare { position: relative; left: auto; top: auto; transform: none; width: 100%; height: 120px; order: 2; margin: -70px 0 0; z-index: 3; }
+      .tsm-mcp .hero-flare img { object-fit: contain; object-position: center bottom; }
+      .tsm-mcp .hero-sparkles { display: none; }
+      .tsm-mcp .hero-body { order: 1; }
+      .tsm-mcp .hero-video { position: relative; left: auto; top: auto; transform: none; width: calc(100vw - 32px); margin: 0 auto; order: 3; z-index: 2; }
+      .tsm-mcp .hero-play-btn { display: none; }
+      .tsm-mcp .url-bar { width: calc(100vw - 32px); }
+
+      .tsm-mcp /* HIW */
+      .hiw-inner { gap: 20px; }
+      .tsm-mcp .hiw-h2 { font-size: 24px; }
+      .tsm-mcp /* Who */
+      .who-inner { gap: 20px; }
+      .tsm-mcp .who-card { height: 310px !important; }
+      .tsm-mcp .who-card-img-sm { height: 190px !important; }
+      .tsm-mcp .who-card-img-lg { height: 190px !important; }
+
+      .tsm-mcp /* FS cards: single col */
+      .fs-inner { gap: 20px; }
+      .tsm-mcp .fs-card { width: 100%; }
+
+      .tsm-mcp /* Before & After smaller cards on mobile */
+      .ba-inner { gap: 20px; }
+      .tsm-mcp .ba-card { height: 310px !important; }
+      .tsm-mcp .ba-card-img { height: 172px !important; }
+      .tsm-mcp .ba-slide-title { font-size: 18px; }
+
+      .tsm-mcp /* Workflows smaller mobile */
+      .wf-images { height: 240px; }
+
+      .tsm-mcp /* General grids */
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .tsm-mcp .skills-grid, .tsm-mcp .agents-grid, .tsm-mcp .wf-grid, .tsm-mcp .who-grid, .tsm-mcp .inc-grid { grid-template-columns: 1fr; }
+      .tsm-mcp .ba-row { grid-template-columns: 1fr; }
+      .tsm-mcp .ba-label-row { grid-template-columns: 1fr; }
+      .tsm-mcp .plat-row { gap: 10px; }
+      .tsm-mcp .cta-card { padding: 40px 16px; }
+
+      .tsm-mcp /* Footer disclaimer */
+      footer > div { width: 100% !important; }
+      .tsm-mcp footer p { width: 100% !important; }
+    }
+
+    @media (max-width: 480px) {
+      .tsm-mcp /* Tightest mobile */
+      h1 { font-size: clamp(22px, 8vw, 30px); }
+      .tsm-mcp .hero-play-btn { display: none; }
+      .tsm-mcp /* Workflows: hide image panel on very small screens */
+      .wf-images { display: none; }
+      .tsm-mcp .wf-panel { border-radius: 16px; }
+    }
+
+    .tsm-mcp /* ── TOOLS ── */
+    #tools { padding: 80px 24px; background: #0d0d0d; }
+    .tsm-mcp .tools-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; flex-direction: column; align-items: center; gap: 40px;
+    }
+    .tsm-mcp .tools-header-block {
+      position: relative; width: 884px; max-width: 100%; height: auto;
+      display: flex; justify-content: center;
+    }
+    .tsm-mcp .tools-header-bg {
+      position: absolute; left: 50%; top: 0; transform: translateX(-50%);
+      width: 884px; height: 100%; object-fit: cover; pointer-events: none;
+    }
+    .tsm-mcp .tools-header-content {
+      position: relative; z-index: 1; padding: clamp(32px, 6vw, 60px) 20px 8px;
+      display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;
+      width: 694px; max-width: 100%;
+    }
+    .tsm-mcp .tools-pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: linear-gradient(#0d0d0d,#0d0d0d) padding-box,
+                  linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box;
+      border: 0.5px solid transparent; border-radius: 20px;
+      padding: 0 10px; height: 22px; font-size: 12px; color: #fff;
+    }
+    .tsm-mcp .tools-h2 {
+      font-size: clamp(24px, 5vw, 40px); font-weight: 800; letter-spacing: -1.4px; line-height: 1.12; color: #fff; margin: 0;
+    }
+    .tsm-mcp .tools-sub {
+      font-size: clamp(13px, 2vw, 16px); color: rgba(255,255,255,0.7); line-height: 1.65; max-width: 900px; margin: 0; white-space: normal;
+    }
+    .tsm-mcp .tools-table {
+      width: 100%; max-width: 900px;
+      border-collapse: collapse;
+      font-family: var(--font);
+    }
+    .tsm-mcp .tools-table thead tr {
+      border-bottom: 1px solid rgba(0,217,180,0.3);
+    }
+    .tsm-mcp .tools-table thead th {
+      padding: 12px 16px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: rgba(255,255,255,0.4);
+      text-align: left;
+    }
+    .tsm-mcp .tools-table .t-icon { width: 44px; padding: 10px 8px 10px 0; vertical-align: middle; }
+    .tsm-mcp .tools-table .t-icon svg { display: block; }
+    .tsm-mcp .tools-table tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: background .15s ease;
+    }
+    .tsm-mcp .tools-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+    .tsm-mcp .tools-table tbody td {
+      padding: 14px 16px; vertical-align: middle;
+    }
+    .tsm-mcp .tools-table .t-icon {
+      width: 48px; text-align: center; padding: 10px 8px;
+    }
+    .tsm-mcp .tools-table .t-icon img {
+      width: 32px; height: 32px; object-fit: contain; display: inline-block;
+    }
+    .tsm-mcp .tools-table .t-name {
+      font-size: 13px; font-weight: 600; color: #fff;
+      font-family: var(--font);
+      white-space: nowrap;
+    }
+    .tsm-mcp .tools-table .t-desc {
+      font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.5;
+    }
+    .tsm-mcp .tools-table .t-check {
+      width: 80px; text-align: center; white-space: nowrap;
+    }
+    .tsm-mcp .tools-table thead th.t-check { text-align: center; }
+    .tsm-mcp .tools-table .t-check svg { display: inline-block; }
+    @media (max-width: 820px) {
+      .tsm-mcp .tools-inner { gap: 28px; }
+      .tsm-mcp .tools-table .t-desc { font-size: 12px; }
+    }
+    @media (max-width: 640px) {
+      .tsm-mcp .tools-table { table-layout: fixed; width: 100%; }
+      .tsm-mcp .tools-table thead th {
+        padding: 10px 6px;
+        font-size: 10px; letter-spacing: 0.05em;
+      }
+      .tsm-mcp .tools-table .t-icon { width: 32px; padding: 8px 4px 8px 0; }
+      .tsm-mcp .tools-table .t-icon svg, .tsm-mcp .tools-table .t-icon img { width: 24px; height: 24px; }
+      .tsm-mcp .tools-table .t-name {
+        font-size: 11px; white-space: normal; word-break: break-all;
+        padding-bottom: 2px;
+      }
+      .tsm-mcp .tools-table .t-desc { font-size: 11px; color: rgba(255,255,255,0.45); }
+      .tsm-mcp .tools-table .t-check { width: 40px; }
+      .tsm-mcp .tools-table tbody td { padding: 10px 4px; }
+    }
+
+    .tsm-mcp /* ── Video modal ── */
+    .video-modal {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.88);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s ease;
+    }
+    .tsm-mcp .video-modal.open { opacity: 1; pointer-events: auto; }
+    .tsm-mcp .video-modal-inner {
+      position: relative;
+      width: min(90vw, 1080px);
+      aspect-ratio: 16/9;
+    }
+    .tsm-mcp .video-modal-inner iframe {
+      width: 100%; height: 100%; border: none; border-radius: 12px; display: block;
+    }
+    .tsm-mcp .video-modal-close {
+      position: absolute; top: -44px; right: 0;
+      background: none; border: none; color: #fff; font-size: 28px;
+      line-height: 1; cursor: pointer; opacity: .7;
+      transition: opacity .2s;
+    }
+    .tsm-mcp .video-modal-close:hover { opacity: 1; }
+  `;
+
+const STATIC_BODY = `<!-- Mobile Nav Overlay -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="http://localhost:3000/">Home</a>
+  <a href="#">Features</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="claude.html" style="padding-left:24px;font-size:13px;opacity:.8;">↳ Claude MCP</a>
+  <a href="chatgpt.html" style="padding-left:24px;font-size:13px;opacity:.8;">↳ ChatGPT MCP</a>
+  <a href="#">FAQs</a>
+  <a href="#">Affiliates</a>
+  <div class="mobile-nav-actions">
+    <button class="btn-ghost">Log in</button>
+    <button class="btn-solid">Get Started</button>
+  </div>
+</div>
+
+<!-- ① HERO -->
+<section id="hero">
+
+  <!-- Floating AI logos -->
+  <img class="hero-claude-logo"  src="https://www.figma.com/api/mcp/asset/15633fe5-d074-40b6-a434-b5c89e0ade10" alt="Claude" />
+  <img class="hero-chatgpt-logo" src="https://www.figma.com/api/mcp/asset/5cddc206-6492-4245-8194-8bbcec43d48c" alt="ChatGPT" />
+
+  <!-- Flare — Figma 224:372: bright point at bottom, glow shines upward, bottom sits on top of video card -->
+  <div class="hero-flare">
+    <img src="https://www.figma.com/api/mcp/asset/13e28e53-838d-44e8-adb7-910cbe6902cc" alt="" />
+  </div>
+
+  <!-- Main content -->
+  <div class="hero-body">
+    <div class="badge">
+      <img src="https://www.figma.com/api/mcp/asset/24116ba1-34a2-4ed8-a936-7a322c55f912" alt="" />
+      New Feature
+    </div>
+    <h1>Tokscript now works inside<br>Claude and ChatGPT</h1>
+    <p class="hero-sub">Ask your AI to pull transcripts, generate hooks, analyze virality, and research creators from any TikTok, Instagram Reel, or YouTube Short. Directly in conversation.</p>
+    <div class="url-bar">
+      <span class="url-bar-text">api.tokscript.com/mcp</span>
+      <button class="url-bar-copy" id="urlCopy" onclick="copyUrl()">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;flex-shrink:0;">
+          <img src="https://www.figma.com/api/mcp/asset/07184b29-b259-4524-a9ff-5945239d4623" alt="" style="width:15px;height:15px;object-fit:contain;display:block;" />
+        </span>
+        Copy
+      </button>
+    </div>
+  </div>
+
+  <!-- Video card — Figma 257:502 -->
+  <div class="hero-video">
+    <div class="hero-video-glow"></div>
+    <div class="hero-video-bg">
+      <img src="https://www.figma.com/api/mcp/asset/6ad9a0c8-2e48-44df-b8cc-8eef9a3decdc" alt="" />
+    </div>
+    <div class="hero-video-fade"></div>
+  </div>
+
+  <!-- Play button — sits above the video card, independently positioned in #hero -->
+  <button class="hero-play-btn" aria-label="Play video" onclick="openVideoModal()"></button>
+
+  <!-- Fade into next section -->
+  <!-- Sparkles rising from flare -->
+  <div class="hero-sparkles">
+    <span style="--dx:-60px;--dur:2.8s;--delay:0s;   left:230px; width:2px; height:2px; background:#fff;    box-shadow:0 0 4px 2px rgba(0,217,180,.9);"></span>
+    <span style="--dx: 40px;--dur:3.2s;--delay:.5s;  left:270px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 4px 2px rgba(0,217,180,.8);"></span>
+    <span style="--dx:-20px;--dur:2.5s;--delay:1s;   left:250px; width:2px; height:2px; background:#fff;    box-shadow:0 0 4px 2px rgba(255,255,255,.5);"></span>
+    <span style="--dx: 70px;--dur:3.6s;--delay:.2s;  left:220px; width:3px; height:3px; background:#00d9b4; box-shadow:0 0 5px 2px rgba(0,217,180,.6);"></span>
+    <span style="--dx:-80px;--dur:2.9s;--delay:1.4s; left:290px; width:2px; height:2px; background:#fff;    box-shadow:0 0 3px 1px rgba(255,255,255,.7);"></span>
+    <span style="--dx: 30px;--dur:3.1s;--delay:.8s;  left:240px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 5px 2px rgba(0,217,180,.7);"></span>
+    <span style="--dx:-50px;--dur:2.6s;--delay:2s;   left:260px; width:2px; height:2px; background:#fff;    box-shadow:0 0 4px 2px rgba(0,217,180,.5);"></span>
+    <span style="--dx: 90px;--dur:3.4s;--delay:.3s;  left:200px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 4px 2px rgba(0,217,180,.9);"></span>
+    <span style="--dx:-30px;--dur:2.7s;--delay:1.7s; left:310px; width:2px; height:2px; background:#fff;    box-shadow:0 0 4px 2px rgba(255,255,255,.4);"></span>
+    <span style="--dx: 55px;--dur:3.0s;--delay:2.3s; left:245px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 5px 2px rgba(0,217,180,.8);"></span>
+    <span style="--dx:-70px;--dur:3.3s;--delay:.6s;  left:275px; width:2px; height:2px; background:#fff;    box-shadow:0 0 3px 1px rgba(255,255,255,.6);"></span>
+    <span style="--dx: 20px;--dur:2.4s;--delay:1.2s; left:235px; width:3px; height:3px; background:#00d9b4; box-shadow:0 0 6px 3px rgba(0,217,180,.5);"></span>
+    <span style="--dx:-45px;--dur:3.5s;--delay:.4s;  left:320px; width:2px; height:2px; background:#fff;    box-shadow:0 0 4px 2px rgba(255,255,255,.7);"></span>
+    <span style="--dx: 65px;--dur:2.6s;--delay:1.9s; left:180px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 4px 2px rgba(0,217,180,.8);"></span>
+    <span style="--dx:-15px;--dur:3.0s;--delay:2.6s; left:255px; width:2px; height:2px; background:#fff;    box-shadow:0 0 3px 1px rgba(255,255,255,.5);"></span>
+    <span style="--dx: 50px;--dur:2.8s;--delay:.9s;  left:215px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 5px 2px rgba(0,217,180,.7);"></span>
+    <span style="--dx:-90px;--dur:3.2s;--delay:1.5s; left:285px; width:2px; height:2px; background:#fff;    box-shadow:0 0 4px 2px rgba(0,217,180,.6);"></span>
+    <span style="--dx: 35px;--dur:2.7s;--delay:2.1s; left:300px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 4px 2px rgba(0,217,180,.9);"></span>
+    <span style="--dx:-55px;--dur:3.4s;--delay:.1s;  left:195px; width:2px; height:2px; background:#fff;    box-shadow:0 0 3px 1px rgba(255,255,255,.6);"></span>
+    <span style="--dx: 80px;--dur:2.9s;--delay:1.1s; left:265px; width:3px; height:3px; background:#00d9b4; box-shadow:0 0 6px 3px rgba(0,217,180,.6);"></span>
+    <span style="--dx:-35px;--dur:3.1s;--delay:2.8s; left:225px; width:2px; height:2px; background:#fff;    box-shadow:0 0 4px 2px rgba(255,255,255,.5);"></span>
+    <span style="--dx: 10px;--dur:2.5s;--delay:1.6s; left:340px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 4px 2px rgba(0,217,180,.7);"></span>
+    <span style="--dx:-75px;--dur:3.6s;--delay:.7s;  left:170px; width:2px; height:2px; background:#fff;    box-shadow:0 0 3px 1px rgba(255,255,255,.8);"></span>
+    <span style="--dx: 45px;--dur:2.3s;--delay:2.4s; left:280px; width:2px; height:2px; background:#00d9b4; box-shadow:0 0 5px 2px rgba(0,217,180,.5);"></span>
+  </div>
+
+  <div class="hero-bottom-fade"></div>
+</section>
+
+<!-- ② HOW IT WORKS -->
+<section id="video">
+
+  <!-- Background sparkle texture -->
+  <img class="hiw-bg-texture" src="https://www.figma.com/api/mcp/asset/2b163638-2152-4c3b-ae07-9f6c3c50979e" alt="" />
+
+  <div class="hiw-inner">
+
+    <!-- Header — Figma 333:1780 -->
+    <div class="hiw-header-block">
+      <img class="hiw-header-bg" src="https://www.figma.com/api/mcp/asset/5d25df35-2e39-4f61-9c25-4735056082a2" alt="" />
+      <div class="hiw-header-content">
+        <div class="hiw-pill">How it works</div>
+        <h2 class="hiw-h2">Getting Started with Tokscript MCP</h2>
+        <p class="hiw-sub">Integrate TokScript into your AI workflow in under 60 seconds. Copy your unique MCP URL, connect it to your preferred LLM, and start extracting viral data instantly.</p>
+      </div>
+    </div>
+
+    <!-- Cards — Figma 271:636 -->
+    <div class="hiw-cards-outer">
+      <div class="hiw-cards-row">
+
+        <!-- Card 1: Copy the URL — Figma 271:638 -->
+        <div class="hiw-card">
+          <img class="hiw-card-bg-img" src="https://www.figma.com/api/mcp/asset/dfebd223-205f-4f36-aaea-4dd19a30f48e" alt="" />
+          <p class="hiw-step-label">Step 01</p>
+          <h3 class="hiw-card-title">Copy the URL above</h3>
+          <div class="hiw-card-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/d565668a-d5ae-4424-9ba6-5ae0076864f3" alt="" />
+          </div>
+          <p class="hiw-card-desc">Hit the copy button, one URL is all it takes to link TokScript to your AI.</p>
+        </div>
+
+        <!-- Card 2: Open Claude or ChatGPT — Figma 271:672 -->
+        <div class="hiw-card">
+          <img class="hiw-card-bg-img" src="https://www.figma.com/api/mcp/asset/dfebd223-205f-4f36-aaea-4dd19a30f48e" alt="" />
+          <p class="hiw-step-label">Step 02</p>
+          <h3 class="hiw-card-title">Open Claude or ChatGPT</h3>
+          <div class="hiw-card-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/4ca71d5b-3437-42af-8ff3-fa7fd8ed67d7" alt="" />
+          </div>
+          <p class="hiw-card-desc">Go to Settings → Connectors → Add Custom Connector, then paste the URL.</p>
+        </div>
+
+        <!-- Card 3: Log in. Done. — Figma 271:689 -->
+        <div class="hiw-card">
+          <img class="hiw-card-bg-img" src="https://www.figma.com/api/mcp/asset/dfebd223-205f-4f36-aaea-4dd19a30f48e" alt="" />
+          <p class="hiw-step-label">Step 03</p>
+          <h3 class="hiw-card-title">Log in. Done.</h3>
+          <div class="hiw-card-img-wrap">
+            <img src="https://www.figma.com/api/mcp/asset/298b8764-d629-431c-9f1d-4282805945dd" alt="" />
+          </div>
+          <p class="hiw-card-desc">Authenticate with your TokScript account. Your entire library is now in your AI.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="hiw-cta">
+      <p class="hiw-cta-text">Don't have an account?</p>
+      <a href="https://tokscript.com/pricing" target="_blank" rel="noopener" class="hiw-cta-btn">Sign Up Today</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ⑩ WHO -->
+<section id="who">
+
+  <!-- Background spiral — Figma 337:2542 -->
+  <img class="who-bg-spiral" src="https://www.figma.com/api/mcp/asset/83e80a9a-aad8-46d8-af51-76de7456113f" alt="" />
+
+  <div class="who-inner">
+
+    <!-- Header — Figma 329:724 -->
+    <div class="who-header-block">
+      <img class="who-header-bg" src="https://www.figma.com/api/mcp/asset/4515975e-50c9-4823-a3f6-54eccb2a24d9" alt="" />
+      <div class="who-header-content">
+        <div class="who-pill">Who It's For</div>
+        <h2 class="who-h2">Built for Anyone Who Works With Short-Form Video</h2>
+        <p class="who-sub">TokScript MCP bridges the gap between viral trends and structured content data. Move beyond manual research with a unified intelligence layer built for your existing AI workspace.</p>
+      </div>
+    </div>
+
+    <!-- Cards outer — Figma 291:559 -->
+    <div class="who-cards-outer">
+
+      <!-- Card 1: Brand Marketers — Figma 291:561 -->
+      <div class="who-card who-card-1">
+        <img class="who-card-grid-bg" src="https://www.figma.com/api/mcp/asset/84f109d8-a2df-4777-9438-2307a4a7398f" alt="" />
+        <p class="who-card-title">Brand Marketers</p>
+        <div class="who-card-img who-card-img-sm">
+          <img src="https://www.figma.com/api/mcp/asset/5814f026-16c0-44ee-8b2f-9e2a1da19190" alt="" />
+        </div>
+        <p class="who-card-desc">Competitive intelligence through precise transcript and messaging analysis.</p>
+      </div>
+
+      <!-- Card 2: Researchers — Figma 298:372 -->
+      <div class="who-card who-card-2">
+        <img class="who-card-grid-bg" src="https://www.figma.com/api/mcp/asset/84f109d8-a2df-4777-9438-2307a4a7398f" alt="" />
+        <p class="who-card-title">Researchers</p>
+        <div class="who-card-img who-card-img-sm">
+          <img src="https://www.figma.com/api/mcp/asset/fad902d7-98d6-4644-aff8-bf8b056725ac" alt="" />
+        </div>
+        <p class="who-card-desc">Large-scale data extraction to identify patterns and emerging tropes.</p>
+      </div>
+
+      <!-- Card 3: UGC Marketplaces — Figma 298:383 -->
+      <div class="who-card who-card-3">
+        <img class="who-card-grid-bg" src="https://www.figma.com/api/mcp/asset/84f109d8-a2df-4777-9438-2307a4a7398f" alt="" />
+        <p class="who-card-title">UGC Marketplaces</p>
+        <div class="who-card-img who-card-img-sm">
+          <img src="https://www.figma.com/api/mcp/asset/fbde0140-d547-4d97-b4c5-b6df7bd8300e" alt="" />
+        </div>
+        <p class="who-card-desc">Provide your creator network with high-performing templates from real-time data.</p>
+      </div>
+
+      <!-- Card 4: Solo Creator — Figma 291:637 -->
+      <div class="who-card who-card-4">
+        <img class="who-card-grid-bg" src="https://www.figma.com/api/mcp/asset/84f109d8-a2df-4777-9438-2307a4a7398f" alt="" />
+        <p class="who-card-title">Solo Creator</p>
+        <div class="who-card-img who-card-img-lg">
+          <img src="https://www.figma.com/api/mcp/asset/e27ffe74-8257-4429-81f5-79f776d41554" alt="" />
+        </div>
+        <p class="who-card-desc">Instant conversion from viral trends to structured, actionable scripts.</p>
+      </div>
+
+      <!-- Card 5: Agencies — Figma 298:394 -->
+      <div class="who-card who-card-5">
+        <img class="who-card-grid-bg" src="https://www.figma.com/api/mcp/asset/84f109d8-a2df-4777-9438-2307a4a7398f" alt="" />
+        <p class="who-card-title">Agencies</p>
+        <div class="who-card-img who-card-img-lg">
+          <img src="https://www.figma.com/api/mcp/asset/a893de35-e301-4718-871c-f36c4b5253be" alt="" />
+        </div>
+        <p class="who-card-desc">Automating high-performing script templates for creator rosters.</p>
+      </div>
+
+    </div>
+
+    <!-- CTA -->
+    <div class="who-cta">
+      <p class="who-cta-text">Don't have an account?</p>
+      <a href="https://tokscript.com/pricing" target="_blank" rel="noopener" class="who-cta-btn">Sign Up Today</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- THE SETUP -->
+<section id="setup">
+  <div class="setup-card">
+
+    <!-- bg image -->
+    <img class="setup-bg" src="https://www.figma.com/api/mcp/asset/55d1f224-9ff7-444e-81b9-91343fb46080" alt="" />
+
+    <div class="setup-inner">
+
+      <!-- Title + tab toggle -->
+      <div class="setup-header">
+        <h2 class="setup-title">How To Set Tokscript MCP Up</h2>
+        <div class="setup-tabs">
+          <button onclick="setTab('claude')" id="tabClaude" class="setup-tab setup-tab-active">
+            <img src="https://www.figma.com/api/mcp/asset/35582d2f-52af-4aa4-a221-05923d5afe32" alt="" style="width:15.5px;height:15.5px;flex-shrink:0;" />
+            <span>For Claude</span>
+          </button>
+          <button onclick="setTab('chatgpt')" id="tabChatgpt" class="setup-tab">
+            <div class="chatgpt-icon-wrap"><img src="https://www.figma.com/api/mcp/asset/d7789fdc-c95b-4f1a-a55c-4d2ab14e569f" alt="" /></div>
+            <span>For ChatGpt</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- How it works panel -->
+      <div class="setup-panel">
+        <div class="setup-panel-inner">
+
+          <!-- Left: video -->
+          <div class="setup-left">
+            <p class="setup-left-title">How it works</p>
+            <p class="setup-left-sub">Paste video links and get clean transcripts in seconds.</p>
+            <div class="setup-video">
+              <img class="setup-video-thumb" src="https://www.figma.com/api/mcp/asset/cc6ca7a4-9591-4fef-b7a6-c52876aaaa17" alt="" />
+              <div class="setup-video-overlay"></div>
+              <div class="setup-play-btn">
+                <img src="https://www.figma.com/api/mcp/asset/ba9145f4-d840-4546-ba6c-e1305c7b5572" alt="" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: 3 steps -->
+          <div class="setup-right">
+            <div class="setup-step">
+              <div class="setup-step-num">1</div>
+              <div>
+                <p class="setup-step-title">Paste links</p>
+                <p class="setup-step-desc">Drop up to 50 video URLs from any supported platform.</p>
+              </div>
+            </div>
+            <div class="setup-step">
+              <div class="setup-step-num">2</div>
+              <div>
+                <p class="setup-step-title">AI transcribes</p>
+                <p class="setup-step-desc">Our engine extracts audio and generates a clean transcript.</p>
+              </div>
+            </div>
+            <div class="setup-step">
+              <div class="setup-step-num">3</div>
+              <div>
+                <p class="setup-step-title">Save &amp; export</p>
+                <p class="setup-step-desc">Results land in your library — export as TXT, MD, PDF or DOCX.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <button class="setup-cta-btn">Get Started</button>
+
+    </div>
+  </div>
+</section>
+
+<!-- FREE SKILLS -->
+<section id="freeskills">
+
+  <img class="fs-bg-bottom" src="https://www.figma.com/api/mcp/asset/3381effb-dfe9-435d-86a3-fd8adab6e6a9" alt="" />
+
+  <div class="fs-inner">
+
+    <!-- Header — Figma 340:2652 -->
+    <div class="fs-header-block">
+      <img class="fs-header-bg" src="https://www.figma.com/api/mcp/asset/7273b33a-791e-4324-8a47-9188e1ebe38c" alt="" />
+      <div class="fs-header-content">
+        <div class="fs-pill">Free Skills</div>
+        <h2 class="fs-h2">Try It Today With Free Skills</h2>
+        <p class="fs-sub">Pre-built prompts you can drop into Claude or ChatGPT right now. Pick one,<br>copy the prompt, and start.</p>
+      </div>
+    </div>
+
+    <!-- Tab selector -->
+    <div class="fs-tabs">
+      <button class="fs-tab fs-tab-active" onclick="filterSkills('all',this)">All</button>
+      <button class="fs-tab" onclick="filterSkills('summary',this)">Summary</button>
+      <button class="fs-tab" onclick="filterSkills('hooks',this)">Hooks</button>
+      <button class="fs-tab" onclick="filterSkills('repurpose',this)">Repurpose</button>
+      <button class="fs-tab" onclick="filterSkills('engagement',this)">Engagement</button>
+    </div>
+
+    <!-- Cards -->
+    <div class="fs-cards" id="fsCards">
+
+      <!-- Card 1: Executive Summary -->
+      <div class="fs-card" data-category="summary">
+        <div class="fs-card-banner">
+          <img src="https://www.figma.com/api/mcp/asset/300b8093-5ef8-4a3e-a398-47b56712fdd1" alt="" />
+        </div>
+        <div class="fs-card-meta">
+          <div class="fs-card-badge">
+            <img src="https://www.figma.com/api/mcp/asset/e3fd1331-50b3-471d-a836-4fbf08f13331" alt="" />
+            Summary
+          </div>
+          <div class="fs-card-meta-right">
+            <span class="fs-card-uses">11.3k uses</span>
+            <div class="fs-card-icons">
+              <img src="https://www.figma.com/api/mcp/asset/ba1a4a4c-aa5a-4541-af90-2ae5805cb90d" alt="" />
+              <img src="https://www.figma.com/api/mcp/asset/7c8a6251-8829-451d-b11c-450f85b807a3" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="fs-card-body">
+          <p class="fs-card-title">Executive Summary</p>
+          <p class="fs-card-desc">Condense any transcript into a crisp 3-paragraph summary with key takeaways.</p>
+          <div class="fs-card-tags">
+            <span class="fs-card-tag">Summary</span>
+            <span class="fs-card-tag">Productivity</span>
+          </div>
+          <div class="fs-card-prompt">You are a senior communications consultant who specialises in distilling complex content into clear, executive-ready briefings. Your task is to produce a...</div>
+          <button class="fs-card-show">→ Show full prompt</button>
+        </div>
+        <div class="fs-card-actions">
+          <button class="fs-btn fs-btn-copy">
+            <img src="https://www.figma.com/api/mcp/asset/e9bc7785-f9c9-4bfb-805a-0fa6055f54db" alt="" /> Copy
+          </button>
+          <button class="fs-btn" style="flex:1;">
+            <img src="https://www.figma.com/api/mcp/asset/1c323257-268a-4ad0-8a15-41218499bd38" alt="" /> Download Skill
+          </button>
+          <button class="fs-btn">
+            <img src="https://www.figma.com/api/mcp/asset/9b5c3421-34eb-45f3-ada9-cf7fb79b9962" alt="" /> Download
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 2: Viral Hook Generator -->
+      <div class="fs-card" data-category="hooks">
+        <div class="fs-card-banner">
+          <img src="https://www.figma.com/api/mcp/asset/3f80cd69-5fed-484e-9eb4-f5c7949f9b29" alt="" />
+        </div>
+        <div class="fs-card-meta">
+          <div class="fs-card-badge">
+            <img src="https://www.figma.com/api/mcp/asset/45fb4d40-cfa4-4a5d-9ed2-6e78b927bd70" alt="" />
+            Hooks
+          </div>
+          <div class="fs-card-meta-right">
+            <span class="fs-card-uses">8.4k uses</span>
+            <div class="fs-card-icons">
+              <img src="https://www.figma.com/api/mcp/asset/ba1a4a4c-aa5a-4541-af90-2ae5805cb90d" alt="" />
+              <img src="https://www.figma.com/api/mcp/asset/7c8a6251-8829-451d-b11c-450f85b807a3" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="fs-card-body">
+          <p class="fs-card-title">Viral Hook Generator</p>
+          <p class="fs-card-desc">Turn your transcript into 5 scroll-stopping opening hooks that grab attention in the first 3 seconds.</p>
+          <div class="fs-card-tags">
+            <span class="fs-card-tag">TikTok</span>
+            <span class="fs-card-tag">Reels</span>
+            <span class="fs-card-tag">Viral</span>
+          </div>
+          <div class="fs-card-prompt">You are a world-class viral content strategist with deep expertise in short-form video psychology, scroll-stopping copywriting, and platform-specific audience behaviour...</div>
+          <button class="fs-card-show">→ Show full prompt</button>
+        </div>
+        <div class="fs-card-actions">
+          <button class="fs-btn fs-btn-copy">
+            <img src="https://www.figma.com/api/mcp/asset/e9bc7785-f9c9-4bfb-805a-0fa6055f54db" alt="" /> Copy
+          </button>
+          <button class="fs-btn" style="flex:1;">
+            <img src="https://www.figma.com/api/mcp/asset/1c323257-268a-4ad0-8a15-41218499bd38" alt="" /> Download Skill
+          </button>
+          <button class="fs-btn">
+            <img src="https://www.figma.com/api/mcp/asset/9b5c3421-34eb-45f3-ada9-cf7fb79b9962" alt="" /> Download
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 3: Action Items Extractor -->
+      <div class="fs-card" data-category="summary">
+        <div class="fs-card-banner">
+          <img src="https://www.figma.com/api/mcp/asset/300b8093-5ef8-4a3e-a398-47b56712fdd1" alt="" />
+        </div>
+        <div class="fs-card-meta">
+          <div class="fs-card-badge">
+            <img src="https://www.figma.com/api/mcp/asset/e3fd1331-50b3-471d-a836-4fbf08f13331" alt="" />
+            Summary
+          </div>
+          <div class="fs-card-meta-right">
+            <span class="fs-card-uses">6.9k uses</span>
+            <div class="fs-card-icons">
+              <img src="https://www.figma.com/api/mcp/asset/ba1a4a4c-aa5a-4541-af90-2ae5805cb90d" alt="" />
+              <img src="https://www.figma.com/api/mcp/asset/7c8a6251-8829-451d-b11c-450f85b807a3" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="fs-card-body">
+          <p class="fs-card-title">Action Items Extractor</p>
+          <p class="fs-card-desc">Pull every explicit and implied action item from a transcript into a clean task list.</p>
+          <div class="fs-card-tags">
+            <span class="fs-card-tag">Productivity</span>
+            <span class="fs-card-tag">Tasks</span>
+            <span class="fs-card-tag">Meeting</span>
+          </div>
+          <div class="fs-card-prompt">You are a professional executive assistant and project manager who has mastered turning messy meeting recordings and video transcripts into crisp, accountable...</div>
+          <button class="fs-card-show">→ Show full prompt</button>
+        </div>
+        <div class="fs-card-actions">
+          <button class="fs-btn fs-btn-copy">
+            <img src="https://www.figma.com/api/mcp/asset/e9bc7785-f9c9-4bfb-805a-0fa6055f54db" alt="" /> Copy
+          </button>
+          <button class="fs-btn" style="flex:1;">
+            <img src="https://www.figma.com/api/mcp/asset/1c323257-268a-4ad0-8a15-41218499bd38" alt="" /> Download Skill
+          </button>
+          <button class="fs-btn">
+            <img src="https://www.figma.com/api/mcp/asset/9b5c3421-34eb-45f3-ada9-cf7fb79b9962" alt="" /> Download
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 4: LinkedIn Thread Converter -->
+      <div class="fs-card" data-category="repurpose">
+        <div class="fs-card-banner">
+          <img src="https://www.figma.com/api/mcp/asset/ac3cc381-1554-4310-a23a-ec7bea10501b" alt="" />
+        </div>
+        <div class="fs-card-meta">
+          <div class="fs-card-badge">
+            <img src="https://www.figma.com/api/mcp/asset/f0662edf-c008-4372-92f3-99db0ab5e6ee" alt="" />
+            Repurpose
+          </div>
+          <div class="fs-card-meta-right">
+            <span class="fs-card-uses">6.2k uses</span>
+            <div class="fs-card-icons">
+              <img src="https://www.figma.com/api/mcp/asset/83fe4246-4129-4c70-a8ec-395e7ce4efcd" alt="" />
+              <img src="https://www.figma.com/api/mcp/asset/a56a6724-365e-4dc8-bd8c-4d19b4992e1a" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="fs-card-body">
+          <p class="fs-card-title">LinkedIn Thread Converter</p>
+          <p class="fs-card-desc">Convert a video transcript into a high-performing LinkedIn carousel or text thread.</p>
+          <div class="fs-card-tags">
+            <span class="fs-card-tag">LinkedIn</span>
+            <span class="fs-card-tag">B2B</span>
+            <span class="fs-card-tag">Thread</span>
+          </div>
+          <div class="fs-card-prompt">You are a B2B LinkedIn content expert who has helped dozens of thought leaders grow to 50,000+ followers. Your task is to transform the transcript below into a high-performing 7-part LinkedIn text thread...</div>
+          <button class="fs-card-show">→ Show full prompt</button>
+        </div>
+        <div class="fs-card-actions">
+          <button class="fs-btn fs-btn-copy">
+            <img src="https://www.figma.com/api/mcp/asset/c076512d-47f0-459d-8e35-9f6df12ac59c" alt="" /> Copy
+          </button>
+          <button class="fs-btn" style="flex:1;">
+            <img src="https://www.figma.com/api/mcp/asset/e66a7f9e-70d6-4e38-b899-df04d1e3230b" alt="" /> Download Skill
+          </button>
+          <button class="fs-btn">
+            <img src="https://www.figma.com/api/mcp/asset/1af158b3-d12a-4ea8-ab80-174bbe8544c8" alt="" /> Download
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 5: Comment Bait Questions -->
+      <div class="fs-card" data-category="engagement">
+        <div class="fs-card-banner">
+          <img src="https://www.figma.com/api/mcp/asset/52a5eeb4-6807-4207-9c7f-d75b1ed8a276" alt="" />
+        </div>
+        <div class="fs-card-meta">
+          <div class="fs-card-badge">
+            <img src="https://www.figma.com/api/mcp/asset/85adf981-0d7a-44df-b762-127b0dd925f2" alt="" />
+            Engagement
+          </div>
+          <div class="fs-card-meta-right">
+            <span class="fs-card-uses">5.5k uses</span>
+            <div class="fs-card-icons">
+              <img src="https://www.figma.com/api/mcp/asset/83fe4246-4129-4c70-a8ec-395e7ce4efcd" alt="" />
+              <img src="https://www.figma.com/api/mcp/asset/a56a6724-365e-4dc8-bd8c-4d19b4992e1a" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="fs-card-body">
+          <p class="fs-card-title">Comment Bait Questions</p>
+          <p class="fs-card-desc">Generate 10 engagement-driving questions to pin as a comment or use in a caption.</p>
+          <div class="fs-card-tags">
+            <span class="fs-card-tag">Comments</span>
+            <span class="fs-card-tag">Engagement</span>
+            <span class="fs-card-tag">Community</span>
+          </div>
+          <div class="fs-card-prompt">You are a social media engagement specialist who has grown comment sections to thousands of replies. Generate 10 high-engagement questions from the transcript below that bait genuine responses...</div>
+          <button class="fs-card-show">→ Show full prompt</button>
+        </div>
+        <div class="fs-card-actions">
+          <button class="fs-btn fs-btn-copy">
+            <img src="https://www.figma.com/api/mcp/asset/c076512d-47f0-459d-8e35-9f6df12ac59c" alt="" /> Copy
+          </button>
+          <button class="fs-btn" style="flex:1;">
+            <img src="https://www.figma.com/api/mcp/asset/e66a7f9e-70d6-4e38-b899-df04d1e3230b" alt="" /> Download Skill
+          </button>
+          <button class="fs-btn">
+            <img src="https://www.figma.com/api/mcp/asset/1af158b3-d12a-4ea8-ab80-174bbe8544c8" alt="" /> Download
+          </button>
+        </div>
+      </div>
+
+      <!-- Card 6: Twitter/X Thread (10 posts) -->
+      <div class="fs-card" data-category="repurpose">
+        <div class="fs-card-banner">
+          <img src="https://www.figma.com/api/mcp/asset/ac3cc381-1554-4310-a23a-ec7bea10501b" alt="" />
+        </div>
+        <div class="fs-card-meta">
+          <div class="fs-card-badge">
+            <img src="https://www.figma.com/api/mcp/asset/f0662edf-c008-4372-92f3-99db0ab5e6ee" alt="" />
+            Repurpose
+          </div>
+          <div class="fs-card-meta-right">
+            <span class="fs-card-uses">5.0k uses</span>
+            <div class="fs-card-icons">
+              <img src="https://www.figma.com/api/mcp/asset/83fe4246-4129-4c70-a8ec-395e7ce4efcd" alt="" />
+              <img src="https://www.figma.com/api/mcp/asset/19971403-5861-4c3f-9170-171a84ba77aa" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="fs-card-body">
+          <p class="fs-card-title">Twitter/X Thread (10 posts)</p>
+          <p class="fs-card-desc">Transform a transcript into a tightly-crafted 10-post Twitter/X thread built for engagement.</p>
+          <div class="fs-card-tags">
+            <span class="fs-card-tag">Twitter/X</span>
+            <span class="fs-card-tag">Thread</span>
+            <span class="fs-card-tag">Virality</span>
+          </div>
+          <div class="fs-card-prompt">You are a viral Twitter/X strategist who has built threads with 10M+ impressions. Transform the transcript below into a punchy 10-post thread optimised for maximum reach and retweets...</div>
+          <button class="fs-card-show">→ Show full prompt</button>
+        </div>
+        <div class="fs-card-actions">
+          <button class="fs-btn fs-btn-copy">
+            <img src="https://www.figma.com/api/mcp/asset/c076512d-47f0-459d-8e35-9f6df12ac59c" alt="" /> Copy
+          </button>
+          <button class="fs-btn" style="flex:1;">
+            <img src="https://www.figma.com/api/mcp/asset/e66a7f9e-70d6-4e38-b899-df04d1e3230b" alt="" /> Download Skill
+          </button>
+          <button class="fs-btn">
+            <img src="https://www.figma.com/api/mcp/asset/1af158b3-d12a-4ea8-ab80-174bbe8544c8" alt="" /> Download
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CTA -->
+    <a href="https://tokscript.com/pricing" target="_blank" rel="noopener" class="fs-cta">Sign Up Today To Access More Skills</a>
+
+  </div>
+</section>
+
+<!-- BEFORE & AFTER -->
+<section id="beforeafter">
+  <img class="ba-bg" src="https://www.figma.com/api/mcp/asset/e64a3b91-370c-4c96-a1d3-ec95dea1b795" alt="" />
+  <div class="ba-inner">
+
+    <!-- Header -->
+    <div class="ba-header-block">
+      <div class="ba-header-bg">
+        <img class="ba-header-bg-l2" src="https://www.figma.com/api/mcp/asset/3b162cff-12d1-4421-9111-6d14a342c23f" alt="" />
+        <img class="ba-header-bg-l1" src="https://www.figma.com/api/mcp/asset/2cb3683b-a1b0-4979-96d9-4b7f860b6499" alt="" />
+      </div>
+      <div class="ba-header-content">
+        <div class="ba-pill">Before &amp; After</div>
+        <h2 class="ba-title">From Manual Guesswork to<br>Automated Viral Systems</h2>
+        <p class="ba-subtitle">Replace manual research with automated viral systems. Build data-backed scripts and scale your creative output in seconds.</p>
+      </div>
+    </div>
+
+    <!-- Carousel -->
+    <div class="ba-carousel-outer">
+      <div class="ba-track" id="baTrack">
+
+        <!-- Slide 1: Competitor Intelligence -->
+        <div class="ba-slide">
+          <p class="ba-slide-title">Competitor Intelligence</p>
+          <div class="ba-cards-row">
+            <div class="ba-card ba-before">
+              <img class="ba-card-bg" src="https://www.figma.com/api/mcp/asset/36a0e707-f1f6-4949-9baf-f8b4031758c2" alt="" />
+              <span class="ba-card-label">Before</span>
+              <img class="ba-card-img" src="https://www.figma.com/api/mcp/asset/6255efb0-88bc-4382-8352-cc2d17e46eb5" alt="Before" />
+              <p class="ba-card-desc">Open 10 tabs, watch videos, take notes by hand, try to spot patterns across creators in your niche.</p>
+            </div>
+            <div class="ba-card ba-after">
+              <img class="ba-card-bg" src="https://www.figma.com/api/mcp/asset/36a0e707-f1f6-4949-9baf-f8b4031758c2" alt="" />
+              <span class="ba-card-label">After</span>
+              <img class="ba-card-img" src="https://www.figma.com/api/mcp/asset/70de06f0-02f4-405a-8f77-63b0cc6b328f" alt="After" />
+              <p class="ba-card-desc">"Research the top 5 creators in my niche and tell me what they have in common." Done in under 30 seconds.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2: Rapid Scripting -->
+        <div class="ba-slide">
+          <p class="ba-slide-title">Rapid Scripting</p>
+          <div class="ba-cards-row">
+            <div class="ba-card ba-before">
+              <img class="ba-card-bg" src="https://www.figma.com/api/mcp/asset/36a0e707-f1f6-4949-9baf-f8b4031758c2" alt="" />
+              <span class="ba-card-label">Before</span>
+              <img class="ba-card-img" src="https://www.figma.com/api/mcp/asset/e1af7437-a85d-4281-a6c5-bf87bb34e720" alt="Before" />
+              <p class="ba-card-desc">Try to remember what made your last video work, guess at a hook, write something, delete it, start over.</p>
+            </div>
+            <div class="ba-card ba-after">
+              <img class="ba-card-bg" src="https://www.figma.com/api/mcp/asset/36a0e707-f1f6-4949-9baf-f8b4031758c2" alt="" />
+              <span class="ba-card-label">After</span>
+              <img class="ba-card-img" src="https://www.figma.com/api/mcp/asset/0d6bcb7d-4da4-4985-afd4-ef2076d1d359" alt="After" />
+              <p class="ba-card-desc">Pull your top 5 scripts, generate 20 hooks, pick the best one, and have a full script written in one conversation.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3: Automated Briefing -->
+        <div class="ba-slide">
+          <p class="ba-slide-title">Automated Briefing</p>
+          <div class="ba-cards-row">
+            <div class="ba-card ba-before">
+              <img class="ba-card-bg" src="https://www.figma.com/api/mcp/asset/36a0e707-f1f6-4949-9baf-f8b4031758c2" alt="" />
+              <span class="ba-card-label">Before</span>
+              <img class="ba-card-img" src="https://www.figma.com/api/mcp/asset/170382c5-71c2-4066-94c6-84851b6378a8" alt="Before" />
+              <p class="ba-card-desc">Spend hours writing briefs with no real data, guessing at structures that might work based on intuition alone.</p>
+            </div>
+            <div class="ba-card ba-after">
+              <img class="ba-card-bg" src="https://www.figma.com/api/mcp/asset/36a0e707-f1f6-4949-9baf-f8b4031758c2" alt="" />
+              <span class="ba-card-label">After</span>
+              <img class="ba-card-img" src="https://www.figma.com/api/mcp/asset/0e95f449-37bd-4a85-b834-b150231ab057" alt="After" />
+              <p class="ba-card-desc">Analyze top-performing content in your niche and get a proven brief structure ready in 10 minutes.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="ba-nav">
+      <button class="ba-arrow" id="baPrev">&#8592;</button>
+      <div class="ba-dots">
+        <button class="ba-dot active" data-idx="0"></button>
+        <button class="ba-dot" data-idx="1"></button>
+        <button class="ba-dot" data-idx="2"></button>
+      </div>
+      <button class="ba-arrow" id="baNext">&#8594;</button>
+    </div>
+
+    <!-- CTA -->
+    <div class="ba-cta-wrap">
+      <a href="#" class="ba-cta">Deploy These Workflows</a>
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- WORKFLOWS -->
+<section id="workflows">
+  <div class="wf-card">
+
+    <img class="wf-card-bg" src="https://www.figma.com/api/mcp/asset/2eafc0bd-8627-4816-9584-298e09542af8" alt="" />
+
+    <div class="wf-inner">
+
+      <!-- Header -->
+      <div class="wf-header">
+        <div class="wf-pill">Workflows</div>
+        <h2 class="wf-title">Real Workflows, Not Isolated Tools</h2>
+        <p class="wf-subtitle">The power isn't in individual tools. It's in chaining them together in a single conversation.</p>
+      </div>
+
+      <!-- Panel: accordion + images -->
+      <div class="wf-panel">
+
+        <!-- Left: accordion -->
+        <div class="wf-left">
+          <div class="wf-item active" data-wf="0">
+            <div class="wf-item-header">Weekly Competitor Intelligence Report</div>
+            <p class="wf-item-desc">Analyze the top 5 creators to instantly decode viral hooks. Sync with trending sounds for three content strategies.</p>
+          </div>
+          <div class="wf-divider"></div>
+          <div class="wf-item" data-wf="1">
+            <div class="wf-item-header">Content Idea to Ready-to-Shoot Script</div>
+            <p class="wf-item-desc">Turn any content idea into a fully structured, ready-to-shoot script with hooks, body, and CTA — all in one conversation.</p>
+          </div>
+          <div class="wf-divider"></div>
+          <div class="wf-item" data-wf="2">
+            <div class="wf-item-header">Brand Partnership Creator Research</div>
+            <p class="wf-item-desc">Shortlist niche creators to compare engagement and content fit. Analyze audience breakdowns to generate data-backed pitch briefs.</p>
+          </div>
+        </div>
+
+        <!-- Right: images -->
+        <div class="wf-images">
+          <img class="wf-img wf-img-0 active" data-wf="0" src="https://www.figma.com/api/mcp/asset/5d8007e8-ca54-40f3-b171-cc450577b37f" alt="" />
+          <img class="wf-img wf-img-1" data-wf="1" src="https://www.figma.com/api/mcp/asset/cf9c0780-91d6-4d09-9c72-1a9750c84915" alt="" />
+          <img class="wf-img wf-img-2" data-wf="2" src="https://www.figma.com/api/mcp/asset/90b89fbc-a45f-4561-aa8a-519a9ef25924" alt="" />
+        </div>
+
+      </div>
+
+      <!-- CTA -->
+      <a href="#" class="wf-cta">Sign Up Now</a>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- ⑬ TOOLS -->
+<section id="tools">
+  <div class="tools-inner">
+
+    <!-- Header -->
+    <div class="tools-header-block">
+      <img class="tools-header-bg" src="https://www.figma.com/api/mcp/asset/4b4a8b9d-2113-4a2a-aaf8-f45a920bf6cf" alt="" />
+      <div class="tools-header-content">
+        <div class="tools-pill">Tools</div>
+        <h2 class="tools-h2">14 Tools Available</h2>
+        <p class="tools-sub">Every tool your agent needs to transcribe content, download videos, and analyze creator libraries.</p>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <table class="tools-table reveal">
+      <thead>
+        <tr>
+          <th style="width:44px;"></th>
+          <th>Tools</th>
+          <th>Description</th>
+          <th class="t-check">Included</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><svg x="7" y="7" width="14" height="14" viewBox="0 0 24 24"><path fill="#34d399" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></svg></td>
+          <td class="t-name">get_tiktok_transcript</td>
+          <td class="t-desc">Extract transcript and captions from a single TikTok video URL</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><rect x="7.5" y="7.5" width="13" height="13" rx="3.5" stroke="#34d399" stroke-width="1.5"/><circle cx="14" cy="14" r="3" stroke="#34d399" stroke-width="1.5"/><circle cx="17.8" cy="10.2" r=".8" fill="#34d399"/></svg></td>
+          <td class="t-name">get_instagram_transcript</td>
+          <td class="t-desc">Extract transcript and captions from a single Instagram video or Reel URL</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><rect x="7" y="9" width="14" height="10" rx="2.5" stroke="#34d399" stroke-width="1.5"/><path d="M12 11.8l4.5 2.2-4.5 2.2v-4.4z" fill="#34d399"/></svg></td>
+          <td class="t-name">get_youtube_transcript</td>
+          <td class="t-desc">Extract transcript and captions from a single YouTube video URL</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><path d="M8 10h12M8 14h10M8 18h7" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/></svg></td>
+          <td class="t-name">get_bulk_transcripts</td>
+          <td class="t-desc">Extract transcripts from multiple individual video URLs in a single call</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><svg x="7" y="7" width="14" height="14" viewBox="0 0 24 24"><path fill="#34d399" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></svg></td>
+          <td class="t-name">get_tiktok_collection</td>
+          <td class="t-desc">Process all videos from a TikTok collection or playlist URL</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><path d="M14 8v9M10.5 14l3.5 3.5 3.5-3.5M8 20h12" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-name">download_video</td>
+          <td class="t-desc">Download a single TikTok or Instagram video</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><path d="M14 8v9M10.5 14l3.5 3.5 3.5-3.5M8 20h12" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-name">download_videos_bulk</td>
+          <td class="t-desc">Download multiple TikTok or Instagram videos in one call</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><rect x="7" y="9" width="14" height="10" rx="2" stroke="#fb923c" stroke-width="1.5"/><circle cx="11" cy="13" r="1.5" stroke="#fb923c" stroke-width="1.2"/><path d="M7.5 17l3.5-3 3 2.5 2-2 3.5 3" stroke="#fb923c" stroke-width="1.2" stroke-linejoin="round"/></svg></td>
+          <td class="t-name">download_cover_image</td>
+          <td class="t-desc">Download the cover or thumbnail image for a single video</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><rect x="7" y="9" width="14" height="10" rx="2" stroke="#fb923c" stroke-width="1.5"/><circle cx="11" cy="13" r="1.5" stroke="#fb923c" stroke-width="1.2"/><path d="M7.5 17l3.5-3 3 2.5 2-2 3.5 3" stroke="#fb923c" stroke-width="1.2" stroke-linejoin="round"/></svg></td>
+          <td class="t-name">download_cover_images_bulk</td>
+          <td class="t-desc">Download cover or thumbnail images for multiple videos at once</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#2a1040"/><svg x="7" y="7" width="14" height="14" viewBox="0 0 24 24"><path fill="#a78bfa" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></svg></td>
+          <td class="t-name">get_tiktok_user</td>
+          <td class="t-desc">Get TikTok user profile info including followers, following, and likes</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#2a1040"/><svg x="7" y="7" width="14" height="14" viewBox="0 0 24 24"><path fill="#a78bfa" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></svg></td>
+          <td class="t-name">get_tiktok_user_videos</td>
+          <td class="t-desc">Retrieve all videos from a TikTok user's public profile</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><path d="M8 19v-4M12 19V11M16 19v-6M20 19V8" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/></svg></td>
+          <td class="t-name">get_library_stats</td>
+          <td class="t-desc">Get an overview of your TokScript library: total videos and breakdown by platform</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><rect x="8.5" y="8" width="2.5" height="12" rx="1" stroke="#60a5fa" stroke-width="1.2"/><rect x="12.75" y="8" width="2.5" height="12" rx="1" stroke="#60a5fa" stroke-width="1.2"/><rect x="17" y="8" width="2.5" height="12" rx="1" stroke="#60a5fa" stroke-width="1.2"/></svg></td>
+          <td class="t-name">get_user_library</td>
+          <td class="t-desc">List videos and transcripts stored in your TokScript library</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><rect x="7" y="8" width="14" height="11" rx="2" stroke="#60a5fa" stroke-width="1.5"/><path d="M12 11.8l4 2.2-4 2.2v-4.4z" fill="#60a5fa"/><path d="M10 21h8" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/></svg></td>
+          <td class="t-name">get_stored_video</td>
+          <td class="t-desc">Get full stored data for a specific video from your TokScript library, including transcript</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- ⑭ FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:11px;text-align:center;margin-bottom:40px;">
+      <div style="display:inline-flex;align-items:center;padding:5px 14px;border-radius:20px;font-size:12px;color:#fff;background:linear-gradient(#0d0d0d,#0d0d0d) padding-box,linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box;border:0.5px solid transparent;">FAQ</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:20px;">
+        <h2 style="font-size:clamp(24px,5vw,40px);font-weight:800;color:#fff;letter-spacing:-1.4px;line-height:1.12;margin:0;max-width:568px;">Frequently Asked Questions</h2>
+        <p style="font-size:16px;color:rgba(255,255,255,0.48);margin:0;line-height:1.65;max-width:730px;">The power isn't in individual tools. It's in chaining them together in a single conversation.</p>
+      </div>
+    </div>
+    <div class="faq-list reveal" id="faqList">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What is the TokScript connector?<span class="faq-icon">+</span></button>
+        <div class="faq-a">The TokScript connector is a URL you paste into Claude or ChatGPT that gives your AI direct access to TokScript's tools. Once connected, your AI can pull transcripts, research creators, find trending content, and run AI agents — all from inside your normal chat.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Do I need a paid plan to use it?<span class="faq-icon">+</span></button>
+        <div class="faq-a">The connector is included with any TokScript plan starting at $10/month or $39/year. Some individual tools are marked Free — those work on all plans. The AI agents and advanced tools require a paid subscription.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I connect it to Claude?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Copy the URL at the top of this page. In Claude, go to Settings → Connectors → Add Custom Connector, paste the URL, and follow the login prompt. The whole process takes under 2 minutes.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I connect it to ChatGPT?<span class="faq-icon">+</span></button>
+        <div class="faq-a">In ChatGPT, go to the GPT builder or your settings panel, find the Connectors or Actions section, and paste the TokScript URL. You'll be prompted to log in with your TokScript account to complete the connection.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What video platforms does it support?<span class="faq-icon">+</span></button>
+        <div class="faq-a">TokScript works with TikTok, Instagram Reels, and YouTube Shorts. Just paste any video URL into your AI conversation and TokScript handles the rest.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How fast is it?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Average response time is under 3 seconds for most tools. Transcript generation and bulk processing may take slightly longer depending on video length and volume.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is there a limit on how many videos I can process?<span class="faq-icon">+</span></button>
+        <div class="faq-a">No per-use credits or hard caps on standard usage. Bulk processing supports up to 20 videos per conversation. For large-scale research or automation, reach out to the team.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What languages are supported?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Transcripts are available in 100+ languages. The AI agents and analysis tools work in English, with additional language support being added regularly.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is my data secure?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Yes. TokScript only processes the specific video URLs or creator handles you mention in conversation. No browsing history, personal data, or unrelated information is accessed or stored.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Can my whole team use it?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Each TokScript account connects individually to your AI tool of choice. For team accounts or agency access, check the pricing page for multi-seat options.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Does it work with Cursor or Windsurf?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Claude and ChatGPT are live now. Support for Cursor, Windsurf, and other AI tools is coming soon. Join the waitlist on the pricing page to be notified first.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Do I need to know which tool to use?<span class="faq-icon">+</span></button>
+        <div class="faq-a">No. Just ask your AI a question in plain language — "Why did this video go viral?" or "Find trending sounds in the fitness niche" — and it automatically picks and runs the right TokScript tool behind the scenes.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Can I build my own workflows?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Yes. Because everything runs through natural conversation, you can chain multiple tools in sequence just by asking follow-up questions. Many users build repeatable weekly research workflows entirely in Claude or ChatGPT.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What's the difference between free and paid tools?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Free tools include basic transcript retrieval, video stats, creator profiles, keyword search, and hashtag stats. Paid tools include all three AI agents, trending data, bulk processing, comment analysis, and advanced creator intelligence.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">I'm already a TokScript subscriber. What do I do?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Just copy the connector URL at the top of this page, paste it into Claude or ChatGPT, and log in with your existing TokScript account. No upgrade needed — it's included in your current plan.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I get help if something isn't working?<span class="faq-icon">+</span></button>
+        <div class="faq-a">Visit the help center at tokscript.com/help or reach out through the in-app chat. Paid subscribers get priority support with typical response times under a few hours.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA: ONE PLAN -->
+<section id="cta-oneplan">
+  <div class="ctap-outer">
+
+    <img class="ctap-bg" src="https://www.figma.com/api/mcp/asset/3553c35f-dc4b-4cba-bf67-47ca8f98bd75" alt="" />
+    <img class="ctap-deco-left" src="https://www.figma.com/api/mcp/asset/6b875296-7434-43b4-8bba-18102b5abe89" alt="" />
+    <img class="ctap-deco-right" src="https://www.figma.com/api/mcp/asset/9a37443b-5d82-4376-99dc-70ff428c4314" alt="" />
+
+    <div class="ctap-content">
+      <h2 class="ctap-title">One Plan.&nbsp;<br>Unlimited Intelligence.</h2>
+      <p class="ctap-desc">Unlimited transcripts. All three AI agents. Bulk processing. HD downloads.<br>Creator intelligence. 100+ languages. Claude and ChatGPT.</p>
+      <div class="ctap-checks">
+        <span class="ctap-check"><span class="ctap-tick">✓</span> No credits</span>
+        <span class="ctap-check"><span class="ctap-tick">✓</span> No per-use charges</span>
+        <span class="ctap-check"><span class="ctap-tick">✓</span> Cancel anytime</span>
+        <span class="ctap-check"><span class="ctap-tick">✓</span> 28 tools included</span>
+        <span class="ctap-check"><span class="ctap-tick">✓</span> Claude + ChatGPT</span>
+      </div>
+      <div class="ctap-url-bar">
+        <span class="ctap-url-text">https://api.tokscript.com/mcp</span>
+        <button onclick="copyCtaUrl(this)" class="ctap-url-btn">
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copy URL
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->`;
 
 export default function PageData() {
-  const [urlCopied, setUrlCopied] = useState(false);
-  const [ctaUrlCopied, setCtaUrlCopied] = useState(false);
-  const [setupTab, setSetupTab] = useState("claude");
-  const [skillsFilter, setSkillsFilter] = useState("all");
-  const [carouselIndex, setCarouselIndex] = useState(0);
-  const [activeWorkflow, setActiveWorkflow] = useState(0);
-  const [openFaq, setOpenFaq] = useState(null);
-  const [videoOpen, setVideoOpen] = useState(false);
-  const [setupVideoOpen, setSetupVideoOpen] = useState(false);
-  const baCarouselRef = useRef(null);
-
-  const MCP_URL = "https://api.tokscript.com/mcp";
-  const signUpUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up`;
-
-  // Copy URL handler
-  const copyUrl = () => {
-    navigator.clipboard.writeText(MCP_URL).catch(() => {});
-    setUrlCopied(true);
-    setTimeout(() => setUrlCopied(false), 2000);
-  };
-
-  const copyCtaUrl = () => {
-    navigator.clipboard.writeText(MCP_URL).catch(() => {});
-    setCtaUrlCopied(true);
-    setTimeout(() => setCtaUrlCopied(false), 2000);
-  };
-
-  // Carousel navigation
-  const totalSlides = slides.length;
-  const goToSlide = (n) => {
-    setCarouselIndex(((n % totalSlides) + totalSlides) % totalSlides);
-  };
-
-  // Scroll reveal
-  useEffect(() => {
-    const reveals = document.querySelectorAll(".mcp-page .reveal");
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("in");
-            io.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.07 },
-    );
-    reveals.forEach((el, i) => {
-      el.style.transitionDelay = (i % 6) * 0.07 + "s";
-      io.observe(el);
-    });
-    return () => io.disconnect();
-  }, []);
-
-  // Filter skills
-  const filteredSkills = skills.filter(
-    (s) => skillsFilter === "all" || s.category === skillsFilter,
-  );
-
   return (
-    <div className="mcp-page">
+    <>
       <Header />
-
-      {/* ── Section 1: Hero ── */}
-      <section id="hero">
-        {/* Floating AI logos */}
-        <img
-          className="hero-claude-logo"
-          src={heroClaudeLogo.src}
-          alt="Claude"
-        />
-        <img
-          className="hero-chatgpt-logo"
-          src={heroChatgptLogo.src}
-          alt="ChatGPT"
-        />
-
-        {/* Flare */}
-        <div className="hero-flare">
-          <img src={heroFlare.src} alt="" />
-        </div>
-
-        {/* Main content */}
-        <div className="hero-body">
-          <div className="badge">
-            <img src={badgeIcon.src} alt="" />
-            New Feature
-          </div>
-          <h1>
-            Tokscript now works inside
-            <br />
-            Claude and ChatGPT
-          </h1>
-          <p className="hero-sub">
-            Ask your AI to pull transcripts, generate hooks, analyze virality,
-            and research creators from any TikTok, Instagram Reel, or YouTube
-            Short. Directly in conversation.
-          </p>
-          <div className="url-bar">
-            <span className="url-bar-text">api.tokscript.com/mcp</span>
-            <button
-              className={`url-bar-copy${urlCopied ? " ok" : ""}`}
-              onClick={copyUrl}
-            >
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "15px",
-                  height: "15px",
-                  flexShrink: 0,
-                }}
-              >
-                {urlCopied ? (
-                  <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-                    <path
-                      d="M2.5 8L5.5 11L12.5 4"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                ) : (
-                  <img
-                    src={copyIcon.src}
-                    alt=""
-                    style={{
-                      width: "15px",
-                      height: "15px",
-                      objectFit: "contain",
-                      display: "block",
-                    }}
-                  />
-                )}
-              </span>
-              {urlCopied ? "Copied!" : "Copy"}
-            </button>
-          </div>
-        </div>
-
-        {/* Video card */}
-        <div className="hero-video-section">
-          <div className="container">
-            <div className="hero-video">
-              <div className="hero-video-bg" />
-              <div className="main-img-wrapper">
-                <img
-                  // className="who-header-bg"
-                  src={heroVideoBg.src}
-                  alt="heroVideoBg"
-                />
-              </div>
-              <div className="hero-video-glow" />
-              <div className="hero-video-fade" />
-              <button
-                className="hero-play-btn"
-                onClick={() => setVideoOpen(true)}
-              >
-                <img
-                  src={playButtonIcon.src}
-                  alt=""
-                  style={{
-                    width: "24px",
-                    height: "24px",
-                    objectFit: "contain",
-                    flexShrink: 0,
-                  }}
-                />
-                Play Video
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Sparkles */}
-        <div className="hero-sparkles">
-          {sparkles.map((s, i) => (
-            <span
-              key={i}
-              style={{
-                "--dx": s.dx,
-                "--dur": s.dur,
-                "--delay": s.delay,
-                left: s.left,
-                width: s.w,
-                height: s.w,
-                background: s.bg,
-                boxShadow: s.shadow,
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="hero-bottom-fade" />
-      </section>
-
-      {/* ── Section 2: How It Works ── */}
-      <section id="video">
-        <img className="hiw-bg-texture" src={hiwBgTexture.src} alt="" />
-
-        <div className="hiw-inner">
-          {/* Header */}
-          <div className="hiw-header-block">
-            <img className="hiw-header-bg" src={hiwHeaderBg.src} alt="" />
-            <div className="hiw-header-content">
-              <div className="hiw-pill">How it works</div>
-              <h2 className="hiw-h2">Getting Started with Tokscript MCP</h2>
-              <p className="hiw-sub">
-                Integrate TokScript into your AI workflow in under 60 seconds.
-                Copy your unique MCP URL, connect it to your preferred LLM, and
-                start extracting viral data instantly.
-              </p>
-            </div>
-          </div>
-
-          {/* Cards */}
-          <div className="hiw-cards-outer">
-            <div className="hiw-cards-row">
-              {hiwCards.map((card, i) => (
-                <div className="hiw-card" key={i}>
-                  <img className="hiw-card-bg-img" src={hiwCardBg.src} alt="" />
-                  <p className="hiw-step-label">{card.step}</p>
-                  <h3 className="hiw-card-title">{card.title}</h3>
-                  <div className="hiw-card-img-wrap">
-                    <img src={card.img.src} alt="" />
-                  </div>
-                  <p className="hiw-card-desc">{card.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div className="hiw-cta">
-            <p className="hiw-cta-text">Don&apos;t have an account?</p>
-            <Link href="/app/sign-up" className="hiw-cta-btn">
-              Sign Up Today
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Section 3: Who It's For ── */}
-      <section id="who">
-        <img className="who-bg-spiral" src={whoBgSpiral.src} alt="" />
-
-        <div className="who-inner">
-          {/* Header */}
-          <div className="who-header-block">
-            <img className="who-header-bg" src={whoHeaderBg.src} alt="" />
-            <div className="who-header-content">
-              <div className="who-pill">Who It&apos;s For</div>
-              <h2 className="who-h2">
-                Built for Anyone Who Works With Short-Form Video
-              </h2>
-              <p className="who-sub">
-                TokScript MCP bridges the gap between viral trends and
-                structured content data. Move beyond manual research with a
-                unified intelligence layer built for your existing AI workspace.
-              </p>
-            </div>
-          </div>
-
-          {/* Cards */}
-          <div className="who-cards-outer">
-            {whoCards.map((card) => (
-              <div className={`who-card who-card-${card.num}`} key={card.num}>
-                <img
-                  className="who-card-grid-bg"
-                  src={whoCardGridBg.src}
-                  alt=""
-                />
-                <p className="who-card-title">{card.title}</p>
-                <div className={`who-card-img ${card.sizeClass}`}>
-                  <img src={card.img.src} alt="" />
-                </div>
-                <p className="who-card-desc">{card.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA */}
-          <div className="who-cta">
-            <p className="who-cta-text">Don&apos;t have an account?</p>
-            <Link href="/app/sign-up" className="who-cta-btn">
-              Sign Up Today
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Section 4: Setup ── */}
-      <section id="setup">
-        {/* Outer card */}
-        <div className="setup-card">
-          {/* bg image */}
-          <img className="setup-bg" src={setupBg.src} alt="" />
-
-          {/* Get Started button */}
-          <a href={signUpUrl} className="setup-cta-btn">
-            Get Started
-          </a>
-
-          {/* Inner content column */}
-          <div className="setup-content">
-            {/* Title + tab toggle */}
-            <div className="setup-title-wrap">
-              <h2 className="setup-h2">How To Set Tokscript MCP Up</h2>
-              {/* Tab toggle */}
-              <div className="setup-tabs">
-                <button
-                  className="setup-tab"
-                  onClick={() => setSetupTab("claude")}
-                  style={{
-                    border:
-                      setupTab === "claude"
-                        ? "1px solid #00b8b2"
-                        : "1.04px solid rgba(255,255,255,0.1)",
-                    background:
-                      setupTab === "claude"
-                        ? "#1c1c1c"
-                        : "radial-gradient(ellipse at bottom right,rgba(255,255,255,0.09) 0%,rgba(128,128,128,0.045) 50%,transparent 100%)",
-                  }}
-                >
-                  <img
-                    src={setupClaudeIcon.src}
-                    alt=""
-                    style={{ width: "15.5px", height: "15.5px", flexShrink: 0 }}
-                  />
-                  <span
-                    style={{
-                      fontSize: "12.8px",
-                      fontWeight: 600,
-                      color:
-                        setupTab === "claude"
-                          ? "#00b8b2"
-                          : "rgba(255,255,255,0.48)",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    For Claude
-                  </span>
-                </button>
-                <button
-                  className="setup-tab"
-                  onClick={() => setSetupTab("chatgpt")}
-                  style={{
-                    border:
-                      setupTab === "chatgpt"
-                        ? "1px solid #00b8b2"
-                        : "1.04px solid rgba(255,255,255,0.1)",
-                    background:
-                      setupTab === "chatgpt"
-                        ? "#1c1c1c"
-                        : "radial-gradient(ellipse at bottom right,rgba(255,255,255,0.09) 0%,rgba(128,128,128,0.045) 50%,transparent 100%)",
-                  }}
-                >
-                  <div
-                    style={{
-                      position: "relative",
-                      width: "15.58px",
-                      height: "15.58px",
-                      flexShrink: 0,
-                      overflow: "hidden",
-                      opacity: setupTab === "chatgpt" ? 1 : 0.7,
-                    }}
-                  >
-                    <img
-                      src={setupChatgptIcon.src}
-                      alt=""
-                      style={{
-                        position: "absolute",
-                        left: 0,
-                        top: 0,
-                        height: "99.05%",
-                        width: "336.91%",
-                        maxWidth: "none",
-                        pointerEvents: "none",
-                      }}
-                    />
-                  </div>
-                  <span
-                    style={{
-                      fontSize: "12.8px",
-                      fontWeight: 600,
-                      color:
-                        setupTab === "chatgpt"
-                          ? "#00b8b2"
-                          : "rgba(255,255,255,0.48)",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    For ChatGpt
-                  </span>
-                </button>
-              </div>
-            </div>
-
-            {/* How it works panel */}
-            <div className="setup-panel">
-              {/* Inner dark card */}
-              <div className="setup-inner-card">
-                {/* Left column: title + video */}
-                <div className="setup-left">
-                  <p className="setup-left-title">How it works</p>
-                  <p className="setup-left-sub">
-                    Paste video links and get clean transcripts in seconds.
-                  </p>
-                  {/* Setup image based on active tab */}
-                  <div
-                    className="setup-image-wrapper"
-                    onClick={() => setSetupVideoOpen(true)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <img
-                      src={
-                        setupTab === "chatgpt"
-                          ? setupImageChatgpt.src
-                          : setupImageClaude.src
-                      }
-                      alt={
-                        setupTab === "chatgpt"
-                          ? "ChatGPT setup"
-                          : "Claude setup"
-                      }
-                      className="setup-image"
-                    />
-                    <div
-                      style={{
-                        position: "absolute",
-                        left: "50%",
-                        top: "50%",
-                        transform: "translate(-50%,-50%)",
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "9999px",
-                        background: "rgba(0,0,0,0.7)",
-                        backdropFilter: "blur(2px)",
-                        WebkitBackdropFilter: "blur(2px)",
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <img
-                        src={setupPlayIcon.src}
-                        alt=""
-                        style={{
-                          width: "16px",
-                          height: "16px",
-                          position: "relative",
-                          left: "1px",
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right column: 3 steps */}
-                <div className="setup-right">
-                  {/* Step 1 */}
-                  <div className="setup-step setup-step-1">
-                    <div
-                      style={{
-                        width: "24px",
-                        height: "24px",
-                        borderRadius: "9999px",
-                        background: "rgba(0,184,178,0.08)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontFamily: "'Roboto',sans-serif",
-                          fontSize: "10px",
-                          fontWeight: 700,
-                          color: "#00b8b2",
-                        }}
-                      >
-                        1
-                      </span>
-                    </div>
-                    <div className="text-wrapper">
-                      <p className="setup-step-title">Copy MCP link</p>
-                      <div className="url-bar-mini">
-                        <span className="url-bar-mini-text">
-                          api.tokscript.com/mcp
-                        </span>
-                        <button
-                          className={`url-bar-mini-copy${urlCopied ? " ok" : ""}`}
-                          onClick={copyUrl}
-                        >
-                          <span
-                            style={{
-                              display: "inline-flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              width: "11px",
-                              height: "11px",
-                              flexShrink: 0,
-                            }}
-                          >
-                            {urlCopied ? (
-                              <svg
-                                width="11"
-                                height="11"
-                                viewBox="0 0 15 15"
-                                fill="none"
-                              >
-                                <path
-                                  d="M2.5 8L5.5 11L12.5 4"
-                                  stroke="currentColor"
-                                  strokeWidth="1.5"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            ) : (
-                              <img
-                                src={copyIcon.src}
-                                alt=""
-                                style={{
-                                  width: "11px",
-                                  height: "11px",
-                                  objectFit: "contain",
-                                  display: "block",
-                                }}
-                              />
-                            )}
-                          </span>
-                          {urlCopied ? "Copied!" : "Copy"}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  {/* Step 2 */}
-                  <div className="setup-step setup-step-2">
-                    <div
-                      style={{
-                        width: "24px",
-                        height: "24px",
-                        borderRadius: "9999px",
-                        background: "rgba(0,184,178,0.08)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontFamily: "'Roboto',sans-serif",
-                          fontSize: "10px",
-                          fontWeight: 700,
-                          color: "#00b8b2",
-                        }}
-                      >
-                        2
-                      </span>
-                    </div>
-                    <div className="text-wrapper">
-                      <p className="setup-step-title">Paste link</p>
-                      <p className="setup-step-body">
-                        Go to Settings &gt; Connectors &gt; Add custom connector
-                        then paste the link.
-                      </p>
-                    </div>
-                  </div>
-                  {/* Step 3 */}
-                  <div className="setup-step setup-step-3">
-                    <div
-                      style={{
-                        width: "24px",
-                        height: "24px",
-                        borderRadius: "9999px",
-                        background: "rgba(0,184,178,0.08)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontFamily: "'Roboto',sans-serif",
-                          fontSize: "10px",
-                          fontWeight: 700,
-                          color: "#00b8b2",
-                        }}
-                      >
-                        3
-                      </span>
-                    </div>
-                    <div className="text-wrapper">
-                      <p className="setup-step-title">Log in and done</p>
-                      <p className="setup-step-body">
-                        Log in with your TokScript account and that&apos;s it!
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Section 5: Free Skills ── */}
-      {/* <section id="freeskills">
-        <img className="fs-bg-bottom" src={fsBgBottom.src} alt="" />
-
-        <div className="fs-inner">
-          <div className="fs-header-block">
-            <img className="fs-header-bg" src={fsHeaderBg.src} alt="" />
-            <div className="fs-header-content">
-              <div className="fs-pill">Free Skills</div>
-              <h2 className="fs-h2">Try It Today With Free Skills</h2>
-              <p className="fs-sub">
-                Pre-built prompts you can drop into Claude or ChatGPT right now.
-                Pick one,
-                <br />
-                copy the prompt, and start.
-              </p>
-            </div>
-          </div>
-
-          <div className="fs-tabs">
-            {["all", "summary", "hooks", "repurpose", "engagement"].map(
-              (cat) => (
-                <button
-                  key={cat}
-                  className={`fs-tab${skillsFilter === cat ? " fs-tab-active" : ""}`}
-                  onClick={() => setSkillsFilter(cat)}
-                >
-                  {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                </button>
-              ),
-            )}
-          </div>
-
-          <div className="fs-cards">
-            {filteredSkills.map((skill, i) => (
-              <div className="fs-card" key={i}>
-                <div className="fs-card-banner">
-                  <img src={skill.banner.src} alt="" />
-                </div>
-                <div className="fs-card-meta">
-                  <div className="fs-card-badge">
-                    <img src={skill.badge.src} alt="" />
-                    {skill.badgeLabel}
-                  </div>
-                  <div className="fs-card-meta-right">
-                    <span className="fs-card-uses">{skill.uses}</span>
-                    <div className="fs-card-icons">
-                      {skill.icons.map((icon, j) => (
-                        <img key={j} src={icon.src} alt="" />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                <div className="fs-card-body">
-                  <p className="fs-card-title">{skill.title}</p>
-                  <p className="fs-card-desc">{skill.desc}</p>
-                  <div className="fs-card-tags">
-                    {skill.tags.map((tag, j) => (
-                      <span className="fs-card-tag" key={j}>
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="fs-card-prompt">{skill.prompt}</div>
-                  <button className="fs-card-show">
-                    &rarr; Show full prompt
-                  </button>
-                </div>
-                <div className="fs-card-actions">
-                  <button className="fs-btn fs-btn-copy">
-                    <img src={skill.copyIcon.src} alt="" /> Copy
-                  </button>
-                  <button className="fs-btn" style={{ flex: 1 }}>
-                    <img src={skill.downloadSkillIcon.src} alt="" /> Download
-                    Skill
-                  </button>
-                  <button className="fs-btn">
-                    <img src={skill.downloadIcon.src} alt="" /> Download
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <Link href="/pricing" className="fs-cta">
-            Sign Up Today To Access More Skills
-          </Link>
-        </div>
-      </section> */}
-
-      {/* ── Section 6: Before & After ── */}
-      <section id="beforeafter">
-        <img className="ba-bg" src={baBg.src} alt="" />
-        <div className="ba-inner">
-          {/* Header */}
-          <div className="ba-header-block">
-            <div className="ba-header-bg">
-              <img className="ba-header-bg-l2" src={baHeaderBgL2.src} alt="" />
-              <img className="ba-header-bg-l1" src={baHeaderBgL1.src} alt="" />
-            </div>
-            <div className="ba-header-content">
-              <div className="ba-pill">Before &amp; After</div>
-              <h2 className="ba-title">
-                From Manual Guesswork to
-                <br />
-                Automated Viral Systems
-              </h2>
-              <p className="ba-subtitle">
-                Replace manual research with automated viral systems. Build
-                data-backed scripts and scale your creative output in seconds.
-              </p>
-            </div>
-          </div>
-
-          {/* Carousel */}
-          <div className="ba-carousel-outer" ref={baCarouselRef}>
-            <div
-              className="ba-track"
-              style={{
-                transform: `translateX(-${carouselIndex * (baCarouselRef.current?.offsetWidth || 1100)}px)`,
-              }}
-            >
-              {slides.map((slide, i) => (
-                <div className="ba-slide" key={i}>
-                  <p className="ba-slide-title">{slide.title}</p>
-                  <div className="ba-cards-row">
-                    <div className="ba-card ba-before">
-                      <img className="ba-card-bg" src={baCardBg.src} alt="" />
-                      <span className="ba-card-label">Before</span>
-                      <img
-                        className="ba-card-img"
-                        src={slide.beforeImg.src}
-                        alt="Before"
-                      />
-                      <p className="ba-card-desc">{slide.beforeDesc}</p>
-                    </div>
-                    <div className="ba-card ba-after">
-                      <img className="ba-card-bg" src={baCardBg.src} alt="" />
-                      <span className="ba-card-label">After</span>
-                      <img
-                        className="ba-card-img"
-                        src={slide.afterImg.src}
-                        alt="After"
-                      />
-                      <p className="ba-card-desc">{slide.afterDesc}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Nav */}
-          <div className="ba-nav">
-            <button
-              className="ba-arrow"
-              onClick={() => goToSlide(carouselIndex - 1)}
-            >
-              &#8592;
-            </button>
-            <div className="ba-dots">
-              {slides.map((_, i) => (
-                <button
-                  key={i}
-                  className={`ba-dot${carouselIndex === i ? " active" : ""}`}
-                  onClick={() => goToSlide(i)}
-                />
-              ))}
-            </div>
-            <button
-              className="ba-arrow"
-              onClick={() => goToSlide(carouselIndex + 1)}
-            >
-              &#8594;
-            </button>
-          </div>
-
-          {/* CTA */}
-          <div className="ba-cta-wrap">
-            <Link href="/pricing" className="ba-cta">
-              Deploy These Workflows
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Section 7: Workflows ── */}
-      <section id="workflows">
-        <div className="wf-card">
-          <img className="wf-card-bg" src={wfCardBg.src} alt="" />
-
-          {/* Header */}
-          <div className="wf-header">
-            <div className="wf-pill">Workflows</div>
-            <h2 className="wf-title">Real Workflows, Not Isolated Tools</h2>
-            <p className="wf-subtitle">
-              The power isn&apos;t in individual tools. It&apos;s in chaining
-              them together in a single conversation.
-            </p>
-          </div>
-
-          {/* Panel */}
-          <div className="wf-panel">
-            {/* Left: accordion items */}
-            <div className="wf-left">
-              {workflows.map((wf, i) => (
-                <React.Fragment key={i}>
-                  <div
-                    className={`wf-item${activeWorkflow === i ? " active" : ""}`}
-                    onClick={() => setActiveWorkflow(i)}
-                  >
-                    <div className="wf-item-header">{wf.title}</div>
-                    <p className="wf-item-desc">{wf.desc}</p>
-                  </div>
-                  {i < workflows.length - 1 && <div className="wf-divider" />}
-                </React.Fragment>
-              ))}
-            </div>
-            <div className="wf-divider d-block d-md-none" />
-
-            {/* Right: images */}
-            <div className="wf-images">
-              {workflows.map((wf, i) => (
-                <img
-                  key={i}
-                  className={`wf-img wf-img-${i}${activeWorkflow === i ? " active" : ""}`}
-                  src={wf.img.src}
-                  alt=""
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div className="wf-cta-wrap">
-            <a href={signUpUrl} className="wf-cta">
-              Sign Up Now
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Section 8: FAQ ── */}
-      <section id="faq">
-        <div className="wrap">
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "11px",
-              textAlign: "center",
-              marginBottom: "40px",
-            }}
-          >
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                padding: "5px 14px",
-                borderRadius: "20px",
-                fontSize: "12px",
-                color: "#fff",
-                background:
-                  "linear-gradient(#0d0d0d,#0d0d0d) padding-box,linear-gradient(135deg,#00b8b2,rgba(255,255,255,.12)) border-box",
-                border: "0.5px solid transparent",
-              }}
-            >
-              FAQ
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "20px",
-              }}
-            >
-              <h2
-                style={{
-                  fontSize: "40px",
-                  fontWeight: 800,
-                  color: "#fff",
-                  letterSpacing: "-1.4px",
-                  lineHeight: 1.12,
-                  margin: 0,
-                  maxWidth: "568px",
-                  width: "100%",
-                }}
-              >
-                Frequently Asked Questions
-              </h2>
-              <p
-                style={{
-                  fontSize: "16px",
-                  color: "rgba(255,255,255,0.48)",
-                  margin: 0,
-                  lineHeight: 1.65,
-                  maxWidth: "730px",
-                  width: "100%",
-                }}
-              >
-                The power isn&apos;t in individual tools. It&apos;s in chaining
-                them together in a single conversation.
-              </p>
-            </div>
-          </div>
-
-          <div className="faq-list reveal">
-            {faqs.map((faq, i) => (
-              <div className="faq-item" key={i}>
-                <button
-                  className={`faq-q${openFaq === i ? " open" : ""}`}
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                >
-                  {faq.q}
-                  <span className="faq-icon">+</span>
-                </button>
-                <div className={`faq-a${openFaq === i ? " open" : ""}`}>
-                  {faq.a}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Help center CTA */}
-          <div className="hiw-cta" style={{ marginTop: "40px" }}>
-            <p className="hiw-cta-text">Still have questions?</p>
-            <a
-              href="https://help.tokscript.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hiw-cta-btn"
-            >
-              Visit Help Center
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Section 9: CTA ── */}
-      <section id="cta">
-        <div className="cta-container">
-          {/* bg image */}
-          <img className="cta-bg" src={ctaBg.src} alt="" />
-          {/* left deco (Claude logo) */}
-          <img className="cta-logo-claude" src={ctaClaudeLogo.src} alt="" />
-          {/* right deco (ChatGPT logo) */}
-          <img className="cta-logo-chatgpt" src={ctaChatgptLogo.src} alt="" />
-          {/* content */}
-          <div className="cta-content">
-            <h2 className="cta-title">
-              One Plan&nbsp;
-              <br />
-              Unlimited Intelligence
-            </h2>
-            <p className="cta-subtitle">
-              Unlimited transcripts. All three AI agents. Bulk processing. HD
-              downloads.
-              <br />
-              Creator intelligence. 100+ languages. Claude and ChatGPT.
-            </p>
-            <div className="cta-features">
-              {ctaFeatures.map((feat, i) => (
-                <span
-                  key={i}
-                  style={{
-                    display: "flex",
-                    gap: "6px",
-                    alignItems: "center",
-                    color: "#fff",
-                  }}
-                >
-                  <span style={{ color: "#00b8b2", fontWeight: 700 }}>
-                    {"\u2713"}
-                  </span>{" "}
-                  {feat}
-                </span>
-              ))}
-            </div>
-            {/* URL input */}
-            <div className="cta-url-bar">
-              <span className="cta-url-text">
-                https://api.tokscript.com/mcp
-              </span>
-              <button className="cta-copy-btn" onClick={copyCtaUrl}>
-                {ctaUrlCopied ? (
-                  "\u2713 Copied!"
-                ) : (
-                  <>
-                    <svg
-                      width="12"
-                      height="12"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                    >
-                      <rect x="9" y="9" width="13" height="13" rx="2" />
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
-                    </svg>
-                    Copy URL
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <VideoLightbox
-        show={videoOpen}
-        onHide={() => setVideoOpen(false)}
-        videoUrl={
-          videoOpen
-            ? "https://www.youtube.com/embed/5m37dBH-G_g?autoplay=1&mute=0&rel=0&modestbranding=1&color=white"
-            : ""
-        }
+      <style dangerouslySetInnerHTML={{ __html: STATIC_CSS }} />
+      <div
+        className="tsm-mcp"
+        dangerouslySetInnerHTML={{ __html: STATIC_BODY }}
       />
-      <VideoLightbox
-        show={setupVideoOpen}
-        onHide={() => setSetupVideoOpen(false)}
-        videoUrl={
-          setupVideoOpen
-            ? setupTab === "chatgpt"
-              ? "https://www.youtube.com/embed/rl39iLfyre4?autoplay=1&mute=1&rel=0&modestbranding=1&color=white"
-              : "https://www.youtube.com/embed/lfpVSGkCKcc?autoplay=1&mute=1&rel=0&modestbranding=1&color=white"
-            : ""
-        }
-      />
-
       <Footer />
-    </div>
+    </>
   );
 }

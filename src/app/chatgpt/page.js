@@ -1,36 +1,30 @@
-"use client";
+import PageData from "./PageData";
 
-import { useEffect } from "react";
-import Header from "../../components/Header";
-import { bodyHtml, pageScript, jsonLd } from "./content";
-import "./chatgpt.css";
+export const metadata = {
+  title: "TokScript on ChatGPT | TikTok Research Inside Your AI",
+  description:
+    "Connect TokScript to ChatGPT. Pull TikTok transcripts, generate hooks, analyze virality, and research creators inside your ChatGPT conversation.",
+  alternates: {
+    canonical: "https://tokscript.com/chatgpt",
+  },
+  openGraph: {
+    title: "TokScript on ChatGPT",
+    description:
+      "Connect TokScript to ChatGPT. Research TikTok inside your AI conversation.",
+    url: "https://tokscript.com/chatgpt",
+    siteName: "TokScript",
+    images: [
+      {
+        url: "https://tokscript.com/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "TokScript on ChatGPT",
+      },
+    ],
+    type: "website",
+  },
+};
 
 export default function ChatgptPage() {
-  useEffect(() => {
-    // Execute the page's interactive scripts after the body HTML is in the DOM.
-    // The script attaches click handlers, copy-button helpers (on window for inline onclick),
-    // platform tab switching, logo rotation, and the platform-word rotator.
-    const scriptEl = document.createElement("script");
-    scriptEl.textContent = pageScript;
-    scriptEl.setAttribute("data-tokscript-chatgpt-runtime", "1");
-    document.body.appendChild(scriptEl);
-
-    return () => {
-      scriptEl.remove();
-    };
-  }, []);
-
-  return (
-    <>
-      <Header />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: jsonLd }}
-      />
-      <div
-        className="chatgpt-page-body"
-        dangerouslySetInnerHTML={{ __html: bodyHtml }}
-      />
-    </>
-  );
+  return <PageData />;
 }

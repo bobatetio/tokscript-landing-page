@@ -1,0 +1,1928 @@
+"use client";
+import dynamic from "next/dynamic";
+import Header from "@/components/Header";
+
+const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
+
+const STATIC_CSS = `
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;.tsm-chatgpt 400;500;600;700;800&display=swap');
+    *, .tsm-chatgpt::before, .tsm-chatgpt::after { box-sizing: border-box; margin: 0; padding: 0; }
+    .tsm-chatgpt {
+      --bg: #0d0d0d; --s1: #141414; --s2: #1a1a1a; --s3: #1f1f1f;
+      --teal: #00D9B4; --teal12: rgba(0,217,180,.12); --teal25: rgba(0,217,180,.25);
+      --teal06: rgba(0,217,180,.06); --teal40: rgba(0,217,180,.4);
+      --white: #fff; --muted: rgba(255,255,255,.48); --muted2: rgba(255,255,255,.26);
+      --border: rgba(255,255,255,.07); --r: 14px; --font: 'Inter', system-ui, sans-serif;
+    }
+    .tsm-chatgpt { scroll-behavior: smooth; overflow-x: hidden; }
+    .tsm-chatgpt { background: var(--bg); color: var(--white); font-family: var(--font); line-height: 1.65; overflow-x: hidden; }
+    .tsm-chatgpt a { color: inherit; text-decoration: none; }
+    .tsm-chatgpt button { font-family: var(--font); cursor: pointer; }
+    .tsm-chatgpt img { display: block; }
+    .tsm-chatgpt::before {
+      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 80px 80px;
+      -webkit-mask-image: radial-gradient(ellipse 65% 65% at 50% 50%, transparent 0%, transparent 45%, black 85%);
+      mask-image: radial-gradient(ellipse 65% 65% at 50% 50%, transparent 0%, transparent 45%, black 85%);
+    }
+
+    .tsm-chatgpt /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 68px;
+      background: rgba(13,13,13,.88); backdrop-filter: blur(20px);
+    }
+    .tsm-chatgpt .nav-logo img { height: 28.5px; width: 138px; object-fit: contain; }
+    .tsm-chatgpt .nav-links { display: flex; align-items: center; gap: 32px; }
+    .tsm-chatgpt .nav-links a { font-size: 14px; color: rgba(255,255,255,.8); transition: color .2s; white-space: nowrap; }
+    .tsm-chatgpt .nav-links a:hover { color: var(--white); }
+    .tsm-chatgpt .nav-links a.active { color: var(--white); font-weight: 500; position: relative; }
+    .tsm-chatgpt .nav-links a.active::after {
+      content: ''; position: absolute; left: 50%; transform: translateX(-50%); bottom: -8px;
+      width: 40px; height: 2px; border-radius: 2px;
+      background: linear-gradient(90deg, transparent, #00D9B4, transparent);
+      box-shadow: 0 0 8px rgba(0,217,180,.8), 0 0 16px rgba(0,217,180,.4);
+    }
+    .tsm-chatgpt .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .tsm-chatgpt .nav-dropdown { position: relative; }
+    .tsm-chatgpt .nav-dropdown > a { display: flex; align-items: center; gap: 5px; cursor: pointer; }
+    .tsm-chatgpt .nav-dropdown > a::before {
+      content: ''; display: inline-block; width: 0; height: 0;
+      border-left: 4px solid transparent; border-right: 4px solid transparent;
+      border-top: 4px solid rgba(255,255,255,.6); transition: transform .2s; margin-left: 2px; order: 2;
+    }
+    .tsm-chatgpt .nav-dropdown:hover > a::before { transform: rotate(180deg); border-top-color: #fff; }
+    .tsm-chatgpt .nav-dropdown-menu {
+      display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); padding-top: 14px;
+      background: rgba(18,18,18,.96); backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,.1); border-radius: 12px;
+      padding: 6px; min-width: 140px; box-shadow: 0 12px 40px rgba(0,0,0,.5);
+    }
+    .tsm-chatgpt .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .tsm-chatgpt .nav-dropdown-menu a {
+      display: block; padding: 9px 14px; border-radius: 8px;
+      font-size: 13px; color: rgba(255,255,255,.8); white-space: nowrap; transition: background .15s, color .15s;
+    }
+    .tsm-chatgpt .nav-dropdown-menu a:hover, .tsm-chatgpt .nav-dropdown-menu a.active { background: rgba(255,255,255,.07); color: #fff; }
+    .tsm-chatgpt .btn-ghost { height: 38px; padding: 0 18px; border: 1px solid rgba(255,255,255,.2); border-radius: 14px; background: transparent; color: var(--white); font-size: 14px; font-weight: 500; transition: border-color .2s, background .2s; }
+    .tsm-chatgpt .btn-ghost:hover { border-color: rgba(255,255,255,.4); background: rgba(255,255,255,.05); }
+    .tsm-chatgpt .btn-solid { height: 36px; padding: 0 20px; background: var(--white); border: none; border-radius: 14px; color: #0d0d0d; font-size: 14px; font-weight: 600; transition: opacity .2s; }
+    .tsm-chatgpt .btn-solid:hover { opacity: .86; }
+    .tsm-chatgpt .nav-hamburger { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 38px; height: 38px; background: none; border: none; cursor: pointer; z-index: 310; }
+    .tsm-chatgpt .nav-hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: transform .25s, opacity .25s; }
+    .tsm-chatgpt .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .tsm-chatgpt .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .tsm-chatgpt .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .tsm-chatgpt .mobile-nav { display: none; flex-direction: column; gap: 6px; position: fixed; top: 68px; left: 0; right: 0; z-index: 299; background: rgba(13,13,13,.97); backdrop-filter: blur(20px); padding: 20px 24px 28px; border-bottom: 1px solid var(--border); }
+    .tsm-chatgpt .mobile-nav.open { display: flex; }
+    .tsm-chatgpt .mobile-nav a { font-size: 16px; color: rgba(255,255,255,.8); padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .tsm-chatgpt .mobile-nav a:hover, .tsm-chatgpt .mobile-nav a.active { color: #00D9B4; }
+    .tsm-chatgpt .mobile-nav-actions { display: flex; gap: 10px; padding-top: 16px; }
+    .tsm-chatgpt .mobile-nav-actions .btn-ghost, .tsm-chatgpt .mobile-nav-actions .btn-solid { flex: 1; }
+
+        .tsm-chatgpt /* ── HERO ── */
+    #hero, .tsm-chatgpt #hero-bottom { position: relative; overflow: hidden; padding-top: 44px; padding-bottom: 4px; }
+    .tsm-chatgpt .hero-aurora { position: absolute; bottom: 0; left: 0; width: 100%; pointer-events: none; z-index: 0; }
+    .tsm-chatgpt .hero-aurora img { width: 100%; height: auto; display: block; }
+    .tsm-chatgpt .hero-inner {
+      position: relative; z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: clamp(2rem, 4vw, 4rem); width: 100%;
+      max-width: 1440px;
+      margin-left: auto; margin-right: auto;
+      padding-block: clamp(2.5rem, 5vw, 4.5rem);
+      padding-inline: clamp(1.5rem, 5vw, 4rem);
+      box-sizing: border-box;
+      align-items: center; justify-content: center; justify-items: center;
+    }
+    .tsm-chatgpt .hero-left {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center; min-width: 0;
+      padding: 0; width: 100%;
+      justify-self: end;
+    }
+    .tsm-chatgpt .hero-right {
+      min-width: 0; display: flex; align-items: center; justify-content: center;
+      padding: 0; width: 100%;
+      justify-self: start;
+    }
+    .tsm-chatgpt .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #202223; border-radius: 50px;
+      height: 35px; padding: 0 14px 0 10px;
+      font-size: 10.9px; font-weight: 500; color: #fff;
+      margin-bottom: 10px; position: relative; z-index: 1;
+    }
+    .tsm-chatgpt .hero-badge img { width: 17px; height: 17px; flex-shrink: 0; }
+    .tsm-chatgpt h1 {
+      font-size: clamp(1.875rem, 2.8vw, 3rem); font-weight: 700; letter-spacing: -1.4px; line-height: 1.1;
+      margin: 0 auto 20px; position: relative; z-index: 1; color: #fff;
+      text-wrap: balance; overflow-wrap: break-word;
+      max-width: 32ch;
+    }
+    .tsm-chatgpt .platform-switch { color: var(--teal); transition: opacity 0.28s ease; }
+    .tsm-chatgpt .platform-switch.fading { opacity: 0; }
+    .tsm-chatgpt .hero-sub { font-size: 19px; color: rgba(255,255,255,.8); max-width: 580px; margin: 0 auto 24px; position: relative; z-index: 1; line-height: 1.65; font-weight: 400; }
+    .tsm-chatgpt .hero-url-bar {
+      display: flex; align-items: center;
+      width: min(380px, 100%); height: 48px;
+      background: #0d0d0d; border: 2px solid #e1dbdb; border-radius: 16px;
+      padding: 0 4px 0 16px; position: relative; z-index: 2;
+    }
+    .tsm-chatgpt .hero-url-text { flex: 1; font-size: 14px; color: #d4d4d4; font-weight: 400; white-space: nowrap; overflow: hidden; text-align: left; }
+    .tsm-chatgpt .hero-url-btn {
+      flex-shrink: 0; height: 36px; padding: 0 16px; background: #fff; color: #06091a;
+      font-size: 14px; font-weight: 500; border: none; border-radius: 14px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+      font-family: var(--font); transition: opacity .2s;
+    }
+    .tsm-chatgpt .hero-url-btn:hover { opacity: .86; }
+    .tsm-chatgpt .hero-video {
+      position: relative; width: 100%; max-width: 480px; aspect-ratio: 1/1;
+      border: 2px solid #00d9b4; border-radius: 14px; overflow: hidden;
+      background: #1a1a1a; box-shadow: 0 0 40px rgba(0,217,180,.06); z-index: 2;
+    }
+
+    .tsm-chatgpt /* ── SAY IT SECTION ── */
+    #say-it { background: #000; padding: 96px 24px; }
+    .tsm-chatgpt .say-it-inner { max-width: 1080px; margin: 0 auto; }
+    .tsm-chatgpt .say-it-heading {
+      font-size: 48px; font-weight: 700; letter-spacing: -1.6px; line-height: 1.1;
+      color: #fff; text-align: center; margin: 0 0 64px;
+    }
+    .tsm-chatgpt .say-it-heading span { color: var(--teal); }
+    .tsm-chatgpt .say-it-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    }
+    .tsm-chatgpt .say-it-card {
+      background: #111; border: 1px solid rgba(255,255,255,.07);
+      border-radius: 20px; padding: 32px 32px 32px 28px;
+      display: flex; gap: 24px; align-items: flex-start;
+      transition: border-color .2s;
+    }
+    .tsm-chatgpt .say-it-card:hover { border-color: rgba(0,217,180,.2); }
+    .tsm-chatgpt .say-it-num {
+      font-size: 40px; font-weight: 800; color: #fff;
+      letter-spacing: -1px; line-height: 1; flex-shrink: 0; width: 52px;
+      opacity: .85;
+    }
+    .tsm-chatgpt .say-it-body { display: flex; flex-direction: column; gap: 14px; }
+    .tsm-chatgpt .say-it-title { font-size: 17px; font-weight: 700; color: #fff; margin: 0; line-height: 1.3; }
+    .tsm-chatgpt .say-it-bullets { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .tsm-chatgpt .say-it-bullets li {
+      font-size: 14px; color: rgba(255,255,255,.65); line-height: 1.55;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .tsm-chatgpt .say-it-bullets li::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--teal); flex-shrink: 0; margin-top: 5px;
+    }
+    @media (max-width: 768px) {
+      .tsm-chatgpt .say-it-heading { font-size: clamp(28px, 7vw, 40px); margin-bottom: 40px; }
+      .tsm-chatgpt .say-it-grid { grid-template-columns: 1fr; }
+      .tsm-chatgpt .say-it-card { padding: 24px 20px; }
+      .tsm-chatgpt .say-it-num { font-size: 32px; width: 40px; }
+    }
+
+    .tsm-chatgpt /* ── PROBLEM + WHAT CHANGES ── */
+    #problem-what-changes { background: #000; padding: 100px 20px; }
+    .tsm-chatgpt .pwc-inner { max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 120px; }
+    .tsm-chatgpt .pwc-row { display: flex; align-items: center; gap: 90px; }
+    .tsm-chatgpt .pwc-row-reverse { flex-direction: row-reverse; }
+    .tsm-chatgpt .pwc-card-wrap {
+      flex-shrink: 0; width: 614px; height: 630px; border-radius: 27px;
+      border: 1.04px solid rgba(255,255,255,.1); backdrop-filter: blur(20.8px);
+      background: radial-gradient(ellipse at 104% 100%, rgba(255,255,255,.09) 0%, rgba(128,128,128,.045) 50%, transparent 100%);
+      overflow: hidden; position: relative;
+    }
+    .tsm-chatgpt .pwc-card-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+    .tsm-chatgpt .pwc-content { flex: 1; display: flex; flex-direction: column; gap: 24px; }
+    .tsm-chatgpt .pwc-pill-wrap { display: flex; }
+    .tsm-chatgpt .pwc-pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #0d0d0d; border: 0.5px solid #00d9b4; border-radius: 20px;
+      height: 22px; padding: 0 10px; font-size: 12px; color: #fff; white-space: nowrap;
+    }
+    .tsm-chatgpt .pwc-h2 { font-size: 40px; font-weight: 600; line-height: 1.2; color: #fff; margin: 0; }
+    .tsm-chatgpt .pwc-desc { font-size: 18px; font-weight: 500; color: rgba(255,255,255,.7); line-height: 1.45; margin: 0; max-width: 515px; }
+    .tsm-chatgpt .pwc-list { list-style: none; display: flex; flex-direction: column; gap: 20px; margin: 0; padding: 0; }
+    .tsm-chatgpt .pwc-list-item {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 18px; font-weight: 500; color: rgba(255,255,255,.7);
+    }
+    .tsm-chatgpt .pwc-bullet { flex-shrink: 0; width: 26px; height: 26px; border-radius: 100px; display: flex; align-items: center; justify-content: center; }
+    .tsm-chatgpt .pwc-bullet img { display: block; }
+    .tsm-chatgpt .pwc-bullet-x { background: #b6b6b6; }
+    .tsm-chatgpt .pwc-bullet-x img { width: 14px; height: 14px; }
+    .tsm-chatgpt .pwc-bullet-check { background: #00b8b2; }
+    .tsm-chatgpt .pwc-bullet-check img { width: 20px; height: 20px; }
+    .tsm-chatgpt .pwc-cta-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #00b8b2; border: none; border-radius: 14px;
+      height: 36px; padding: 0 32px;
+      color: #fff; font-size: 16px; font-weight: 500; font-family: var(--font);
+      cursor: pointer; transition: opacity .2s; align-self: flex-start; margin-top: 16px;
+    }
+    .tsm-chatgpt .pwc-cta-btn:hover { opacity: .88; }
+
+    .tsm-chatgpt /* keep sec-pill/sec-h2/sec-sub for platform sections below */
+    .sec-pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: linear-gradient(#0d0d0d,#0d0d0d) padding-box, linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box;
+      border: 0.5px solid transparent; border-radius: 20px; padding: 0 12px; height: 24px; font-size: 12px; color: #fff;
+    }
+    .tsm-chatgpt .sec-h2 { font-size: 40px; font-weight: 800; letter-spacing: -1.4px; line-height: 1.12; color: #fff; text-align: center; }
+    .tsm-chatgpt .sec-sub { font-size: 16px; color: rgba(255,255,255,.6); line-height: 1.7; text-align: center; max-width: 680px; }
+
+    .tsm-chatgpt /* ── PLATFORM TAB BAR ── */
+    #platform-tabs {
+      background: #000; padding: 42px 20px 4px;
+      display: flex; justify-content: center; align-items: center;
+      position: sticky; top: 68px; z-index: 200;
+      isolation: isolate;
+    }
+    .tsm-chatgpt .plat-tab-list {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px; border-radius: 79px;
+      border: 1.04px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(20.8px); -webkit-backdrop-filter: blur(20.8px);
+      background: radial-gradient(ellipse at bottom right, rgba(255,255,255,0.09) 0%, rgba(128,128,128,0.045) 50%, transparent 100%);
+    }
+    .tsm-chatgpt .plat-tab {
+      display: inline-flex; align-items: center; gap: 8px;
+      height: 36px; padding: 0 18px; border-radius: 64px;
+      border: 1.04px solid transparent; background: transparent; cursor: pointer;
+      font-family: var(--font); font-size: 12.8px; font-weight: 600;
+      color: rgba(255,255,255,0.48); white-space: nowrap;
+      transition: color .2s, background .2s, border-color .2s;
+    }
+    .tsm-chatgpt .plat-tab-icon { width: 16px; height: 16px; display: block; flex-shrink: 0; opacity: .5; transition: opacity .2s; }
+    .tsm-chatgpt .plat-tab:hover { color: rgba(255,255,255,.8); }
+    .tsm-chatgpt .plat-tab:hover .plat-tab-icon { opacity: .8; }
+    .tsm-chatgpt .plat-tab.active { border-color: #12d8b6; background: linear-gradient(135deg, rgba(18,226,219,1) 0%, rgba(14,169,164,0.75) 25%, rgba(9,113,109,0.5) 50%, rgba(5,56,55,0.25) 75%, transparent 100%); color: #00f7ef; }
+    .tsm-chatgpt .plat-tab.active .plat-tab-icon { opacity: 1; }
+    .tsm-chatgpt .plat-panel { display: none; }
+    .tsm-chatgpt .plat-panel.active { display: block; }
+
+    .tsm-chatgpt /* ── TIKTOK SECTION ── */
+    #tiktok, .tsm-chatgpt #instagram, .tsm-chatgpt #youtube-shorts, .tsm-chatgpt #youtube { background: #000; padding: 0 20px 80px; display: flex; flex-direction: column; align-items: center; gap: 23px; position: relative; overflow: hidden; }
+    .tsm-chatgpt .tiktok-logo-bg { position: absolute; top: 48px; left: 50%; transform: translateX(-50%); width: 331px; height: 304px; pointer-events: none; z-index: 0; }
+    .tsm-chatgpt .tiktok-logo-bg img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .tsm-chatgpt .tiktok-header { position: relative; z-index: 1; width: 884px; max-width: 100%; display: flex; flex-direction: column; align-items: center; gap: 11px; text-align: center; padding-top: 160px; }
+    .tsm-chatgpt .tiktok-pill {
+      display: inline-flex; align-items: center; gap: 3px;
+      background: #0d0d0d; border: 0.5px solid #00d9b4; border-radius: 20px;
+      height: 22px; padding: 0 10px; font-size: 12px; color: #fff;
+    }
+    .tsm-chatgpt .tiktok-pill img { width: 12px; height: 12px; display: block; }
+    .tsm-chatgpt .tiktok-h2 { font-size: 40px; font-weight: 800; letter-spacing: -1.4px; line-height: 1.12; color: #fff; max-width: 694px; }
+    .tsm-chatgpt .tiktok-sub { font-size: 16px; color: rgba(255,255,255,.7); line-height: 1.65; max-width: 730px; }
+    .tsm-chatgpt /* 6-card mosaic grid */
+    .tiktok-grid-outer {
+      width: 1100px; max-width: 100%; height: 815px; position: relative;
+      border-radius: 27px; border: 1.04px solid rgba(255,255,255,.1);
+      backdrop-filter: blur(20.8px); overflow: hidden;
+      background: radial-gradient(ellipse at 104% 100%, rgba(255,255,255,.09) 0%, rgba(128,128,128,.045) 50%, transparent 100%);
+    }
+    .tsm-chatgpt .tg-card {
+      position: absolute; width: 350px; height: 389px;
+      border-radius: 19px; border: 1.04px solid rgba(255,255,255,.1);
+      backdrop-filter: blur(20.8px); overflow: hidden;
+      background: radial-gradient(ellipse at 104% 100%, rgba(255,255,255,.09) 0%, rgba(255,255,255,.06) 50%, transparent 100%);
+    }
+    .tsm-chatgpt .tg-card-bg { position: absolute; left: 50%; transform: translateX(-50%); top: -1.04px; width: 350px; height: 275px; object-fit: cover; pointer-events: none; }
+    .tsm-chatgpt .tg-card-title { position: absolute; top: 15px; left: 0; right: 0; text-align: center; font-size: 14.7px; font-weight: 700; color: #fff; }
+    .tsm-chatgpt .tg-card-content { position: absolute; left: 15px; top: 46px; right: 15px; height: 274px; overflow: hidden; }
+    .tsm-chatgpt .tg-card-content img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .tsm-chatgpt .tg-card-desc { position: absolute; left: 20px; right: 20px; bottom: 18px; text-align: center; font-size: 13.3px; color: rgba(255,255,255,.8); line-height: 21.25px; }
+    .tsm-chatgpt /* CTA below grid */
+    .tiktok-cta { display: flex; flex-direction: column; align-items: center; gap: 11px; }
+    .tsm-chatgpt .tiktok-cta-label { font-size: 14.1px; color: rgba(255,255,255,.48); }
+    .tsm-chatgpt .tiktok-cta-btn { display: inline-flex; align-items: center; justify-content: center; background: #fff; color: #06091a; font-size: 14px; font-weight: 500; border-radius: 14px; height: 36px; padding: 0 20px; border: none; cursor: pointer; font-family: var(--font); transition: opacity .2s; white-space: nowrap; }
+    .tsm-chatgpt .tiktok-cta-btn:hover { opacity: .86; }
+
+    .tsm-chatgpt /* ── PLATFORM SECTIONS (Instagram, .tsm-chatgpt YouTube etc) ── */
+    .plat-section {
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; padding: 80px 20px;
+    }
+    .tsm-chatgpt .plat-section.dark { background: #000; }
+    .tsm-chatgpt .plat-section.mid { background: #000; }
+    .tsm-chatgpt .plat-inner { width: 1100px; max-width: 100%; display: flex; flex-direction: column; align-items: center; gap: 36px; }
+    .tsm-chatgpt .plat-header { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+    .tsm-chatgpt .plat-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 50px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.7);
+    }
+    .tsm-chatgpt .plat-pill-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .tsm-chatgpt .dot-tiktok { background: #ff0050; }
+    .tsm-chatgpt .dot-instagram { background: #c13584; }
+    .tsm-chatgpt .dot-ytshorts { background: #ff0000; }
+    .tsm-chatgpt .dot-youtube { background: #ff0000; }
+    .tsm-chatgpt .plat-features-outer {
+      width: 100%; border-radius: 27px; border: 1.04px solid rgba(255,255,255,.1);
+      backdrop-filter: blur(20.8px); background: radial-gradient(ellipse at 104% 100%, rgba(255,255,255,.09) 0%, rgba(128,128,128,.045) 50%, transparent 100%);
+      padding: 20px;
+    }
+    .tsm-chatgpt .plat-features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .tsm-chatgpt .plat-feat-card {
+      background: #1a1a1a; border-radius: 16px; border: 1px solid rgba(255,255,255,.08);
+      padding: 22px 20px;
+    }
+    .tsm-chatgpt .plat-feat-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--teal); margin-bottom: 8px; }
+    .tsm-chatgpt .plat-feat-desc { font-size: 13.5px; color: rgba(255,255,255,.62); line-height: 1.7; }
+
+    .tsm-chatgpt /* ── TOOLS ── */
+    #tools { padding: 80px 24px; background: #0d0d0d; } .tsm-chatgpt #use-cases { padding: 80px 24px; background: #000; }
+    .tsm-chatgpt .tools-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 40px; }
+    .tsm-chatgpt .tools-header-block { position: relative; width: 884px; max-width: 100%; height: auto; display: flex; justify-content: center; }
+    .tsm-chatgpt .tools-header-bg { position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: 884px; height: 100%; object-fit: cover; pointer-events: none; }
+    .tsm-chatgpt .tools-header-content { position: relative; z-index: 1; padding: clamp(32px,6vw,60px) 20px 8px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; width: 694px; max-width: 100%; }
+    .tsm-chatgpt .tools-pill { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(#0d0d0d,#0d0d0d) padding-box, linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box; border: 0.5px solid transparent; border-radius: 20px; padding: 0 10px; height: 22px; font-size: 12px; color: #fff; }
+    .tsm-chatgpt .tools-h2 { font-size: clamp(24px,5vw,40px); font-weight: 800; letter-spacing: -1.4px; line-height: 1.12; color: #fff; margin: 0; }
+    .tsm-chatgpt .tools-sub { font-size: clamp(13px,2vw,16px); color: rgba(255,255,255,0.7); line-height: 1.65; max-width: 900px; margin: 0; white-space: normal; }
+    .tsm-chatgpt .tools-table { width: 100%; max-width: 900px; border-collapse: collapse; font-family: var(--font); }
+    .tsm-chatgpt .tools-table thead tr { border-bottom: 1px solid rgba(0,217,180,0.3); }
+    .tsm-chatgpt .tools-table thead th { padding: 12px 16px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); text-align: left; }
+    .tsm-chatgpt .tools-table .t-icon { width: 44px; padding: 10px 8px 10px 0; vertical-align: middle; }
+    .tsm-chatgpt .tools-table .t-icon svg { display: block; }
+    .tsm-chatgpt .tools-table tbody tr { border-bottom: 1px solid rgba(255,255,255,0.05); transition: background .15s ease; }
+    .tsm-chatgpt .tools-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+    .tsm-chatgpt .tools-table tbody td { padding: 14px 16px; vertical-align: middle; }
+    .tsm-chatgpt .tools-table .t-icon { width: 48px; text-align: center; padding: 10px 8px; }
+    .tsm-chatgpt .tools-table .t-icon img { width: 32px; height: 32px; object-fit: contain; display: inline-block; }
+    .tsm-chatgpt .tools-table .t-name { font-size: 13px; font-weight: 600; color: #fff; font-family: var(--font); white-space: nowrap; }
+    .tsm-chatgpt .tools-table .t-desc { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+    .tsm-chatgpt .tools-table .t-check { width: 80px; text-align: center; white-space: nowrap; }
+    .tsm-chatgpt .tools-table thead th.t-check { text-align: center; }
+    .tsm-chatgpt .tools-table .t-check svg { display: inline-block; }
+    @media (max-width: 820px) { .tsm-chatgpt .tools-inner { gap: 28px; } .tsm-chatgpt .tools-table .t-desc { font-size: 12px; } }
+    @media (max-width: 640px) {
+      .tsm-chatgpt .tools-table { table-layout: fixed; width: 100%; }
+      .tsm-chatgpt .tools-table thead th { padding: 10px 6px; font-size: 10px; letter-spacing: 0.05em; }
+      .tsm-chatgpt .tools-table .t-icon { width: 32px; padding: 8px 4px 8px 0; }
+      .tsm-chatgpt .tools-table .t-icon svg, .tsm-chatgpt .tools-table .t-icon img { width: 24px; height: 24px; }
+      .tsm-chatgpt .tools-table .t-name { font-size: 11px; white-space: normal; word-break: break-all; padding-bottom: 2px; }
+      .tsm-chatgpt .tools-table .t-desc { font-size: 11px; color: rgba(255,255,255,0.45); }
+      .tsm-chatgpt .tools-table .t-check { width: 40px; }
+      .tsm-chatgpt .tools-table tbody td { padding: 10px 4px; }
+    }
+
+    .tsm-chatgpt /* ── HOW IT WORKS v2 ── */
+    #how-it-works { background: #212121; position: relative; overflow: hidden; display: flex; justify-content: center; padding: 80px 20px; }
+    .tsm-chatgpt .hiw2-bg { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .tsm-chatgpt .hiw2-bg img { width: 100%; height: 100%; object-fit: cover; opacity: .6; }
+    .tsm-chatgpt .hiw2-inner { width: 795px; max-width: 100%; display: flex; flex-direction: column; align-items: center; gap: 32px; position: relative; z-index: 1; }
+    .tsm-chatgpt .hiw2-header { display: flex; flex-direction: column; align-items: center; gap: 11px; text-align: center; }
+    .tsm-chatgpt .hiw2-h2 { font-size: clamp(26px,4vw,40px); font-weight: 800; letter-spacing: -1.4px; line-height: 1.12; color: #fff; margin: 0; max-width: 794px; }
+    .tsm-chatgpt .hiw2-sub { font-size: 16px; color: rgba(255,255,255,.48); line-height: 1.65; margin: 0; }
+    .tsm-chatgpt .hiw2-card { width: 100%; border-radius: 27px; border: 1.04px solid rgba(255,255,255,.1); backdrop-filter: blur(20.8px); background: rgba(0,0,0,.5); overflow: hidden; display: flex; align-items: stretch; gap: 0; }
+    .tsm-chatgpt .hiw2-steps { flex: 0 0 374px; padding: 28px 26px; display: flex; flex-direction: column; overflow: hidden; }
+    .tsm-chatgpt .hiw2-step { cursor: pointer; padding: 10px 0; }
+    .tsm-chatgpt .hiw2-step.active { padding: 10px 0; }
+    .tsm-chatgpt .hiw2-step-label { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.45); line-height: 1.4; margin-bottom: 4px; display: none; }
+    .tsm-chatgpt .hiw2-step.active .hiw2-step-label { display: block; }
+    .tsm-chatgpt .hiw2-step-title { font-size: 17px; font-weight: 600; letter-spacing: -0.4px; color: rgba(255,255,255,.75); line-height: 1.3; }
+    .tsm-chatgpt .hiw2-step.active .hiw2-step-title { color: #fff; }
+    .tsm-chatgpt .hiw2-step-desc { font-size: 13px; color: rgba(255,255,255,.65); line-height: 1.6; margin-top: 8px; display: none; }
+    .tsm-chatgpt .hiw2-step.active .hiw2-step-desc { display: block; }
+    .tsm-chatgpt .hiw2-url { font-size: 12px; background: rgba(255,255,255,.08); padding: 2px 6px; border-radius: 4px; font-family: monospace; color: #00d9b4; word-break: break-all; }
+    .tsm-chatgpt .hiw2-divider { margin: 8px 0; height: 1px; background: rgba(255,255,255,.12); }
+    .tsm-chatgpt .hiw2-phone-wrap { display: flex; align-items: center; justify-content: center; width: 100%; }
+    .tsm-chatgpt .hiw2-phone-wrap img { width: 235px; height: auto; display: block; }
+    .tsm-chatgpt .hiw2-video-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 32px 24px 32px 10px; }
+    .tsm-chatgpt .hiw2-video-outer { position: relative; width: 355px; height: 205px; flex-shrink: 0; }
+    .tsm-chatgpt .hiw2-video-shadow { position: absolute; top: 0; left: 13px; width: 342px; height: 192px; border-radius: 27px; background: rgba(243,244,246,.04); }
+    .tsm-chatgpt .hiw2-video-frame { position: absolute; top: 13px; left: 0; width: 342px; height: 192px; border-radius: 17px; border: 6px solid #191c1e; background: #f3f4f6; overflow: hidden; }
+    .tsm-chatgpt .hiw2-video-placeholder { position: absolute; inset: 0; opacity: .8; overflow: hidden; }
+    .tsm-chatgpt .hiw2-video-placeholder img { position: absolute; width: 100%; height: 133.33%; top: -16.66%; left: 0; object-fit: cover; }
+    .tsm-chatgpt .hiw2-video-screen-wrap { position: absolute; inset: 0; background: #fff; overflow: hidden; }
+    .tsm-chatgpt .hiw2-video-screen-wrap img { position: absolute; width: 364px; height: 211px; top: 50%; left: 50%; transform: translate(-50%, -50%); object-fit: cover; max-width: none; }
+    .tsm-chatgpt .hiw2-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; border-radius: 50%; background: rgba(0,0,0,.7); backdrop-filter: blur(2.5px); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,.3); }
+    .tsm-chatgpt .hiw2-play img { width: 20px; height: 20px; display: block; }
+    .tsm-chatgpt .hiw2-verify { width: 100%; display: flex; flex-direction: column; gap: 4px; }
+    .tsm-chatgpt .hiw2-verify-title { font-size: 16px; font-weight: 600; color: #fff; margin: 0; }
+    .tsm-chatgpt .hiw2-verify-desc { font-size: 16px; color: rgba(255,255,255,.48); line-height: 1.65; margin: 0; }
+    .tsm-chatgpt .hiw2-cta { display: flex; flex-direction: column; align-items: center; gap: 11px; }
+    @media (min-width: 1080px) { .tsm-chatgpt .hiw2-cta { flex-direction: row; justify-content: center; } }
+    .tsm-chatgpt .hiw2-btn-secondary { height: 36px; padding: 0 18px; border-radius: 14px; border: 1px solid rgba(255,255,255,.2); background: transparent; color: rgba(255,255,255,.7); font-size: 14px; font-weight: 500; font-family: var(--font); cursor: pointer; transition: border-color .2s, color .2s; white-space: nowrap; }
+    .tsm-chatgpt .hiw2-btn-secondary:hover { border-color: rgba(255,255,255,.4); color: #fff; }
+
+    .tsm-chatgpt /* ── WHO ── */
+    #who { background: #000; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 80px 20px; }
+    .tsm-chatgpt .who-bg-spiral { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%) rotate(8.68deg); width: 1634px; height: 1602px; pointer-events: none; z-index: 0; object-fit: cover; opacity: 0.4; filter: blur(50px); }
+    .tsm-chatgpt .who-inner { width: 1100px; max-width: 100%; display: flex; flex-direction: column; align-items: center; gap: 40px; position: relative; z-index: 2; }
+    .tsm-chatgpt .who-header-block { position: relative; width: 717px; height: auto; display: flex; align-items: flex-start; justify-content: center; padding: 33px 0 8px; }
+    .tsm-chatgpt .who-header-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+    .tsm-chatgpt .who-header-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+    .tsm-chatgpt .who-pill { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(#0d0d0d,#0d0d0d) padding-box, linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box; border: 0.5px solid transparent; border-radius: 20px; padding: 0 10px; height: 22px; font-size: 12px; color: #fff; }
+    .tsm-chatgpt .who-h2 { font-size: 40px; font-weight: 800; letter-spacing: -1.4px; line-height: 1.12; color: #fff; max-width: 568px; }
+    .tsm-chatgpt .who-sub { font-size: 16px; color: rgba(255,255,255,.48); line-height: 1.65; max-width: 730px; }
+    .tsm-chatgpt .who-cards-outer { position: relative; width: 1100px; max-width: 100%; height: 815px; border-radius: 27px; border: 1.04px solid rgba(255,255,255,.1); overflow: hidden; background: #000; }
+    .tsm-chatgpt .who-card { position: absolute; border-radius: 19px; border: 1.04px solid rgba(255,255,255,.1); overflow: hidden; background: #1a1a1a; }
+    .tsm-chatgpt .who-card-1 { width: 350px; height: 389px; left: 12px;  top: 13px; }
+    .tsm-chatgpt .who-card-2 { width: 350px; height: 389px; left: 372px; top: 13px; }
+    .tsm-chatgpt .who-card-3 { width: 350px; height: 389px; left: 732px; top: 13px; }
+    .tsm-chatgpt .who-card-4 { width: 529px; height: 389px; left: 12px;  top: 411px; }
+    .tsm-chatgpt .who-card-5 { width: 529px; height: 389px; left: 553px; top: 411px; }
+    .tsm-chatgpt .who-card-grid-bg { position: absolute; left: 50%; top: -1px; transform: translateX(-50%); width: 350px; height: 275px; object-fit: cover; pointer-events: none; }
+    .tsm-chatgpt .who-card-title { position: absolute; top: 15px; left: 0; right: 0; text-align: center; font-size: 14.7px; font-weight: 700; color: #fff; }
+    .tsm-chatgpt .who-card-img { position: absolute; left: 15px; overflow: hidden; border-radius: 10px; }
+    .tsm-chatgpt .who-card-img-sm { top: 46px; width: 318px; height: 272px; }
+    .tsm-chatgpt .who-card-img-lg { top: 47px; width: 497px; height: 273px; }
+    .tsm-chatgpt .who-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .tsm-chatgpt .who-card-desc { position: absolute; left: 20px; right: 20px; bottom: 18px; text-align: center; font-size: 13.3px; color: rgba(255,255,255,.8); line-height: 21.25px; }
+    .tsm-chatgpt .who-cta { display: flex; flex-direction: column; align-items: center; gap: 11px; }
+    .tsm-chatgpt .who-cta-text { font-size: 14.1px; color: rgba(255,255,255,.48); }
+    .tsm-chatgpt .who-cta-btn { display: inline-flex; align-items: center; justify-content: center; background: #fff; color: #06091a; font-size: 14px; font-weight: 500; border-radius: 14px; width: 200px; height: 36px; transition: opacity .2s; }
+    .tsm-chatgpt .who-cta-btn:hover { opacity: .86; }
+
+    .tsm-chatgpt /* ── PRICING ── */
+    #pricing { background: #0d0d0d; position: relative; overflow: hidden; display: flex; justify-content: center; padding: 80px 20px; }
+    .tsm-chatgpt .pr-bg { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 883px; max-width: 100%; pointer-events: none; z-index: 0; }
+    .tsm-chatgpt .pr-bg img { width: 100%; height: auto; display: block; opacity: .9; mix-blend-mode: screen; }
+    .tsm-chatgpt .pr-inner { width: 1001px; max-width: 100%; display: flex; flex-direction: column; align-items: center; gap: 40px; position: relative; z-index: 1; }
+    .tsm-chatgpt .pr-header { display: flex; flex-direction: column; align-items: center; gap: 13px; text-align: center; }
+    .tsm-chatgpt .pr-h2 { font-size: clamp(26px,4vw,40px); font-weight: 800; letter-spacing: -1.4px; line-height: 1.12; color: #fff; margin: 0; }
+    .tsm-chatgpt .pr-sub { font-size: 16px; color: rgba(255,255,255,.6); line-height: 1.65; margin: 0; max-width: 730px; }
+    .tsm-chatgpt .pr-outer { width: 100%; border-radius: 42px; border: 1.04px solid rgba(255,255,255,.1); backdrop-filter: blur(20.8px); background: radial-gradient(ellipse at 104% 100%, rgba(255,255,255,.09) 0%, rgba(128,128,128,.045) 50%, transparent 100%); overflow: hidden; padding: 20px; }
+    .tsm-chatgpt .pr-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .tsm-chatgpt .pr-card { border-radius: 27px; border: 1.04px solid rgba(255,255,255,.1); backdrop-filter: blur(20.8px); background: radial-gradient(ellipse at 104% 100%, rgba(255,255,255,.09) 0%, rgba(128,128,128,.045) 50%, transparent 100%); padding: 24px; display: flex; flex-direction: column; min-height: 543px; position: relative; }
+    .tsm-chatgpt .pr-badge { display: inline-flex; align-items: center; background: #262626; border: 1px solid #262626; border-radius: 999px; padding: 5px 11px; font-size: 10px; letter-spacing: .5px; text-transform: uppercase; color: #888; margin-bottom: 16px; white-space: nowrap; align-self: flex-start; }
+    .tsm-chatgpt .pr-plan-name { font-size: 14px; color: #888; margin: 0 0 8px; }
+    .tsm-chatgpt .pr-price-row { display: flex; align-items: baseline; gap: 4px; margin-bottom: 4px; }
+    .tsm-chatgpt .pr-amount { font-size: 36px; font-weight: 700; letter-spacing: -.9px; color: #fff; line-height: 1; }
+    .tsm-chatgpt .pr-period { font-size: 14px; color: #888; }
+    .tsm-chatgpt .pr-sub-price { font-size: 12px; color: #555; margin: 0 0 4px; }
+    .tsm-chatgpt .pr-tagline { font-size: 12px; color: #888; margin: 0 0 16px; }
+    .tsm-chatgpt .pr-divider { height: 1px; background: #262626; margin-bottom: 16px; }
+    .tsm-chatgpt .pr-section-label { font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: #555; margin: 0 0 12px; }
+    .tsm-chatgpt .pr-not-label { color: #3a3a3a; margin-top: 14px; }
+    .tsm-chatgpt .pr-features { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .tsm-chatgpt .pr-features li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #888; }
+    .tsm-chatgpt .pr-excluded { opacity: .4; }
+    .tsm-chatgpt .pr-star { font-size: 13px; color: #888; flex-shrink: 0; }
+    .tsm-chatgpt .pr-cross { font-size: 11px; color: #888; flex-shrink: 0; }
+    .tsm-chatgpt .pr-spacer { flex: 1; min-height: 20px; }
+    .tsm-chatgpt .pr-btn { display: block; width: 100%; height: 46px; border-radius: 14px; font-size: 14px; font-weight: 500; font-family: var(--font); cursor: pointer; transition: opacity .2s; }
+    .tsm-chatgpt .pr-btn-ghost { background: transparent; border: 1px solid #262626; color: #888; }
+    .tsm-chatgpt .pr-btn-ghost:hover { border-color: rgba(255,255,255,.3); color: #fff; }
+    .tsm-chatgpt .pr-btn-white { background: #fff; border: none; color: #111; }
+    .tsm-chatgpt .pr-btn-white:hover { opacity: .88; }
+
+    .tsm-chatgpt /* ── FAQ ── */
+    #faq { padding: 80px 24px; }
+    .tsm-chatgpt .faq-inner { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+    .tsm-chatgpt .faq-header { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+    .tsm-chatgpt .faq-list { border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .tsm-chatgpt .faq-item { border-bottom: 1px solid var(--border); }
+    .tsm-chatgpt .faq-item:last-child { border-bottom: none; }
+    .tsm-chatgpt .faq-q { width: 100%; text-align: left; background: none; border: none; color: var(--white); padding: 20px 24px; font-size: .92rem; font-weight: 600; display: flex; align-items: center; justify-content: space-between; gap: 16px; transition: background .2s; }
+    .tsm-chatgpt .faq-q:hover { background: rgba(255,255,255,.02); }
+    .tsm-chatgpt .faq-q.open { color: var(--teal); }
+    .tsm-chatgpt .faq-icon { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: .75rem; transition: transform .3s, border-color .2s; color: var(--muted); }
+    .tsm-chatgpt .faq-q.open .faq-icon { transform: rotate(45deg); border-color: var(--teal); color: var(--teal); }
+    .tsm-chatgpt .faq-a { display: none; padding: 0 24px 20px; font-size: .88rem; color: var(--muted); line-height: 1.7; }
+    .tsm-chatgpt .faq-a.open { display: block; }
+    .tsm-chatgpt .faq-a a { color: var(--teal); }
+
+    .tsm-chatgpt /* ── CTA ONE PLAN ── */
+    #cta-oneplan { background: #0d0d0d; display: flex; align-items: center; justify-content: center; padding: 80px 20px; overflow: hidden; }
+    .tsm-chatgpt .ctap-outer { position: relative; width: 1200px; max-width: 100%; border-radius: 20px; overflow: hidden; }
+    .tsm-chatgpt .ctap-bg { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 100%; height: 100%; min-height: 600px; object-fit: cover; pointer-events: none; z-index: 0; }
+    .tsm-chatgpt .ctap-deco-left { position: absolute; left: 31px; top: 174px; width: 97px; height: 134px; object-fit: contain; z-index: 1; pointer-events: none; }
+    .tsm-chatgpt .ctap-deco-right { position: absolute; right: 32px; top: 213px; width: 132px; height: 134px; object-fit: contain; z-index: 1; pointer-events: none; }
+    .tsm-chatgpt .ctap-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center; padding: 103px 40px 80px; }
+    .tsm-chatgpt .ctap-title { font-size: 72px; font-weight: 500; letter-spacing: -0.8px; line-height: 1; margin: 0; background: linear-gradient(135deg, rgba(255,255,255,0.6), #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .tsm-chatgpt .ctap-desc { font-size: 15.2px; color: #fff; margin: 0; line-height: 1.65; max-width: 700px; }
+    .tsm-chatgpt .ctap-checks { display: flex; gap: 9px; align-items: center; flex-wrap: wrap; justify-content: center; font-size: 12.5px; }
+    .tsm-chatgpt .ctap-check { display: flex; gap: 6px; align-items: center; color: #fff; }
+    .tsm-chatgpt .ctap-tick { color: #00fff7; font-weight: 700; }
+    .tsm-chatgpt .ctap-url-bar { width: 507px; max-width: 100%; height: 48px; background: #0d0d0d; border: 2px solid #e1dbdb; border-radius: 16px; display: flex; align-items: center; padding: 0 4px 0 14px; }
+    .tsm-chatgpt .ctap-url-text { flex: 1; font-size: 14px; color: #d4d4d4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tsm-chatgpt .ctap-url-btn { flex-shrink: 0; width: 114px; height: 36px; background: #fff; color: #06091a; font-size: 14px; font-weight: 500; border: none; border-radius: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font); transition: opacity .2s; }
+    .tsm-chatgpt .ctap-url-btn:hover { opacity: .86; }
+    .tsm-chatgpt /* URL bar (shared with main mcp page) */
+    .url-bar {
+      display: flex; align-items: center;
+      width: min(380px, 100%); height: 48px;
+      background: #0d0d0d; border: 2px solid #e1dbdb; border-radius: 20px;
+      padding: 0 4px 0 16px; position: relative; z-index: 2;
+    }
+    .tsm-chatgpt .url-bar-text { flex: 1; font-size: 14px; color: #d4d4d4; font-weight: 400; white-space: nowrap; overflow: hidden; text-align: left; }
+    .tsm-chatgpt .url-bar-copy {
+      display: flex; align-items: center; gap: 6px;
+      height: 36px; padding: 0 16px;
+      background: #fff; border: none; border-radius: 14px;
+      color: #06091a; font-size: 14px; font-weight: 500; cursor: pointer; flex-shrink: 0;
+      font-family: var(--font); transition: opacity .2s;
+    }
+    .tsm-chatgpt .url-bar-copy:hover { opacity: .85; }
+    .tsm-chatgpt .url-bar-copy.ok { color: #00b694; }
+
+    .tsm-chatgpt /* ── FOOTER ── */
+    .ft-root { background: #0d0d0d; padding: 40px 20px 0; display: flex; flex-direction: column; align-items: center; gap: 40px; }
+    .tsm-chatgpt .ft-top { width: 100%; max-width: 1146px; display: flex; align-items: flex-start; justify-content: space-between; gap: 40px; }
+    .tsm-chatgpt .ft-brand { display: flex; flex-direction: column; gap: 20px; width: 277px; flex-shrink: 0; }
+    .tsm-chatgpt .ft-brand-logo { height: 56px; width: 140px; display: flex; align-items: flex-end; }
+    .tsm-chatgpt .ft-brand-desc { font-size: 14px; color: #9ca3af; line-height: 1.625; margin: 0; max-width: 266px; }
+    .tsm-chatgpt .ft-nav { display: flex; gap: 32px; flex: 1; justify-content: flex-end; }
+    .tsm-chatgpt .ft-nav-col { display: flex; flex-direction: column; gap: 16px; min-width: 120px; }
+    .tsm-chatgpt .ft-nav-head { font-size: 14px; font-weight: 700; color: #fff; line-height: 1.43; }
+    .tsm-chatgpt .ft-nav-links { display: flex; flex-direction: column; gap: 12px; }
+    .tsm-chatgpt .ft-nav-links a { font-size: 14px; color: #9ca3af; line-height: 1.43; }
+    .tsm-chatgpt .ft-nav-links a:hover { color: #fff; }
+    .tsm-chatgpt .ft-bottom { width: 100%; border-top: 1px solid #262626; padding: 33px 20px 40px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+    .tsm-chatgpt .ft-bottom-inner { width: 100%; max-width: 960px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .tsm-chatgpt .ft-social { display: flex; gap: 20px; align-items: center; }
+    .tsm-chatgpt .ft-social a { display: flex; align-items: center; width: 20px; height: 20px; }
+    .tsm-chatgpt .ft-copyright { font-size: 14px; color: #9ca3af; white-space: nowrap; }
+    .tsm-chatgpt .ft-disclaimer { width: 100%; max-width: 960px; }
+    .tsm-chatgpt .ft-disclaimer p { font-size: 12px; color: #9ca3af; margin: 0; line-height: 1.625; }
+
+    .tsm-chatgpt /* ── PLATFORM FEATURE SECTIONS ── */
+    .pfs-section {
+      position: relative; overflow: hidden;
+      background: #000; padding: 96px 24px 80px;
+      display: flex; flex-direction: column; align-items: center; gap: 40px;
+    }
+    .tsm-chatgpt .pfs-section + .pfs-section { border-top: 1px solid rgba(255,255,255,.06); }
+    .tsm-chatgpt .pfs-blob {
+      position: absolute; pointer-events: none; z-index: 0;
+    }
+    .tsm-chatgpt .pfs-blob-tiktok { top: -60px; left: 50%; transform: translateX(-50%); width: 480px; opacity: 0.55; }
+    .tsm-chatgpt .pfs-blob-instagram { top: -80px; left: 50%; transform: translateX(-50%); width: 520px; opacity: 0.55; }
+    .tsm-chatgpt .pfs-blob-youtube { top: -70px; left: 50%; transform: translateX(-50%); width: 560px; opacity: 0.55; }
+    .tsm-chatgpt .pfs-blob img { width: 100%; height: auto; display: block; }
+    .tsm-chatgpt .pfs-inner {
+      position: relative; z-index: 1;
+      width: 1100px; max-width: 100%;
+      display: flex; flex-direction: column; align-items: center; gap: 40px;
+    }
+    .tsm-chatgpt .pfs-header { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+    .tsm-chatgpt .pfs-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #0d0d0d; border: 0.5px solid rgba(255,255,255,.25); border-radius: 20px;
+      height: 26px; padding: 0 12px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.8);
+    }
+    .tsm-chatgpt .pfs-pill.tiktok { border-color: #00d9b4; }
+    .tsm-chatgpt .pfs-pill.instagram { border-color: #f7882e; }
+    .tsm-chatgpt .pfs-pill.youtube { border-color: #ff3c3c; }
+    .tsm-chatgpt .pfs-pill img { height: 14px; width: auto; display: block; }
+    .tsm-chatgpt .pfs-h2 { font-size: 40px; font-weight: 800; letter-spacing: -1.4px; line-height: 1.12; color: #fff; max-width: 680px; }
+    .tsm-chatgpt .pfs-sub { font-size: 16px; color: rgba(255,255,255,.6); line-height: 1.7; max-width: 620px; }
+    .tsm-chatgpt /* Outer grid wrapper */
+    .pfs-grid-outer {
+      width: 100%;
+      border: 1.04px solid rgba(255,255,255,.1); border-radius: 27px;
+      backdrop-filter: blur(20.8px); -webkit-backdrop-filter: blur(20.8px);
+      background: radial-gradient(ellipse at 104% 100%, rgba(255,255,255,.09) 0%, rgba(128,128,128,.045) 50%, transparent 100%);
+      padding: 16px;
+    }
+    .tsm-chatgpt .pfs-grid {
+      display: grid; gap: 12px;
+    }
+    .tsm-chatgpt .pfs-grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .tsm-chatgpt .pfs-grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .tsm-chatgpt /* Cards */
+    .pfs-card {
+      position: relative; height: 389px;
+      border-radius: 19px; border: 1.04px solid rgba(255,255,255,.1);
+      overflow: hidden;
+      background: radial-gradient(ellipse at 104% 100%, rgba(255,255,255,.09) 0%, rgba(255,255,255,.04) 50%, transparent 100%);
+    }
+    .tsm-chatgpt .pfs-card-bg {
+      position: absolute; left: 50%; transform: translateX(-50%); top: 0;
+      width: 100%; height: 60%; object-fit: cover; pointer-events: none; display: block;
+    }
+    .tsm-chatgpt .pfs-card-title {
+      position: absolute; top: 16px; left: 0; right: 0; text-align: center;
+      font-size: 14px; font-weight: 700; color: #fff; z-index: 2;
+    }
+    .tsm-chatgpt .pfs-card-img {
+      position: absolute; left: 12px; right: 12px; top: 44px; bottom: 0; overflow: hidden;
+      border-radius: 12px;
+    }
+    .tsm-chatgpt .pfs-card.has-desc .pfs-card-img { bottom: 58px; }
+    .tsm-chatgpt .pfs-card-img img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+    .tsm-chatgpt .pfs-card-desc {
+      position: absolute; left: 16px; right: 16px; bottom: 14px;
+      font-size: 13.3px; color: rgba(255,255,255,.8); text-align: center; line-height: 1.6;
+    }
+    .tsm-chatgpt /* Mixed 3+2 grid for YouTube Longs */
+    .pfs-grid-ytl { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+    .tsm-chatgpt .pfs-grid-ytl .pfs-card:nth-child(-n+3) { grid-column: span 2; }
+    .tsm-chatgpt .pfs-grid-ytl .pfs-card:nth-child(n+4) { grid-column: span 3; }
+    .tsm-chatgpt /* CTA */
+    .pfs-cta { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .tsm-chatgpt .pfs-cta-label { font-size: 14px; color: rgba(255,255,255,.45); }
+    .tsm-chatgpt .pfs-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #fff; color: #06091a; font-size: 14px; font-weight: 500;
+      border-radius: 14px; height: 36px; padding: 0 22px;
+      text-decoration: none; font-family: var(--font);
+      transition: opacity .2s;
+    }
+    .tsm-chatgpt .pfs-btn:hover { opacity: .86; }
+
+    .tsm-chatgpt /* ── TABLET (≤1024px) ── */
+    @media (max-width: 1024px) {
+      /* Problem/What Changes */
+      .pwc-row { gap: 48px; }
+      .pwc-card-wrap { width: 480px; height: 500px; }
+      /* Pricing */
+      .pr-cards { grid-template-columns: repeat(2, 1fr); }
+      /* Who mosaic */
+      .who-card-1, .who-card-2, .who-card-3 { width: calc(33.33% - 22px); }
+      .who-card-4 { width: calc(50% - 18px); }
+      .who-card-5 { width: calc(50% - 18px); left: calc(50% + 6px); }
+    }
+
+    .tsm-chatgpt /* ── MOBILE (≤768px) — single column, .tsm-chatgpt fits in viewport ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links, .nav-actions { display: none; }
+      .nav-hamburger { display: flex; }
+      .hero-url-bar { width: 100%; }
+      .wc-cards-row { grid-template-columns: 1fr; }
+      .plat-features-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .ctap-deco-left, .ctap-deco-right { display: none; }
+      .ctap-content { padding: 60px 32px 56px; }
+      .ctap-title { font-size: clamp(36px, 7vw, 64px); }
+      .ft-top { flex-direction: column; align-items: center; gap: 32px; }
+      .ft-brand { width: 100%; align-items: center; text-align: center; }
+      .ft-nav { justify-content: center; gap: 40px; }
+      .ft-nav-col { align-items: center; text-align: center; }
+      .ft-bottom-inner { flex-direction: column; align-items: center; gap: 16px; }
+      .ft-copyright { white-space: normal; text-align: center; }
+      .ft-disclaimer p { text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .tsm-chatgpt .hero-inner { padding: 72px 16px 24px; gap: 20px; }
+      .tsm-chatgpt .hero-video-card { max-width: 100%; }
+      .tsm-chatgpt .sec-h2 { font-size: clamp(26px, 8vw, 40px); }
+      .tsm-chatgpt .hiw-h2, .tsm-chatgpt .who-h2 { font-size: clamp(26px, 8vw, 40px); }
+    }
+
+    @media (max-width: 768px) {
+      .tsm-chatgpt /* Problem/What Changes */
+      #problem-what-changes { padding: 60px 20px; }
+      .tsm-chatgpt .pwc-inner { gap: 72px; }
+      .tsm-chatgpt .pwc-row { flex-direction: column !important; gap: 36px; align-items: stretch; }
+      .tsm-chatgpt .pwc-card-wrap { width: 100%; height: auto; aspect-ratio: 614 / 500; flex-shrink: unset; backdrop-filter: none; }
+      .tsm-chatgpt .pwc-h2 { font-size: clamp(26px, 5vw, 36px); }
+      .tsm-chatgpt .pwc-desc { font-size: 16px; }
+      .tsm-chatgpt .pwc-list-item { font-size: 16px; }
+
+      .tsm-chatgpt /* TikTok / Instagram / YouTube grid → vertical flex stack */
+      .tiktok-grid-outer {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px;
+        backdrop-filter: none;
+        background: #000;
+      }
+      .tsm-chatgpt /* Convert each card to a vertical flow layout */
+      .tg-card {
+        position: relative !important;
+        left: 0 !important; top: 0 !important;
+        width: 100% !important; height: auto !important;
+        backdrop-filter: none;
+        background: #1a1a1a;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .tsm-chatgpt /* hide the decorative gradient bg — not needed in flow layout */
+      .tg-card-bg { display: none; }
+      .tsm-chatgpt /* title becomes first in flow */
+      .tg-card-title {
+        position: static;
+        padding: 16px 16px 8px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+      }
+      .tsm-chatgpt /* screenshot container: flex-shrink:0 prevents it being squashed */
+      .tg-card-content {
+        position: static;
+        width: 100%;
+        height: 210px;
+        flex-shrink: 0;
+        overflow: hidden;
+      }
+      .tsm-chatgpt /* explicit height on the img itself so height:100% always resolves */
+      .tg-card-content img {
+        width: 100%;
+        height: 210px;
+        object-fit: cover;
+        object-position: top center;
+        display: block;
+      }
+      .tsm-chatgpt /* description sits cleanly below the image */
+      .tg-card-desc {
+        position: static;
+        padding: 12px 20px 18px;
+        text-align: center;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .tsm-chatgpt .tiktok-header { padding-top: 120px; width: 100%; }
+      .tsm-chatgpt .tiktok-h2 { font-size: clamp(22px, 5vw, 36px); }
+
+      .tsm-chatgpt /* Who section cards → same flow treatment */
+      .who-cards-outer {
+        height: auto;
+        display: flex; flex-direction: column;
+        gap: 12px; padding: 12px;
+        backdrop-filter: none;
+        background: #000;
+      }
+      .tsm-chatgpt .who-card {
+        position: relative !important;
+        left: 0 !important; top: 0 !important;
+        width: 100% !important; height: auto !important;
+        display: flex; flex-direction: column;
+        overflow: hidden;
+        backdrop-filter: none;
+      }
+      .tsm-chatgpt .who-card-grid-bg { display: none; }
+      .tsm-chatgpt .who-card-title {
+        position: static;
+        padding: 16px 16px 8px;
+        text-align: center;
+        font-size: 14.7px;
+        font-weight: 700;
+        color: #fff;
+      }
+      .tsm-chatgpt .who-card-img {
+        position: static;
+        width: calc(100% - 30px);
+        height: 210px;
+        flex-shrink: 0;
+        margin: 0 15px;
+        border-radius: 10px;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+      }
+      .tsm-chatgpt .who-card-img-sm { width: calc(100% - 30px); height: 210px; }
+      .tsm-chatgpt .who-card-img-lg { width: calc(100% - 30px); height: 210px; }
+      .tsm-chatgpt /* explicit height on inner img */
+      .who-card-img img {
+        width: 100%;
+        height: 210px;
+        object-fit: cover;
+        object-position: top center;
+        display: block;
+      }
+      .tsm-chatgpt .who-card-desc {
+        position: static;
+        padding: 12px 20px 18px;
+        text-align: center;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .tsm-chatgpt /* Pricing — remove backdrop-filter that renders grey */
+      .pr-outer { backdrop-filter: none; background: #141414; }
+      .tsm-chatgpt .pr-card { backdrop-filter: none; background: #1e1e1e; }
+
+      .tsm-chatgpt /* How It Works */
+      .hiw2-card { flex-direction: column; }
+      .tsm-chatgpt .hiw2-steps { flex: unset; width: 100%; padding: 28px 24px 20px; }
+      .tsm-chatgpt .hiw2-video-wrap { padding: 0 24px 28px; justify-content: center; }
+      .tsm-chatgpt .hiw2-video-outer { width: min(355px, 100%); height: auto; aspect-ratio: 355 / 218; flex-shrink: 0; }
+      .tsm-chatgpt .hiw2-h2 { font-size: clamp(24px, 5vw, 36px); }
+
+      .tsm-chatgpt /* Who */
+      .who-h2 { font-size: clamp(24px, 5vw, 36px); }
+      .tsm-chatgpt .who-header-block { width: 100%; }
+
+      .tsm-chatgpt /* Pricing */
+      #pricing { padding: 60px 20px; }
+      .tsm-chatgpt .pr-cards { grid-template-columns: 1fr; }
+      .tsm-chatgpt .pr-card { min-height: auto; }
+
+      .tsm-chatgpt /* CTA */
+      .ctap-title { font-size: clamp(32px, 8vw, 56px); letter-spacing: -0.5px; }
+      .tsm-chatgpt .ctap-desc { font-size: 14px; }
+      .tsm-chatgpt .ctap-url-bar { width: 100%; max-width: 100%; }
+      .tsm-chatgpt .ctap-content { padding: 60px 24px 56px; }
+
+      .tsm-chatgpt /* Platform feature cards */
+      .plat-features-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .tsm-chatgpt /* ── MOBILE (≤540px) ── */
+    @media (max-width: 540px) {
+      .sec-h2 { font-size: clamp(22px, 7vw, 36px); }
+      .hiw2-h2, .who-h2, .tiktok-h2 { font-size: clamp(22px, 7vw, 34px); }
+      .pwc-h2 { font-size: clamp(22px, 7vw, 34px); }
+
+
+      /* Hero */
+      h1 { font-size: clamp(26px, 8vw, 40px); }
+      .hero-sub { font-size: 14px; }
+
+      /* Section padding */
+      #problem-what-changes { padding: 48px 16px; }
+      #tiktok, #instagram, #youtube-shorts, #youtube { padding: 0 16px 60px; }
+      #platform-tabs { padding: 48px 12px 4px; }
+      .plat-tab-list { flex-wrap: wrap; justify-content: center; }
+      .plat-tab { font-size: 11.5px; padding: 0 14px; height: 32px; gap: 6px; }
+      .plat-tab-icon { width: 14px; height: 14px; }
+      #how-it-works { padding: 60px 16px; }
+      #who { padding: 60px 16px; }
+      #pricing { padding: 48px 16px; }
+      #faq { padding: 48px 16px; }
+      #cta-oneplan { padding: 60px 16px; }
+
+      /* Platform features → single col */
+      .plat-features-grid { grid-template-columns: 1fr; }
+
+      /* Pricing */
+      .pr-outer { padding: 12px; }
+      .pr-cards { gap: 12px; }
+
+      /* CTA */
+      .ctap-title { font-size: clamp(28px, 9vw, 48px); }
+      .ctap-checks { flex-direction: column; align-items: flex-start; gap: 6px; }
+
+      /* How it works video */
+      .hiw2-video-wrap { padding: 0 16px 24px; }
+      .hiw2-steps { padding: 24px 16px 16px; }
+
+      /* Footer */
+      .ft-nav { flex-wrap: wrap; gap: 28px 40px; }
+    }
+
+    .tsm-chatgpt /* ── SEE IT IN ACTION ── */
+    #in-action { background: #0d0d0d; padding: 96px 24px 112px; }
+    .tsm-chatgpt .in-action-inner { max-width: 1100px; margin: 0 auto; }
+    .tsm-chatgpt .in-action-heading {
+      font-size: 56px; font-weight: 800; letter-spacing: -2px; line-height: 1.05;
+      color: #fff; text-align: center; margin: 0 0 72px;
+    }
+    .tsm-chatgpt .in-action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 48px; }
+    .tsm-chatgpt .in-action-label {
+      font-size: 22px; font-weight: 700; color: #fff; margin: 0 0 6px; letter-spacing: -0.4px;
+    }
+    .tsm-chatgpt .in-action-desc {
+      font-size: 14px; color: rgba(255,255,255,.55); margin: 0 0 20px; line-height: 1.5;
+    }
+    .tsm-chatgpt .in-action-img {
+      width: 100%; border-radius: 14px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,.1); background: #111;
+      aspect-ratio: 4/5;
+    }
+    .tsm-chatgpt .in-action-img img { width: 100%; height: 100%; display: block; object-fit: cover; }
+    @media (max-width: 900px) {
+      .tsm-chatgpt .in-action-heading { font-size: clamp(32px, 8vw, 48px); margin-bottom: 48px; }
+      .tsm-chatgpt .in-action-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+
+    .tsm-chatgpt .platform-switch { color: var(--teal); transition: opacity 0.28s ease; }
+    .tsm-chatgpt .platform-switch.fading { opacity: 0; }
+
+    .tsm-chatgpt /* ── HERO RESPONSIVE ── */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      #hero { padding-top: 22px; padding-bottom: 2px; }
+      .hero-inner { grid-template-columns: 1fr; align-items: center; padding: 88px 40px 40px; gap: 28px; }
+      .hero-left { width: 100%; max-width: 100%; align-items: center; text-align: center; padding: 0; justify-self: center; }
+      .hero-right { width: 100%; max-width: 560px; padding: 0; margin: 0 auto; justify-self: center; }
+      .hero-video { max-width: 100%; }
+      h1 { font-size: clamp(28px, 5vw, 42px); line-height: 1.1; letter-spacing: -1.2px; white-space: normal; }
+      .hero-sub { font-size: 16px; max-width: 560px; margin: 0 auto 20px; }
+      .hero-url-bar { width: min(380px, 100%); }
+    }
+    @media (max-width: 767px) {
+      .tsm-chatgpt nav { padding: 0 20px; height: 60px; }
+      .tsm-chatgpt .nav-links { display: none; }
+      .tsm-chatgpt .nav-actions { display: none; }
+      .tsm-chatgpt .nav-hamburger { display: flex; }
+      .tsm-chatgpt #hero { padding-top: 22px; padding-bottom: 2px; }
+      .tsm-chatgpt .hero-inner { grid-template-columns: 1fr; align-items: center; padding: 76px 20px 36px; gap: 20px; }
+      .tsm-chatgpt .hero-left { width: 100%; max-width: 100%; align-items: center; text-align: center; padding: 0; justify-self: center; }
+      .tsm-chatgpt .hero-right { width: 100%; max-width: 100%; padding: 0; justify-self: center; }
+      .tsm-chatgpt .hero-video { max-width: 100%; aspect-ratio: 1/1; }
+      .tsm-chatgpt h1 { font-size: clamp(26px, 9vw, 38px); line-height: 1.15; letter-spacing: -1px; white-space: normal; }
+      .tsm-chatgpt .hero-sub { font-size: 15px; line-height: 1.65; max-width: 100%; margin: 0 auto 20px; }
+      .tsm-chatgpt .hero-url-bar { width: 100%; }
+      .tsm-chatgpt .hero-aurora { display: none; }
+    }
+    @media (min-width: 1440px) {
+      .tsm-chatgpt #hero h1 { font-size: 2.625rem; max-width: 34ch; }
+    }
+
+    .tsm-chatgpt /* ── Everything TikTok platform cards: ONE PER LINE on tablet & mobile ── */
+    @media (max-width: 1024px) {
+      .pfs-section { padding: 48px 16px 56px !important; }
+      .pfs-inner { width: 100% !important; max-width: 100% !important; gap: 22px; }
+      .pfs-grid-outer { width: 100% !important; max-width: 100% !important; padding: 12px; border-radius: 19px; }
+      .pfs-blob { display: none !important; }
+
+      /* Force flex column — kills any grid column layout */
+      .pfs-grid,
+      .pfs-grid-3,
+      .pfs-grid-2,
+      .pfs-grid-ytl {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        width: 100% !important;
+      }
+      .pfs-grid-ytl .pfs-card:nth-child(-n+3),
+      .pfs-grid-ytl .pfs-card:nth-child(n+4) { grid-column: auto !important; width: 100% !important; }
+
+      /* Card: in-flow layout, full width, auto height */
+      .pfs-card {
+        display: block !important;
+        width: 100% !important;
+        height: auto !important; min-height: 0 !important;
+        border-radius: 16px;
+        background: radial-gradient(ellipse at 104% 100%, rgba(255,255,255,.09) 0%, rgba(255,255,255,.04) 50%, transparent 100%);
+      }
+      .pfs-card-bg { display: none !important; }
+      .pfs-card-title {
+        position: static !important;
+        text-align: center;
+        padding: 16px 16px 0;
+        font-size: 14.5px; font-weight: 700; color: #fff;
+      }
+      .pfs-card-img {
+        position: static !important;
+        display: block;
+        margin: 12px auto 0;
+        width: calc(100% - 24px) !important;
+        height: auto !important; aspect-ratio: 16/10;
+        border-radius: 12px; overflow: hidden;
+      }
+      .pfs-card.has-desc .pfs-card-img { bottom: auto !important; }
+      .pfs-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .pfs-card-desc {
+        position: static !important;
+        padding: 12px 16px 16px;
+        font-size: 13px; line-height: 1.5;
+        color: rgba(255,255,255,.75); text-align: center;
+      }
+
+      /* Heading + tabs */
+      .pfs-h2 { font-size: clamp(24px, 6vw, 30px) !important; line-height: 1.15 !important; }
+      .pfs-sub { font-size: 14px !important; line-height: 1.55 !important; max-width: 100%; }
+      .pfs-btn { min-height: 44px; padding: 0 22px; }
+
+      #platform-tabs {
+        padding: 24px 0 8px !important;
+        position: static !important;
+        display: block !important;
+        overflow: visible !important;
+      }
+      .plat-tab-list {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important; overflow-y: hidden !important;
+        width: 100% !important; max-width: 100% !important;
+        padding: 5px 16px !important;
+        gap: 4px !important;
+        margin: 0 !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        box-sizing: border-box;
+        justify-content: flex-start !important;
+      }
+      .plat-tab-list::-webkit-scrollbar { display: none; }
+      .plat-tab {
+        display: inline-flex !important;
+        flex-shrink: 0 !important; white-space: nowrap !important;
+        height: 44px !important; padding: 0 18px !important; gap: 8px !important;
+        font-size: 13.5px !important; font-weight: 600 !important;
+        visibility: visible !important; opacity: 1 !important;
+      }
+      .plat-tab-icon { width: 16px !important; height: 16px !important; opacity: 1 !important; }
+    }
+
+    .tsm-chatgpt /* ── Up and running in 2 minutes ── */
+    #up-running {
+      background: #0d0d0d; padding: 96px 24px;
+      display: flex; justify-content: center;
+    }
+    .tsm-chatgpt .ur-inner {
+      width: 100%; max-width: 1280px; margin: 0 auto;
+      display: flex; flex-direction: column; align-items: center; gap: 32px;
+    }
+    .tsm-chatgpt .ur-header { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; max-width: 730px; }
+    .tsm-chatgpt .ur-pill {
+      display: inline-flex; align-items: center; padding: 5px 14px; border-radius: 20px;
+      font-size: 12px; color: #fff;
+      background: linear-gradient(#0d0d0d,#0d0d0d) padding-box, linear-gradient(135deg,#00d9b4,rgba(255,255,255,.12)) border-box;
+      border: 0.5px solid transparent;
+    }
+    .tsm-chatgpt .ur-title {
+      font-size: clamp(28px, 4vw, 48px); font-weight: 800;
+      letter-spacing: -1.4px; line-height: 1.12; margin: 0; color: #fff; text-align: center;
+    }
+    .tsm-chatgpt .ur-sub {
+      font-size: clamp(14px, 1.3vw, 16px); color: rgba(255,255,255,.7); line-height: 1.65;
+      margin: 0; text-align: center;
+    }
+    .tsm-chatgpt .ur-video {
+      width: 100%; max-width: 1180px; aspect-ratio: 16/9;
+      background: #1a1a1a; border-radius: 20px; overflow: hidden;
+      position: relative; border: 1px solid rgba(255,255,255,.08);
+    }
+    .tsm-chatgpt .ur-video iframe {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      border: none; pointer-events: none;
+    }
+    .tsm-chatgpt .ur-cta {
+      display: inline-flex; align-items: center; justify-content: center;
+      height: 36px; padding: 0 22px; background: #fff; color: #06091a;
+      font-size: 14px; font-weight: 500; border: none; border-radius: 14px;
+      cursor: pointer; text-decoration: none; font-family: var(--font);
+      transition: opacity .2s; margin-top: 4px;
+    }
+    .tsm-chatgpt .ur-cta:hover { opacity: .86; }
+    @media (max-width: 768px) {
+      .tsm-chatgpt #up-running { padding: 64px 16px !important; }
+      .tsm-chatgpt .ur-inner { gap: 24px; }
+      .tsm-chatgpt .ur-title { font-size: clamp(24px, 6.5vw, 32px) !important; letter-spacing: -.8px; }
+      .tsm-chatgpt .ur-sub { font-size: 14px !important; }
+      .tsm-chatgpt .ur-video { border-radius: 14px; }
+      .tsm-chatgpt .ur-cta { height: 36px; padding: 0 20px; font-size: 14px; }
+    }
+
+    .tsm-chatgpt /* ── Pass 1: remove decorative backgrounds behind section headers ── */
+    .tools-header-bg, .tsm-chatgpt .ba-header-bg, .tsm-chatgpt .ba-header-bg-l1, .tsm-chatgpt .ba-header-bg-l2, .tsm-chatgpt .fs-header-bg, .tsm-chatgpt .hiw-header-bg, .tsm-chatgpt .pfs-blob, .tsm-chatgpt .pfs-blob-tiktok, .tsm-chatgpt .pfs-blob-instagram, .tsm-chatgpt .pfs-blob-youtube, .tsm-chatgpt .who-card-grid-bg, .tsm-chatgpt .tiktok-logo-bg {
+      display: none !important;
+    }
+
+
+    .tsm-chatgpt /* ── Pass 2: alternating section backgrounds for clear visual separation ── */
+    body { background: #000; }
+    .tsm-chatgpt #hero, .tsm-chatgpt #hero-bottom { background: #000 !important; }
+    .tsm-chatgpt #say-it { background: #0a0a0a !important; }
+    .tsm-chatgpt #in-action { background: #000 !important; }
+    .tsm-chatgpt #tools { background: #0d0d0d !important; }
+    .tsm-chatgpt #setup { background: #000 !important; }
+    .tsm-chatgpt #up-running { background: #000 !important; }
+    .tsm-chatgpt #who { background: #0d0d0d !important; }
+    .tsm-chatgpt #use-cases { background: #0d0d0d !important; }
+    .tsm-chatgpt #platform-tabs { background: #0a0a0a !important; }
+    .tsm-chatgpt .pfs-section { background: #0a0a0a !important; }
+    .tsm-chatgpt #beforeafter { background: #0d0d0d !important; }
+    .tsm-chatgpt #workflows { background: #000 !important; }
+    .tsm-chatgpt #faq { background: #0d0d0d !important; }
+    .tsm-chatgpt #freeskills { background: #000 !important; }
+    .tsm-chatgpt #problem-what-changes { background: #0d0d0d !important; }
+    .tsm-chatgpt #cta-oneplan { background: #000 !important; }
+    .tsm-chatgpt .ft-root, .tsm-chatgpt footer.ft-root { background: #0a0a0a !important; }
+
+
+    .tsm-chatgpt /* ── Mobile/tablet audit follow-up: ensure recent updates are responsive ── */
+    @media (max-width: 1024px) {
+      /* Section horizontal padding consistency */
+      #hero, #say-it, #in-action, #tools, #up-running, #use-cases,
+      #faq, #problem-what-changes, #cta-oneplan {
+        padding-left: 24px !important; padding-right: 24px !important;
+      }
+      /* Up & running */
+      #up-running { padding-top: 80px !important; padding-bottom: 80px !important; }
+      .ur-inner { gap: 28px !important; }
+      .ur-video { max-width: 100% !important; }
+    }
+
+    @media (max-width: 768px) {
+      .tsm-chatgpt /* Section horizontal padding tighten */
+      #hero, .tsm-chatgpt #say-it, .tsm-chatgpt #in-action, .tsm-chatgpt #tools, .tsm-chatgpt #up-running, .tsm-chatgpt #use-cases, .tsm-chatgpt #faq, .tsm-chatgpt #problem-what-changes, .tsm-chatgpt #cta-oneplan {
+        padding-left: 16px !important; padding-right: 16px !important;
+      }
+      .tsm-chatgpt #say-it, .tsm-chatgpt #in-action, .tsm-chatgpt #tools, .tsm-chatgpt #up-running, .tsm-chatgpt #use-cases, .tsm-chatgpt #faq, .tsm-chatgpt #problem-what-changes, .tsm-chatgpt #cta-oneplan {
+        padding-top: 56px !important; padding-bottom: 56px !important;
+      }
+      .tsm-chatgpt /* Heading scale-down */
+      .tools-h2, .tsm-chatgpt .ur-title, .tsm-chatgpt .pwc-h2, .tsm-chatgpt .ctap-title, .tsm-chatgpt .pfs-h2, .tsm-chatgpt .say-it-heading, .tsm-chatgpt .in-action-heading {
+        font-size: clamp(24px, 6vw, 32px) !important; line-height: 1.15 !important; letter-spacing: -.8px !important;
+      }
+      .tsm-chatgpt .tools-sub, .tsm-chatgpt .ur-sub, .tsm-chatgpt .pwc-desc, .tsm-chatgpt .ctap-desc, .tsm-chatgpt .pfs-sub { font-size: 14px !important; line-height: 1.55 !important; }
+
+      .tsm-chatgpt /* Tools / Use-cases table -> card stack on mobile */
+      .tools-table thead { display: none; }
+      .tsm-chatgpt .tools-table, .tsm-chatgpt .tools-table tbody, .tsm-chatgpt .tools-table tr, .tsm-chatgpt .tools-table td { display: block !important; width: 100% !important; box-sizing: border-box; }
+      .tsm-chatgpt .tools-table tbody tr {
+        display: grid !important; grid-template-columns: 40px 1fr 28px;
+        column-gap: 12px; row-gap: 4px;
+        padding: 14px 10px !important; border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+        align-items: center;
+      }
+      .tsm-chatgpt .tools-table .t-icon { padding: 0 !important; width: 40px !important; }
+      .tsm-chatgpt .tools-table .t-icon svg { width: 32px !important; height: 32px !important; }
+      .tsm-chatgpt .tools-table .t-name { padding: 0 !important; grid-column: 2; font-size: 13px !important; white-space: normal !important; word-break: normal !important; }
+      .tsm-chatgpt .tools-table .t-desc { padding: 0 !important; grid-column: 2 / 4; font-size: 12.5px !important; line-height: 1.5 !important; color: rgba(255,255,255,0.6) !important; }
+      .tsm-chatgpt .tools-table .t-check { padding: 0 !important; grid-column: 3; grid-row: 1; width: 28px !important; }
+
+      .tsm-chatgpt /* Up & running */
+      #up-running { padding-top: 56px !important; padding-bottom: 56px !important; }
+      .tsm-chatgpt .ur-inner { gap: 22px !important; }
+      .tsm-chatgpt .ur-title { font-size: clamp(24px, 6.5vw, 32px) !important; letter-spacing: -.8px !important; }
+      .tsm-chatgpt .ur-sub { font-size: 14px !important; }
+      .tsm-chatgpt .ur-video { border-radius: 14px !important; }
+      .tsm-chatgpt .ur-cta { height: 36px !important; padding: 0 20px !important; font-size: 14px !important; }
+
+      .tsm-chatgpt /* Problem + What Changes — stack rows */
+      .pwc-row { flex-direction: column !important; gap: 24px !important; }
+      .tsm-chatgpt .pwc-card-wrap, .tsm-chatgpt .pwc-content { width: 100% !important; }
+      .tsm-chatgpt .pwc-card-img { max-width: 100% !important; height: auto !important; }
+      .tsm-chatgpt .pwc-cta-btn { min-height: 44px; padding: 0 20px; }
+
+      .tsm-chatgpt /* CTA One Plan */
+      #cta-oneplan { padding: 48px 16px !important; }
+      .tsm-chatgpt .ctap-content { padding: 48px 20px !important; gap: 14px !important; }
+      .tsm-chatgpt .ctap-title { font-size: clamp(28px, 9vw, 44px) !important; line-height: 1.05 !important; }
+      .tsm-chatgpt .ctap-desc { font-size: 13.5px !important; }
+      .tsm-chatgpt .ctap-checks { gap: 8px; font-size: 11.5px !important; }
+      .tsm-chatgpt .ctap-deco-left, .tsm-chatgpt .ctap-deco-right, .tsm-chatgpt .ctap-bg { display: none !important; }
+
+      .tsm-chatgpt /* FAQ */
+      .faq-q { padding: 16px 18px !important; font-size: .9rem !important; }
+      .tsm-chatgpt .faq-a { padding: 0 18px 16px !important; font-size: .85rem !important; }
+
+      .tsm-chatgpt /* Touch targets */
+      button, .tsm-chatgpt .pfs-btn, .tsm-chatgpt .ur-cta, .tsm-chatgpt .ctap-url-btn, .tsm-chatgpt .url-bar-copy { min-height: 36px; }
+    }
+
+    @media (max-width: 480px) {
+      .tsm-chatgpt #hero, .tsm-chatgpt #say-it, .tsm-chatgpt #in-action, .tsm-chatgpt #tools, .tsm-chatgpt #up-running, .tsm-chatgpt #use-cases, .tsm-chatgpt #faq, .tsm-chatgpt #problem-what-changes, .tsm-chatgpt #cta-oneplan {
+        padding-left: 14px !important; padding-right: 14px !important;
+      }
+      .tsm-chatgpt #say-it, .tsm-chatgpt #in-action, .tsm-chatgpt #tools, .tsm-chatgpt #up-running, .tsm-chatgpt #use-cases, .tsm-chatgpt #faq, .tsm-chatgpt #problem-what-changes, .tsm-chatgpt #cta-oneplan {
+        padding-top: 48px !important; padding-bottom: 48px !important;
+      }
+      .tsm-chatgpt .tools-h2, .tsm-chatgpt .ur-title, .tsm-chatgpt .pwc-h2, .tsm-chatgpt .pfs-h2, .tsm-chatgpt .say-it-heading, .tsm-chatgpt .in-action-heading {
+        font-size: clamp(22px, 7.5vw, 28px) !important; letter-spacing: -.6px !important;
+      }
+      .tsm-chatgpt .tools-sub, .tsm-chatgpt .ur-sub, .tsm-chatgpt .pwc-desc, .tsm-chatgpt .pfs-sub { font-size: 13.5px !important; }
+
+      .tsm-chatgpt .tools-table tbody tr { grid-template-columns: 32px 1fr 24px !important; padding: 12px 6px !important; }
+      .tsm-chatgpt .tools-table .t-icon { width: 32px !important; }
+      .tsm-chatgpt .tools-table .t-icon svg { width: 26px !important; height: 26px !important; }
+      .tsm-chatgpt .tools-table .t-name { font-size: 12.5px !important; }
+      .tsm-chatgpt .tools-table .t-desc { font-size: 12px !important; }
+
+      .tsm-chatgpt .ctap-content { padding: 40px 14px !important; }
+      .tsm-chatgpt .ctap-title { font-size: clamp(26px, 11vw, 36px) !important; }
+      .tsm-chatgpt .url-bar { width: 100% !important; }
+    }
+
+  `;
+
+const STATIC_BODY = `<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="http://localhost:3000/">Home</a>
+  <a href="#">Features</a>
+  <a href="pricing.html">Pricing</a>
+  <a href="mcp.html" class="active">MCP</a>
+  <a href="claude.html" style="padding-left:20px;font-size:13px;opacity:.75;">↳ Claude</a>
+  <a href="chatgpt.html" style="padding-left:20px;font-size:13px;opacity:.75;">↳ ChatGPT</a>
+  <a href="#">FAQs</a>
+  <a href="#">Affiliates</a>
+  <div class="mobile-nav-actions">
+    <button class="btn-ghost">Log in</button>
+    <button class="btn-solid">Get Started</button>
+  </div>
+</div>
+
+<!-- ① HERO -->
+<section id="hero">
+  <div class="hero-aurora"><img src="/tokscriptmcp/chatgpt-hero-flare.png" alt="" /></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge">
+        <img src="/tokscriptmcp/chatgpt-logo.png" alt="" style="filter:invert(1);" />
+        ChatGPT MCP Connector
+      </div>
+      <h1>Add <span class="platform-switch" id="platformSwitch">TikTok</span> to Your ChatGPT.<br>Any questions, just ask.</h1>
+      <p class="hero-sub">Ask anything about any creator or video. Get real insights. Ask, Plan, and Create directly in ChatGPT.</p>
+      <div class="hero-url-bar">
+        <span class="hero-url-text">https://api.tokscript.com/mcp</span>
+        <button onclick="copyHeroUrl(this)" class="hero-url-btn">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Copy
+        </button>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-video">
+        <iframe
+          src="https://www.youtube.com/embed/5m37dBH-G_g?autoplay=1&mute=1&loop=1&playlist=5m37dBH-G_g&controls=0&rel=0&modestbranding=1&playsinline=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0"
+          style="position:absolute;top:-60px;left:-38.9%;width:177.8%;height:calc(100% + 120px);border:none;pointer-events:none;"
+          allow="autoplay; encrypted-media"
+        ></iframe>
+        <div style="position:absolute;inset:0;z-index:2;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ② SAY IT. CLAUDE DOES IT. -->
+<section id="say-it">
+  <div class="say-it-inner">
+    <h2 class="say-it-heading">Say it. <span>ChatGPT does it.</span></h2>
+    <div class="say-it-grid">
+
+      <div class="say-it-card">
+        <div class="say-it-num">01</div>
+        <div class="say-it-body">
+          <p class="say-it-title">Transcribe any video instantly</p>
+          <ul class="say-it-bullets">
+            <li>"Get me the transcript for this TikTok" — just paste the link and ask</li>
+            <li>Full transcripts with timestamps, across TikTok, Instagram, YouTube &amp; Shorts</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="say-it-card">
+        <div class="say-it-num">02</div>
+        <div class="say-it-body">
+          <p class="say-it-title">Analyze creator performance</p>
+          <ul class="say-it-bullets">
+            <li>"How is this creator performing?" — views, likes, engagement, all in one response</li>
+            <li>Trend analysis across an entire catalog, not just one video</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="say-it-card">
+        <div class="say-it-num">03</div>
+        <div class="say-it-body">
+          <p class="say-it-title">Download without watermarks</p>
+          <ul class="say-it-bullets">
+            <li>"Download this in HD" — one command, no third-party tools needed</li>
+            <li>Direct HD downloads straight from your ChatGPT conversation</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="say-it-card">
+        <div class="say-it-num">04</div>
+        <div class="say-it-body">
+          <p class="say-it-title">Research creators at scale</p>
+          <ul class="say-it-bullets">
+            <li>"Find top creators in the fitness niche" — instant results, no tab switching</li>
+            <li>Bulk import up to 3,000 videos and analyze for patterns and trends</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SEE IT IN ACTION -->
+<section id="in-action">
+  <div class="in-action-inner">
+    <h2 class="in-action-heading">See it in action.</h2>
+    <div class="in-action-grid">
+
+      <div class="in-action-item">
+        <p class="in-action-label">Insights you could never get before</p>
+        <p class="in-action-desc">Ask which industry, niche, or creator type gets the highest engagement.</p>
+        <div class="in-action-img">
+          <img src="https://placehold.co/640x420/111111/333333?text=Creator+insights" alt="Creator insights" />
+        </div>
+      </div>
+
+      <div class="in-action-item">
+        <p class="in-action-label">Weekly reports of your saved content</p>
+        <p class="in-action-desc">Ask for a performance summary of any creator or playlist and get a structured report.</p>
+        <div class="in-action-img">
+          <img src="https://placehold.co/640x420/111111/333333?text=Weekly+reports" alt="Weekly reports" />
+        </div>
+      </div>
+
+      <div class="in-action-item">
+        <p class="in-action-label">Deep dive into any creator's catalog</p>
+        <p class="in-action-desc">Pull every video, hook, and trend from a creator's full history in seconds.</p>
+        <div class="in-action-img">
+          <img src="https://placehold.co/640x420/111111/333333?text=Creator+deep+dive" alt="Creator deep dive" />
+        </div>
+      </div>
+
+      <div class="in-action-item">
+        <p class="in-action-label">Spot trends before they peak</p>
+        <p class="in-action-desc">Spot trends in your library before they go viral.</p>
+        <div class="in-action-img">
+          <img src="https://placehold.co/640x420/111111/333333?text=Trend+detection" alt="Trend detection" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ⑧ TOOLS -->
+<section id="tools">
+  <div class="tools-inner">
+    <div class="tools-header-block">
+      <img class="tools-header-bg" src="/tokscriptmcp/4b4a8b9d-2113-4a2a-aaf8-f45a920bf6cf.png" alt="" />
+      <div class="tools-header-content">
+        <div class="tools-pill">Tools</div>
+        <h2 class="tools-h2">21 Tools Available</h2>
+        <p class="tools-sub">Every tool your ChatGPT agent needs to transcribe content, download videos, and analyze creator libraries — all 21 work natively over MCP.</p>
+      </div>
+    </div>
+    <table class="tools-table reveal">
+      <thead>
+        <tr>
+          <th style="width:44px;"></th>
+          <th>Tools</th>
+          <th>Description</th>
+          <th class="t-check">Included</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><svg x="7" y="7" width="14" height="14" viewBox="0 0 24 24"><path fill="#34d399" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></svg></td>
+          <td class="t-name">get_tiktok_transcript</td>
+          <td class="t-desc">Extract transcript and captions from a single TikTok video URL</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><rect x="7.5" y="7.5" width="13" height="13" rx="3.5" stroke="#34d399" stroke-width="1.5"/><circle cx="14" cy="14" r="3" stroke="#34d399" stroke-width="1.5"/><circle cx="17.8" cy="10.2" r=".8" fill="#34d399"/></svg></td>
+          <td class="t-name">get_instagram_transcript</td>
+          <td class="t-desc">Extract transcript and captions from a single Instagram video or Reel URL</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><rect x="7" y="9" width="14" height="10" rx="2.5" stroke="#34d399" stroke-width="1.5"/><path d="M12 11.8l4.5 2.2-4.5 2.2v-4.4z" fill="#34d399"/></svg></td>
+          <td class="t-name">get_youtube_transcript</td>
+          <td class="t-desc">Extract transcript and captions from a single YouTube video URL</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><path d="M8 10h12M8 14h10M8 18h7" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/></svg></td>
+          <td class="t-name">get_bulk_transcripts</td>
+          <td class="t-desc">Extract transcripts from multiple individual video URLs in a single call</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><svg x="7" y="7" width="14" height="14" viewBox="0 0 24 24"><path fill="#34d399" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></svg></td>
+          <td class="t-name">get_tiktok_collection</td>
+          <td class="t-desc">Process all videos from a TikTok collection or playlist URL</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><path d="M14 8v9M10.5 14l3.5 3.5 3.5-3.5M8 20h12" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-name">download_video</td>
+          <td class="t-desc">Download a single TikTok or Instagram video</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><path d="M14 8v9M10.5 14l3.5 3.5 3.5-3.5M8 20h12" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-name">download_videos_bulk</td>
+          <td class="t-desc">Download multiple TikTok or Instagram videos in one call</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><rect x="7" y="9" width="14" height="10" rx="2" stroke="#fb923c" stroke-width="1.5"/><circle cx="11" cy="13" r="1.5" stroke="#fb923c" stroke-width="1.2"/><path d="M7.5 17l3.5-3 3 2.5 2-2 3.5 3" stroke="#fb923c" stroke-width="1.2" stroke-linejoin="round"/></svg></td>
+          <td class="t-name">download_cover_image</td>
+          <td class="t-desc">Download the cover or thumbnail image for a single video</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><rect x="7" y="9" width="14" height="10" rx="2" stroke="#fb923c" stroke-width="1.5"/><circle cx="11" cy="13" r="1.5" stroke="#fb923c" stroke-width="1.2"/><path d="M7.5 17l3.5-3 3 2.5 2-2 3.5 3" stroke="#fb923c" stroke-width="1.2" stroke-linejoin="round"/></svg></td>
+          <td class="t-name">download_cover_images_bulk</td>
+          <td class="t-desc">Download cover or thumbnail images for multiple videos at once</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#2a1040"/><svg x="7" y="7" width="14" height="14" viewBox="0 0 24 24"><path fill="#a78bfa" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></svg></td>
+          <td class="t-name">get_tiktok_user</td>
+          <td class="t-desc">Get TikTok user profile info including followers, following, and likes</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#2a1040"/><svg x="7" y="7" width="14" height="14" viewBox="0 0 24 24"><path fill="#a78bfa" d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></svg></td>
+          <td class="t-name">get_tiktok_user_videos</td>
+          <td class="t-desc">Retrieve all videos from a TikTok user's public profile</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><path d="M8 19v-4M12 19V11M16 19v-6M20 19V8" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/></svg></td>
+          <td class="t-name">get_library_stats</td>
+          <td class="t-desc">Get an overview of your TokScript library: total videos and breakdown by platform</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><rect x="8.5" y="8" width="2.5" height="12" rx="1" stroke="#60a5fa" stroke-width="1.2"/><rect x="12.75" y="8" width="2.5" height="12" rx="1" stroke="#60a5fa" stroke-width="1.2"/><rect x="17" y="8" width="2.5" height="12" rx="1" stroke="#60a5fa" stroke-width="1.2"/></svg></td>
+          <td class="t-name">get_user_library</td>
+          <td class="t-desc">List videos and transcripts stored in your TokScript library</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><rect x="7" y="8" width="14" height="11" rx="2" stroke="#60a5fa" stroke-width="1.5"/><path d="M12 11.8l4 2.2-4 2.2v-4.4z" fill="#60a5fa"/><path d="M10 21h8" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/></svg></td>
+          <td class="t-name">get_stored_video</td>
+          <td class="t-desc">Get full stored data for a specific video from your TokScript library, including transcript</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- UP AND RUNNING IN 2 MINUTES -->
+<section id="up-running">
+  <div class="ur-inner">
+    <div class="ur-header">
+      <div class="ur-pill">Quick setup</div>
+      <h2 class="ur-title">Up and running in 2 minutes.</h2>
+      <p class="ur-sub">Watch how to connect ChatGPT to your favourite tools — one link, one setting, done.</p>
+    </div>
+    <div class="ur-video">
+      <iframe
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ&controls=0&rel=0&modestbranding=1&playsinline=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0"
+        allow="autoplay; encrypted-media"
+        title="Up and running with ChatGPT in 2 minutes"
+      ></iframe>
+    </div>
+    <a href="https://tokscript.com/signup" class="ur-cta">Start Free Today</a>
+  </div>
+</section>
+
+<!-- ⑨ USE CASES -->
+<section id="use-cases">
+  <div class="tools-inner">
+    <div class="tools-header-block">
+      <img class="tools-header-bg" src="/tokscriptmcp/4b4a8b9d-2113-4a2a-aaf8-f45a920bf6cf.png" alt="" />
+      <div class="tools-header-content">
+        <div class="tools-pill">Use Cases</div>
+        <h2 class="tools-h2">What You Can Build With It</h2>
+        <p class="tools-sub">Real workflows ChatGPT handles the moment TokScript is connected — from research to repurposing to competitive analysis.</p>
+      </div>
+    </div>
+    <table class="tools-table reveal">
+      <thead>
+        <tr>
+          <th style="width:44px;"></th>
+          <th>Use Case</th>
+          <th>What ChatGPT Does</th>
+          <th class="t-check">Supported</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><path d="M9 14l2.5 2.5L19 10" stroke="#34d399" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-name">Competitor Research</td>
+          <td class="t-desc">Drop links from rival creators. ChatGPT pulls transcripts, engagement stats, and surfaces what's working in their content.</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><path d="M8 10h12M8 14h10M8 18h7" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/></svg></td>
+          <td class="t-name">Content Repurposing</td>
+          <td class="t-desc">Paste a video URL, ask ChatGPT to turn the transcript into a tweet thread, newsletter, or LinkedIn post. Done in one message.</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><rect x="7" y="9" width="14" height="10" rx="2.5" stroke="#34d399" stroke-width="1.5"/><path d="M12 11.8l4.5 2.2-4.5 2.2v-4.4z" fill="#34d399"/></svg></td>
+          <td class="t-name">Viral Hook Analysis</td>
+          <td class="t-desc">Feed ChatGPT 20 top-performing videos. It reads every hook and tells you exactly what pattern is driving views in your niche.</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a3d2a"/><path d="M9 8h10M9 12h7M9 16h9" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="8" r="1" fill="#34d399"/><circle cx="7" cy="12" r="1" fill="#34d399"/><circle cx="7" cy="16" r="1" fill="#34d399"/></svg></td>
+          <td class="t-name">Script Writing</td>
+          <td class="t-desc">Give ChatGPT a transcript from a video that performed well. It reverse-engineers the structure and writes you a new script in the same style.</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#2a1040"/><circle cx="14" cy="12" r="4" stroke="#a78bfa" stroke-width="1.5"/><path d="M8 20c0-2.21 2.69-4 6-4s6 1.79 6 4" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round"/></svg></td>
+          <td class="t-name">Creator Profiling</td>
+          <td class="t-desc">Pull a creator's full video library and stats. ChatGPT builds a detailed profile — posting cadence, top topics, engagement benchmarks.</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#2a1040"/><path d="M8 19v-4M12 19V11M16 19v-6M20 19V8" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round"/></svg></td>
+          <td class="t-name">Trend Reporting</td>
+          <td class="t-desc">Ask ChatGPT to scan a batch of recent videos across accounts and summarize what topics, formats, and styles are gaining traction right now.</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><path d="M9 10l5 4-5 4V10z" fill="#60a5fa"/><rect x="8" y="8" width="12" height="12" rx="2.5" stroke="#60a5fa" stroke-width="1.5"/></svg></td>
+          <td class="t-name">Podcast Summarisation</td>
+          <td class="t-desc">Paste a long-form YouTube podcast link. ChatGPT returns a structured summary — key takeaways, timestamps, and the best quotes to share.</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><path d="M10 8h8M10 12h6M10 16h7" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/><path d="M8 8v10" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/></svg></td>
+          <td class="t-name">Bulk Transcript Archive</td>
+          <td class="t-desc">Drop 50 URLs at once. TokScript fetches every transcript; ChatGPT organises them into a searchable knowledge base inside the conversation.</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><path d="M8 14h12M14 9l5 5-5 5" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-name">Video Download & Storage</td>
+          <td class="t-desc">Ask ChatGPT to download a batch of videos with cover images in one go. Everything is saved and ready to use without leaving the conversation.</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+        <tr>
+          <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#3d1f08"/><path d="M10 9l4 5-4 5M14 9l4 5-4 5" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+          <td class="t-name">Engagement Benchmarking</td>
+          <td class="t-desc">Pull stats across a creator's last 30 videos. ChatGPT calculates average engagement, spots outliers, and tells you which content format wins.</td>
+          <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0,217,180,0.12)" stroke="rgba(0,217,180,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00D9B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PLATFORM TAB BAR -->
+<div id="platform-tabs">
+  <div class="plat-tab-list">
+    <button class="plat-tab active" data-tab="tiktok">
+      <svg class="plat-tab-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.98a8.18 8.18 0 0 0 4.79 1.54V7.07a4.85 4.85 0 0 1-1.02-.38z"/></svg>
+      <span class="plat-tab-label">TikTok</span>
+    </button>
+    <button class="plat-tab" data-tab="instagram">
+      <svg class="plat-tab-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="ig-grad" cx="30%" cy="107%" r="150%"><stop offset="0%" stop-color="#fdf497"/><stop offset="45%" stop-color="#fd5949"/><stop offset="60%" stop-color="#d6249f"/><stop offset="90%" stop-color="#285AEB"/></radialGradient></defs><path fill="url(#ig-grad)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+      <span class="plat-tab-label">Instagram Reels</span>
+    </button>
+    <button class="plat-tab" data-tab="youtube-shorts">
+      <svg class="plat-tab-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#FF0000" d="m18.931 9.99-1.441-.601 1.717-.913a4.48 4.48 0 0 0 1.874-6.078 4.506 4.506 0 0 0-6.09-1.874L4.792 5.929a4.504 4.504 0 0 0-2.402 4.193 4.521 4.521 0 0 0 2.666 3.904c.036.012 1.442.6 1.442.6l-1.706.901a4.51 4.51 0 0 0-2.369 3.967A4.528 4.528 0 0 0 6.93 24c.725 0 1.437-.174 2.08-.508l10.21-5.406a4.494 4.494 0 0 0 2.39-4.192 4.525 4.525 0 0 0-2.678-3.904ZM9.597 15.19V8.824l6.007 3.184z"/></svg>
+      <span class="plat-tab-label">YouTube Shorts</span>
+    </button>
+    <button class="plat-tab" data-tab="youtube">
+      <svg class="plat-tab-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#FF0000" d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+      <span class="plat-tab-label">YouTube</span>
+    </button>
+  </div>
+</div>
+
+<!-- PLATFORM PANELS -->
+<div class="plat-panel active" data-panel="tiktok">
+<div class="pfs-section">
+  <div class="pfs-blob pfs-blob-tiktok"><img src="/tokscriptmcp/tt-blob.png" alt=""></div>
+  <div class="pfs-inner">
+    <div class="pfs-header">
+      <div class="pfs-pill tiktok">
+        <img src="/tokscriptmcp/tt-badge-icon.svg" alt="TikTok" style="height:12px;width:12px;">
+        TikTok
+      </div>
+      <h2 class="pfs-h2">Everything TikTok, inside ChatGPT</h2>
+      <p class="pfs-sub">Transcribe, analyze, and download TikTok content — without leaving your ChatGPT conversation.</p>
+    </div>
+
+  <!-- 3×2 card mosaic -->
+    <div class="pfs-grid-outer">
+      <div class="pfs-grid pfs-grid-3">
+        <div class="pfs-card has-desc">
+          <img class="pfs-card-bg" src="/tokscriptmcp/tt-card-bg2.png" alt="">
+          <p class="pfs-card-title">Transcripts</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/tt-card-transcripts2.png" alt="Transcripts"></div>
+          <p class="pfs-card-desc">Full transcripts in seconds, voiceovers, on-screen text, every word.</p>
+        </div>
+        <div class="pfs-card has-desc">
+          <img class="pfs-card-bg" src="/tokscriptmcp/tt-card-bg2.png" alt="">
+          <p class="pfs-card-title">Engagement Stats</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/tt-card-engagement2.png" alt="Engagement Stats"></div>
+          <p class="pfs-card-desc">Views, likes, shares, comments, hashtags, one video or an entire catalog.</p>
+        </div>
+        <div class="pfs-card has-desc">
+          <img class="pfs-card-bg" src="/tokscriptmcp/tt-card-bg2.png" alt="">
+          <p class="pfs-card-title">Video Downloads</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/tt-card-downloads2.png" alt="Video Downloads"></div>
+          <p class="pfs-card-desc">HD downloads with no watermark—straight from your conversation, no third-party tools.</p>
+        </div>
+        <div class="pfs-card has-desc">
+          <img class="pfs-card-bg" src="/tokscriptmcp/tt-card-bg2.png" alt="">
+          <p class="pfs-card-title">Creator Profiles</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/tt-card-creators2.png" alt="Creator Profiles"></div>
+          <p class="pfs-card-desc">Followers, bio, verified status, recent videos—any creator, instant lookup.</p>
+        </div>
+        <div class="pfs-card has-desc">
+          <img class="pfs-card-bg" src="/tokscriptmcp/tt-card-bg2.png" alt="">
+          <p class="pfs-card-title">Collection Imports</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/tt-card-imports2.png" alt="Collection Imports"></div>
+          <p class="pfs-card-desc">Import up to 3,000 videos at once. Analyze for patterns and trends.</p>
+        </div>
+        <div class="pfs-card has-desc">
+          <img class="pfs-card-bg" src="/tokscriptmcp/tt-card-bg2.png" alt="">
+          <p class="pfs-card-title">Bulk Processing</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/tt-card-bulk2.png" alt="Bulk Processing"></div>
+          <p class="pfs-card-desc">Drop 50 links. Get everything back in one response.</p>
+        </div>
+      </div>
+    </div>
+    <div class="pfs-cta">
+      <a href="#" class="pfs-btn">Start Extracting TikTok Data</a>
+    </div>
+  </div>
+</div>
+
+</div><!-- /plat-panel tiktok -->
+
+<div class="plat-panel" data-panel="instagram">
+<div class="pfs-section">
+  <div class="pfs-blob pfs-blob-instagram"><img src="/tokscriptmcp/ig-blob3.png" alt=""></div>
+  <div class="pfs-inner">
+    <div class="pfs-header">
+      <div class="pfs-pill instagram">
+        <img src="/tokscriptmcp/ig-badge-icon.png" alt="Instagram Reels" style="height:12px;width:12px;object-fit:contain;">
+        Instagram Reels
+      </div>
+      <h2 class="pfs-h2">Instagram Reels transcripts, stats, and downloads inside ChatGPT</h2>
+      <p class="pfs-sub">TikTok is where trends start, and now you can research all of it without ever leaving ChatGPT.</p>
+    </div>
+    <div class="pfs-grid-outer">
+      <div class="pfs-grid pfs-grid-ytl">
+        <div class="pfs-card has-desc">
+          <img class="pfs-card-bg" src="/tokscriptmcp/ig-card-bg2.png" alt="">
+          <p class="pfs-card-title">Transcripts</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/ig-card-transcripts2.png" alt="Transcripts"></div>
+          <p class="pfs-card-desc">Full transcript in seconds—spoken content and metadata included.</p>
+        </div>
+        <div class="pfs-card has-desc">
+          <img class="pfs-card-bg" src="/tokscriptmcp/ig-card-bg2.png" alt="">
+          <p class="pfs-card-title">Engagement Stats</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/ig-card-engagement2.png" alt="Engagement Stats"></div>
+          <p class="pfs-card-desc">Views, likes, comments, shares, saves. One Reel or compare across creators.</p>
+        </div>
+        <div class="pfs-card has-desc">
+          <img class="pfs-card-bg" src="/tokscriptmcp/ig-card-bg2.png" alt="">
+          <p class="pfs-card-title">Video Downloads</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/ig-card-downloads2.png" alt="Video Downloads"></div>
+          <p class="pfs-card-desc">HD quality, no watermark, cover images included—straight from your conversation.</p>
+        </div>
+        <div class="pfs-card has-desc">
+          <img class="pfs-card-bg" src="/tokscriptmcp/ig-card-bg2.png" alt="">
+          <p class="pfs-card-title">Bulk Processing</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/ig-card-bulk2.png" alt="Bulk Processing"></div>
+          <p class="pfs-card-desc">Drop a batch of links. Every transcript, every stat, returned together.</p>
+        </div>
+        <div class="pfs-card has-desc">
+          <img class="pfs-card-bg" src="/tokscriptmcp/ig-card-bg2.png" alt="">
+          <p class="pfs-card-title">Cross-Platform Analysis</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/ig-card-crossplatform2.png" alt="Cross-Platform Analysis"></div>
+          <p class="pfs-card-desc">Compare a Reel to a TikTok from the same creator. See what's adapting and what's working.</p>
+        </div>
+      </div>
+    </div>
+    <div class="pfs-cta">
+      <p class="pfs-cta-label">Ready to research Reels without leaving ChatGPT</p>
+      <a href="#" class="pfs-btn">Start Extracting Instagram Reels Data</a>
+    </div>
+  </div>
+</div>
+
+</div><!-- /plat-panel instagram -->
+
+<div class="plat-panel" data-panel="youtube-shorts">
+<div class="pfs-section">
+  <div class="pfs-blob pfs-blob-youtube"><img src="/tokscriptmcp/ig-blob.png" alt=""></div>
+  <div class="pfs-inner">
+    <div class="pfs-header">
+      <div class="pfs-pill youtube">
+        <img src="/tokscriptmcp/yts-badge-icon.png" alt="YouTube Shorts" style="height:14px;width:11px;object-fit:contain;">
+        YouTube Shorts
+      </div>
+      <h2 class="pfs-h2">YouTube Shorts, fully extracted</h2>
+      <p class="pfs-sub">Extract full transcripts, timestamps, and insights from any YouTube Shorts video — instantly.</p>
+    </div>
+    <div class="pfs-grid-outer">
+      <div class="pfs-grid pfs-grid-2">
+        <div class="pfs-card">
+          <img class="pfs-card-bg" src="/tokscriptmcp/yt-card-bg.png" alt="">
+          <p class="pfs-card-title">Full Transcripts</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/yt-card-transcripts.png" alt="Full Transcripts"></div>
+        </div>
+        <div class="pfs-card">
+          <img class="pfs-card-bg" src="/tokscriptmcp/yt-card-bg.png" alt="">
+          <p class="pfs-card-title">Timestamps</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/yt-card-timestamp.png" alt="Timestamps"></div>
+        </div>
+        <div class="pfs-card">
+          <img class="pfs-card-bg" src="/tokscriptmcp/yt-card-bg.png" alt="">
+          <p class="pfs-card-title">Content Repurpose</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/yt-card-repurpose.png" alt="Content Repurpose"></div>
+        </div>
+        <div class="pfs-card">
+          <img class="pfs-card-bg" src="/tokscriptmcp/yt-card-bg.png" alt="">
+          <p class="pfs-card-title">Research at Scale</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/yt-card-research.png" alt="Research at Scale"></div>
+        </div>
+      </div>
+    </div>
+    <div class="pfs-cta">
+      <a href="#" class="pfs-btn">Start Extracting YouTube Shorts Data</a>
+    </div>
+  </div>
+</div>
+
+</div><!-- /plat-panel youtube-shorts -->
+
+<div class="plat-panel" data-panel="youtube">
+<div class="pfs-section">
+  <div class="pfs-blob pfs-blob-youtube"><img src="/tokscriptmcp/ytl-blob.png" alt=""></div>
+  <div class="pfs-inner">
+    <div class="pfs-header">
+      <div class="pfs-pill youtube">
+        <img src="/tokscriptmcp/ytl-badge-icon2.svg" alt="YouTube" style="width:14.6px;height:10.2px;">
+        YouTube Longs
+      </div>
+      <h2 class="pfs-h2">Full-length YouTube video transcripts and analysis inside ChatGPT</h2>
+      <p class="pfs-sub">Long-form is where the depth lives. Tutorials, podcasts, interviews—now fully searchable.</p>
+    </div>
+    <div class="pfs-grid-outer">
+      <div class="pfs-grid pfs-grid-ytl">
+        <div class="pfs-card has-desc">
+          <img class="pfs-card-bg" src="/tokscriptmcp/ytl-card-bg.png" alt="">
+          <p class="pfs-card-title">Full Transcripts</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/ytl-card-transcripts.png" alt="Full Transcripts"></div>
+          <p class="pfs-card-desc">Paste any YouTube link. 10 minutes or 2 hours—full transcript back in seconds.</p>
+        </div>
+        <div class="pfs-card has-desc">
+          <img class="pfs-card-bg" src="/tokscriptmcp/ytl-card-bg.png" alt="">
+          <p class="pfs-card-title">Timestamp Support</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/ytl-card-timestamp.png" alt="Timestamp Support"></div>
+          <p class="pfs-card-desc">Transcripts include timing data. Ask about the 12-minute mark, get an exact answer.</p>
+        </div>
+        <div class="pfs-card has-desc">
+          <img class="pfs-card-bg" src="/tokscriptmcp/ytl-card-bg.png" alt="">
+          <p class="pfs-card-title">Content Repurposing</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/ytl-card-repurpose.png" alt="Content Repurposing"></div>
+          <p class="pfs-card-desc">Turn one video into a Twitter thread, newsletter, quote list, or checklist—one conversation.</p>
+        </div>
+        <div class="pfs-card has-desc">
+          <img class="pfs-card-bg" src="/tokscriptmcp/ytl-card-bg.png" alt="">
+          <p class="pfs-card-title">Research At Scale</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/ytl-card-research.png" alt="Research At Scale"></div>
+          <p class="pfs-card-desc">Drop a batch of links. Every transcript, every stat, returned together.</p>
+        </div>
+        <div class="pfs-card has-desc">
+          <img class="pfs-card-bg" src="/tokscriptmcp/ytl-card-bg.png" alt="">
+          <p class="pfs-card-title">Podcast And Interview Analysis</p>
+          <div class="pfs-card-img"><img src="/tokscriptmcp/ytl-card-podcast.png" alt="Podcast And Interview Analysis"></div>
+          <p class="pfs-card-desc">Pull key insights, quotable moments, or guest arguments from any episode.</p>
+        </div>
+      </div>
+    </div>
+    <div class="pfs-cta">
+      <p class="pfs-cta-label">Ready to research YouTube without leaving ChatGPT</p>
+      <a href="#" class="pfs-btn">Start Extracting YouTube Data</a>
+    </div>
+  </div>
+</div>
+
+</div><!-- /plat-panel youtube -->
+
+<!-- ⑪ FAQ -->
+<section id="faq">
+  <div class="faq-inner">
+    <div class="faq-header">
+      <div class="sec-pill">FAQ</div>
+      <h2 class="sec-h2">Common questions about TokScript for ChatGPT</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What platforms does TokScript support inside ChatGPT? <span class="faq-icon">+</span></button><div class="faq-a">TokScript works with four platforms through ChatGPT: TikTok, Instagram Reels, YouTube Shorts, and full-length YouTube videos. You can transcribe, pull stats, and analyze content from any of them in the same conversation.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How do I connect TokScript to ChatGPT? <span class="faq-icon">+</span></button><div class="faq-a">Open ChatGPT, click the tools icon in the message bar, and select "Add tools." Paste this connection link: <a href="https://api.tokscript.com/mcp">https://api.tokscript.com/mcp</a>. Sign in with your TokScript account and you're connected. The whole thing takes about 30 seconds.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Do I need a paid TokScript account? <span class="faq-icon">+</span></button><div class="faq-a">No. The free plan gives you 5 transcriptions per day through ChatGPT. That includes all four platforms. If you need unlimited access, bulk processing, and video downloads, the Pro plan is $39/year.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I transcribe full-length YouTube videos, not just Shorts? <span class="faq-icon">+</span></button><div class="faq-a">Yes. TokScript supports both YouTube Shorts and full-length YouTube videos of any duration. Paste a 10-minute tutorial, a 45-minute podcast, or an hour-long conference talk and get the complete transcript back in seconds.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How many videos can I process at once? <span class="faq-icon">+</span></button><div class="faq-a">With bulk transcription, you can send up to 50 video links in a single message. For TikTok collection imports, you can bring in up to 3,000 videos from a single collection or playlist.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I download videos from all platforms? <span class="faq-icon">+</span></button><div class="faq-a">Video downloads are currently available for TikTok and Instagram content. YouTube videos cannot be downloaded due to platform restrictions. Transcription and stats work across all four platforms.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I mix platforms in the same conversation? <span class="faq-icon">+</span></button><div class="faq-a">Yes. Drop a TikTok link, an Instagram Reel, a YouTube Short, and a full YouTube video into the same conversation. ChatGPT pulls data from all of them through TokScript. Ask it to compare content across platforms or build reports that span all four.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Does this work on ChatGPT Desktop and ChatGPT Web? <span class="faq-icon">+</span></button><div class="faq-a">Yes. The TokScript connector works on ChatGPT's web interface at chatgpt.com and the ChatGPT desktop app. Same connection link, same features, same experience.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What is MCP? <span class="faq-icon">+</span></button><div class="faq-a">MCP stands for Model Context Protocol. It's the technology that lets ChatGPT connect directly to external tools like TokScript. You don't need to understand MCP to use it — just paste the connection link and you're set.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">I already use TokScript. Will my saved library be accessible? <span class="faq-icon">+</span></button><div class="faq-a">Yes. Every video you've ever scanned on TokScript is searchable through ChatGPT once you connect. Your entire library, all your collections, all your saved transcripts — it all syncs automatically.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">I need help getting set up. Where do I go? <span class="faq-icon">+</span></button><div class="faq-a">We have a full documentation center at <a href="https://feedback.tokscript.com/help/collections/claude-and-chatgpt-integration-mcp">feedback.tokscript.com/help</a>. If that doesn't cover it, email <a href="mailto:support@tokscript.com">support@tokscript.com</a> and we'll help you directly.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM + WHAT CHANGES -->
+<section id="problem-what-changes">
+  <div class="pwc-inner">
+
+    <!-- Row 1: Image left, content right — The Problem -->
+    <div class="pwc-row">
+      <div class="pwc-card-wrap">
+        <img class="pwc-card-img" src="/tokscriptmcp/pwc-problem.png" alt="" />
+      </div>
+      <div class="pwc-content">
+        <div class="pwc-pill-wrap">
+          <div class="pwc-pill">The Problem</div>
+        </div>
+        <h2 class="pwc-h2">You're still doing this the hard way.</h2>
+        <p class="pwc-desc">Copy link. Paste in TokScript. Copy transcript. Paste in ChatGPT. Need stats? Go back. Copy. Paste. Repeat—for every single video.</p>
+        <ul class="pwc-list">
+          <li class="pwc-list-item">
+            <span class="pwc-bullet pwc-bullet-x"><img src="/tokscriptmcp/pwc-x.svg" alt="" /></span>
+            50 videos means 50 rounds of copy-paste chaos
+          </li>
+          <li class="pwc-list-item">
+            <span class="pwc-bullet pwc-bullet-x"><img src="/tokscriptmcp/pwc-x.svg" alt="" /></span>
+            Every tab switch breaks your focus
+          </li>
+          <li class="pwc-list-item">
+            <span class="pwc-bullet pwc-bullet-x"><img src="/tokscriptmcp/pwc-x.svg" alt="" /></span>
+            Manual work that should take zero effort
+          </li>
+          <li class="pwc-list-item">
+            <span class="pwc-bullet pwc-bullet-x"><img src="/tokscriptmcp/pwc-x.svg" alt="" /></span>
+            Multi-platform analysis is nearly impossible.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Row 2: Content left, image right — What Changes -->
+    <div class="pwc-row">
+      <div class="pwc-content">
+        <div class="pwc-pill-wrap">
+          <div class="pwc-pill">What Changes When You Connect With TokScript</div>
+        </div>
+        <h2 class="pwc-h2">One conversation. Every platform. Every tool</h2>
+        <p class="pwc-desc">Connect TokScript to ChatGPT and your AI pulls transcripts, stats, downloads, creator profiles, and your saved library—automatically. Just ask in plain English.</p>
+        <ul class="pwc-list">
+          <li class="pwc-list-item">
+            <span class="pwc-bullet pwc-bullet-check"><img src="/tokscriptmcp/pwc-check.svg" alt="" /></span>
+            Drop a TikTok link: "Break this down".
+          </li>
+          <li class="pwc-list-item">
+            <span class="pwc-bullet pwc-bullet-check"><img src="/tokscriptmcp/pwc-check.svg" alt="" /></span>
+            Paste a YouTube video: "Full transcript with timestamps".
+          </li>
+          <li class="pwc-list-item">
+            <span class="pwc-bullet pwc-bullet-check"><img src="/tokscriptmcp/pwc-check.svg" alt="" /></span>
+            Send an Instagram Reel: "Compare this to my last 10 posts".
+          </li>
+          <li class="pwc-list-item">
+            <span class="pwc-bullet pwc-bullet-check"><img src="/tokscriptmcp/pwc-check.svg" alt="" /></span>
+            You ask. ChatGPT pulls. One message, not fifteen steps.
+          </li>
+        </ul>
+        <button class="pwc-cta-btn">
+          Get Started now
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="pwc-card-wrap">
+        <img class="pwc-card-img" src="/tokscriptmcp/pwc-changes.png" alt="" />
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA: ONE PLAN -->
+<section id="cta-oneplan">
+  <div class="ctap-outer">
+
+    <img class="ctap-bg" src="/tokscriptmcp/47e21646-b87b-421b-a89d-1f456aab3895.png" alt="" />
+    <img class="ctap-deco-left" src="/tokscriptmcp/47e21646-b87b-421b-a89d-1f456aab3895.png" alt="" />
+    <img class="ctap-deco-right" src="/tokscriptmcp/47e21646-b87b-421b-a89d-1f456aab3895.png" alt="" />
+
+    <div class="ctap-content">
+      <h2 class="ctap-title">One Plan.&nbsp;<br>Unlimited Intelligence.</h2>
+      <p class="ctap-desc">Unlimited transcripts. All three AI agents. Bulk processing. HD downloads.<br>Creator intelligence. 100+ languages. Claude and ChatGPT.</p>
+      <div class="ctap-checks">
+        <span class="ctap-check"><span class="ctap-tick">✓</span> No credits</span>
+        <span class="ctap-check"><span class="ctap-tick">✓</span> No per-use charges</span>
+        <span class="ctap-check"><span class="ctap-tick">✓</span> Cancel anytime</span>
+        <span class="ctap-check"><span class="ctap-tick">✓</span> 28 tools included</span>
+        <span class="ctap-check"><span class="ctap-tick">✓</span> Claude + ChatGPT</span>
+      </div>
+      <div class="url-bar">
+        <span class="url-bar-text">api.tokscript.com/mcp</span>
+        <button class="url-bar-copy" onclick="copyUrlBar(this)">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;flex-shrink:0;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></span>
+          Copy
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->`;
+
+export default function PageData() {
+  return (
+    <>
+      <Header />
+      <style dangerouslySetInnerHTML={{ __html: STATIC_CSS }} />
+      <div
+        className="tsm-chatgpt"
+        dangerouslySetInnerHTML={{ __html: STATIC_BODY }}
+      />
+      <Footer />
+    </>
+  );
+}
