@@ -174,19 +174,19 @@
           position: relative;
           max-width: 680px;
           margin-inline: auto;
-          background: linear-gradient(180deg, #1f1f1f 0%, #161616 100%);
-          border: 1.5px solid rgba(255, 255, 255, 0.10);
+          background: linear-gradient(180deg, #262626 0%, #1c1c1c 100%);
+          border: 1.5px solid rgba(0, 184, 178, 0.22);
           border-radius: 16px;
           overflow: visible;
           box-shadow:
-            0 1px 0 rgba(255, 255, 255, 0.04) inset,
+            0 1px 0 rgba(255, 255, 255, 0.06) inset,
             0 18px 48px -12px rgba(0, 0, 0, 0.55),
-            0 0 0 1px rgba(0, 184, 178, 0.08),
-            0 0 32px -4px rgba(0, 184, 178, 0.18);
+            0 0 0 1px rgba(0, 184, 178, 0.12),
+            0 0 36px -4px rgba(0, 184, 178, 0.18);
           transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 
           @media screen and (max-width: 767px) {
-            background: linear-gradient(180deg, #1c1c1c 0%, #131313 100%);
+            background: linear-gradient(180deg, #232323 0%, #181818 100%);
             border-width: 1.5px;
           }
 
@@ -258,14 +258,15 @@
               padding: 20px;
             }
             &::placeholder {
-              color: $text_secondary;
+              color: rgba(255, 255, 255, 0.62);
               font-style: italic;
               font-weight: 500;
+              opacity: 1;
 
               @media screen and (max-width: 767px) {
                 font-size: 14px;
                 font-style: normal;
-                color: #3a3a3a;
+                color: rgba(255, 255, 255, 0.65);
               }
             }
           }
@@ -4276,12 +4277,35 @@
 .instagram-landing-page {
   // ===== HEADING GRADIENTS =====
   .chat-input-container {
-    border-color: #f77737 !important;
-    box-shadow: 0 0 0 3px #f7773733 !important;
+    border-color: rgba(247, 119, 55, 0.32) !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.06) inset,
+      0 18px 48px -12px rgba(0, 0, 0, 0.55),
+      0 0 0 1px rgba(247, 119, 55, 0.18),
+      0 0 36px -4px rgba(247, 119, 55, 0.22) !important;
+    &:hover {
+      border-color: rgba(247, 119, 55, 0.6) !important;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.06) inset,
+        0 22px 56px -12px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(247, 119, 55, 0.28),
+        0 0 40px -4px rgba(247, 119, 55, 0.38) !important;
+    }
+    &:focus-within {
+      border-color: #f77737 !important;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.06) inset,
+        0 22px 56px -12px rgba(0, 0, 0, 0.6),
+        0 0 0 3px rgba(247, 119, 55, 0.22),
+        0 0 48px -4px rgba(247, 119, 55, 0.42) !important;
+    }
     textarea {
       outline: none !important;
       border: none !important;
       box-shadow: none !important;
+      &::-webkit-scrollbar-thumb {
+        background: #f77737 !important;
+      }
       &:focus {
         outline: none !important;
         border: none !important;
@@ -5009,12 +5033,35 @@
 .youtube-landing-page {
   // ===== HEADING GRADIENTS - Warm coral to vibrant red =====
   .chat-input-container {
-    border-color: #e53935 !important;
-    box-shadow: 0 0 0 3px #e5393533 !important;
+    border-color: rgba(229, 57, 53, 0.32) !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.06) inset,
+      0 18px 48px -12px rgba(0, 0, 0, 0.55),
+      0 0 0 1px rgba(229, 57, 53, 0.18),
+      0 0 36px -4px rgba(229, 57, 53, 0.22) !important;
+    &:hover {
+      border-color: rgba(229, 57, 53, 0.6) !important;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.06) inset,
+        0 22px 56px -12px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(229, 57, 53, 0.28),
+        0 0 40px -4px rgba(229, 57, 53, 0.38) !important;
+    }
+    &:focus-within {
+      border-color: #e53935 !important;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.06) inset,
+        0 22px 56px -12px rgba(0, 0, 0, 0.6),
+        0 0 0 3px rgba(229, 57, 53, 0.22),
+        0 0 48px -4px rgba(229, 57, 53, 0.42) !important;
+    }
     textarea {
       outline: none !important;
       border: none !important;
       box-shadow: none !important;
+      &::-webkit-scrollbar-thumb {
+        background: #e53935 !important;
+      }
       &:focus {
         outline: none !important;
         border: none !important;
@@ -19110,20 +19157,24 @@ $ds-font: "Inter", system-ui, sans-serif;
                 linear-gradient(135deg, #f77737, rgba(255,255,255,0.12)) border-box !important;
   }
 
-  /* Chat input focus + hover glow */
+  /* Chat input — orange resting stroke + hover/focus glow */
   .chat-input-container {
+    border-color: rgba(247, 119, 55, 0.32) !important;
     box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.04) inset,
+      0 1px 0 rgba(255, 255, 255, 0.06) inset,
       0 18px 48px -12px rgba(0, 0, 0, 0.55),
-      0 0 0 1px rgba(247, 119, 55, 0.10),
-      0 0 32px -4px rgba(247, 119, 55, 0.22) !important;
+      0 0 0 1px rgba(247, 119, 55, 0.18),
+      0 0 36px -4px rgba(247, 119, 55, 0.22) !important;
+    textarea::-webkit-scrollbar-thumb {
+      background: #f77737 !important;
+    }
     &:hover, &:focus-within {
       border-color: #f77737 !important;
       box-shadow:
         0 1px 0 rgba(255, 255, 255, 0.06) inset,
         0 22px 56px -12px rgba(0, 0, 0, 0.6),
-        0 0 0 3px rgba(247, 119, 55, 0.20),
-        0 0 48px -4px rgba(247, 119, 55, 0.40) !important;
+        0 0 0 3px rgba(247, 119, 55, 0.22),
+        0 0 48px -4px rgba(247, 119, 55, 0.42) !important;
     }
   }
 
@@ -19181,18 +19232,22 @@ $ds-font: "Inter", system-ui, sans-serif;
   }
 
   .chat-input-container {
+    border-color: rgba(229, 57, 53, 0.32) !important;
     box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.04) inset,
+      0 1px 0 rgba(255, 255, 255, 0.06) inset,
       0 18px 48px -12px rgba(0, 0, 0, 0.55),
-      0 0 0 1px rgba(217, 38, 38, 0.10),
-      0 0 32px -4px rgba(217, 38, 38, 0.22) !important;
+      0 0 0 1px rgba(229, 57, 53, 0.18),
+      0 0 36px -4px rgba(229, 57, 53, 0.22) !important;
+    textarea::-webkit-scrollbar-thumb {
+      background: #e53935 !important;
+    }
     &:hover, &:focus-within {
-      border-color: #d92626 !important;
+      border-color: #e53935 !important;
       box-shadow:
         0 1px 0 rgba(255, 255, 255, 0.06) inset,
         0 22px 56px -12px rgba(0, 0, 0, 0.6),
-        0 0 0 3px rgba(217, 38, 38, 0.20),
-        0 0 48px -4px rgba(217, 38, 38, 0.40) !important;
+        0 0 0 3px rgba(229, 57, 53, 0.22),
+        0 0 48px -4px rgba(229, 57, 53, 0.42) !important;
     }
   }
 
@@ -19354,3 +19409,5 @@ $ds-font: "Inter", system-ui, sans-serif;
 .landing-page.platform-youtube .vt-visual .vh-thumb-img {
   object-fit: cover !important;
 }
+
+
