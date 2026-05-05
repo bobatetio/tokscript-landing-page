@@ -16,8 +16,8 @@ import "../app/mcp/mcp.scss";
 
 const cardMeta = [
   { num: 1, title: "Content Creators",          img: whoSoloCreator,     key: "creators",    sizeClass: "who-card-img-sm" },
-  { num: 2, title: "Educators & Researchers",   img: whoResearchers,     key: "researchers", sizeClass: "who-card-img-sm" },
-  { num: 3, title: "Marketers & Ad Analysts",   img: whoBrandMarketers,  key: "marketers",   sizeClass: "who-card-img-sm" },
+  { num: 2, title: "Educators & Researchers",   img: whoBrandMarketers,  key: "researchers", sizeClass: "who-card-img-sm" },
+  { num: 3, title: "Marketers & Ad Analysts",   img: whoResearchers,     key: "marketers",   sizeClass: "who-card-img-sm" },
   { num: 4, title: "AI & Automation Users",     img: whoAgencies,        key: "ai",          sizeClass: "who-card-img-lg" },
   { num: 5, title: "UGC Creators & Influencers", img: whoUgcMarketplaces, key: "ugc",         sizeClass: "who-card-img-lg" },
 ];
@@ -35,12 +35,11 @@ export default function WhoItsFor({ platform = "tiktok" }) {
           <div className="who-header-content">
             <div className="who-pill">Who It&apos;s For</div>
             <h2 className="who-h2">
-              Built for Anyone Who Works With Short-Form Video
+              {copy.whoH2 || "Built for Anyone Who Works With Short-Form Video"}
             </h2>
             <p className="who-sub">
-              TokScript MCP bridges the gap between viral trends and structured
-              content data. Move beyond manual research with a unified
-              intelligence layer built for your existing AI workspace.
+              {copy.whoSub ||
+                "TokScript MCP bridges the gap between viral trends and structured content data. Move beyond manual research with a unified intelligence layer built for your existing AI workspace."}
             </p>
           </div>
         </div>

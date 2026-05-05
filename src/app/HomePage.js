@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
 import Header from "../components/Header";
+import "./mcp/mcp.scss";
 const ShareBar = dynamic(() => import("@/components/ShareBar"));
 import { getPlatformCopy } from "./platformContent";
 import magicIcon from "../assets/images/icons/magicIcon.svg";
@@ -360,7 +361,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
   // Scroll-driven feature spotlight: fade non-centered rows in #vt-platform
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const rows = document.querySelectorAll("#vt-platform .vt-row");
+    const rows = document.querySelectorAll("#vt-platform .vt-row, #platform-about .vt-row");
     if (!rows.length) return;
     const obs = new IntersectionObserver(
       (entries) => {
@@ -1088,6 +1089,213 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
             </div>
           </div>
         </div>
+        {(platform === "instagram" || platform === "youtube") && (
+          <div className="mcp-page">
+            <section
+              id={platform === "instagram" ? "how-it-works-reels" : "how-it-works-shorts"}
+              className="hiw-platform-section"
+              style={{ paddingTop: "36px", paddingBottom: "36px" }}
+            >
+              <style>{`
+                .mcp-page .hiw-platform-section .hiw-inner {
+                  margin-left: auto;
+                  margin-right: auto;
+                }
+                @media (min-width: 992px) {
+                  .mcp-page .hiw-platform-section .hiw-header-block {
+                    width: 100%;
+                    height: auto;
+                    margin: 0 auto;
+                    overflow: visible;
+                  }
+                  .mcp-page .hiw-platform-section .hiw-header-content {
+                    width: 100%;
+                    max-width: 100%;
+                    margin: 0 auto;
+                  }
+                  .mcp-page .hiw-platform-section .hiw-h2,
+                  .mcp-page .hiw-platform-section .hiw-sub {
+                    width: 100%;
+                    max-width: 100%;
+                    text-align: center;
+                    white-space: nowrap;
+                    align-self: stretch;
+                  }
+                }
+                @media (min-width: 992px) {
+                  .mcp-page .hiw-platform-section .cx-hiw-cards-outer {
+                    height: 448px;
+                  }
+                  .mcp-page .hiw-platform-section .cx-hiw-card {
+                    height: 420px;
+                  }
+                  .mcp-page .hiw-platform-section .cx-hiw-card .hiw-step-label {
+                    top: 24px;
+                    z-index: 2;
+                  }
+                  .mcp-page .hiw-platform-section .cx-hiw-card .hiw-card-title {
+                    top: 44px;
+                    left: 20px;
+                    right: 20px;
+                    z-index: 2;
+                  }
+                  .mcp-page .hiw-platform-section .cx-hiw-card-img-wrap {
+                    top: 80px;
+                    left: 15px;
+                    width: 318px;
+                    height: 220px;
+                    overflow: hidden;
+                    border-radius: 12px;
+                    z-index: 1;
+                  }
+                  .mcp-page .hiw-platform-section .cx-hiw-card-img-wrap img {
+                    object-fit: cover;
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                  }
+                  .mcp-page .hiw-platform-section .cx-hiw-card .hiw-card-desc {
+                    top: 320px;
+                    bottom: auto;
+                    left: 22px;
+                    right: 22px;
+                    z-index: 2;
+                  }
+                }
+                @media (max-width: 991px) {
+                  .mcp-page .hiw-platform-section .cx-hiw-cards-outer {
+                    height: auto;
+                    padding: 20px;
+                    box-sizing: border-box;
+                  }
+                  .mcp-page .hiw-platform-section .hiw-cards-row {
+                    position: static;
+                    left: auto;
+                    top: auto;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    gap: 20px;
+                  }
+                  .mcp-page .hiw-platform-section .cx-hiw-card {
+                    position: relative;
+                    width: 100%;
+                    max-width: 360px;
+                    height: auto;
+                    min-height: 0;
+                    padding: 24px 20px;
+                    border-radius: 16px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                    gap: 12px;
+                    background: #141414 !important;
+                    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+                    backdrop-filter: none !important;
+                    -webkit-backdrop-filter: none !important;
+                  }
+                  .mcp-page .hiw-platform-section .cx-hiw-card .hiw-step-label,
+                  .mcp-page .hiw-platform-section .cx-hiw-card .hiw-card-title,
+                  .mcp-page .hiw-platform-section .cx-hiw-card .hiw-card-desc {
+                    position: static;
+                    top: auto;
+                    left: auto;
+                    right: auto;
+                    bottom: auto;
+                    margin: 0;
+                  }
+                  .mcp-page .hiw-platform-section .cx-hiw-card-img-wrap {
+                    position: static;
+                    width: 100%;
+                    height: auto;
+                    aspect-ratio: 318 / 252;
+                    border-radius: 12px;
+                    overflow: hidden;
+                  }
+                  .mcp-page .hiw-platform-section .cx-hiw-card-img-wrap img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    display: block;
+                  }
+                }
+              `}</style>
+              <div className="hiw-inner" style={{ gap: "24px" }}>
+                <div className="hiw-header-block" style={{ height: "auto" }}>
+                  <div className="hiw-header-content">
+                    <div className="hiw-pill">How It Works</div>
+                    <h2 className="hiw-h2">
+                      {platform === "instagram"
+                        ? "How to Generate a Transcript from Instagram"
+                        : "How to Transcribe YouTube Videos"}
+                    </h2>
+                    <p className="hiw-sub">
+                      {platform === "instagram"
+                        ? "Getting your Instagram transcript takes three steps. No extensions, no software, and no Instagram Login required."
+                        : "TokScript lets you generate a YouTube transcript in three steps. No extensions, no software, and no YouTube account required."}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="cx-hiw-cards-outer hiw-cards-outer">
+                  <div className="hiw-cards-row">
+                    {(platform === "instagram"
+                      ? [
+                          {
+                            step: "Step 01",
+                            title: "Copy the Instagram Reel Link",
+                            img: "/figma-rows/Research%20without%20breaking%20flow.png?v=20260502c",
+                            desc: "Tap the paper plane icon on any Reel and select Copy Link. On desktop, click the three-dot menu and choose Copy Link. The URL is now on your clipboard.",
+                          },
+                          {
+                            step: "Step 02",
+                            title: "Paste It Into TokScript",
+                            img: "/figma-rows/See%20data%20tiktok%20hides.png?v=20260502c",
+                            desc: "Drop the link into the input field above. Paste one Reel or up to 50 Instagram links at once for bulk transcript generation.",
+                          },
+                          {
+                            step: "Step 03",
+                            title: "Download Your Transcript",
+                            img: "/figma-rows/Frame%202121457638.png?v=20260502c",
+                            desc: "Click Scan Video. Your transcript is ready in seconds — export as TXT, XML, or PDF, translate it, or run it through our AI agents.",
+                          },
+                        ]
+                      : [
+                          {
+                            step: "Step 01",
+                            title: "Copy the YouTube Video or Shorts Link",
+                            img: "/figma-rows/Research%20without%20breaking%20flow.png?v=20260502c",
+                            desc: "Tap Share → Copy Link on mobile, or grab the URL directly from the address bar on desktop. Shorts, long-form, and unlisted links all work.",
+                          },
+                          {
+                            step: "Step 02",
+                            title: "Paste the Link into TokScript",
+                            img: "/figma-rows/See%20data%20tiktok%20hides.png?v=20260502c",
+                            desc: "Drop your YouTube link into the input field above. Need bulk? Paste up to 50 video links at once and TokScript handles them in a single batch.",
+                          },
+                          {
+                            step: "Step 03",
+                            title: "Download Your Transcript",
+                            img: "/figma-rows/Frame%202121457638.png?v=20260502c",
+                            desc: "Click Generate Transcript and your full text is ready in seconds. Export as TXT, PDF, or XML — or pipe it straight into Claude, ChatGPT, or Gemini.",
+                          },
+                        ]
+                    ).map((card, i) => (
+                      <div className="cx-hiw-card hiw-card" key={i}>
+                        <p className="hiw-step-label">{card.step}</p>
+                        <h3 className="hiw-card-title">{card.title}</h3>
+                        <div className="cx-hiw-card-img-wrap hiw-card-img-wrap">
+                          <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}${card.img}`} alt="" />
+                        </div>
+                        <p className="hiw-card-desc">{card.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        )}
         <section id="up-running" className="up-running-section">
           <div className="ur-inner">
             <div className="ur-header">
@@ -1273,6 +1481,203 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
 
         <WhoItsFor platform={platform} />
 
+        {(platform === "instagram" || platform === "youtube") && (
+          <section id="platform-about" className="vt-platform-section">
+            <div className="vt-platform-inner">
+              <div className="vt-platform-header">
+                <span className="vt-pill">
+                  {platform === "instagram" ? "Built For Reels" : "Built For YouTube"}
+                </span>
+                <h2 className="vt-h2">
+                  {platform === "instagram"
+                    ? "Instagram Reels Transcript & Download Platform"
+                    : "YouTube Shorts Transcript Generator"}
+                </h2>
+                <p className="vt-sub">
+                  {platform === "instagram"
+                    ? "2.6M+ videos processed. Built specifically for IG content, not bolted onto a generic tool. TokScript converts any public Instagram Reel online into clean, accurate text in seconds. Purpose-built for how Reels content actually works. Paste a link, get the transcript, and use it for captions, scripts, competitor research, or AI workflows."
+                    : "2.6M+ videos processed. Built specifically for YouTube Shorts transcripts, not a generic transcription tool that treats every video the same. Convert any public YouTube Short into clean, accurate text in seconds. Paste the YouTube link, get the full transcript, and put it to work: repurpose into scripts, research competitor YouTube Shorts, fuel AI workflows, or create captions without replaying a single video."}
+                </p>
+              </div>
+
+              {(platform === "instagram"
+                ? [
+                    {
+                      title: "Bulk Instagram Transcript Import",
+                      body: "Paste up to 50 Reel links in a single batch and pull every transcript simultaneously. Auditing a competitor's strategy, building a research swipe file, or processing a full week of Reels: bulk import handles it in one action. Every transcript is ready to export together.",
+                      bullets: [
+                        "Up to 50 Reel links per batch",
+                        "Export all at once as TXT, XML, or PDF",
+                        "Process simultaneously or select individually",
+                        "Available on paid plans only",
+                      ],
+                      img: bulkProcess,
+                      alt: "Bulk transcript processing interface showing multiple Instagram Reels URLs being imported",
+                    },
+                    {
+                      title: "Cloud Transcript Library",
+                      body: "Every transcript saves automatically to your personal TokScript library. Access your full history from any device: phone, tablet, or desktop. Nothing is lost, and nothing needs manual backup.",
+                      bullets: [
+                        "Automatic cloud backup for every transcript",
+                        "Full history accessible from any device",
+                        "All files encrypted and stored securely",
+                        "Zero maintenance required",
+                      ],
+                      img: cloudSync,
+                      alt: "Cloud transcript library with saved transcripts organized by date",
+                    },
+                    {
+                      title: "History and Folders",
+                      body: "TokScript logs every Reel you convert: original link, date processed, video duration, and word count. Organize transcripts into folders by client, campaign, or topic. Re-download in any format whenever needed.",
+                      bullets: [
+                        "Full history with video metadata",
+                        "Custom folders by campaign, client, or topic",
+                        "Re-download as TXT, XML, or PDF anytime",
+                        "Bulk folder exports (paid plans)",
+                      ],
+                      img: historyImg,
+                      alt: "Transcript history panel showing previously processed Reels",
+                    },
+                    {
+                      title: "HD Video and Cover Image Download (Paid Plan Only)",
+                      body: "Save any public Instagram Reel in full HD with no watermark. Download the thumbnail at original resolution too. Archive Reels before they are deleted, repurpose content, or build visual reference libraries.",
+                      bullets: [
+                        "Full HD download, no watermark",
+                        "Thumbnail at original resolution",
+                        "No compression or quality loss",
+                      ],
+                      img: mediaImg,
+                      alt: "Media download interface with video and cover image save options",
+                    },
+                    {
+                      title: "Instagram Transcript URL Shortcut",
+                      body: "Place tokscript.com/ before any Instagram Reel URL in your browser bar and press enter. The Reel text extracts right away. No navigation, no extra steps. It works like a shortcut you already know: just edit the URL, hit enter, and your transcript is ready before you even leave your browser tab.",
+                      bullets: [
+                        "Prefix any Instagram Reel URL with tokscript.com/ to download",
+                        "No login required for this method",
+                        "Works directly from your browser address bar",
+                        "Transcript ready in seconds",
+                      ],
+                      img: excessImg,
+                      alt: "Quick URL method showing paste-and-process transcript extraction",
+                    },
+                    {
+                      title: "AI Agents for Instagram Content Creators",
+                      body: "Three tools built for Instagram content strategy. Feed any Reel transcript in and get a production-ready output back.",
+                      bullets: [
+                        "Hook Generator: Get 20+ opening hook variations from any Reel transcript. Each hook is grounded in the structure of proven, high-performing content, built for the pace and rhythm of Reel videos specifically.",
+                        "Script Writer: Turn any Reel transcript into a new script written in your voice. The agent captures the structure and energy of the original, then rebuilds it around your niche and tone. Ready to film, not just to read.",
+                        "Virality Explainer: Understand exactly why a specific Reel performed. Get a structured breakdown of hook mechanics, psychological triggers, pacing decisions, and content patterns, with clear, actionable takeaways for your own strategy.",
+                      ],
+                      img: workspceImg,
+                      alt: "AI-powered dashboard showing transcript analysis and viral hook suggestions",
+                    },
+                  ]
+                : [
+                    {
+                      title: "Bulk YouTube Transcript Generation",
+                      body: "Stop processing videos one at a time. TokScript lets you paste up to 50 YouTube video links at once and generates every transcript in a single batch, completely free for your first 5 videos per day, with no account required to get started. While built for YouTube, TokScript also handles TikTok and Instagram Reels in the same import. All transcripts are processed simultaneously and ready to download in seconds.",
+                      bullets: [
+                        "Process up to 50 YouTube video links in one batch",
+                        "Mix YouTube, TikTok, and Instagram Reels in a single import",
+                        "Download all transcripts at once or select individual results",
+                        "Switch between bulk mode and single-video transcript generation",
+                      ],
+                      img: bulkProcess,
+                      alt: "Bulk transcript processing interface showing multiple YouTube video URLs being imported",
+                    },
+                    {
+                      title: "Cloud Library and Transcript History",
+                      body: "Every YouTube transcript you generate is saved automatically to your TokScript cloud library. Access your full transcript history from any device, re-download past transcripts in any format, and organize everything into bookmark folders by topic, campaign, or creator. No manual file management, no lost transcripts.",
+                      bullets: [
+                        "All YouTube transcripts auto-saved to the cloud",
+                        "Access your full library from any browser or device",
+                        "Organize transcripts into folders by channel, topic, or project",
+                        "Re-download any past transcript in TXT, PDF, or XML",
+                      ],
+                      img: cloudSync,
+                      alt: "Cloud transcript library with saved YouTube transcripts organized by date",
+                    },
+                    {
+                      title: "YouTube Video to Text — Multiple Export Formats",
+                      body: "Once TokScript converts your YouTube video to text, you choose how to use it. Export your transcript as a plain TXT file for copying into documents, a structured XML file for developers and subtitles, or a formatted PDF for sharing and archiving. Every export is clean, accurate, and ready to use immediately, free to download with no watermarks.",
+                      bullets: [
+                        "TXT for copy-paste into any document or AI tool",
+                        "PDF for formatted, shareable transcripts",
+                        "XML for structured subtitle and developer use",
+                        "One-click download from your transcript history",
+                      ],
+                      img: historyImg,
+                      alt: "Transcript export panel showing TXT, PDF, and XML download options",
+                    },
+                    {
+                      title: "Translate YouTube Transcripts into 11+ Languages",
+                      body: "Select a target language before scanning and TokScript delivers your YouTube transcript already translated. All 11+ languages are available on paid plans, with a selection of the most popular languages available on the free plan. Turn an English-language video into a Spanish, French, Arabic, Japanese, or Portuguese transcript in one click. Perfect for international content research, multilingual subtitles, or adapting viral videos for new audiences.",
+                      bullets: [
+                        "11+ languages supported on paid plans",
+                        "Most popular languages available on the free plan",
+                        "Translation delivered with the transcript, not after",
+                        "Combine transcript generation and translation in a single step",
+                        "Works across YouTube Shorts, videos, TikTok, and Reels",
+                      ],
+                      img: mediaImg,
+                      alt: "Media download interface with video and cover image save options",
+                    },
+                    {
+                      title: "Quick URL Method — Transcript in One Step",
+                      body: "Want even faster access? Add tokscript.com/ before any YouTube video URL in your browser address bar and hit Enter. TokScript auto-processes the link and delivers your transcript instantly. No homepage visit, no paste, no extra clicks. The fastest way to convert YouTube to text online on any device.",
+                      bullets: [
+                        "Add tokscript.com/ before any YouTube URL for instant transcription",
+                        "No need to visit the main site or log in",
+                        "Works for YouTube Shorts, standard videos, TikTok, and Reels",
+                        "Zero extra steps: transcript delivered immediately",
+                      ],
+                      img: excessImg,
+                      alt: "Quick URL method showing paste-and-process transcript extraction",
+                    },
+                    {
+                      title: "AI Agents for YouTube Creators",
+                      body: "TokScript includes three AI agents trained specifically on short-form video performance data. Feed any YouTube transcript into the agents and get tools no other transcript generator offers, all available online, no software required.",
+                      bullets: [
+                        "Viral Hook Generator: Paste a YouTube transcript and get 20+ opening hooks engineered to retain viewers past the critical first 3 seconds.",
+                        "Viral Script Writer: Take any transcript from a high-performing YouTube video and generate a brand-new script that preserves the structure, pacing, and psychology that made it work.",
+                        "Virality Explainer: Get a full breakdown of why a specific YouTube Short or video went viral, covering hook strength, content pacing, audience psychology, and algorithmic signals.",
+                      ],
+                      img: workspceImg,
+                      alt: "AI-powered dashboard showing transcript analysis and viral hook suggestions",
+                    },
+                  ]
+              ).map((row, i) => (
+                <div
+                  key={i}
+                  className={`vt-row${i % 2 === 1 ? " vt-row-reverse" : ""}`}
+                >
+                  <div className="vt-text">
+                    <div className="vt-text-inner">
+                      <h3 className="vt-row-title">{row.title}</h3>
+                      <p className="vt-row-body">{row.body}</p>
+                      <ul className="vt-list">
+                        {row.bullets.map((b, j) => (
+                          <li key={j}>{b}</li>
+                        ))}
+                      </ul>
+                      <Link href="/pricing" className="vt-cta" style={{ height: "44px", gap: "8px", padding: "0 24px" }}>
+                        Start Now
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="vt-visual">
+                    <Image
+                      src={row.img}
+                      alt={row.alt}
+                      style={{ width: "100%", height: "auto", display: "block", borderRadius: "16px" }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
         <ViralMomentsCarousel variant="home" />
 
         <div className="pricing-card-detail">
@@ -1672,7 +2077,42 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
         <HomeSocialProof />
         <BeforeAfter />
         <EnhenceExperience />
-        <FaqSection />
+        <FaqSection
+          faqData={
+            platform === "instagram"
+              ? [
+                  { title: "What does a Reel transcript tool do?", content: "It converts the spoken audio inside an Instagram video into written text, automatically. Paste a public Reel link into TokScript and the full text is returned in seconds, with no manual typing, no audio editing, and no extra software required." },
+                  { title: "How do I extract text from an Instagram Reel?", content: "Copy the Reel link using Instagram's share button. Paste it into the input field above. Click \"Scan Video.\" The transcript is ready in seconds. Download as TXT, XML, or PDF, or copy it to your clipboard directly." },
+                  { title: "How do I copy an Instagram Reel link?", content: "On mobile: open the Reel, tap the paper plane icon, and select \"Copy Link.\" On desktop: click the three-dot menu on the Reel and choose \"Copy Link.\"" },
+                  { title: "Is TokScript free to use?", content: "Yes. The free plan includes 5 transcripts and 5 translations per day at no cost. Unlimited transcripts, bulk processing, AI agents, and HD downloads are available on paid plans from $39 per year." },
+                  { title: "How accurate is the Reel-to-text conversion?", content: "Accuracy depends on audio quality. Clear spoken audio typically yields 95%+ word accuracy. Moderate background noise produces 85-92% accuracy. Heavy music or overlapping voices yield 70-80% accuracy." },
+                  { title: "Can I transcribe content from private accounts?", content: "No. TokScript only processes publicly viewable Instagram Reels. Content from private accounts is inaccessible to outside systems." },
+                  { title: "What if the Reel contains no spoken audio?", content: "If a Reel contains only music, ambient sound, or visual content with no spoken words, there is nothing to transcribe. TokScript extracts spoken language only." },
+                  { title: "Can I process multiple Reels at once?", content: "Yes, on paid plans only. Paste up to 50 Reel links in one batch. This feature is not available on the free plan." },
+                  { title: "What file formats are available for download?", content: "Transcripts are available in three formats: TXT (plain text), XML (structured data), and PDF (formatted document). You can also copy transcripts directly to your clipboard." },
+                  { title: "Which languages does translation support?", content: "TokScript supports translation into 11 languages: English, Spanish, Portuguese, Mandarin, French, Hindi, Arabic, German, Japanese, Korean, and Russian." },
+                  { title: "Can I use extracted text with AI writing tools?", content: "Yes. Copy or download any transcript and paste it into ChatGPT, Claude, Gemini, or any AI platform. TokScript's built-in AI agents handle hooks, script rewrites, and performance analysis." },
+                  { title: "Does TokScript work with Instagram Reel ads?", content: "Yes. Any publicly viewable Reel, including paid promotions, can be transcribed. Media buyers use it to extract hook structures and CTAs from high-converting ads." },
+                ]
+              : platform === "youtube"
+              ? [
+                  { title: "What is the best free YouTube transcript generator?", content: "TokScript is a free YouTube transcript generator working directly from any YouTube URL with no software, no login, and no file upload. It supports YouTube Shorts, standard videos, and bulk processing of up to 50 links at once." },
+                  { title: "How do I generate a transcript from a YouTube video?", content: "Copy the YouTube video URL, paste it into TokScript, and click \"Generate Transcript.\" Your full YouTube transcript is ready in seconds and available to download as TXT, PDF, or XML." },
+                  { title: "How do I convert YouTube video to text for free?", content: "Use TokScript's free YouTube to text converter. Paste any YouTube link into the tool, click scan, and download the full transcript at no cost. Free accounts include 5 transcripts per day." },
+                  { title: "Does this YouTube transcript generator work with regular YouTube videos, not just Shorts?", content: "Yes. TokScript transcribes YouTube Shorts, standard YouTube videos, and longer content. Free plans support shorter videos, while paid plans unlock transcription for videos of any length." },
+                  { title: "Can I generate transcripts from multiple YouTube videos at once?", content: "Yes. TokScript supports bulk transcript generation. Paste up to 50 YouTube video links at once and get every transcript processed in a single batch." },
+                  { title: "What formats can I download a YouTube transcript in?", content: "TokScript exports YouTube transcripts in TXT (plain text), PDF (formatted document), and XML (structured data for subtitles or developer use)." },
+                  { title: "Can I translate a YouTube transcript into another language?", content: "Yes. Select your target language before scanning and TokScript delivers the translated transcript alongside the original. 11+ languages are supported on paid plans, with the most popular languages available on the free plan." },
+                  { title: "Do I need a YouTube account to generate a transcript?", content: "No. You only need the YouTube video URL. No YouTube login, no TokScript account for free usage, and no software installation required." },
+                  { title: "Is this YouTube transcript generator accurate?", content: "TokScript uses a dual-verification system, pulling YouTube's native caption data and cross-referencing it with an independent AI transcription layer to maximize accuracy across all video types." },
+                  { title: "Can I use the transcript with AI tools like ChatGPT or Claude?", content: "Yes. Export your YouTube transcript as TXT and paste it directly into ChatGPT, Claude, Gemini, or any other AI tool. TokScript also has built-in AI agents for hook generation, script rewriting, and virality analysis." },
+                  { title: "Can I transcribe unlisted YouTube videos?", content: "Yes. Unlisted YouTube videos are accessible to anyone with the link, so TokScript can pull the transcript as long as you have the URL." },
+                  { title: "How do I get a YouTube transcript without using YouTube's built-in captions?", content: "YouTube's built-in captions are view-only and cannot be downloaded as a file. TokScript extracts the full transcript from any YouTube video and lets you download it as TXT, PDF, or XML instantly. No YouTube account needed." },
+                  { title: "What is the most accurate YouTube transcript generator online?", content: "TokScript uses a dual-verification system that combines YouTube's native caption data with an independent AI speech layer, making it one of the most accurate free YouTube transcript generators available online." },
+                ]
+              : undefined
+          }
+        />
         <div className="disclaimer-section">
           <div className="container">
             <div className="inner-section">

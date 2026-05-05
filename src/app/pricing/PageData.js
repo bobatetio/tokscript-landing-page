@@ -25,11 +25,19 @@ import {
   Globe,
   Star,
 } from "lucide-react";
-import Background from "@/components/Background";
 import Header from "@/components/Header";
 import ShareBar from "@/components/ShareBar";
 import dynamic from "next/dynamic";
 const Footer = dynamic(() => import("@/components/Footer"));
+const ViralMomentsCarousel = dynamic(() => import("@/components/ViralMomentsCarousel"), { ssr: false });
+const HomeSocialProof = dynamic(() => import("@/components/HomeSocialProof"), { ssr: false });
+const FaqSection = dynamic(() => import("@/components/FaqSection"));
+
+import ClaudeIcon from "../../assets/images/icons/ai/ClaudeIcon";
+import ChatGPTIcon from "../../assets/images/icons/ai/ChatGPTIcon";
+import { getPlatformCopy } from "../platformContent";
+
+const copy = getPlatformCopy("tiktok");
 
 const DontMissOutModal = dynamic(() => import("@/components/modals/DontMissOutModal"), { ssr: false });
 const CheckoutOverlay = dynamic(() => import("@/components/modals/CheckoutOverlay"), { ssr: false });
@@ -39,7 +47,9 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 
-// import "@/assets/scss/pricing.scss";
+import "@/assets/scss/pricing.scss";
+import "@/app/mcp/mcp.scss";
+import "@/app/chrome-extension/cta-button.css";
 
 // --- Subcomponents ---
 
@@ -193,6 +203,7 @@ export default function PricingPage({ initialProductsData }) {
   const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
   const heroY = useTransform(scrollY, [0, 400], [0, 100]);
   const [activeTab, setActiveTab] = useState("annual");
+  const [openFaq, setOpenFaq] = useState(null);
   const [dontMissOutModalShow, setDontMissOutModalShow] = useState(false);
   const [productsData, setProductsData] = useState(initialProductsData);
   const [loadingStates, setLoadingStates] = useState({});
@@ -258,44 +269,44 @@ export default function PricingPage({ initialProductsData }) {
   };
   const faqs = [
     {
-      q: "What is TokScript?",
-      a: "TokScript is a powerful research tool that allows you to download transcripts, videos, and metadata from viral short-form content to reverse-engineer success.",
+      q: "Is there really a free plan?",
+      a: "Yes. The free plan is free forever — no trial, no credit card required. You get 5 transcripts per day, 5 translations per day, and access to the basic Chrome extension. Upgrade only if you need more.",
     },
     {
-      q: "Which platforms are supported?",
-      a: 'We currently support <a href="/" style="color:#00B8B2;text-decoration:underline">TikTok</a>, <a href="/instagram-transcript-generator" style="color:#00B8B2;text-decoration:underline">Instagram Reels</a>, and <a href="/youtube-transcript-generator" style="color:#00B8B2;text-decoration:underline">YouTube Shorts</a>. You can paste a link from any of these platforms to extract data.',
+      q: "What's the difference between Annual and Monthly?",
+      a: "Same product, same features — just billing cadence. Annual is $39/year ($3.25/month). Monthly is $10/month ($120/year). Annual saves you $81 a year.",
     },
     {
-      q: "Is the transcript download unlimited?",
-      a: "On the Free plan, you get 3 transcripts per day. On the Monthly and Annual plans, transcript downloads are completely unlimited.",
+      q: "Can I switch between plans?",
+      a: "Yes, anytime. Upgrade from Free to paid in one click. Switch between Monthly and Annual whenever you want — billing prorates automatically.",
     },
     {
-      q: "How does the AI Script Writer work?",
-      a: "We use OpenAI's GPT-4o and Anthropic's Claude 3.5 Sonnet tailored with our proprietary datasets. The AI analyzes the viral structure of the source video and rewrites it for your specific niche.",
+      q: "Is there a refund policy?",
+      a: "Yes. Refunds are available within 7 days of purchase, no questions asked. After 7 days, cancel anytime and you'll keep access through the end of your billing period.",
     },
     {
-      q: "Does it work for non-English videos?",
-      a: "Yes! TokScript supports transcription and translation for over 50 languages. You can analyze a viral video in Spanish and have the AI rewrite the script in English (or vice versa).",
+      q: "What happens if I cancel?",
+      a: "You keep full access until the end of your current billing period. After that, your account drops back to the free plan. Your saved transcripts and library stay intact.",
     },
     {
-      q: "Can I use TokScript for my agency clients?",
-      a: 'Absolutely. Many agencies use TokScript to speed up research and scriptwriting for multiple clients. We do not charge extra for commercial use. You can also <a href="/affiliate" style="color:#00B8B2;text-decoration:underline">join our affiliate program</a> to earn 40% recurring commissions.',
+      q: "Do you offer team or agency plans?",
+      a: 'Yes. TokScript supports team workspaces with shared transcripts, real-time collaboration, and permission controls. For team pricing and enterprise plans, <a href="/contact" style="color:#00B8B2;text-decoration:underline">contact us directly</a>.',
     },
     {
-      q: "Is there a Chrome Extension?",
-      a: 'Yes. The <a href="/features/chrome-extension" style="color:#00B8B2;text-decoration:underline">TokScript Chrome Extension</a> allows you to view transcripts and analytics directly on TikTok and Instagram while you scroll. It is included in all Paid plans.',
+      q: "Are there discounts for students or creators?",
+      a: "The annual plan ($3.25/month effective) is already heavily discounted compared to monthly. For verified educators or large creator partnerships, reach out — we work with serious users.",
     },
     {
-      q: "What is the refund policy?",
-      a: "We offer a 30-day money-back guarantee for Annual plans. For monthly plans, if you are not satisfied, contact us within 48 hours for a full refund.",
+      q: "What payment methods do you accept?",
+      a: "All major credit and debit cards, plus standard digital wallets (Apple Pay, Google Pay). Billing runs through Stripe — secure, encrypted, PCI-compliant.",
     },
     {
-      q: "Can I cancel anytime?",
-      a: "Yes. You can cancel your subscription instantly from your dashboard. You will retain access to Pro features until the end of your billing cycle.",
+      q: "Will my price ever go up?",
+      a: "Existing subscribers keep their current rate as long as their subscription stays active. We grandfather pricing on annual plans through every renewal cycle.",
     },
     {
-      q: "Do I need technical skills?",
-      a: "No. TokScript is designed to be as simple as 'Copy Link' -> 'Paste Link'. The AI handles the complex analysis for you.",
+      q: "What happens to my data if I cancel?",
+      a: 'Your transcripts, folders, and saved videos stay in your account. You can re-subscribe anytime and pick up where you left off. If you want a full data export or deletion, <a href="/contact" style="color:#00B8B2;text-decoration:underline">contact support</a>.',
     },
   ];
 
@@ -452,10 +463,46 @@ export default function PricingPage({ initialProductsData }) {
     openConfirmation(variantId, plan, variant);
   };
 
+  // Build the same `allPlans` shape the homepage cards expect.
+  const loading = false;
+  const freePlan = {
+    title: "Free Plan",
+    description: "For casual users getting started",
+    price: "$0",
+  };
+  const transformPlansData = () => {
+    const variants = productsData?.data?.[2]?.variants;
+    const productId = productsData?.data?.[2]?.id;
+    if (!variants) return [];
+    const plans = [];
+    const monthlyVariant = variants.find(
+      (v) => v.attributes.interval === "month" && v.attributes.status === "published"
+    );
+    const annualVariant = variants.find(
+      (v) => v.attributes.interval === "year" && v.attributes.status === "published"
+    );
+    if (monthlyVariant) {
+      plans.push({
+        title: "Pro Monthly",
+        variantId: monthlyVariant.id,
+        productId,
+        buyUrl: `https://tokscript.lemonsqueezy.com/checkout/buy/${monthlyVariant.attributes.slug}`,
+      });
+    }
+    if (annualVariant) {
+      plans.push({
+        title: "Pro Annual",
+        variantId: annualVariant.id,
+        productId,
+        buyUrl: `https://tokscript.lemonsqueezy.com/checkout/buy/${annualVariant.attributes.slug}`,
+      });
+    }
+    return plans;
+  };
+  const allPlans = [freePlan, ...transformPlansData()];
+
   return (
     <div className="pricing-page-new">
-      <Background />
-
       {/* Decorative Gradients (Fixed) */}
       <div
         style={{
@@ -478,804 +525,593 @@ export default function PricingPage({ initialProductsData }) {
         {/* Hero */}
         <motion.div
           style={{ opacity: heroOpacity, y: heroY }}
-          className="hero-section"
+          className="hero-section pricing-hero"
         >
-          <div className="badge-pill">
-            <Sparkles size={10} /> <span>Used by 41,000+ Creators</span>
-          </div>
+          <div className="pricing-hero-eyebrow">Pricing</div>
 
-          <h1 className="hero-headline">
-            Pricing that pays for <br className="hidden-mobile" />
-            <span className="text-gradient">itself in 24 hours.</span>
+          <h1 className="pricing-hero-headline">
+            Pick A Plan. Get To Work.
           </h1>
 
-          <p className="hero-sub">
-            Reverse-engineer viral videos into your own scripts.{" "}
-            <span style={{ color: "#d4d4d4" }}>
-              Start for free. Upgrade for power.
-            </span>
+          <p className="pricing-hero-sub">
+            Free forever for the basics. $39/year for the full toolkit. Built to pay for itself the first week you use it.
           </p>
 
-          {/* Stats Dashboard */}
-          <div className="stats-container">
-            <div className="stats-grid">
-              <Counter
-                from={0}
-                to={2.6}
-                suffix="M+"
-                label="Videos Processed"
-              />
-              <Counter
-                from={0}
-                to={190}
-                suffix="K+"
-                label="Profiles Downloaded"
-              />
-              <Counter from={0} to={120} suffix="K+" label="Hours Saved" />
-            </div>
-            <div className="stats-footer">
-              <Zap size={14} fill="currentColor" />
-              <span>99% accurate transcription across 50+ languages</span>
-            </div>
-          </div>
         </motion.div>
 
         {/* Mobile Tabs */}
-        <div className="mobile-tabs">
-          <div className="tab-container">
-            <button
-              className={`tab-btn ${
-                activeTab === "free" ? "active" : "inactive"
-              }`}
-              onClick={() => setActiveTab("free")}
-            >
-              Free
-            </button>
-            <button
-              className={`tab-btn featured ${
-                activeTab === "annual" ? "active" : "inactive"
-              }`}
-              onClick={() => setActiveTab("annual")}
-            >
-              Annual
-            </button>
-            <button
-              className={`tab-btn ${
-                activeTab === "monthly" ? "active" : "inactive"
-              }`}
-              onClick={() => setActiveTab("monthly")}
-            >
-              Monthly
-            </button>
-          </div>
-        </div>
+  <div className="mobile-tabs">
+    <div className="tab-container">
+      <button
+        className={`tab-btn ${
+          activeTab === "free" ? "active" : "inactive"
+        }`}
+        onClick={() => setActiveTab("free")}
+      >
+        Free
+      </button>
+      <button
+        className={`tab-btn featured ${
+          activeTab === "annual" ? "active" : "inactive"
+        }`}
+        onClick={() => setActiveTab("annual")}
+      >
+        Annual
+      </button>
+      <button
+        className={`tab-btn ${
+          activeTab === "monthly" ? "active" : "inactive"
+        }`}
+        onClick={() => setActiveTab("monthly")}
+      >
+        Monthly
+      </button>
+    </div>
+  </div>
 
-        {/* Pricing Grid */}
-        <div className="pricing-grid">
-          <div className="row">
-            {/* Free */}
-            <div className="col-xl-4 col-lg-4 col-md-12">
-              <div
-                className={`pricing-card-wrapper ${
-                  activeTab === "free" ? "active" : ""
-                }`}
-              >
-                <div className="pricing-card">
-                  <div
-                    className="relative z-10"
-                    style={{
-                      height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <div style={{ marginBottom: "0.5rem" }}>
-                      <h3 className="card-title" style={{ color: "#e6e6e6" }}>
-                        Free
-                      </h3>
-                      <p className="card-desc">Test the basics</p>
-                    </div>
-                    <div className="price-row">
-                      <span className="price-val" style={{ color: "#e6e6e6" }}>
-                        $0
-                      </span>
-                      <span className="price-period">forever</span>
-                    </div>
-                    <div className="feature-group">
-                      <Feature text="5 transcripts per day" />
-                      <Feature text="5 translations per day" />
-                      <Feature text="TikTok, Reels, Shorts" />
-                      <Feature text="Basic Chrome Extension" />
-                    </div>
-                    <div
-                      className="feature-group disabled"
-                      style={{
-                        opacity: 0.4,
-                        borderTop: "1px solid var(--border-color)",
-                        paddingTop: "1rem",
-                      }}
-                    >
-                      <div
-                        className="stat-lbl"
-                        style={{ marginBottom: "0.5rem" }}
-                      >
-                        NOT INCLUDED
-                      </div>
-                      <Feature text="AI Agents" excluded />
-                      <Feature text="Bulk Import" excluded />
-                    </div>
-                    <div style={{ marginTop: "auto", paddingTop: "1.5rem" }}>
-                      {user && user?.plan == "free" ? (
-                        <button disabled={true} className="btn btn-outline">
-                          Current Plan
-                        </button>
-                      ) : user?.plan == "pro" ? (
-                        <button disabled={true} className="btn btn-outline">
-                          Get Started
-                        </button>
-                      ) : (
-                        <>
-                          {/* Desktop: Button opens modal */}
-                          <button
-                            onClick={() => {
-                              // Open checkout overlay for signup only (no checkout redirect)
-                              setPendingCheckoutUrl(null);
-                              setPendingPlan({
-                                name: "Free Plan",
-                                features: [
-                                  "5 transcripts per day",
-                                  "5 translations per day",
-                                  "TikTok, Reels, Shorts",
-                                  "Basic Chrome Extension",
-                                ],
-                                buttonText: "Get Started",
-                              });
-                              setCheckoutOverlayShow(true);
-                            }}
-                            className="btn btn-outline d-none d-md-flex justify-content-center"
-                          >
-                            Get Started
-                          </button>
-                          {/* Mobile: Anchor redirects to signin */}
-                          <a
-                            href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/signin`}
-                            className="btn btn-outline d-flex d-md-none justify-content-center"
-                          >
-                            Get Started
-                          </a>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
+  {/* Pricing Grid — glass card style */}
+  <div className="pc-grid">
+      {/* Free */}
+      <div className={`pc-card-wrapper ${activeTab === "free" ? "active" : ""}`}>
+        <div className="pc-card">
+          <div className="pc-header">
+            <div className="pc-plan-row">
+              <div className="pc-plan-name">Free</div>
+              <span className="pc-badge">Forever</span>
             </div>
-            <div className="col-xl-4 col-lg-4 col-md-12">
-              {/* Annual (Featured) */}
-              <div
-                className={`pricing-card-wrapper ${
-                  activeTab === "annual" ? "active" : ""
-                }`}
-              >
-                <div className="pricing-card featured">
-                  <div className="featured-border-gradient"></div>
-                  <div className="crown-badge">
-                    <Crown size={12} fill="currentColor" /> Recommended
-                  </div>
-                  <div
-                    className="relative z-10"
-                    style={{
-                      height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <div style={{ marginBottom: "0.5rem" }}>
-                      <h3 className="card-title">Annual</h3>
-                      <p className="card-desc">
-                        Best value for serious creators
-                      </p>
-                    </div>
-                    <div className="price-row">
-                      <span className="price-val">$39</span>
-                      <span className="price-period">per year</span>
-                    </div>
-
-                    <div className="calc-box">
-                      <div className="calc-box-highlight"></div>
-                      <div
-                        style={{
-                          color: "#00B8B2",
-                          fontWeight: 700,
-                          fontSize: "12px",
-                          lineHeight: "17px",
-                          position: "relative",
-                        }}
-                      >
-                        That's $3.25/month
-                      </div>
-                      <div
-                        style={{
-                          color: "#7a7a7a",
-                          fontSize: "10px",
-                          lineHeight: "16px",
-                          position: "relative",
-                        }}
-                      >
-                        (Monthly plan = $120/year)
-                      </div>
-                    </div>
-
-                    <div className="feature-group">
-                      <div className="group-title">
-                        <Sparkles
-                          size={12}
-                          className="text-yellow-400"
-                          style={{ color: "#facc15" }}
-                        />{" "}
-                        UNLIMITED AI AGENTS
-                      </div>
-                      <Feature
-                        text="Viral Hook Generator"
-                        sub="Paste any transcript → Get 20+ proven hooks"
-                        bold
-                      />
-                      <Feature
-                        text="Viral Script Writer"
-                        sub="Turn any viral video into YOUR script"
-                        bold
-                      />
-                      <Feature
-                        text="Virality Explainer"
-                        sub="See exactly WHY videos blow up"
-                      />
-                    </div>
-
-                    <div className="divider"></div>
-
-                    <div className="feature-group">
-                      <div className="group-title">
-                        <Layers
-                          size={12}
-                          className="text-emerald-400"
-                          style={{ color: "#00B8B2" }}
-                        />{" "}
-                        BULK PROCESSING
-                      </div>
-                      <Feature text="Unlimited transcripts (no daily cap)" />
-                      <Feature text="Unlimited translations (any language)" />
-                      <Feature text="Bulk import 50 videos at once" />
-                      {/* Platform Logos */}
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "1rem",
-                          margin: "0.75rem 0",
-                          paddingLeft: "1.75rem",
-                          opacity: 0.9,
-                        }}
-                      >
-                        <TikTokIcon
-                          className="w-2 h-2 text-white"
-                          style={{ width: "16px", height: "16px" }}
-                        />
-                        <InstagramIcon
-                          className="w-2 h-2 text-white"
-                          style={{ width: "16px", height: "16px" }}
-                        />
-                        <YoutubeIcon
-                          className="w-2 h-2 text-white"
-                          style={{ width: "16px", height: "16px" }}
-                        />
-                        <span
-                          style={{
-                            fontSize: "0.625rem",
-                            color: "#7a7a7a",
-                            fontWeight: 500,
-                            textTransform: "uppercase",
-                            letterSpacing: "0.05em",
-                          }}
-                        >
-                          All Platforms
-                        </span>
-                      </div>
-                      <Feature text="HD video downloads (no watermark)" />
-                    </div>
-
-                    <div style={{ marginTop: "2rem" }}>
-                      {profile?.plan == "pro" &&
-                      profile?.subscription?.lemonSqueezyVariantId ==
-                        productsData?.data?.[2]?.variants?.[2]?.id &&
-                      profile.subscription.status === "active" ? (
-                        <button disabled={true} className="btn btn-outline">
-                          Current Plan
-                        </button>
-                      ) : profile?.plan == "pro" &&
-                        profile?.plan !== "free" &&
-                        profile.subscription.status === "active" ? (
-                        <button
-                          disabled={
-                            loadingStates[
-                              productsData?.data?.[2]?.variants?.[2]?.id
-                            ]
-                          }
-                          onClick={() =>
-                            handleUpgradeClick(
-                              productsData?.data?.[2]?.variants?.[2]?.id,
-                              productsData?.data?.[2]?.variants?.[2]?.attributes.name
-                                ?.toLowerCase()
-                                ?.includes("pro")
-                                ? "pro"
-                                : productsData?.data?.[2]?.variants?.[2]
-                                    ?.attributes.name,
-                              productsData?.data?.[2]?.variants?.[2]?.attributes.name
-                                ?.toLowerCase()
-                                ?.includes("annual") ||
-                                productsData?.data?.[2]?.variants?.[2]?.attributes.name
-                                  ?.toLowerCase()
-                                  ?.includes("year")
-                                ? "yearly"
-                                : "monthly",
-                            )
-                          }
-                          className="btn btn-outline"
-                        >
-                          {loadingStates[
-                            productsData?.data?.[2]?.variants?.[2]?.id
-                          ]
-                            ? "Processing..."
-                            : "Upgrade"}
-                        </button>
-                      ) : (
-                        <>
-                          {/* Desktop: Button opens modal */}
-                          <button
-                            onClick={() =>
-                              handleCheckout(
-                                productsData?.data?.[2]?.variants?.[2],
-                              )
-                            }
-                            className="btn btn-primary d-none d-md-flex"
-                          >
-                            Get Annual — Save $81
-                            <ArrowRight size={20} strokeWidth={3} />
-                          </button>
-                          {/* Mobile: Check if logged in */}
-                          {!user || !token ? (
-                            <a
-                              href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=https://tokscript.lemonsqueezy.com/checkout/buy/${productsData?.data?.[2]?.variants?.[2]?.attributes?.slug}` + (aff ? `&aff=${aff}` : "")}
-                              className="btn btn-primary d-flex d-md-none"
-                            >
-                              Get Annual — Save $81
-                              <ArrowRight size={20} strokeWidth={3} />
-                            </a>
-                          ) : (
-                            <button
-                              className="btn btn-primary d-flex d-md-none"
-                              onClick={() => {
-                                const buyUrl = `https://tokscript.lemonsqueezy.com/checkout/buy/${productsData?.data?.[2]?.variants?.[2]?.attributes?.slug}`;
-                                const checkoutUrl =
-                                  buyUrl +
-                                  `?checkout[email]=${encodeURIComponent(
-                                    user.email,
-                                  )}&checkout[name]=${encodeURIComponent(
-                                    user.name || user.email,
-                                  )}&checkout[custom][user_id]=${user?.id || user._id}` +
-                                  (aff ? `&aff=${aff}` : "");
-                                window.location.href = checkoutUrl;
-                              }}
-                            >
-                              Get Annual — Save $81
-                              <ArrowRight size={20} strokeWidth={3} />
-                            </button>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-xl-4 col-lg-4 col-md-12">
-              {/* Monthly */}
-              <div
-                className={`pricing-card-wrapper ${
-                  activeTab === "monthly" ? "active" : ""
-                }`}
-              >
-                <div className="pricing-card">
-                  <div
-                    className="relative z-10"
-                    style={{
-                      height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <div style={{ marginBottom: "0.5rem" }}>
-                      <h3 className="card-title" style={{ color: "#e6e6e6" }}>
-                        Monthly
-                      </h3>
-                      <p className="card-desc">Full power, flexible billing</p>
-                    </div>
-                    <div className="price-row">
-                      <span className="price-val" style={{ color: "#e6e6e6" }}>
-                        $10
-                      </span>
-                      <span className="price-period">per month</span>
-                    </div>
-
-                    <div
-                      className="calc-box"
-                      style={{
-                        background: "transparent",
-                        border: "1px solid var(--border-color)",
-                      }}
-                    >
-                      <div style={{ color: "#7a7a7a", fontSize: "0.75rem" }}>
-                        = $120/year
-                      </div>
-                      <div style={{ color: "#7a7a7a", fontSize: "0.625rem" }}>
-                        Annual saves $81
-                      </div>
-                    </div>
-
-                    <div className="feature-group">
-                      <p
-                        className="stat-lbl"
-                        style={{ marginBottom: "0.5rem" }}
-                      >
-                        EVERYTHING IN ANNUAL:
-                      </p>
-                      <Feature text="All 3 AI Agents (unlimited)" />
-                      <Feature text="Unlimited transcripts" />
-                      <Feature text="Unlimited translations" />
-                      <Feature text="Bulk import 50 videos" />
-                    </div>
-
-                    <div
-                      className="feature-group listing"
-                      style={{
-                        display: "flex",
-                        gap: "0.5rem",
-                        fontSize: "0.625rem",
-                        color: "#eab308",
-                      }}
-                    >
-                      <TrendingUp size={12} />{" "}
-                      <span style={{ color: "#eab308", fontSize: "10px" }}>
-                        Costs $81 more per year
-                      </span>
-                    </div>
-                    <div
-                      style={{
-                        marginTop: "auto",
-                        paddingTop: "1.5rem",
-                        borderTop: "1px solid var(--border-color)",
-                      }}
-                    >
-                      {profile?.plan == "pro" &&
-                      profile?.subscription?.lemonSqueezyVariantId ==
-                        productsData?.data?.[2]?.variants?.[1]?.id ? (
-                        <button disabled={true} className="btn btn-outline">
-                          Current Plan
-                        </button>
-                      ) : profile?.plan == "pro" &&
-                        profile?.plan !== "free" &&
-                        profile.subscription.status === "active" ? (
-                        <button
-                          disabled={
-                            loadingStates[
-                              productsData?.data?.[2]?.variants?.[1]?.id
-                            ]
-                          }
-                          onClick={() =>
-                            handleUpgradeClick(
-                              productsData?.data?.[2]?.variants?.[1]?.id,
-                              productsData?.data?.[2]?.variants?.[1]?.attributes.name
-                                ?.toLowerCase()
-                                ?.includes("pro")
-                                ? "pro"
-                                : productsData?.data?.[2]?.variants?.[1]
-                                    ?.attributes.name,
-                              productsData?.data?.[2]?.variants?.[1]?.attributes.name
-                                ?.toLowerCase()
-                                ?.includes("annual") ||
-                                productsData?.data?.[2]?.variants?.[1]?.attributes.name
-                                  ?.toLowerCase()
-                                  ?.includes("year")
-                                ? "yearly"
-                                : "monthly",
-                            )
-                          }
-                          className="btn btn-outline"
-                        >
-                          {loadingStates[
-                            productsData?.data?.[2]?.variants?.[1]?.id
-                          ]
-                            ? "Processing..."
-                            : "Upgrade"}
-                        </button>
-                      ) : (
-                        <>
-                          {/* Desktop: Button opens modal */}
-                          <button
-                            className="btn btn-outline d-none d-md-flex"
-                            onClick={() =>
-                              handleCheckout(
-                                productsData?.data?.[2]?.variants?.[1],
-                              )
-                            }
-                            style={{
-                              background: "rgba(13, 13, 13, 0.5)",
-                              border: "1px solid #2a2a2a",
-                            }}
-                          >
-                            Get Monthly
-                          </button>
-                          {/* Mobile: Check if logged in */}
-                          {!user || !token ? (
-                            <a
-                              href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=https://tokscript.lemonsqueezy.com/checkout/buy/${productsData?.data?.[2]?.variants?.[1]?.attributes.slug}` + (aff ? `&aff=${aff}` : "")}
-                              className="btn btn-outline d-flex d-md-none"
-                              style={{
-                                background: "rgba(13, 13, 13, 0.5)",
-                                border: "1px solid #2a2a2a",
-                              }}
-                            >
-                              Get Monthly
-                            </a>
-                          ) : (
-                            <button
-                              className="btn btn-outline d-flex d-md-none"
-                              onClick={() => {
-                                const buyUrl = `https://tokscript.lemonsqueezy.com/checkout/buy/${productsData?.data?.[2]?.variants?.[1]?.attributes.slug}`;
-                                const checkoutUrl =
-                                  buyUrl +
-                                  `?checkout[email]=${encodeURIComponent(
-                                    user.email,
-                                  )}&checkout[name]=${encodeURIComponent(
-                                    user.name || user.email,
-                                  )}&checkout[custom][user_id]=${user?.id || user._id}` +
-                                  (aff ? `&aff=${aff}` : "");
-                                window.location.href = checkoutUrl;
-                              }}
-                              style={{
-                                background: "rgba(13, 13, 13, 0.5)",
-                                border: "1px solid #2a2a2a",
-                              }}
-                            >
-                              Get Monthly
-                            </button>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <p className="pc-description">Test the basics</p>
+            <div className="pc-price-row">
+              <span className="pc-price-main">$0</span>
+              <span className="pc-price-period">forever</span>
             </div>
           </div>
-        </div>
-
-        {/* Real Results Section */}
-        <div className="results-section">
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "300px",
-              height: "300px",
-              background: "rgba(57, 72, 75, 0.05)",
-              filter: "blur(100px)",
-              borderRadius: "9999px",
-              pointerEvents: "none",
-            }}
-          />
-
-          <div
-            className="text-center section-title"
-            style={{ marginBottom: "3rem", position: "relative", zIndex: 10 }}
-          >
-            <h2>Real Results from Real Users</h2>
-            <p style={{ color: "#7a7a7a", fontSize: "16px" }}>
-              We track our users' success. The data doesn't lie.
-            </p>
-          </div>
-
-          <div className="results-grid">
-            <ResultWidget
-              value="41K+"
-              label="Active Creators"
-              desc="2.6M+ videos transcribed"
-              icon={
-                <Globe
-                  className="text-zinc-400"
-                  style={{ color: " #60a5fa" }}
-                />
-              }
-              delay={0}
-            />
-            <ResultWidget
-              value="2.6M+"
-              label="Videos Processed"
-              desc="Using our AI script writer"
-              icon={
-                <Video
-                  className="text-purple-400"
-                  style={{ color: " #c084fc" }}
-                />
-              }
-              delay={0.1}
-            />
-            <ResultWidget
-              value="99%"
-              label="Accuracy"
-              desc="Across 100+ languages"
-              icon={
-                <Zap className="text-yellow-400" style={{ color: "#facc15" }} />
-              }
-              delay={0.2}
-            />
-          </div>
-
-          {/* Testimonial Quote */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="testimonial"
-          >
-            <div className="testimonial-bar"></div>
-            <div className="testimonial-text">
-              "TokScript paid for itself in the first hour. I generated 50 hooks
-              from my competitor's top videos and posted content for the next
-              month."
-            </div>
-            <div
-              className="d-flex justify-content-center"
-              style={{ gap: "0.75rem" }}
-            >
-              <div
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: "50%",
-                  background: "#1a1a1a",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#7a7a7a",
-                }}
-              >
-                <ShieldCheck size={20} />
-              </div>
-              <div style={{ textAlign: "left" }}>
-                <div
-                  style={{
-                    fontSize: "13px",
-                    lineHeight: "18px",
-                    fontWeight: 700,
-                    color: "white",
+          <div className="pc-cta-wrap">
+            {user && user?.plan == "free" ? (
+              <button disabled className="pc-cta">Current Plan</button>
+            ) : !user ? (
+              <>
+                <button
+                  onClick={() => {
+                    setPendingCheckoutUrl(null);
+                    setPendingPlan({
+                      name: "Free Plan",
+                      price: "$0",
+                      period: "/forever",
+                      badge: null,
+                      features: [
+                        "5 transcripts per day",
+                        "TikTok only",
+                        "Chrome Extension (free features)",
+                      ],
+                      buttonText: "Create Free Account",
+                    });
+                    setCheckoutOverlayShow(true);
                   }}
-                  className="mb-1"
+                  className="pc-cta d-none d-md-flex"
                 >
-                  Verified TokScript Pro User
-                </div>
-                <div
-                  style={{
-                    fontSize: "10px",
-                    lineHeight: "14px",
-                    color: "#00B8B2",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                  }}
+                  Get Started
+                </button>
+                <a
+                  href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/signin`}
+                  className="pc-cta d-flex d-md-none"
                 >
-                  TikTok Shop Seller
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          <div className="text-center" style={{ marginTop: "3rem" }}>
-            {profile?.plan == "free" && (
-              <button
-                onClick={() =>
-                  handleCheckout(productsData?.data?.[2]?.variants?.[2])
-                }
-                className="btn-style btn-blue"
-              >
-                Get Started — $25/year
-              </button>
+                  Get Started
+                </a>
+              </>
+            ) : (
+              <button onClick={() => setDontMissOutModalShow(true)} className="pc-cta">Get Started</button>
             )}
           </div>
+          <div className="pc-body">
+            <ul className="pc-list">
+              <li><Check size={16} strokeWidth={3} /><span>{copy.pricingDailyFreeLine}</span></li>
+              <li><Check size={16} strokeWidth={3} /><span>5 translations per day</span></li>
+              <li><Check size={16} strokeWidth={3} /><span>TikTok, Reels, Shorts</span></li>
+            </ul>
+            <div className="pc-platforms pc-platforms-row">
+              <span className="pc-ai-logo pc-ai-logo--platform" aria-label="TikTok"><img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/pricing-icons/tiktok-tile.png?v=2`} alt="" /></span>
+              <span className="pc-ai-logo pc-ai-logo--platform" aria-label="Instagram"><img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/pricing-icons/instagram-tile.png?v=2`} alt="" /></span>
+              <span className="pc-ai-logo pc-ai-logo--platform" aria-label="YouTube"><img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/pricing-icons/youtube-tile.png?v=2`} alt="" /></span>
+            </div>
+            <ul className="pc-list">
+              <li><Check size={16} strokeWidth={3} /><span>Basic Chrome Extension</span></li>
+            </ul>
+            <div className="pc-separator">
+              <span className="pc-sep-line" />
+              <span>Not included</span>
+              <span className="pc-sep-line" />
+            </div>
+            <ul className="pc-list pc-list-locked">
+              <li><X size={16} strokeWidth={3} /><span>AI Agents</span></li>
+              <li><X size={16} strokeWidth={3} /><span>Bulk Import</span></li>
+              <li><X size={16} strokeWidth={3} /><span>Claude &amp; ChatGPT</span></li>
+            </ul>
+          </div>
         </div>
+      </div>
+      {/* Annual (Featured) */}
+      <div className={`pc-card-wrapper ${activeTab === "annual" ? "active" : ""}`}>
+        <div className="pc-card pc-card-featured">
+          <div className="pc-header">
+            <div className="pc-plan-row">
+              <div className="pc-plan-name">Annual</div>
+              <span className="pc-badge pc-badge-recommended">
+                <Crown size={12} strokeWidth={2.5} /> Recommended
+              </span>
+            </div>
+            <p className="pc-description">Best value for serious creators</p>
+            <div className="pc-price-row">
+              <span className="pc-price-main">$39</span>
+              <span className="pc-price-period">per year</span>
+              <span className="pc-price-original">$120</span>
+            </div>
+            <div className="pc-price-highlight">
+              <span className="pc-price-highlight-pill">That&apos;s $3.25/month</span>
+            </div>
+          </div>
+          <div className="pc-cta-wrap">
+            {loading ? (
+              <button disabled className="pc-cta pc-cta-primary">Loading...</button>
+            ) : user ? (
+              profile?.plan == "pro" &&
+              profile?.subscription?.status === "active" &&
+              profile.subscription.lemonSqueezyVariantId ===
+                allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.variantId ? (
+                <button disabled className="pc-cta">Current Plan</button>
+              ) : profile?.plan == "pro" &&
+                profile?.plan !== "free" &&
+                profile.subscription?.status === "active" ? (
+                <button
+                  disabled={loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.variantId]}
+                  onClick={() => {
+                    const annualPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"));
+                    if (annualPlan) handleUpgradeClick(annualPlan.variantId, "annual");
+                  }}
+                  className="pc-cta pc-cta-primary"
+                >
+                  {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.variantId] ? "Processing..." : "Upgrade"}
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => {
+                      const annualPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"));
+                      if (annualPlan) handleCheckout(annualPlan);
+                    }}
+                    className="pc-cta pc-cta-primary d-none d-md-flex"
+                  >
+                    Get Annual — Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+                  </button>
+                  <a
+                    href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.buyUrl}`}
+                    className="pc-cta pc-cta-primary d-flex d-md-none"
+                  >
+                    Get Annual — Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+                  </a>
+                </>
+              )
+            ) : (
+              <>
+                <button
+                  onClick={() => {
+                    const annualPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"));
+                    if (annualPlan) handleCheckout(annualPlan);
+                  }}
+                  className="pc-cta pc-cta-primary d-none d-md-flex"
+                >
+                  Get Annual — Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+                </button>
+                <a
+                  href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.buyUrl}`}
+                  className="pc-cta pc-cta-primary d-flex d-md-none"
+                >
+                  Get Annual — Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+                </a>
+              </>
+            )}
+          </div>
+          <div className="pc-body">
+            <div className="pc-group">
+              <div className="pc-group-title">Bulk Processing</div>
+              <div className="pc-platforms pc-platforms-row">
+                <span className="pc-ai-logo pc-ai-logo--platform" aria-label="TikTok"><img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/pricing-icons/tiktok-tile.png?v=2`} alt="" /></span>
+                <span className="pc-ai-logo pc-ai-logo--platform" aria-label="Instagram"><img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/pricing-icons/instagram-tile.png?v=2`} alt="" /></span>
+                <span className="pc-ai-logo pc-ai-logo--platform" aria-label="YouTube"><img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/pricing-icons/youtube-tile.png?v=2`} alt="" /></span>
+              </div>
+              <ul className="pc-list">
+                <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Unlimited translations</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos at once</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>HD downloads, no watermarks</span></li>
+              </ul>
+            </div>
+            <div className="pc-group">
+              <div className="pc-group-title">Add to Claude &amp; ChatGPT</div>
+              <div className="pc-ai-pair">
+                <span className="pc-ai-logo pc-ai-logo--claude" aria-label="Claude"><ClaudeIcon /></span>
+                <span className="pc-ai-logo pc-ai-logo--chatgpt" aria-label="ChatGPT"><ChatGPTIcon /></span>
+              </div>
+              <p className="pc-group-blurb">Ask anything about any TikTok, Instagram, or YouTube — right inside your AI chat.</p>
+            </div>
+            <div className="pc-group">
+              <div className="pc-group-title">Everywhere You Work</div>
+              <ul className="pc-list">
+                <li><Check size={16} strokeWidth={3} /><span>Chrome Extension</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Mobile + Desktop apps</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Cloud-synced dashboard</span></li>
+              </ul>
+            </div>
+            <div className="pc-group">
+              <div className="pc-group-title">AI Agents</div>
+              <ul className="pc-list pc-list-detailed">
+                <li>
+                  <Check size={16} strokeWidth={3} />
+                  <div>
+                    <strong>Viral Hook Generator</strong>
+                    <span>{copy.agents.hook}</span>
+                  </div>
+                </li>
+                <li>
+                  <Check size={16} strokeWidth={3} />
+                  <div>
+                    <strong>Viral Script Writer</strong>
+                    <span>{copy.agents.script}</span>
+                  </div>
+                </li>
+                <li>
+                  <Check size={16} strokeWidth={3} />
+                  <div>
+                    <strong>Virality Explainer</strong>
+                    <span>{copy.agents.explainer}</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        {/* FAQ Section */}
-        <div
-          style={{ maxWidth: "48rem", margin: "0 auto 5rem auto" }}
-          className="faq-section"
-          id="faq"
-        >
-          <div className="section-title">
-            <h2
-              className="text-center "
-              style={{
-                fontSize: "31px",
-                fontWeight: 700,
-                marginBottom: "1rem",
-              }}
-            >
-              Frequently Asked Questions
+      {/* Monthly */}
+      <div className={`pc-card-wrapper ${activeTab === "monthly" ? "active" : ""}`}>
+        <div className="pc-card">
+          <div className="pc-header">
+            <div className="pc-plan-row">
+              <div className="pc-plan-name">Monthly</div>
+              <span className="pc-badge">Flexible</span>
+            </div>
+            <p className="pc-description">Full power, flexible billing</p>
+            <div className="pc-price-row">
+              <span className="pc-price-main">$10</span>
+              <span className="pc-price-period">per month</span>
+            </div>
+            <div className="pc-price-highlight pc-price-highlight-warn">
+              <span className="pc-price-highlight-equivalent">= $120/year</span>
+              <span className="pc-price-highlight-note">Annual saves $81</span>
+            </div>
+          </div>
+          <div className="pc-cta-wrap">
+            {loading ? (
+              <button disabled className="pc-cta">Loading...</button>
+            ) : user ? (
+              profile?.plan == "pro" &&
+              profile?.subscription?.status === "active" &&
+              profile.subscription.lemonSqueezyVariantId ===
+                allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.variantId ? (
+                <button disabled className="pc-cta">Current Plan</button>
+              ) : profile?.plan == "pro" &&
+                profile?.plan !== "free" &&
+                profile.subscription?.status === "active" ? (
+                <button
+                  disabled={loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.variantId]}
+                  onClick={() => {
+                    const monthlyPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"));
+                    if (monthlyPlan) handleUpgradeClick(monthlyPlan.variantId, "monthly");
+                  }}
+                  className="pc-cta"
+                >
+                  {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.variantId] ? "Processing..." : "Upgrade"}
+                </button>
+              ) : (
+                <>
+                  <button
+                    className="pc-cta d-none d-md-flex"
+                    onClick={() => {
+                      const monthlyPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"));
+                      if (monthlyPlan) handleCheckout(monthlyPlan);
+                    }}
+                  >
+                    Get Monthly
+                  </button>
+                  <a
+                    href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.buyUrl}`}
+                    className="pc-cta d-flex d-md-none"
+                  >
+                    Get Monthly
+                  </a>
+                </>
+              )
+            ) : (
+              <>
+                <button
+                  className="pc-cta d-none d-md-flex"
+                  onClick={() => {
+                    const monthlyPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"));
+                    if (monthlyPlan) handleCheckout(monthlyPlan);
+                  }}
+                >
+                  Get Monthly
+                </button>
+                <a
+                  href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.buyUrl}`}
+                  className="pc-cta d-flex d-md-none"
+                >
+                  Get Monthly
+                </a>
+              </>
+            )}
+          </div>
+          <div className="pc-body">
+            <div className="pc-group">
+              <div className="pc-group-title">Everything in Annual</div>
+              <ul className="pc-list">
+                <li><Check size={16} strokeWidth={3} /><span>All 3 AI Agents</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts &amp; translations</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Claude &amp; ChatGPT</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Chrome, mobile &amp; desktop</span></li>
+              </ul>
+            </div>
+            <div className="pc-warn-callout">
+              Costs $81 more per year
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+      </main>
+
+      {/* Compare Plans */}
+      <section className="pricing-compare" aria-labelledby="pricing-compare-heading">
+        <div className="pricing-compare-inner">
+          <div className="pricing-compare-header">
+            <span className="pricing-compare-eyebrow">Compare Plans</span>
+            <h2 id="pricing-compare-heading" className="pricing-compare-headline">
+              Every Feature, Side By Side.
             </h2>
-            <p>Everything you need to know about the product and billing.</p>
-          </div>
-          <div style={{ marginTop: "2rem" }}>
-            {faqs.map((item, index) => (
-              <FAQItem key={index} q={item.q} a={item.a} />
-            ))}
-          </div>
-          <div className="bottom-text-center">
-            <p>
-              Have more questions?{" "}
-              <a href="/contact">Visit our support docs. </a>
+            <p className="pricing-compare-sub">
+              The full breakdown — so you know exactly what you&apos;re getting before you commit.
             </p>
           </div>
-        </div>
 
-        {/* Bottom CTA */}
-        <div className="bottom-cta">
-          <div className="cta-bg-gradient" />
+          <div className="pricing-compare-table-wrap">
+            <table className="pricing-compare-table">
+              <thead>
+                <tr>
+                  <th scope="col" className="pc-feat-col">Feature</th>
+                  <th scope="col">Free</th>
+                  <th scope="col" className="pc-col-featured">
+                    <span className="pc-col-featured-label">
+                      <Crown size={14} strokeWidth={2.5} /> Annual
+                    </span>
+                  </th>
+                  <th scope="col">Monthly</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="pc-section-row"><th colSpan={4} scope="rowgroup">Transcripts</th></tr>
+                <tr><th scope="row">Daily transcripts</th><td>5 / day</td><td className="pc-col-featured">Unlimited</td><td>Unlimited</td></tr>
+                <tr><th scope="row">Daily translations</th><td>5 / day</td><td className="pc-col-featured">Unlimited</td><td>Unlimited</td></tr>
+                <tr><th scope="row">TikTok, Reels, Shorts support</th><td><Check size={16} strokeWidth={3} /></td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
+                <tr><th scope="row">Export formats (TXT, PDF, XML)</th><td><Check size={16} strokeWidth={3} /></td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
 
-          <h2 className="cta-title">
-            Ready to turn viral videos into <br />
-            <span className="">YOUR viral videos?</span>
-          </h2>
-          <button
-            onClick={() => {
-              if (!user || !token) {
-                // Open checkout overlay for signup
-                setPendingCheckoutUrl(null);
-                setPendingPlan({
-                  name: "TokScript Pro",
-                  features: [
-                    "Unlimited AI Agents",
-                    "Unlimited transcripts",
-                    "Unlimited translations",
-                    "Bulk import 50 videos",
-                    "HD video downloads",
-                  ],
-                  buttonText: "Get Started",
-                });
-                setCheckoutOverlayShow(true);
-              } else {
-                // Already logged in, go to app
-                router.push("/app");
-              }
-            }}
-            className="btn-white"
-          >
-            Get Started Now
-          </button>
-          <p
-            style={{
-              marginTop: "1.5rem",
-              color: "#7a7a7a",
-              fontSize: "0.75rem",
-              fontWeight: 500,
-            }}
-          >
-            Secure payment via Stripe. Cancel anytime.
-          </p>
-          <p style={{ marginTop: '1rem', color: '#7a7a7a', fontSize: '0.8rem' }}>
-            Want to earn while you share? <Link href="/affiliate" style={{ color: '#60a5fa', textDecoration: 'underline', textUnderlineOffset: '3px' }}>Join our affiliate program</Link> — 40% recurring commissions.
-          </p>
-          <ShareBar url="https://tokscript.com/pricing" text="TokScript -- Free plan + $39/yr Pro with AI Script Writer & Viral Hook Generator. 41,000+ creators trust it." />
+                <tr className="pc-section-row"><th colSpan={4} scope="rowgroup">Bulk Processing</th></tr>
+                <tr><th scope="row">Bulk import up to 50 videos</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
+                <tr><th scope="row">TikTok Collection imports</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
+                <tr><th scope="row">Bulk export all transcripts</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
+                <tr><th scope="row">HD video downloads (no watermark)</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
+                <tr><th scope="row">Cover image downloads</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
+
+                <tr className="pc-section-row"><th colSpan={4} scope="rowgroup">AI Agents</th></tr>
+                <tr><th scope="row">Viral Hook Generator</th><td className="pc-na">—</td><td className="pc-col-featured">Unlimited</td><td>Unlimited</td></tr>
+                <tr><th scope="row">Viral Script Writer</th><td className="pc-na">—</td><td className="pc-col-featured">Unlimited</td><td>Unlimited</td></tr>
+                <tr><th scope="row">Virality Explainer</th><td className="pc-na">—</td><td className="pc-col-featured">Unlimited</td><td>Unlimited</td></tr>
+
+                <tr className="pc-section-row"><th colSpan={4} scope="rowgroup">Integrations</th></tr>
+                <tr><th scope="row">Claude integration</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
+                <tr><th scope="row">ChatGPT integration</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
+                <tr><th scope="row">Chrome Extension</th><td>Basic</td><td className="pc-col-featured">Full</td><td>Full</td></tr>
+                <tr><th scope="row">Mobile + Desktop apps</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
+                <tr><th scope="row">Cloud-synced dashboard</th><td><Check size={16} strokeWidth={3} /></td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
+
+                <tr className="pc-section-row"><th colSpan={4} scope="rowgroup">Teams &amp; Sharing</th></tr>
+                <tr><th scope="row">Team workspaces</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
+                <tr><th scope="row">Real-time collaboration</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
+                <tr><th scope="row">Permission controls</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
+
+                <tr className="pc-section-row"><th colSpan={4} scope="rowgroup">Billing</th></tr>
+                <tr><th scope="row">Price</th><td>$0 forever</td><td className="pc-col-featured">$39 / year</td><td>$10 / month</td></tr>
+                <tr><th scope="row">Effective monthly rate</th><td>Free</td><td className="pc-col-featured">$3.25 / month</td><td>$10 / month</td></tr>
+                <tr><th scope="row">Annual savings</th><td className="pc-na">—</td><td className="pc-col-featured">Save $81</td><td className="pc-na">—</td></tr>
+                <tr><th scope="row">Cancel anytime</th><td><Check size={16} strokeWidth={3} /></td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
+                <tr><th scope="row">7-day refund</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="pricing-compare-cta">
+            <button
+              type="button"
+              className="pricing-compare-cta-primary"
+              onClick={() => {
+                const annualPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"));
+                if (annualPlan) handleCheckout(annualPlan);
+              }}
+            >
+              Get Annual — Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+            </button>
+            <a
+              href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up`}
+              className="pricing-compare-cta-secondary"
+            >
+              Start Free
+            </a>
+          </div>
         </div>
-      </main>
+      </section>
+
+      {/* Creators Talking About TokScript Carousel */}
+      <ViralMomentsCarousel variant="pricing" />
+
+      <HomeSocialProof />
+
+      {/* FAQ + Final CTA */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map((item) => ({
+              "@type": "Question",
+              name: item.q,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: typeof item.a === "string" ? item.a.replace(/<[^>]+>/g, "") : "",
+              },
+            })),
+          }),
+        }}
+      />
+      <div style={{ position: "relative", zIndex: 50, background: "#0d0d0d" }}>
+        <FaqSection
+          faqData={faqs.map((f) => ({ title: f.q, content: f.a }))}
+          title="Pricing, Plans, And Everything In Between."
+          subtitle="Everything you need to know about pricing, plans, billing, and refunds — answered."
+        />
+      </div>
+
+      <div className="mcp-page">
+
+      {/* Final CTA Banner — chrome-extension style */}
+      <section className="mcp-cta-wrapper" style={{ padding: "40px 0" }}>
+          <div className="container">
+            <div
+              className="mcp-cta-card"
+              style={{ padding: "40px 24px 48px", maxWidth: "1080px", margin: "0 auto" }}
+            >
+              <div className="mcp-cta-grid" aria-hidden />
+              <div className="mcp-cta-glow mcp-cta-glow--left" aria-hidden />
+              <div className="mcp-cta-glow mcp-cta-glow--right" aria-hidden />
+
+              <div className="mcp-cta-inner">
+                <div className="mcp-cta-avatars cx-cta-avatars-tight">
+                  <span className="mcp-cta-avatar" style={{ background: "#00b8b2" }}>
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" />
+                  </span>
+                  <span className="mcp-cta-avatar" style={{ background: "#a486d4" }}>
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="" />
+                  </span>
+                  <span className="mcp-cta-avatar" style={{ background: "#f9bd24" }}>
+                    <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="" />
+                  </span>
+                  <span className="mcp-cta-avatar" style={{ background: "#f96b24" }}>
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="" />
+                  </span>
+                  <span className="mcp-cta-avatar mcp-cta-avatar--count">41K+</span>
+                </div>
+
+                <p className="mcp-cta-eyebrow" style={{ whiteSpace: "nowrap" }}>
+                  4.2&#9733; Trusted By Creators{" "}
+                  <span className="cx-footer-cta-dot">·</span>{" "}
+                  <span className="cx-eyebrow-creators">41K+ Creators</span>
+                </p>
+
+                <h2 className="mcp-cta-title">
+                  Stop Stalling. Start Researching.
+                </h2>
+                <p className="mcp-cta-subtitle">
+                  Free forever for the basics. $39/year for the full toolkit. The decision takes 30 seconds. The payoff lasts all year.
+                </p>
+
+                <div className="cx-footer-cta-actions">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const annualPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"));
+                      if (annualPlan) {
+                        handleCheckout(annualPlan);
+                      } else if (!user || !token) {
+                        setPendingCheckoutUrl(null);
+                        setPendingPlan({
+                          name: "TokScript Annual",
+                          features: [
+                            "Unlimited transcripts & translations",
+                            "Bulk import 50 videos",
+                            "All 3 AI Agents",
+                            "Claude & ChatGPT integration",
+                          ],
+                          buttonText: "Get Annual",
+                        });
+                        setCheckoutOverlayShow(true);
+                      }
+                    }}
+                    className="cx-signup-btn"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "8px",
+                      height: "44px",
+                      padding: "0 22px",
+                      background: "#ffffff",
+                      color: "#06091A",
+                      fontFamily: "Inter, system-ui, sans-serif",
+                      fontSize: "14.5px",
+                      fontWeight: 500,
+                      lineHeight: "23.4px",
+                      borderRadius: "16.4px",
+                      border: "none",
+                      textDecoration: "none",
+                      whiteSpace: "nowrap",
+                      cursor: "pointer",
+                      transition: "transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease",
+                    }}
+                  >
+                    Get Annual — Save $81
+                  </button>
+                  <Link
+                    href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up`}
+                    className="cx-footer-cta-secondary"
+                  >
+                    Start Free
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+      </section>
+
+      </div>
       <Footer />
 
       <DontMissOutModal

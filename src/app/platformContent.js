@@ -81,17 +81,20 @@ export const PLATFORM_COPY = {
       script: "Turn any viral Reel into YOUR script",
       explainer: "See exactly WHY Reels blow up",
     },
+    whoH2: "Who Uses TokScript's Instagram Transcript Generator",
+    whoSub:
+      "TokScript is built for anyone who needs to turn Instagram Reels into usable text, fast. Here's how different users put it to work.",
     who: {
       creators:
-        "Generate transcripts from your own Reels to repurpose into blog posts, newsletters, captions, and scripts. Feed transcripts into AI to speed up your full content workflow.",
+        "Generate transcripts from your own Instagram Reels to repurpose content into blog posts, newsletters, social captions, and scripts. Feed transcripts into AI tools to speed up your entire content workflow.",
       researchers:
-        "Convert Reels, tutorials, and educational content into searchable text. Build a reference library, create study notes, or analyze what top creators are saying.",
+        "Convert Instagram Reels, tutorials, and educational content into searchable text. Build a reference library from any account, create study notes, or analyze what top creators are actually saying.",
       marketers:
-        "Studying competitor Reels or analyzing ad scripts? Transcribe any Reel ad, extract the copy, and inform your own creative strategy in seconds.",
+        "Studying competitor Reels or analyzing what ad scripts are working? Transcribe any Instagram Reel ad, extract the copy, and use it to inform your own creative strategy, all in seconds.",
       ai:
-        "Pull any Reel transcript and feed it directly to ChatGPT, Claude, Gemini, or any AI workflow. The fastest way to get clean Reel text into any AI pipeline.",
+        "Pull any Instagram Reel transcript and feed it directly to ChatGPT, Claude, Gemini, or any AI workflow. The fastest way to get clean, structured Reel text into any AI pipeline.",
       ugc:
-        "Stop replaying Reels trying to catch every line. Download the transcript, read it in full, and rewrite it in your voice with our AI agents.",
+        "Stop replaying the same Reels over and over trying to catch every line. Download the transcript, read it in full, and use AI agents to rewrite it with your own voice and angle in minutes.",
     },
   },
 
@@ -129,17 +132,20 @@ export const PLATFORM_COPY = {
       script: "Turn any viral Short into YOUR script",
       explainer: "See exactly WHY Shorts blow up",
     },
+    whoH2: "Who Uses TokScript's YouTube Transcript Generator",
+    whoSub:
+      "TokScript is built for anyone who needs to turn YouTube video into usable text, fast. Here's how different users put it to work.",
     who: {
       creators:
-        "Generate transcripts from your own YouTube videos to repurpose into blog posts, newsletters, captions, and scripts. Feed transcripts into AI to speed up your full content workflow.",
+        "Generate transcripts from your own YouTube videos to repurpose content into blog posts, newsletters, social captions, and scripts. Feed transcripts into AI tools to speed up your entire content workflow.",
       researchers:
-        "Convert lectures, tutorials, and documentaries into searchable text. Build a reference library, create study notes, or analyze what top creators are saying.",
+        "Convert YouTube video lectures, tutorials, and documentaries into searchable text. Build a reference library from any channel, create study notes, or analyze what top creators are actually saying.",
       marketers:
-        "Studying competitor Shorts or analyzing ad scripts? Transcribe any YouTube ad, extract the copy, and inform your own creative strategy in seconds.",
+        "Studying competitor YouTube Shorts or analyzing what ad scripts are working? Transcribe any YouTube video ad, extract the copy, and use it to inform your own creative strategy, all in seconds.",
       ai:
-        "Pull any YouTube transcript and feed it directly to ChatGPT, Claude, Gemini, or any AI workflow. The fastest way to get clean YouTube text into any AI pipeline.",
+        "Pull any YouTube video transcript and feed it directly to ChatGPT, Claude, Gemini, or any AI workflow. TokScript is the fastest way to get clean, structured YouTube text into any AI pipeline.",
       ugc:
-        "Stop replaying Shorts trying to catch every line. Download the transcript, read it in full, and rewrite it in your voice with our AI agents.",
+        "Stop replaying the same Shorts over and over trying to catch every line. Download the transcript, read it in full, and use TokScript's AI agents to rewrite it with your own voice and angle in minutes.",
     },
   },
 };
