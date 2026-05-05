@@ -22,6 +22,7 @@ import tiktok1Icon from "../assets/images/icons/tiktok1-icon.svg";
 import instagram1Icon from "../assets/images/icons/insta1-con.svg";
 import youtube1Icon from "../assets/images/icons/youtube1-icon.svg";
 import bulkProcess from "../assets/images/bulking-process.webp";
+import bulkInstagramImg from "../assets/images/bulk-import-instagram.png";
 import cloudSync from "../assets/images/cloud.webp";
 import historyImg from "../assets/images/history-img.webp";
 import mediaImg from "../assets/images/media-dwnld.webp";
@@ -1511,7 +1512,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                         "Process simultaneously or select individually",
                         "Available on paid plans only",
                       ],
-                      img: bulkProcess,
+                      img: bulkInstagramImg,
                       alt: "Bulk transcript processing interface showing multiple Instagram Reels URLs being imported",
                     },
                     {
