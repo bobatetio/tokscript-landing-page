@@ -8,7 +8,7 @@ import whoCardGridBg from "../../assets_updated/images/mcp/who-card-grid-bg.png"
 import whoBrandMarketers from "../../assets_updated/images/mcp/who-brand-marketers.png";
 import whoResearchers from "../../assets_updated/images/mcp/who-researchers.png";
 import whoUgcMarketplaces from "../../assets_updated/images/mcp/who-ugc-marketplaces.png";
-import whoSoloCreator from "../../assets_updated/images/mcp/who-solo-creator.png";
+import whoSoloCreator from "../assets/images/who-content-creators.png";
 import whoAgencies from "../../assets_updated/images/mcp/who-agencies.png";
 
 import { getPlatformCopy } from "../app/platformContent";

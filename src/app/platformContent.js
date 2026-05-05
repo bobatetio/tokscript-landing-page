@@ -83,7 +83,7 @@ export const PLATFORM_COPY = {
     },
     whoH2: "Who Uses TokScript's Instagram Transcript Generator",
     whoSub:
-      "TokScript is built for anyone who needs to turn Instagram Reels into usable text, fast. Here's how different users put it to work.",
+      "Content Creators repurpose Reels into captions, newsletters, and articles without rewatching. Social Media Managers build swipe files and deliver transcript-backed reports across client accounts. UGC Creators study the exact hooks driving results before filming. Media Buyers extract hook structures and CTAs from top Reel ads for faster iteration. Journalists create citable text records from public Reels. AI Workflow Users feed transcripts directly into ChatGPT, Claude, or Gemini.",
     who: {
       creators:
         "Generate transcripts from your own Instagram Reels to repurpose content into blog posts, newsletters, social captions, and scripts. Feed transcripts into AI tools to speed up your entire content workflow.",

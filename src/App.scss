@@ -17187,7 +17187,7 @@ section h2 + p,
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 27px; /* Figma 240:2568 parent: gap-[27px] between rows */
+    gap: 56px; /* spacing between subsection rows */
   }
   /* Header is its own flex item; add larger gap below header before rows start */
   .vt-platform-inner > .vt-platform-header { margin-bottom: clamp(20px, 3vw, 40px); }
@@ -19162,7 +19162,10 @@ $ds-font: "Inter", system-ui, sans-serif;
   aspect-ratio: auto !important;
   height: auto !important;
   overflow: visible !important;
-  display: block !important;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
   padding: 0 !important;
 }
 #platform-about .vt-text::before {
@@ -19270,9 +19273,29 @@ $ds-font: "Inter", system-ui, sans-serif;
     white-space: nowrap;
   }
 
+  /* Make the sub paragraph wrap at the same width as the (nowrap) headline */
+  .landing-page.platform-instagram .mcp-page #who .who-header-block,
+  .landing-page.platform-youtube .mcp-page #who .who-header-block {
+    width: fit-content;
+    max-width: 100%;
+    height: auto;
+    padding-top: 0;
+  }
+  .landing-page.platform-instagram .mcp-page #who .who-header-content,
+  .landing-page.platform-youtube .mcp-page #who .who-header-content {
+    width: fit-content;
+    max-width: 100%;
+  }
+  .landing-page.platform-instagram .mcp-page #who .who-sub,
+  .landing-page.platform-youtube .mcp-page #who .who-sub {
+    max-width: 100%;
+    width: 100%;
+  }
+
   .landing-page.platform-instagram .mcp-page #who .who-cards-outer,
   .landing-page.platform-youtube .mcp-page #who .who-cards-outer {
     height: 893px;
+    margin-top: 36px;
   }
   .landing-page.platform-instagram .mcp-page #who .who-card-1,
   .landing-page.platform-instagram .mcp-page #who .who-card-2,

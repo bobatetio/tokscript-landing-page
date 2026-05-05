@@ -23,6 +23,19 @@ import instagram1Icon from "../assets/images/icons/insta1-con.svg";
 import youtube1Icon from "../assets/images/icons/youtube1-icon.svg";
 import bulkProcess from "../assets/images/bulking-process.webp";
 import bulkInstagramImg from "../assets/images/bulk-import-instagram.png";
+import cloudInstagramImg from "../assets/images/cloud-instagram.png";
+import historyInstagramImg from "../assets/images/history-instagram.png";
+import hdVideoInstagramImg from "../assets/images/hd-video-instagram.png";
+import urlShortcutInstagramImg from "../assets/images/url-shortcut-instagram.png";
+import aiAgentsInstagramImg from "../assets/images/ai-agents-instagram.png";
+import bulkYoutubeImg from "../assets/images/bulk-youtube.png";
+import cloudYoutubeImg from "../assets/images/cloud-youtube.png";
+import historyYoutubeImg from "../assets/images/history-youtube.png";
+import hdVideoYoutubeImg from "../assets/images/hd-video-youtube.png";
+import videoToTextYoutubeImg from "../assets/images/video-to-text-youtube.png";
+import translateYoutubeImg from "../assets/images/translate-youtube.png";
+import urlShortcutYoutubeImg from "../assets/images/url-shortcut-youtube.png";
+import aiAgentsYoutubeImg from "../assets/images/ai-agents-youtube.png";
 import cloudSync from "../assets/images/cloud.webp";
 import historyImg from "../assets/images/history-img.webp";
 import mediaImg from "../assets/images/media-dwnld.webp";
@@ -1125,10 +1138,10 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                 }
                 @media (min-width: 992px) {
                   .mcp-page .hiw-platform-section .cx-hiw-cards-outer {
-                    height: 448px;
+                    height: 488px;
                   }
                   .mcp-page .hiw-platform-section .cx-hiw-card {
-                    height: 420px;
+                    height: 460px;
                   }
                   .mcp-page .hiw-platform-section .cx-hiw-card .hiw-step-label {
                     top: 24px;
@@ -1144,7 +1157,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                     top: 80px;
                     left: 15px;
                     width: 318px;
-                    height: 220px;
+                    height: 180px;
                     overflow: hidden;
                     border-radius: 12px;
                     z-index: 1;
@@ -1156,11 +1169,13 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                     display: block;
                   }
                   .mcp-page .hiw-platform-section .cx-hiw-card .hiw-card-desc {
-                    top: 320px;
+                    top: 280px;
                     bottom: auto;
                     left: 22px;
                     right: 22px;
                     z-index: 2;
+                    font-size: 14px;
+                    line-height: 1.55;
                   }
                 }
                 @media (max-width: 991px) {
@@ -1205,6 +1220,10 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                     bottom: auto;
                     margin: 0;
                   }
+                  .mcp-page .hiw-platform-section .cx-hiw-card .hiw-card-desc {
+                    font-size: 12px;
+                    line-height: 1.55;
+                  }
                   .mcp-page .hiw-platform-section .cx-hiw-card-img-wrap {
                     position: static;
                     width: 100%;
@@ -1245,40 +1264,40 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                           {
                             step: "Step 01",
                             title: "Copy the Instagram Reel Link",
-                            img: "/figma-rows/Research%20without%20breaking%20flow.png?v=20260502c",
-                            desc: "Tap the paper plane icon on any Reel and select Copy Link. On desktop, click the three-dot menu and choose Copy Link. The URL is now on your clipboard.",
+                            img: "/figma-rows/Copy%20the%20Instagram%20Video.png?v=20260505",
+                            desc: "Open the Reel inside the Instagram app. Tap the paper plane icon (share button) and select “Copy Link.” On desktop, click the three-dot menu on the Reel and select “Copy Link.” The Instagram URL is now on your clipboard.",
                           },
                           {
                             step: "Step 02",
                             title: "Paste It Into TokScript",
-                            img: "/figma-rows/See%20data%20tiktok%20hides.png?v=20260502c",
-                            desc: "Drop the link into the input field above. Paste one Reel or up to 50 Instagram links at once for bulk transcript generation.",
+                            img: "/figma-rows/Paste%20Instagram%20the%20Link%20into%20TokScript.png?v=20260505",
+                            desc: "Drop the link into the input field above. You can paste a single Reel link or up to 50 Instagram links at once for bulk transcript generation.",
                           },
                           {
                             step: "Step 03",
-                            title: "Download Your Transcript",
-                            img: "/figma-rows/Frame%202121457638.png?v=20260502c",
-                            desc: "Click Scan Video. Your transcript is ready in seconds — export as TXT, XML, or PDF, translate it, or run it through our AI agents.",
+                            title: "Download Your Instagram Transcript",
+                            img: "/figma-rows/Download%20Your%20Instagram%20Transcript.png?v=20260505",
+                            desc: "Click “Scan Video.” Your transcript is ready in seconds. Download it as TXT, XML, or PDF. Translate it into 11+ languages. Or run it through our AI agents to generate hooks, rewrite scripts, and analyze what made that Reel perform.",
                           },
                         ]
                       : [
                           {
                             step: "Step 01",
                             title: "Copy the YouTube Video or Shorts Link",
-                            img: "/figma-rows/Research%20without%20breaking%20flow.png?v=20260502c",
-                            desc: "Tap Share → Copy Link on mobile, or grab the URL directly from the address bar on desktop. Shorts, long-form, and unlisted links all work.",
+                            img: "/figma-rows/Copy%20the%20YouTube%20Video%20or%20Shorts%20Link.png?v=20260505",
+                            desc: "Open the YouTube video or Short you want to transcribe. On mobile, tap Share then Copy Link. On desktop, right-click the video or copy the URL directly from your browser's address bar. Any public YouTube video URL works: Shorts, long-form videos, and unlisted links included.",
                           },
                           {
                             step: "Step 02",
                             title: "Paste the Link into TokScript",
-                            img: "/figma-rows/See%20data%20tiktok%20hides.png?v=20260502c",
-                            desc: "Drop your YouTube link into the input field above. Need bulk? Paste up to 50 video links at once and TokScript handles them in a single batch.",
+                            img: "/figma-rows/Paste%20youtube%20the%20Link%20into%20TokScript.png?v=20260505",
+                            desc: "Come back to this page and paste your YouTube link into the input field above. Need to generate transcripts in bulk? Paste up to 50 YouTube video links at once. TokScript handles each one in a single batch with no extra steps.",
                           },
                           {
                             step: "Step 03",
-                            title: "Download Your Transcript",
-                            img: "/figma-rows/Frame%202121457638.png?v=20260502c",
-                            desc: "Click Generate Transcript and your full text is ready in seconds. Export as TXT, PDF, or XML — or pipe it straight into Claude, ChatGPT, or Gemini.",
+                            title: "Download Your YouTube Transcript",
+                            img: "/figma-rows/Download%20Your%20Youtube%20Transcript.png?v=20260505",
+                            desc: "Click “Generate Transcript” and your full text is ready in seconds. TokScript cross-references YouTube's native caption data with its own AI speech recognition engine for the highest accuracy across all video types. Download as TXT, PDF, or XML, or feed your transcript directly into ChatGPT, Claude, or Gemini.",
                           },
                         ]
                     ).map((card, i) => (
@@ -1314,6 +1333,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
             <Link href="/mcp" className="ur-cta">Try it Free Today</Link>
           </div>
         </section>
+        {platform !== "instagram" && platform !== "youtube" && (
         <section id="vt-platform" className="vt-platform-section">
           <div className="vt-platform-inner">
             <div className="vt-platform-header">
@@ -1479,6 +1499,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
             </div>
           </div>
         </section>
+        )}
 
         <WhoItsFor platform={platform} />
 
@@ -1524,7 +1545,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                         "All files encrypted and stored securely",
                         "Zero maintenance required",
                       ],
-                      img: cloudSync,
+                      img: cloudInstagramImg,
                       alt: "Cloud transcript library with saved transcripts organized by date",
                     },
                     {
@@ -1536,7 +1557,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                         "Re-download as TXT, XML, or PDF anytime",
                         "Bulk folder exports (paid plans)",
                       ],
-                      img: historyImg,
+                      img: historyInstagramImg,
                       alt: "Transcript history panel showing previously processed Reels",
                     },
                     {
@@ -1547,7 +1568,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                         "Thumbnail at original resolution",
                         "No compression or quality loss",
                       ],
-                      img: mediaImg,
+                      img: hdVideoInstagramImg,
                       alt: "Media download interface with video and cover image save options",
                     },
                     {
@@ -1559,7 +1580,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                         "Works directly from your browser address bar",
                         "Transcript ready in seconds",
                       ],
-                      img: excessImg,
+                      img: urlShortcutInstagramImg,
                       alt: "Quick URL method showing paste-and-process transcript extraction",
                     },
                     {
@@ -1570,7 +1591,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                         "Script Writer: Turn any Reel transcript into a new script written in your voice. The agent captures the structure and energy of the original, then rebuilds it around your niche and tone. Ready to film, not just to read.",
                         "Virality Explainer: Understand exactly why a specific Reel performed. Get a structured breakdown of hook mechanics, psychological triggers, pacing decisions, and content patterns, with clear, actionable takeaways for your own strategy.",
                       ],
-                      img: workspceImg,
+                      img: aiAgentsInstagramImg,
                       alt: "AI-powered dashboard showing transcript analysis and viral hook suggestions",
                     },
                   ]
@@ -1584,7 +1605,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                         "Download all transcripts at once or select individual results",
                         "Switch between bulk mode and single-video transcript generation",
                       ],
-                      img: bulkProcess,
+                      img: bulkYoutubeImg,
                       alt: "Bulk transcript processing interface showing multiple YouTube video URLs being imported",
                     },
                     {
@@ -1596,7 +1617,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                         "Organize transcripts into folders by channel, topic, or project",
                         "Re-download any past transcript in TXT, PDF, or XML",
                       ],
-                      img: cloudSync,
+                      img: cloudYoutubeImg,
                       alt: "Cloud transcript library with saved YouTube transcripts organized by date",
                     },
                     {
@@ -1608,7 +1629,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                         "XML for structured subtitle and developer use",
                         "One-click download from your transcript history",
                       ],
-                      img: historyImg,
+                      img: videoToTextYoutubeImg,
                       alt: "Transcript export panel showing TXT, PDF, and XML download options",
                     },
                     {
@@ -1621,7 +1642,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                         "Combine transcript generation and translation in a single step",
                         "Works across YouTube Shorts, videos, TikTok, and Reels",
                       ],
-                      img: mediaImg,
+                      img: translateYoutubeImg,
                       alt: "Media download interface with video and cover image save options",
                     },
                     {
@@ -1633,7 +1654,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                         "Works for YouTube Shorts, standard videos, TikTok, and Reels",
                         "Zero extra steps: transcript delivered immediately",
                       ],
-                      img: excessImg,
+                      img: urlShortcutYoutubeImg,
                       alt: "Quick URL method showing paste-and-process transcript extraction",
                     },
                     {
@@ -1644,7 +1665,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                         "Viral Script Writer: Take any transcript from a high-performing YouTube video and generate a brand-new script that preserves the structure, pacing, and psychology that made it work.",
                         "Virality Explainer: Get a full breakdown of why a specific YouTube Short or video went viral, covering hook strength, content pacing, audience psychology, and algorithmic signals.",
                       ],
-                      img: workspceImg,
+                      img: aiAgentsYoutubeImg,
                       alt: "AI-powered dashboard showing transcript analysis and viral hook suggestions",
                     },
                   ]
@@ -1671,7 +1692,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                     <Image
                       src={row.img}
                       alt={row.alt}
-                      style={{ width: "100%", height: "auto", display: "block", borderRadius: "16px" }}
+                      style={{ width: "100%", height: "100%", display: "block", objectFit: "contain", objectPosition: "center", borderRadius: "16px" }}
                     />
                   </div>
                 </div>
@@ -2077,7 +2098,36 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
         </section>
         <HomeSocialProof />
         <BeforeAfter />
-        <EnhenceExperience />
+        {platform === "instagram" || platform === "youtube" ? (
+          <section className="ready-to-convert-section">
+            <div className="container">
+              <div className="inner-section">
+                <h3>
+                  {platform === "instagram"
+                    ? "Ready to Convert Your First Reel?"
+                    : "Ready to Convert Your YouTube Short?"}
+                </h3>
+                <p>
+                  {platform === "instagram"
+                    ? "Paste any public Reel link above. Get the full text in seconds."
+                    : "Paste a Shorts link. Get every spoken word back in text. Free."}
+                </p>
+                <Link
+                  href="#"
+                  className="ready-to-convert-cta"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                >
+                  Start Transcribing Free
+                </Link>
+              </div>
+            </div>
+          </section>
+        ) : (
+          <EnhenceExperience />
+        )}
         <FaqSection
           faqData={
             platform === "instagram"
@@ -2117,100 +2167,257 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
         <div className="disclaimer-section">
           <div className="container">
             <div className="inner-section">
-              <div className="content">
-                <h4>About TokScript Free Video Transcript Generator</h4>
-                <p>
-                  Download Video Transcripts (captions) For Free. Instantly,
-                  without uploading any files! Quick and simple. No catch.
+              {platform === "instagram" ? (
+                <>
+                  <div className="content">
+                    <h4>About TokScript: Free Instagram Transcript Generator</h4>
+                    <p>
+                      TokScript was built around one idea: the spoken word
+                      inside IG Reels is the most underused content asset on
+                      the platform. Creators film, post, and move on, but the
+                      script behind every high-performing Reel holds patterns
+                      worth studying, repurposing, and building on. TokScript
+                      makes that content accessible in seconds. No manual
+                      retyping, no clunky workarounds. Every feature exists
+                      because creators, managers, and researchers asked for it.{" "}
+                      <strong>41,000+ users</strong> across content teams,
+                      agencies, and solo creators trust TokScript as part of
+                      their daily workflow. Over{" "}
+                      <strong>2.6 million Reels</strong> processed and counted.
+                    </p>
+                    <p>
+                      Pull transcripts from your favorite Instagram Reels
+                      instantly and start building a library of content you can
+                      actually reference and reuse. TokScript is also the
+                      leading{" "}
+                      <Link href="/" style={{ color: "#00B8B2" }}>
+                        TikTok Transcript Generator
+                      </Link>{" "}
+                      and{" "}
+                      <Link
+                        href="/youtube-transcript-generator"
+                        style={{ color: "#00B8B2" }}
+                      >
+                        YouTube Transcript Generator
+                      </Link>
+                      .
+                    </p>
+                  </div>
+                  <div className="content">
+                    <h4>Instagram Ads Research</h4>
+                    <p>
+                      Studying top-performing Reel ads? Extract the spoken
+                      script to analyze hook structure, offer framing, and
+                      CTAs, then adapt what is working for your own campaigns
+                      faster than rewatching manually.
+                    </p>
+                  </div>
+                  <div className="content">
+                    <h4>UGC Creator Workflows</h4>
+                    <p>
+                      Pull the text from any Reel in your niche before filming.
+                      Study the exact phrasing and hooks driving engagement,
+                      and build your script around what is already proven to
+                      land.
+                    </p>
+                  </div>
+                  <div className="content">
+                    <h4>AI-Powered Content Production</h4>
+                    <p>
+                      Extract spoken content with TokScript, then feed it into
+                      any AI tool for scripting, ideation, or strategy work.
+                      Clean input produces better output, every time.
+                    </p>
+                  </div>
+                  <div className="content">
+                    <p>
+                      TokScript is not affiliated with, endorsed by, or
+                      sponsored by Instagram or Meta. All trademarks belong to
+                      their respective owners.
+                    </p>
+                  </div>
                   <br />
-                  Download any video&apos;s captions, transcripts, and words for
-                  your TikTok,{" "}
-                  <Link
-                    href="/instagram-transcript-generator"
-                    style={{ color: "#00B8B2" }}
-                  >
-                    Instagram Reels
-                  </Link>
-                  , and{" "}
-                  <Link
-                    href="/youtube-transcript-generator"
-                    style={{ color: "#00B8B2" }}
-                  >
-                    YouTube Shorts
-                  </Link>{" "}
-                  videos in seconds. Add your video link, hit start, and
-                  instantly get any TikTok, Reels, or Shorts video script within
-                  seconds. Perfect for UGC creators, Media Buyers, Ads Experts,
-                  Creators, and Influencers who need help coming up with ideas
-                  or understanding what videos are saying so they can study
-                  winning content and create their own.
-                </p>
-                <p>
-                  Easily and instantly download any video transcripts from your
-                  favorite TikTok,{" "}
-                  <Link
-                    href="/youtube-transcript-generator"
-                    style={{ color: "#00B8B2" }}
-                  >
-                    YouTube Shorts
-                  </Link>
-                  , and{" "}
-                  <Link
-                    href="/instagram-transcript-generator"
-                    style={{ color: "#00B8B2" }}
-                  >
-                    Instagram Reels
-                  </Link>{" "}
-                  videos instantly! See our{" "}
-                  <Link href="/pricing" style={{ color: "#00B8B2" }}>
-                    pricing plans
-                  </Link>{" "}
-                  or learn more{" "}
-                  <Link href="/about-us" style={{ color: "#00B8B2" }}>
-                    about us
-                  </Link>
-                  .
-                </p>
-              </div>
-              <div className="content">
-                <h4>TikTok Ads:</h4>
-                <p>
-                  If you're struggling to come up with ideas or need to know
-                  what a video is talking about you can easily download any
-                  videos transcript / subtitles to easily come up with new ideas
-                  or use for SEO and topic creation.
-                </p>
-              </div>
-              <div className="content">
-                <h4>UGC Creators:</h4>
-                <p>
-                  If you're struggling with what to say in your videos or just
-                  want a quick reminder of what does work and doesn't work, you
-                  can now download any transcript subtitles and reuse them for
-                  any future video ideas you might have.
-                </p>
-              </div>
-              <div className="content">
-                <h4>AI:</h4>
-                <p>
-                  Easily download any TikTok, Reels, or Shorts video's video
-                  transcript and subtitles so you can use it with any of your
-                  favorite Al companies like ChatGPT, Bard, Claude, and more to
-                  easily create User Generated Video Scripts and ideas for your
-                  next video!
-                </p>
-              </div>
-              <br />
-              <br />
-              <div className="content">
-                <h4>LEGAL DISCLAIMER:</h4>
-                <p>
-                  Tokscript is not affiliated with, endorsed by, or sponsored by
-                  TikTok, TikTok USDS Joint Venture LLC, ByteDance, Instagram,
-                  Meta, YouTube, or Google. All trademarks belong to their
-                  respective owners.
-                </p>
-              </div>
+                  <br />
+                  <div className="content">
+                    <h4>LEGAL DISCLAIMER:</h4>
+                    <p>
+                      Tokscript is not affiliated with, endorsed by, or
+                      sponsored by Instagram, Meta, TikTok, TikTok USDS Joint
+                      Venture LLC, ByteDance, YouTube, or Google. All
+                      trademarks belong to their respective owners.
+                    </p>
+                  </div>
+                </>
+              ) : platform === "youtube" ? (
+                <>
+                  <div className="content">
+                    <h4>
+                      About TokScript: Free YouTube Shorts Transcript Generator
+                    </h4>
+                    <p>
+                      TokScript was built around one idea: the spoken word
+                      inside YouTube Shorts is content most people scroll past
+                      but never capture. Creators film, viewers watch, and the
+                      script behind every high-performing Short disappears into
+                      the feed. We built TokScript to change that.
+                    </p>
+                    <p>
+                      Paste a link to any public YouTube Short. The full
+                      transcript is ready in seconds. No software to install,
+                      no files to upload, no account required to start. Built
+                      for content creators, educators, marketers, and anyone
+                      who wants to turn Shorts into text they can read, search,
+                      and reuse.
+                    </p>
+                    <p>
+                      41,000+ users trust TokScript as part of their daily
+                      workflow. Over 2.6 million videos processed and counted.
+                    </p>
+                  </div>
+                  <div className="content">
+                    <h4>YouTube Ads Research</h4>
+                    <p>
+                      Studying YouTube Shorts ads or researching what
+                      competitors are running? Download the transcript from
+                      any Shorts ad to break down the hook, the pitch, and the
+                      call to action. Pull transcripts in bulk to compare
+                      messaging across multiple advertisers and spot the
+                      patterns worth applying to your own campaigns.
+                    </p>
+                  </div>
+                  <div className="content">
+                    <h4>UGC Creator Workflows</h4>
+                    <p>
+                      Stop replaying the same Shorts trying to catch every
+                      word. Download the transcript, read through it, and pull
+                      the parts that work as a foundation for your next video.
+                      See exactly how top creators structure their Shorts: what
+                      phrases they lead with, how they build tension, and how
+                      they close.
+                    </p>
+                  </div>
+                  <div className="content">
+                    <h4>AI-Powered Content Production</h4>
+                    <p>
+                      Pull any YouTube Shorts transcript and feed it straight
+                      into ChatGPT, Claude, Gemini, or whatever AI tool you
+                      use. Generate new video ideas, rewrite scripts for your
+                      audience, or analyze patterns across dozens of
+                      top-performing Shorts. TokScript&apos;s built-in AI
+                      agents also handle hook generation, script rewrites, and
+                      virality breakdowns, all from the dashboard.
+                    </p>
+                  </div>
+                  <br />
+                  <br />
+                  <div className="content">
+                    <h4>LEGAL DISCLAIMER:</h4>
+                    <p>
+                      Tokscript is not affiliated with, endorsed by, or
+                      sponsored by Instagram, Meta, TikTok, TikTok USDS Joint
+                      Venture LLC, ByteDance, YouTube, or Google. All
+                      trademarks belong to their respective owners.
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="content">
+                    <h4>About TokScript Free Video Transcript Generator</h4>
+                    <p>
+                      Download Video Transcripts (captions) For Free. Instantly,
+                      without uploading any files! Quick and simple. No catch.
+                      <br />
+                      Download any video&apos;s captions, transcripts, and words for
+                      your TikTok,{" "}
+                      <Link
+                        href="/instagram-transcript-generator"
+                        style={{ color: "#00B8B2" }}
+                      >
+                        Instagram Reels
+                      </Link>
+                      , and{" "}
+                      <Link
+                        href="/youtube-transcript-generator"
+                        style={{ color: "#00B8B2" }}
+                      >
+                        YouTube Shorts
+                      </Link>{" "}
+                      videos in seconds. Add your video link, hit start, and
+                      instantly get any TikTok, Reels, or Shorts video script within
+                      seconds. Perfect for UGC creators, Media Buyers, Ads Experts,
+                      Creators, and Influencers who need help coming up with ideas
+                      or understanding what videos are saying so they can study
+                      winning content and create their own.
+                    </p>
+                    <p>
+                      Easily and instantly download any video transcripts from your
+                      favorite TikTok,{" "}
+                      <Link
+                        href="/youtube-transcript-generator"
+                        style={{ color: "#00B8B2" }}
+                      >
+                        YouTube Shorts
+                      </Link>
+                      , and{" "}
+                      <Link
+                        href="/instagram-transcript-generator"
+                        style={{ color: "#00B8B2" }}
+                      >
+                        Instagram Reels
+                      </Link>{" "}
+                      videos instantly! See our{" "}
+                      <Link href="/pricing" style={{ color: "#00B8B2" }}>
+                        pricing plans
+                      </Link>{" "}
+                      or learn more{" "}
+                      <Link href="/about-us" style={{ color: "#00B8B2" }}>
+                        about us
+                      </Link>
+                      .
+                    </p>
+                  </div>
+                  <div className="content">
+                    <h4>TikTok Ads:</h4>
+                    <p>
+                      If you&apos;re struggling to come up with ideas or need to know
+                      what a video is talking about you can easily download any
+                      videos transcript / subtitles to easily come up with new ideas
+                      or use for SEO and topic creation.
+                    </p>
+                  </div>
+                  <div className="content">
+                    <h4>UGC Creators:</h4>
+                    <p>
+                      If you&apos;re struggling with what to say in your videos or just
+                      want a quick reminder of what does work and doesn&apos;t work, you
+                      can now download any transcript subtitles and reuse them for
+                      any future video ideas you might have.
+                    </p>
+                  </div>
+                  <div className="content">
+                    <h4>AI:</h4>
+                    <p>
+                      Easily download any TikTok, Reels, or Shorts video&apos;s video
+                      transcript and subtitles so you can use it with any of your
+                      favorite Al companies like ChatGPT, Bard, Claude, and more to
+                      easily create User Generated Video Scripts and ideas for your
+                      next video!
+                    </p>
+                  </div>
+                  <br />
+                  <br />
+                  <div className="content">
+                    <h4>LEGAL DISCLAIMER:</h4>
+                    <p>
+                      Tokscript is not affiliated with, endorsed by, or sponsored by
+                      TikTok, TikTok USDS Joint Venture LLC, ByteDance, Instagram,
+                      Meta, YouTube, or Google. All trademarks belong to their
+                      respective owners.
+                    </p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
