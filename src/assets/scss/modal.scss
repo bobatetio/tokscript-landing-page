@@ -1,5 +1,43 @@
 @use "./variables.scss" as *;
 
+.dont-miss-out-modal-v3 {
+  padding-left: 0 !important;
+
+  .modal-dialog {
+    max-width: 880px;
+    @media screen and (max-width: 920px) {
+      margin-inline: 16px;
+    }
+    @media screen and (max-width: 480px) {
+      margin-inline: 10px;
+    }
+  }
+  .modal-content {
+    background: transparent;
+    border: 0;
+    border-radius: 24px;
+    overflow: visible;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  }
+  .modal-body {
+    padding: 0;
+  }
+
+  @media screen and (max-width: 760px) {
+    .dont-miss-shell {
+      flex-direction: column !important;
+      min-height: 0 !important;
+    }
+    .dont-miss-pitch {
+      padding: 28px 24px 20px !important;
+    }
+    .dont-miss-form {
+      width: 100% !important;
+      padding: 24px 22px 28px !important;
+    }
+  }
+}
+
 .dont-miss-out-modal-v2 {
   padding-left: 0 !important;
 
