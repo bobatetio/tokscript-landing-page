@@ -566,6 +566,14 @@ export default function PricingPage({ initialProductsData }) {
       >
         Monthly
       </button>
+      <button
+        className={`tab-btn ${
+          activeTab === "lifetime" ? "active" : "inactive"
+        }`}
+        onClick={() => setActiveTab("lifetime")}
+      >
+        Lifetime
+      </button>
     </div>
   </div>
 
@@ -883,6 +891,143 @@ export default function PricingPage({ initialProductsData }) {
             </div>
             <div className="pc-warn-callout">
               Costs $81 more per year
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Lifetime */}
+      <div className={`pc-card-wrapper ${activeTab === "lifetime" ? "active" : ""}`}>
+        <div className="pc-card pc-card-featured">
+          <div className="pc-header">
+            <div className="pc-plan-row">
+              <div className="pc-plan-name">Lifetime</div>
+              <span className="pc-badge pc-badge-recommended">
+                <Crown size={12} strokeWidth={2.5} /> Best Value
+              </span>
+            </div>
+            <p className="pc-description">Pay once. Use TokScript forever.</p>
+            <div className="pc-price-row">
+              <span className="pc-price-main">$199</span>
+              <span className="pc-price-period">one-time</span>
+              <span className="pc-price-original">$468</span>
+            </div>
+            <div className="pc-price-highlight">
+              <span className="pc-price-highlight-pill">No subscriptions, ever</span>
+            </div>
+          </div>
+          <div className="pc-cta-wrap">
+            {loading ? (
+              <button disabled className="pc-cta">Loading...</button>
+            ) : user ? (
+              profile?.plan == "pro" &&
+              profile?.subscription?.status === "active" &&
+              profile.subscription.lemonSqueezyVariantId ===
+                allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.variantId ? (
+                <button disabled className="pc-cta">Current Plan</button>
+              ) : profile?.plan == "pro" &&
+                profile?.plan !== "free" &&
+                profile.subscription?.status === "active" ? (
+                <button
+                  disabled={loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.variantId]}
+                  onClick={() => {
+                    const lifetimePlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"));
+                    if (lifetimePlan) handleUpgradeClick(lifetimePlan.variantId, "lifetime");
+                  }}
+                  className="pc-cta"
+                >
+                  {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.variantId] ? "Processing..." : "Upgrade"}
+                </button>
+              ) : (
+                <>
+                  <button
+                    className="pc-cta d-none d-md-flex"
+                    onClick={() => {
+                      const lifetimePlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"));
+                      if (lifetimePlan) handleCheckout(lifetimePlan);
+                    }}
+                  >
+                    Get Lifetime
+                  </button>
+                  <a
+                    href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.buyUrl}`}
+                    className="pc-cta d-flex d-md-none"
+                  >
+                    Get Lifetime
+                  </a>
+                </>
+              )
+            ) : (
+              <>
+                <button
+                  className="pc-cta d-none d-md-flex"
+                  onClick={() => {
+                    const lifetimePlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"));
+                    if (lifetimePlan) handleCheckout(lifetimePlan);
+                  }}
+                >
+                  Get Lifetime
+                </button>
+                <a
+                  href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.buyUrl}`}
+                  className="pc-cta d-flex d-md-none"
+                >
+                  Get Lifetime
+                </a>
+              </>
+            )}
+          </div>
+          <div className="pc-body">
+            <div className="pc-group">
+              <div className="pc-group-title">Everything in Annual, forever</div>
+              <ul className="pc-list">
+                <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts &amp; translations</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos at once</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>HD downloads, no watermarks</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>All future features included</span></li>
+              </ul>
+            </div>
+            <div className="pc-group">
+              <div className="pc-group-title">Add to Claude &amp; ChatGPT</div>
+              <div className="pc-ai-pair">
+                <span className="pc-ai-logo pc-ai-logo--claude" aria-label="Claude"><ClaudeIcon /></span>
+                <span className="pc-ai-logo pc-ai-logo--chatgpt" aria-label="ChatGPT"><ChatGPTIcon /></span>
+              </div>
+              <p className="pc-group-blurb">Lifetime access to TokScript inside your AI conversations.</p>
+            </div>
+            <div className="pc-group">
+              <div className="pc-group-title">Everywhere You Work</div>
+              <ul className="pc-list">
+                <li><Check size={16} strokeWidth={3} /><span>Chrome Extension</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Mobile + Desktop apps</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Cloud-synced dashboard</span></li>
+              </ul>
+            </div>
+            <div className="pc-group">
+              <div className="pc-group-title">AI Agents</div>
+              <ul className="pc-list pc-list-detailed">
+                <li>
+                  <Check size={16} strokeWidth={3} />
+                  <div>
+                    <strong>Viral Hook Generator</strong>
+                    <span>{copy.agents.hook}</span>
+                  </div>
+                </li>
+                <li>
+                  <Check size={16} strokeWidth={3} />
+                  <div>
+                    <strong>Viral Script Writer</strong>
+                    <span>{copy.agents.script}</span>
+                  </div>
+                </li>
+                <li>
+                  <Check size={16} strokeWidth={3} />
+                  <div>
+                    <strong>Virality Explainer</strong>
+                    <span>{copy.agents.explainer}</span>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
