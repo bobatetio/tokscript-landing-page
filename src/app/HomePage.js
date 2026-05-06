@@ -239,12 +239,9 @@ const LANGUAGES = [
   { code: "ru", name: "Russian" },
 ];
 
-const FREE_DAILY_LIMIT = 5;
-
 export default function LandingPage({ platform = "tiktok" } = {}) {
   const copy = getPlatformCopy(platform);
   const [dontMissOutModalShow, setDontMissOutModalShow] = useState(false);
-  const [freeUsedToday, setFreeUsedToday] = useState(0);
   const [isClient, setIsClient] = useState(false);
   const [videoLink, setVideoLink] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -348,14 +345,6 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
   }, []);
   useEffect(() => {
     setIsClient(true);
-    try {
-      const today = new Date().toISOString().slice(0, 10);
-      const used = parseInt(
-        localStorage.getItem(`tk_free_count_${today}`) || "0",
-        10,
-      ) || 0;
-      setFreeUsedToday(used);
-    } catch (e) { /* ignore */ }
   }, []);
 
   const fetchUserData = useCallback(async () => {
@@ -463,18 +452,6 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
     } else {
       // Single link - proceed with normal fetchTikTokData
       if (!user || user == null) {
-        // Client-side daily-quota gate (server is the real source of truth)
-        try {
-          const today = new Date().toISOString().slice(0, 10);
-          const used = parseInt(
-            localStorage.getItem(`tk_free_count_${today}`) || "0",
-            10,
-          ) || 0;
-          if (used >= FREE_DAILY_LIMIT) {
-            setDontMissOutModalShow(true);
-            return;
-          }
-        } catch (e) { /* ignore */ }
         fetchTikTokData();
       } else {
         const linksParam = encodeURIComponent(links.join(","));
@@ -663,20 +640,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
       // ✅ Proper error handling
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        const msg = String(errorData?.error || "").toLowerCase();
-        const isQuotaError =
-          response.status === 429 ||
-          !!errorData?.upgradeUrl ||
-          msg.includes("limit") ||
-          msg.includes("usage") ||
-          msg.includes("sign up");
-        if (isQuotaError) {
-          // Sync local counter so the quota pill matches the server's view
-          try {
-            const today = new Date().toISOString().slice(0, 10);
-            localStorage.setItem(`tk_free_count_${today}`, String(FREE_DAILY_LIMIT));
-            setFreeUsedToday(FREE_DAILY_LIMIT);
-          } catch (e) { /* ignore */ }
+        if (errorData?.upgradeUrl) {
           setDontMissOutModalShow(true);
         }
         throw new Error(
@@ -685,24 +649,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
       }
 
       const data = await response.json();
-
-      // Increment client-side daily counter (UX hint only — server is source of truth)
-      try {
-        const today = new Date().toISOString().slice(0, 10);
-        const key = `tk_free_count_${today}`;
-        const next = (parseInt(localStorage.getItem(key) || "0", 10) || 0) + 1;
-        localStorage.setItem(key, String(next));
-        setFreeUsedToday(next);
-      } catch (e) { /* ignore */ }
-
-      // Stash in sessionStorage and navigate to dedicated result page
-      const id =
-        (data?.data?.id && String(data.data.id)) ||
-        Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-      try {
-        sessionStorage.setItem(`tk_transcript_${id}`, JSON.stringify(data));
-      } catch (e) { /* sessionStorage unavailable */ }
-      router.push(`/transcript?id=${encodeURIComponent(id)}`);
+      setVideoData(data);
     } catch (error) {
       console.error("Error fetching TikTok data:", error);
       setError(error.message || "Failed to fetch video data");
@@ -1084,42 +1031,6 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                 </div>
               </div>
               <p className="helper-text">{copy.bottomCopy}</p>
-              {!user && (
-                <div
-                  className="free-quota-pill"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    margin: "8px auto 0",
-                    padding: "6px 14px",
-                    borderRadius: 999,
-                    background: "rgba(255,255,255,0.06)",
-                    border: "1px solid rgba(255,255,255,0.12)",
-                    color:
-                      freeUsedToday >= FREE_DAILY_LIMIT
-                        ? "#ff8a8a"
-                        : "rgba(255,255,255,0.7)",
-                    fontSize: 12,
-                    fontWeight: 500,
-                  }}
-                >
-                  <span
-                    style={{
-                      width: 6,
-                      height: 6,
-                      borderRadius: "50%",
-                      background:
-                        freeUsedToday >= FREE_DAILY_LIMIT
-                          ? "#ff5252"
-                          : "#00b8b2",
-                    }}
-                  />
-                  {freeUsedToday >= FREE_DAILY_LIMIT
-                    ? "Daily limit reached — upgrade for unlimited"
-                    : `Free scans today: ${freeUsedToday} / ${FREE_DAILY_LIMIT}`}
-                </div>
-              )}
               <div className="social-platform-buttons">
                 <span className="platform-label">Supports:</span>
                 <span className="platform-btn">
