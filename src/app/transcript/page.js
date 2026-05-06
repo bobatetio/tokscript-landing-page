@@ -7,11 +7,11 @@
  * marketing surface, not a real app shell.
  */
 
-import { useEffect, useMemo, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import Header from "../../../components/Header";
+import Header from "../../components/Header";
 import {
   ArrowLeft,
   ArrowRight,
@@ -42,7 +42,7 @@ import {
 } from "lucide-react";
 
 const DontMissOutModal = dynamic(
-  () => import("../../../components/modals/DontMissOutModal"),
+  () => import("../../components/modals/DontMissOutModal"),
   { ssr: false },
 );
 
@@ -127,8 +127,17 @@ const RELATED_VIDEOS = [
 ];
 
 // ── Page ─────────────────────────────────────────────────────────────────────
-export default function TranscriptResultPage() {
-  const { id } = useParams();
+export default function TranscriptResultPageWrapper() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh", background: T.appBg }} />}>
+      <TranscriptResultPage />
+    </Suspense>
+  );
+}
+
+function TranscriptResultPage() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
   const router = useRouter();
   const [videoData, setVideoData] = useState(null);
   const [hydrated, setHydrated] = useState(false);

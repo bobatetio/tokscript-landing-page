@@ -702,7 +702,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
       try {
         sessionStorage.setItem(`tk_transcript_${id}`, JSON.stringify(data));
       } catch (e) { /* sessionStorage unavailable */ }
-      router.push(`/transcript/${id}`);
+      router.push(`/transcript?id=${encodeURIComponent(id)}`);
     } catch (error) {
       console.error("Error fetching TikTok data:", error);
       setError(error.message || "Failed to fetch video data");
