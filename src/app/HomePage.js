@@ -67,6 +67,7 @@ const FaqSection = dynamic(() => import("../components/FaqSection"));
 const ProcessComponent = dynamic(() => import("@/components/ProcessComponent"));
 const VideoLargeComponent = dynamic(() => import("@/components/VideoLargeComponent"));
 const TokToolsFeatures = dynamic(() => import("@/components/TokToolsFeatures"));
+const TranscriptResult = dynamic(() => import("@/components/TranscriptResult"));
 const EnhenceExperience = dynamic(() => import("@/components/EnhenceExperience"));
 const HeroFloatingIcons = dynamic(() => import("@/components/HeroFloatingIcons"), { ssr: false });
 const WhoItsFor = dynamic(() => import("@/components/WhoItsFor"));
@@ -238,6 +239,65 @@ const LANGUAGES = [
   { code: "ko", name: "Korean" },
   { code: "ru", name: "Russian" },
 ];
+
+// Dev-only: build a synthetic API response so the local UI can iterate
+// without hitting the server-side IP/fingerprint rate limit.
+function buildMockTikTokResponse(videoLink) {
+  const id = "7626869987029912840";
+  return {
+    data: {
+      id,
+      desc:
+        "One of my favorite scriptures #christiantiktok #bible #Godisgood #fyp #hallelujah",
+      createTime: Math.floor(Date.now() / 1000) - 86400,
+      textLanguage: "en",
+      author: {
+        uniqueId: "tokscript_demo",
+        avatarThumb:
+          "https://images.unsplash.com/photo-1569913486515-b74bf7751574?w=200",
+        avatarMedium:
+          "https://images.unsplash.com/photo-1569913486515-b74bf7751574?w=400",
+      },
+      video: {
+        duration: 32,
+        cover:
+          "https://images.unsplash.com/photo-1758599879795-536d5f203de9?w=800",
+        originCover:
+          "https://images.unsplash.com/photo-1758599879795-536d5f203de9?w=400",
+        downloadAddr: videoLink || "",
+      },
+      stats: { diggCount: 85_300, playCount: 1_240_000, shareCount: 8_400 },
+    },
+    subtitles: [
+      "WEBVTT",
+      "",
+      "00:00:00.000 --> 00:00:03.000",
+      "One of my favorite scriptures.",
+      "",
+      "00:00:03.000 --> 00:00:06.500",
+      "The Lord is my shepherd; I shall not want.",
+      "",
+      "00:00:06.500 --> 00:00:10.000",
+      "He maketh me to lie down in green pastures.",
+      "",
+      "00:00:10.000 --> 00:00:13.500",
+      "He leadeth me beside the still waters.",
+      "",
+      "00:00:13.500 --> 00:00:17.000",
+      "He restoreth my soul.",
+      "",
+      "00:00:17.000 --> 00:00:21.000",
+      "He leadeth me in the paths of righteousness for his name's sake.",
+      "",
+      "00:00:21.000 --> 00:00:25.000",
+      "Yea, though I walk through the valley of the shadow of death.",
+      "",
+      "00:00:25.000 --> 00:00:30.000",
+      "I will fear no evil, for thou art with me.",
+      "",
+    ].join("\n"),
+  };
+}
 
 export default function LandingPage({ platform = "tiktok" } = {}) {
   const copy = getPlatformCopy(platform);
@@ -605,6 +665,18 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
     setIsLoading(true);
     setError("");
     setVideoData(null);
+
+    // Dev-only mock: on localhost, return a synthetic response so we can iterate
+    // on the UI without burning the server-side rate limit.
+    if (
+      typeof window !== "undefined" &&
+      /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(window.location.hostname)
+    ) {
+      await new Promise((r) => setTimeout(r, 400));
+      setVideoData(buildMockTikTokResponse(videoLink.trim()));
+      setIsLoading(false);
+      return;
+    }
 
     try {
       // Get user's IP address
@@ -1086,16 +1158,9 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                   />
                 )}
                 {videoData && !bulkData && (
-                  <VideoLargeComponent
+                  <TranscriptResult
                     videoData={videoData}
-                    user={user}
-                    setDontMissOutModalShow={setDontMissOutModalShow}
-                  />
-                )}
-                {videoData && !bulkData && (
-                  <TokToolsFeatures
-                    videoData={videoData}
-                    setDontMissOutModalShow={setDontMissOutModalShow}
+                    upgrade={() => setDontMissOutModalShow(true)}
                   />
                 )}
               </div>
