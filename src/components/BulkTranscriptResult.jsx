@@ -473,9 +473,40 @@ function BulkListItem({ item, isSelected, onClick }) {
         </span>
       </span>
       {isComplete && (
-        <span style={{ display: "inline-flex", gap: 2, color: T.muted }}>
-          <Copy size={13} />
-          <Download size={13} />
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            flexShrink: 0,
+          }}
+        >
+          <Image
+            src={copyLightIcon}
+            alt=""
+            width={14}
+            height={14}
+            style={{
+              width: 14,
+              height: 14,
+              objectFit: "contain",
+              filter: "brightness(0) invert(1)",
+              opacity: 0.7,
+            }}
+          />
+          <Image
+            src={uploadIcon}
+            alt=""
+            width={14}
+            height={14}
+            style={{
+              width: 14,
+              height: 14,
+              objectFit: "contain",
+              filter: "brightness(0) invert(1)",
+              opacity: 0.7,
+            }}
+          />
         </span>
       )}
     </button>
@@ -719,7 +750,15 @@ export default function BulkTranscriptResult({
             </div>
 
             {/* Tabs */}
-            <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+            <div
+              style={{
+                display: "flex",
+                gap: 4,
+                flexShrink: 0,
+                flexWrap: "nowrap",
+                width: "100%",
+              }}
+            >
               {[
                 { id: "total", label: "Total", count: total },
                 { id: "completed", label: "Completed", count: completed },
@@ -731,12 +770,17 @@ export default function BulkTranscriptResult({
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     style={{
-                      padding: "5px 10px",
+                      flex: "1 1 0",
+                      minWidth: 0,
+                      padding: "5px 4px",
                       borderRadius: 8,
                       background: isActive ? T.pill : "transparent",
                       border: `1px solid ${isActive ? T.pillBorder : "transparent"}`,
                       color: isActive ? T.text : T.muted,
-                      fontSize: 11.5,
+                      fontSize: 11,
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
                       fontWeight: 500,
                       cursor: "pointer",
                     }}

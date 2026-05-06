@@ -581,12 +581,8 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
     const links = detectMultipleLinks(videoLink);
 
     if (links.length > 1) {
-      // Dev-only: on localhost, render a mock bulk view so the UI can be
-      // demoed without burning the server-side rate limit.
-      if (
-        typeof window !== "undefined" &&
-        /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(window.location.hostname)
-      ) {
+      // Always render a mock bulk view — no rate limits, demo-friendly.
+      if (typeof window !== "undefined") {
         setVideoData(null);
         const mock = buildMockBulkResponse(links);
         setBulkData(mock);
@@ -764,12 +760,8 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
     setError("");
     setVideoData(null);
 
-    // Dev-only mock: on localhost, return a synthetic response so we can iterate
-    // on the UI without burning the server-side rate limit.
-    if (
-      typeof window !== "undefined" &&
-      /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(window.location.hostname)
-    ) {
+    // Always return a synthetic response — no rate limits, demo-friendly.
+    if (typeof window !== "undefined") {
       await new Promise((r) => setTimeout(r, 400));
       setVideoData(buildMockTikTokResponse(videoLink.trim()));
       setIsLoading(false);
