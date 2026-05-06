@@ -1,19 +1,20 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import {
   Copy,
   Download,
-  Sparkles,
-  RefreshCw,
-  BarChart3,
   Check,
-  Clock,
-  Globe,
-  Heart,
-  Calendar,
-  ExternalLink,
+  Languages,
+  ChevronDown,
 } from "lucide-react";
+
+import aiHooksIcon from "../assets/images/icons/hooks-icon.svg";
+import rewriteScriptsIcon from "../assets/images/icons/re-write-icon.svg";
+import frameworkIcon from "../assets/images/icons/frame-icon.svg";
+import copyLightIcon from "../assets/images/icons/copy-light-icon.svg";
+import uploadIcon from "../assets/images/icons/export-icon-line.svg";
 
 const T = {
   card: "#1c1c1c",
@@ -22,7 +23,27 @@ const T = {
   text: "#ffffff",
   muted: "#888888",
   accent: "#00d4cc",
+  accentSoft: "rgba(0,212,204,0.14)",
 };
+
+const TRANSLATE_LANGUAGES = [
+  "English",
+  "Portuguese (Brazil)",
+  "Spanish",
+  "Mandarin",
+  "French",
+  "German",
+  "Arabic",
+  "Hindi",
+  "Japanese",
+  "Korean",
+  "Italian",
+  "Russian",
+  "Turkish",
+  "Vietnamese",
+  "Thai",
+  "Indonesian",
+];
 
 function parseCues(subtitles) {
   if (!subtitles || typeof subtitles !== "string") return [];
@@ -45,11 +66,7 @@ function parseCues(subtitles) {
     const time = `${minutes}:${seconds}`;
     const textLines = [];
     let j = i + 1;
-    while (
-      j < lines.length &&
-      lines[j].trim() !== "" &&
-      !lines[j].includes("-->")
-    ) {
+    while (j < lines.length && lines[j].trim() !== "" && !lines[j].includes("-->")) {
       textLines.push(lines[j]);
       j += 1;
     }
@@ -60,11 +77,134 @@ function parseCues(subtitles) {
   return cues;
 }
 
-function PillButton({ icon, label, onClick, disabled, fullRound = false, grow = false, ghost = false }) {
+function AiButton({ icon, label, onClick, disabled }) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        flex: 1,
+        minWidth: 0,
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 8,
+        padding: "12px 16px",
+        borderRadius: 12,
+        background: "#1f1f1f",
+        border: "1px solid rgba(255,255,255,0.06)",
+        color: T.text,
+        fontSize: 13,
+        fontWeight: 700,
+        cursor: disabled ? "default" : "pointer",
+        opacity: disabled ? 0.6 : 1,
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        transition: "background .15s, transform .08s",
+      }}
+      onMouseEnter={(e) => {
+        if (disabled) return;
+        e.currentTarget.style.background = "#262626";
+      }}
+      onMouseLeave={(e) => {
+        if (disabled) return;
+        e.currentTarget.style.background = "#1f1f1f";
+      }}
+      onMouseDown={(e) => {
+        if (!disabled) e.currentTarget.style.transform = "scale(0.99)";
+      }}
+      onMouseUp={(e) => {
+        e.currentTarget.style.transform = "scale(1)";
+      }}
+    >
+      <Image
+        src={icon}
+        alt=""
+        width={16}
+        height={16}
+        style={{
+          width: 16,
+          height: 16,
+          objectFit: "contain",
+          filter: "brightness(0) invert(1)",
+        }}
+      />
+      {label}
+    </button>
+  );
+}
+
+function IconButton({ icon, onClick, disabled, ariaLabel, badge }) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      style={{
+        position: "relative",
+        width: 30,
+        height: 30,
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "transparent",
+        border: "none",
+        color: T.text,
+        cursor: disabled ? "default" : "pointer",
+        opacity: disabled ? 0.5 : 1,
+        borderRadius: 8,
+        transition: "background .15s",
+      }}
+      onMouseEnter={(e) => {
+        if (disabled) return;
+        e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = "transparent";
+      }}
+    >
+      <Image
+        src={icon}
+        alt=""
+        width={16}
+        height={16}
+        style={{
+          width: 16,
+          height: 16,
+          objectFit: "contain",
+          filter: "brightness(0) invert(1)",
+        }}
+      />
+      {badge && (
+        <span
+          style={{
+            position: "absolute",
+            top: -28,
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "#333333",
+            color: "#ffffff",
+            padding: "4px 8px",
+            borderRadius: 6,
+            fontSize: 11,
+            whiteSpace: "nowrap",
+            zIndex: 100,
+          }}
+        >
+          {badge}
+        </span>
+      )}
+    </button>
+  );
+}
+
+function PillButton({ icon, label, onClick, disabled, ghost = false, grow = false }) {
   const baseBg = ghost ? "transparent" : T.pill;
   const baseBorder = ghost ? "transparent" : T.pillBorder;
   const hoverBg = ghost ? "rgba(255,255,255,0.06)" : "#333333";
   const hoverBorder = ghost ? "transparent" : "rgba(255,255,255,0.18)";
+  const textColor = ghost ? T.accent : T.text;
   return (
     <button
       onClick={onClick}
@@ -77,10 +217,10 @@ function PillButton({ icon, label, onClick, disabled, fullRound = false, grow = 
         justifyContent: "center",
         gap: 6,
         padding: "7px 8px",
-        borderRadius: fullRound ? 999 : 10,
+        borderRadius: 10,
         background: baseBg,
         border: `1px solid ${baseBorder}`,
-        color: ghost ? T.accent : T.text,
+        color: textColor,
         fontSize: 12,
         fontWeight: ghost ? 700 : 500,
         cursor: disabled ? "default" : "pointer",
@@ -143,16 +283,121 @@ function Toggle({ on, onChange, label }) {
           }}
         />
       </span>
-      <span style={{ color: T.text, fontSize: 12, fontWeight: 500 }}>
-        {label}
-      </span>
+      <span style={{ color: T.text, fontSize: 12, fontWeight: 500 }}>{label}</span>
     </span>
+  );
+}
+
+function RetranslateDropdown({ value, onSelect, disabled }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, [open]);
+
+  return (
+    <div ref={ref} style={{ position: "relative" }}>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        disabled={disabled}
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          padding: "7px 10px",
+          borderRadius: 10,
+          background: "transparent",
+          border: `1px solid transparent`,
+          color: value ? T.accent : T.text,
+          fontSize: 12,
+          fontWeight: 500,
+          cursor: disabled ? "default" : "pointer",
+          opacity: disabled ? 0.6 : 1,
+          whiteSpace: "nowrap",
+        }}
+        onMouseEnter={(e) => {
+          if (disabled) return;
+          e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = "transparent";
+        }}
+      >
+        <Languages size={13} />
+        <span>{value || "Retranslate"}</span>
+        <ChevronDown
+          size={12}
+          style={{
+            transform: open ? "rotate(180deg)" : "rotate(0deg)",
+            transition: "transform .15s",
+          }}
+        />
+      </button>
+      {open && (
+        <div
+          style={{
+            position: "absolute",
+            top: "calc(100% + 6px)",
+            right: 0,
+            zIndex: 30,
+            minWidth: 180,
+            maxHeight: 240,
+            overflowY: "auto",
+            background: T.pill,
+            border: `1px solid ${T.pillBorder}`,
+            borderRadius: 10,
+            padding: 4,
+            boxShadow: "0 8px 24px rgba(0,0,0,0.45)",
+          }}
+        >
+          {TRANSLATE_LANGUAGES.map((lang) => (
+            <button
+              key={lang}
+              onClick={() => {
+                onSelect?.(lang);
+                setOpen(false);
+              }}
+              style={{
+                display: "block",
+                width: "100%",
+                textAlign: "left",
+                padding: "7px 10px",
+                background: value === lang ? "rgba(0,212,204,0.10)" : "transparent",
+                border: "none",
+                color: value === lang ? T.accent : T.text,
+                fontSize: 12,
+                fontWeight: value === lang ? 600 : 500,
+                cursor: "pointer",
+                borderRadius: 6,
+              }}
+              onMouseEnter={(e) => {
+                if (value !== lang)
+                  e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+              }}
+              onMouseLeave={(e) => {
+                if (value !== lang)
+                  e.currentTarget.style.background = "transparent";
+              }}
+            >
+              {lang}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
 export default function TranscriptResult({ videoData, upgrade }) {
   const [showTimestamp, setShowTimestamp] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [language, setLanguage] = useState(null);
 
   const cues = useMemo(
     () => parseCues(videoData?.subtitles || ""),
@@ -171,29 +416,6 @@ export default function TranscriptResult({ videoData, upgrade }) {
       .map((c) => (showTimestamp ? `[${c.time}] ${c.text}` : c.text))
       .join("\n");
   }, [cues, showTimestamp]);
-
-  const author = videoData?.data?.author || {};
-  const handle = author?.uniqueId ? `@${author.uniqueId}` : "@creator";
-  const avatar = author?.avatarThumb || author?.avatarMedium || "";
-  const durationSec = Number(videoData?.data?.video?.duration || 0);
-  const durationLabel = `${Math.floor(durationSec / 60)}:${String(Math.floor(durationSec % 60)).padStart(2, "0")}`;
-  const language = (videoData?.data?.textLanguage || "EN").toString().toUpperCase().slice(0, 2);
-  const likes = Number(videoData?.data?.stats?.diggCount || 0);
-  const formatCount = (n) => {
-    if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
-    if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
-    return String(n);
-  };
-  const titleRaw = (videoData?.data?.desc || title || "Untitled video").trim();
-  const titleClean =
-    titleRaw.replace(/#\S+/g, "").replace(/\s+/g, " ").trim() || titleRaw;
-  const createTime = Number(videoData?.data?.createTime || 0);
-  const dateLabel = createTime
-    ? new Date((createTime < 1e12 ? createTime * 1000 : createTime)).toLocaleDateString(
-        "en-US",
-        { year: "numeric", month: "short", day: "numeric" },
-      )
-    : "";
 
   const onCopy = async () => {
     try {
@@ -247,9 +469,7 @@ export default function TranscriptResult({ videoData, upgrade }) {
           }
           .transcript-result-toolbar {
             gap: 0 !important;
-          }
-          .transcript-result-toolbar > button {
-            padding: 7px 6px !important;
+            flex-wrap: wrap !important;
           }
           .transcript-result-actions {
             flex-direction: column;
@@ -260,273 +480,292 @@ export default function TranscriptResult({ videoData, upgrade }) {
           }
         }
       `}</style>
-    <div
-      className="transcript-result-wrap"
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        width: "100%",
-        marginTop: 32,
-      }}
-    >
       <div
-        className="transcript-result"
+        className="transcript-result-wrap"
         style={{
-          width: "100%",
-          maxWidth: 880,
-          background: T.card,
-          borderRadius: 28,
-          padding: 16,
           display: "flex",
-          gap: 16,
-          alignItems: "stretch",
-          height: 601,
+          justifyContent: "center",
+          width: "100%",
+          marginTop: 32,
         }}
       >
-        {/* ── Video frame (inside the card) ─────────────────────────────── */}
         <div
-          className="transcript-result-video"
+          className="transcript-result"
           style={{
-            position: "relative",
-            flexShrink: 0,
-            width: 320,
-            height: 569,
-            borderRadius: 18,
-            overflow: "hidden",
-            background: "#000",
-          }}
-        >
-          {cover ? (
-            <img
-              src={cover}
-              alt={title}
-              style={{
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
-              }}
-            />
-          ) : (
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "linear-gradient(135deg, rgba(0,212,204,0.25), rgba(0,0,0,0.6))",
-              }}
-            />
-          )}
-
-          <div
-            style={{
-              position: "absolute",
-              left: 10,
-              right: 10,
-              bottom: 10,
-              display: "flex",
-              gap: 8,
-            }}
-          >
-            <button
-              onClick={upgrade}
-              style={{
-                flex: 1,
-                minWidth: 0,
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 6,
-                padding: "7px 8px",
-                borderRadius: 10,
-                background: "rgba(20,20,20,0.85)",
-                border: "1px solid rgba(255,255,255,0.10)",
-                backdropFilter: "blur(10px)",
-                WebkitBackdropFilter: "blur(10px)",
-                color: T.text,
-                fontSize: 12,
-                fontWeight: 500,
-                cursor: "pointer",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              <Download size={12} />
-              Save cover image
-            </button>
-            <button
-              onClick={upgrade}
-              style={{
-                flex: 1,
-                minWidth: 0,
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 6,
-                padding: "7px 8px",
-                borderRadius: 10,
-                background: "rgba(20,20,20,0.85)",
-                border: "1px solid rgba(255,255,255,0.10)",
-                backdropFilter: "blur(10px)",
-                WebkitBackdropFilter: "blur(10px)",
-                color: T.text,
-                fontSize: 12,
-                fontWeight: 500,
-                cursor: "pointer",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              <Download size={12} />
-              Download video
-            </button>
-          </div>
-        </div>
-
-        {/* ── Transcript section (no separate panel; flows in the card) ─── */}
-        <div
-          className="transcript-result-transcript"
-          style={{
-            flex: 1,
-            minWidth: 0,
+            width: "100%",
+            maxWidth: 880,
+            background: T.card,
+            borderRadius: 28,
+            padding: 16,
             display: "flex",
-            flexDirection: "column",
             gap: 16,
-            paddingTop: 14,
-            paddingBottom: 14,
+            alignItems: "stretch",
           }}
         >
-          {/* Toolbar */}
+          {/* ── Left: video frame ───────────────────────────────────────── */}
           <div
-            className="transcript-result-toolbar"
+            className="transcript-result-video"
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              gap: 10,
-              padding: "0 8px",
-              marginTop: -6,
+              position: "relative",
+              flexShrink: 0,
+              width: 320,
+              height: 569,
+              borderRadius: 18,
+              overflow: "hidden",
+              background: "#000",
             }}
           >
-              <PillButton
-                icon={
-                  copied ? (
-                    <Check size={12} strokeWidth={2.75} style={{ color: T.accent }} />
-                  ) : (
-                    <Copy size={12} strokeWidth={2.75} />
-                  )
-                }
-                label={copied ? "Copied" : "Copy"}
-                onClick={onCopy}
-                disabled={!transcriptText}
-                ghost
-              />
-              <PillButton
-                icon={<Download size={12} strokeWidth={2.75} />}
-                label="Download"
-                onClick={onDownload}
-                disabled={!transcriptText}
-                ghost
-              />
-          </div>
-
-          {/* Divider */}
-          <div
-            style={{
-              height: 1,
-              background: "rgba(255,255,255,0.08)",
-              margin: "0 8px",
-              marginTop: -8,
-            }}
-          />
-
-          {/* Body */}
-          <div
-            className="transcript-result-body"
-            style={{
-              flex: 1,
-              padding: "8px 8px",
-              overflowY: "auto",
-              minHeight: 0,
-            }}
-          >
-            {cues.length === 0 ? (
-              <p
+            {cover ? (
+              <img
+                src={cover}
+                alt={title}
                 style={{
-                  color: T.muted,
-                  fontSize: 16,
-                  lineHeight: 1.7,
-                  margin: 0,
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
                 }}
-              >
-                No transcript available for this video.
-              </p>
+              />
             ) : (
               <div
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 22,
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(135deg, rgba(0,212,204,0.25), rgba(0,0,0,0.6))",
+                }}
+              />
+            )}
+
+            <div
+              style={{
+                position: "absolute",
+                left: 10,
+                right: 10,
+                bottom: 10,
+                display: "flex",
+                gap: 8,
+              }}
+            >
+              <button
+                onClick={upgrade}
+                style={{
+                  flex: 1,
+                  minWidth: 0,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 6,
+                  padding: "7px 8px",
+                  borderRadius: 10,
+                  background: "rgba(20,20,20,0.85)",
+                  border: "1px solid rgba(255,255,255,0.10)",
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
+                  color: T.text,
+                  fontSize: 12,
+                  fontWeight: 500,
+                  cursor: "pointer",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
                 }}
               >
-                {cues.map((c, i) => (
-                  <p
-                    key={i}
-                    style={{
-                      margin: 0,
-                      fontSize: 13,
-                      lineHeight: 1.45,
-                      color: T.text,
-                    }}
-                  >
-                    {c.text}
-                  </p>
-                ))}
-              </div>
-            )}
+                <Download size={12} />
+                Save cover image
+              </button>
+              <button
+                onClick={upgrade}
+                style={{
+                  flex: 1,
+                  minWidth: 0,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 6,
+                  padding: "7px 8px",
+                  borderRadius: 10,
+                  background: "rgba(20,20,20,0.85)",
+                  border: "1px solid rgba(255,255,255,0.10)",
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
+                  color: T.text,
+                  fontSize: 12,
+                  fontWeight: 500,
+                  cursor: "pointer",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                <Download size={12} />
+                Download video
+              </button>
+            </div>
           </div>
 
-          {/* Divider above action chips */}
+          {/* ── Right: AI section + toolbar + transcript ─────────────── */}
           <div
+            className="transcript-result-transcript"
             style={{
-              height: 1,
-              background: "rgba(255,255,255,0.08)",
-              margin: "0 8px",
-              marginBottom: -8,
-            }}
-          />
-
-          {/* Action chips — same style as the video frame buttons */}
-          <div
-            className="transcript-result-actions"
-            style={{
+              flex: 1,
+              minWidth: 0,
               display: "flex",
-              gap: 10,
+              flexDirection: "column",
+              gap: 14,
+              paddingTop: 14,
+              paddingBottom: 14,
             }}
           >
-            <PillButton
-              icon={<Sparkles size={12} />}
-              label="Create viral hooks"
-              onClick={upgrade}
+            {/* 1. AI section header */}
+            <div style={{ padding: "0 8px" }}>
+              <span
+                style={{
+                  color: T.text,
+                  fontSize: 13,
+                  fontWeight: 500,
+                }}
+              >
+                You can do more with{" "}
+                <span style={{ color: T.accent, fontWeight: 700 }}>TokScript AI</span>
+              </span>
+            </div>
+
+            {/* 2. AI action buttons — original .btn-style.cyan-light look */}
+            <div
+              className="transcript-result-actions"
+              style={{
+                display: "flex",
+                gap: 10,
+                padding: "0 8px",
+              }}
+            >
+              <AiButton icon={aiHooksIcon} label="Write hooks" onClick={upgrade} />
+              <AiButton
+                icon={rewriteScriptsIcon}
+                label="Rewrite scripts"
+                onClick={upgrade}
+              />
+              <AiButton icon={frameworkIcon} label="Get framework" onClick={upgrade} />
+            </div>
+
+            {/* Divider above toolbar */}
+            <div
+              style={{
+                height: 1,
+                background: "rgba(255,255,255,0.08)",
+                margin: "0 8px",
+              }}
             />
-            <PillButton
-              icon={<RefreshCw size={12} />}
-              label="Generate new script"
-              onClick={upgrade}
+
+            {/* 3. Toolbar — Show timestamp · Retranslate · Copy · Download */}
+            <div
+              className="transcript-result-toolbar"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 10,
+                padding: "0 8px",
+              }}
+            >
+              <Toggle
+                on={showTimestamp}
+                onChange={setShowTimestamp}
+                label="Show timestamp"
+              />
+              <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                <RetranslateDropdown
+                  value={language}
+                  onSelect={(lang) => {
+                    setLanguage(lang);
+                    upgrade?.();
+                  }}
+                  disabled={!cues.length}
+                />
+                <IconButton
+                  icon={copyLightIcon}
+                  onClick={onCopy}
+                  disabled={!transcriptText}
+                  ariaLabel="Copy transcript"
+                  badge={copied ? "Copied!" : null}
+                />
+                <IconButton
+                  icon={uploadIcon}
+                  onClick={onDownload}
+                  disabled={!transcriptText}
+                  ariaLabel="Download transcript"
+                />
+              </div>
+            </div>
+
+            {/* Divider below toolbar */}
+            <div
+              style={{
+                height: 1,
+                background: "rgba(255,255,255,0.08)",
+                margin: "0 8px",
+                marginTop: -8,
+              }}
             />
-            <PillButton
-              icon={<BarChart3 size={12} />}
-              label="Analyze video"
-              onClick={upgrade}
-            />
+
+            {/* 4. Transcript body */}
+            <div
+              className="transcript-result-body"
+              style={{
+                flex: 1,
+                padding: "8px 8px",
+                overflowY: "auto",
+                minHeight: 0,
+              }}
+            >
+              {cues.length === 0 ? (
+                <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.7, margin: 0 }}>
+                  No transcript available for this video.
+                </p>
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 22,
+                  }}
+                >
+                  {cues.map((c, i) => (
+                    <p
+                      key={i}
+                      style={{
+                        margin: 0,
+                        fontSize: 13,
+                        lineHeight: 1.45,
+                        color: T.text,
+                      }}
+                    >
+                      {showTimestamp && (
+                        <span
+                          style={{
+                            display: "inline-block",
+                            minWidth: 38,
+                            marginRight: 10,
+                            color: T.muted,
+                            fontVariantNumeric: "tabular-nums",
+                            fontSize: 12,
+                          }}
+                        >
+                          {c.time}
+                        </span>
+                      )}
+                      {c.text}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 }
