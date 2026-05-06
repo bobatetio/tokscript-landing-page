@@ -6,4 +6,4 @@
 :HL["/tokscript-landing-page/_next/static/chunks/0d65adbd148e9de8.css","style"]
 :HL["/tokscript-landing-page/_next/static/chunks/b090b3f880989ede.css","style"]
 :HL["/tokscript-landing-page/_next/static/chunks/12625396223508e5.css","style"]
-0:{"buildId":"qBtlZOlyhQiilq4UiOVwY","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"pricing","paramType":null,"paramKey":"pricing","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
+0:{"buildId":"Pl2-yP-WO5L-vZsimHrvk","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"pricing","paramType":null,"paramKey":"pricing","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
