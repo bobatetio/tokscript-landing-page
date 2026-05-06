@@ -68,6 +68,7 @@ const ProcessComponent = dynamic(() => import("@/components/ProcessComponent"));
 const VideoLargeComponent = dynamic(() => import("@/components/VideoLargeComponent"));
 const TokToolsFeatures = dynamic(() => import("@/components/TokToolsFeatures"));
 const TranscriptResult = dynamic(() => import("@/components/TranscriptResult"));
+const BulkTranscriptResult = dynamic(() => import("@/components/BulkTranscriptResult"));
 const EnhenceExperience = dynamic(() => import("@/components/EnhenceExperience"));
 const HeroFloatingIcons = dynamic(() => import("@/components/HeroFloatingIcons"), { ssr: false });
 const WhoItsFor = dynamic(() => import("@/components/WhoItsFor"));
@@ -239,6 +240,85 @@ const LANGUAGES = [
   { code: "ko", name: "Korean" },
   { code: "ru", name: "Russian" },
 ];
+
+// Dev-only: build a synthetic bulk response so the bulk UI can be
+// iterated on locally without hitting the server-side rate limit.
+function buildMockBulkResponse(links) {
+  const sampleTranscript = [
+    "WEBVTT",
+    "",
+    "00:00:00.000 --> 00:00:03.000",
+    "Welcome back to my kitchen!",
+    "",
+    "00:00:03.000 --> 00:00:06.000",
+    "Today we're doing pasta the right way.",
+    "",
+    "00:00:06.000 --> 00:00:10.000",
+    "First, get a really big pot of water boiling.",
+    "",
+    "00:00:10.000 --> 00:00:14.000",
+    "Salt it like the sea — that's the only seasoning the pasta gets.",
+    "",
+    "00:00:14.000 --> 00:00:18.000",
+    "While that boils, slice your garlic — don't crush it.",
+    "",
+    "00:00:18.000 --> 00:00:22.000",
+    "Cold oil, cold garlic, low heat. We want golden, not brown.",
+    "",
+  ].join("\n");
+
+  const seedTitles = [
+    { title: "Quinoa Buddha Bowl Recipe", duration: "165" },
+    { title: "Green Smoothie Power Bowl", duration: "98" },
+    { title: "Mediterranean Wrap", duration: "120" },
+    { title: "Overnight Oats 3 Ways", duration: "90" },
+    { title: "Protein-Packed Salad Ideas", duration: "" },
+    { title: "5 Morning Habits", duration: "210" },
+    { title: "30-Minute Dinner Ideas", duration: "180" },
+  ];
+  const sampleCovers = [
+    "https://images.unsplash.com/photo-1565895405138-6c3a1555da6a?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1547592180-85f173990554?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&h=400&fit=crop",
+  ];
+
+  const items = (links || []).slice(0, 7).map((url, i) => {
+    const seed = seedTitles[i % seedTitles.length];
+    let status = "complete";
+    let transcript = sampleTranscript;
+    if (i === 2 || i === 3) {
+      status = "processing";
+      transcript = null;
+    } else if (i === 4) {
+      status = "unavailable";
+      transcript = null;
+    }
+    return {
+      sourceUrl: url,
+      status,
+      transcript,
+      title: seed.title,
+      duration: seed.duration,
+      thumbnail: sampleCovers[i % sampleCovers.length],
+      username: "@tokscript_demo",
+      author: { uniqueId: "tokscript_demo" },
+    };
+  });
+
+  const total = items.length;
+  const completed = items.filter((i) => i.status === "complete").length;
+  const unavailable = items.filter((i) => i.status === "unavailable").length;
+  const failed = items.filter((i) => i.status === "failed").length;
+
+  return {
+    transcript: { bulkItems: items },
+    summary: { total, completed, unavailable, failed },
+  };
+}
 
 // Dev-only: build a synthetic API response so the local UI can iterate
 // without hitting the server-side IP/fingerprint rate limit.
@@ -501,6 +581,24 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
     const links = detectMultipleLinks(videoLink);
 
     if (links.length > 1) {
+      // Dev-only: on localhost, render a mock bulk view so the UI can be
+      // demoed without burning the server-side rate limit.
+      if (
+        typeof window !== "undefined" &&
+        /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(window.location.hostname)
+      ) {
+        setVideoData(null);
+        const mock = buildMockBulkResponse(links);
+        setBulkData(mock);
+        const firstComplete = mock.transcript.bulkItems.findIndex(
+          (i) => i.status === "complete",
+        );
+        if (firstComplete >= 0) {
+          setSelectedBulkItem(mock.transcript.bulkItems[firstComplete]);
+          setSelectedBulkIndex(firstComplete);
+        }
+        return;
+      }
       if (!user || user == null) {
         // Free / guest user — bulk is gated; surface the upgrade modal.
         setDontMissOutModalShow(true);
@@ -1129,33 +1227,17 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
             <div className="about-toktools-section" ref={processRef}>
               <div className="inner-section-wrapper">
                 {bulkData && (
-                  <ProcessComponent
-                    bulkData={bulkData}
-                    isProcessing={isBulkProcessing}
-                    processingUrls={processingUrls}
-                    onSignUp={() => {
-                      router.push(
-                        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up`,
-                      );
-                    }}
-                    onItemClick={handleBulkItemClick}
-                    selectedIndex={selectedBulkIndex}
-                  />
-                )}
-                {selectedBulkItem && bulkData && !isBulkProcessing && (
                   <div ref={videoDetailRef}>
-                  <VideoLargeComponent
-                    videoData={transformBulkItemToVideoData(selectedBulkItem)}
-                    user={user}
-                    setDontMissOutModalShow={setDontMissOutModalShow}
-                  />
+                    <BulkTranscriptResult
+                      bulkData={bulkData}
+                      selectedItem={selectedBulkItem}
+                      selectedIndex={selectedBulkIndex}
+                      onItemClick={handleBulkItemClick}
+                      isProcessing={isBulkProcessing}
+                      processingUrls={processingUrls}
+                      upgrade={() => setDontMissOutModalShow(true)}
+                    />
                   </div>
-                )}
-                {selectedBulkItem && bulkData && !isBulkProcessing && (
-                  <TokToolsFeatures
-                    videoData={transformBulkItemToVideoData(selectedBulkItem)}
-                    setDontMissOutModalShow={setDontMissOutModalShow}
-                  />
                 )}
                 {videoData && !bulkData && (
                   <TranscriptResult
