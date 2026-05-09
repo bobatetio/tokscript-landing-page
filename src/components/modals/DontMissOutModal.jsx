@@ -148,29 +148,31 @@ function GoogleG() {
 function getCarouselFrames(t) {
   const tr = t?.dontMissOutModal?.carousel || {};
   // Placeholder images pulled from public/figma-rows/. Swap for final assets
-  // when ready by changing the `image` field.
+  // when ready by changing the `image` field. Prefix with NEXT_PUBLIC_BASE_PATH
+  // so static-export builds (gh-pages) resolve to /tokscript-landing-page/...
+  const BP = process.env.NEXT_PUBLIC_BASE_PATH || "";
   return [
     {
       key: "dashboard",
-      image: "/figma-rows/Your%20Dashboard.png",
+      image: `${BP}/figma-rows/Your%20Dashboard.png`,
       label: tr.dashboardLabel || "The Dashboard",
       sub: tr.dashboardSub || "All Your Research, In One Place",
     },
     {
       key: "extension",
-      image: "/figma-rows/Chrome%20Extension.png",
+      image: `${BP}/figma-rows/Chrome%20Extension.png`,
       label: tr.extensionLabel || "Chrome Extension",
       sub: tr.extensionSub || "Live On Every TikTok",
     },
     {
       key: "ai",
-      image: "/figma-rows/Mcp.png",
+      image: `${BP}/figma-rows/Mcp.png`,
       label: tr.aiLabel || "Claude & ChatGPT",
       sub: tr.aiSub || "TikTok Data Inside Your AI",
     },
     {
       key: "bulk",
-      image: "/figma-rows/Bulk%20Input.png",
+      image: `${BP}/figma-rows/Bulk%20Input.png`,
       label: tr.bulkLabel || "Bulk Imports",
       sub: tr.bulkSub || "50 Links Or A Whole Collection",
     },
