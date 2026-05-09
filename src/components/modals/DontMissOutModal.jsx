@@ -332,7 +332,7 @@ function StepOne({
               fontWeight: 700,
               lineHeight: 1.18,
               letterSpacing: "-0.015em",
-              whiteSpace: "pre-line",
+              whiteSpace: "normal",
             }}
           >
             {t?.dontMissOutModal?.title || "Everything TokScript,\nIn One Account."}

@@ -80,7 +80,8 @@
     .pill-desktop-label { display: none; }
     .pill-mobile-label { display: inline; }
     .dont-miss-h2 {
-      white-space: normal !important;
+      // Mobile: honor the \n in the title so "In One Account." breaks onto its own line.
+      white-space: pre-line !important;
       font-size: 22px !important;
     }
     .dont-miss-form {
