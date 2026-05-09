@@ -3,12 +3,27 @@
 .dont-miss-out-modal-v3 {
   padding-left: 0 !important;
 
-  // Kill the glow on the mobile Continue button so it sits flat against the dark modal bg.
-  // Also force white text in both rest and hover states (overrides .pc-cta-primary's dark text).
+  // Mobile primary CTA matches the Figma's chunky offset-shadow style:
+  // hard-edge black shadow ~4px down, no blur, plus white text on aqua bg.
   .dont-miss-mobile-intro-ctas .pc-cta-primary,
   .dont-miss-mobile-intro-ctas .pc-cta-primary:hover {
-    box-shadow: none !important;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.85) !important;
     color: #ffffff !important;
+    border-radius: 14px !important;
+  }
+
+  // Soft swirl background asset (Figma node 4140-8478). Rendered behind the
+  // modal content at 14% opacity on both desktop and mobile. Img is in JSX so
+  // it picks up NEXT_PUBLIC_BASE_PATH for the gh-pages static-export build.
+  .dont-miss-bg-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.14;
+    pointer-events: none;
+    z-index: 0;
   }
 
   // Pill copy varies by viewport — desktop shows the long label, mobile a short one.
@@ -54,13 +69,29 @@
     //   .dont-miss-step-tiers  → show tier cards only
     &.dont-miss-step-intro .dont-miss-form { display: none !important; }
     &.dont-miss-step-intro .dont-miss-mobile-intro-ctas { display: flex !important; }
+    &.dont-miss-step-intro .dont-miss-mobile-features { display: flex !important; }
+    // Mini-tier strip is hidden in the simplified mobile flow; the form submit
+    // routes the user to the default tier (Annual). Re-enable later if you
+    // want plan selection back on mobile.
+    &.dont-miss-step-intro .dont-miss-mobile-tiers { display: none !important; }
 
     &.dont-miss-step-signup .dont-miss-pitch { display: none !important; }
     &.dont-miss-step-signup .dont-miss-mobile-intro-ctas { display: none !important; }
+    &.dont-miss-step-signup .dont-miss-mobile-tiers { display: none !important; }
+    &.dont-miss-step-signup .dont-miss-mobile-features { display: none !important; }
 
     .dont-miss-pitch {
       padding: 24px 22px 18px !important;
       gap: 14px !important;
+    }
+    // Carousel images are hidden on mobile per the Figma reference; the
+    // tier cards + CTA carry the page on their own.
+    .dont-miss-carousel {
+      display: none !important;
+    }
+    // Feature pills row is desktop-only; mobile hides it.
+    .dont-miss-pills {
+      display: none !important;
     }
     // Mobile step 1: keep pills (extra info row) but hide the social-proof
     // row to save vertical space. Stats still render on desktop.
@@ -111,6 +142,9 @@
       &:nth-child(1) { order: 3; } // Monthly
       &:nth-child(2) { order: 2; } // Annual
       &:nth-child(3) { order: 1; } // Lifetime (pinned to top)
+      // Tighter padding so each card is shorter; bullets are hidden on mobile.
+      padding: 16px 16px 14px !important;
+      gap: 8px !important;
     }
   }
 }

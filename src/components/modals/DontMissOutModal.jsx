@@ -10,7 +10,6 @@ import {
   Lock,
   Eye,
   EyeOff,
-  Check,
   ArrowRight,
   ArrowLeft,
   Crown,
@@ -265,6 +264,155 @@ function CarouselFrame({ frame }) {
   );
 }
 
+function MobileTierCards({ t, email, selectedTier, setSelectedTier }) {
+  const tiers = useMemo(() => getTiers(t, email), [t, email]);
+
+  // Per-day cost shown on the right side of each card. Recurring plans use the
+  // numeric calculation; Lifetime swaps to "Pay Once" since per-day doesn't apply.
+  const perDayText = (tier) => {
+    if (tier.key === "monthly") return "$0.33 / day";
+    if (tier.key === "annual") return "$0.11 / day";
+    return "Pay Once";
+  };
+
+  // Inline savings badge on the top row (matches the SAVE 17% / SAVE 29% chip
+  // pattern in the Figma). Lifetime swaps to "BEST VALUE" since the savings
+  // depend on time horizon.
+  const savingsBadge = (tier) => {
+    if (tier.key === "annual") return "SAVE 68%";
+    if (tier.key === "lifetime") return "BEST VALUE";
+    return null;
+  };
+
+  return (
+    <div
+      className="dont-miss-mobile-features"
+      style={{
+        display: "none",
+        flexDirection: "column",
+        gap: 9,
+        marginTop: 6,
+      }}
+    >
+      {tiers.map((tier) => {
+        const isSelected = selectedTier === tier.key;
+        const badge = savingsBadge(tier);
+        return (
+          <button
+            key={tier.key}
+            type="button"
+            onClick={() => setSelectedTier(tier.key)}
+            aria-pressed={isSelected}
+            style={{
+              width: "100%",
+              minHeight: 80,
+              padding: "11px 15px",
+              borderRadius: 16,
+              background: "transparent",
+              border: isSelected
+                ? `1.8px solid ${T.accent}`
+                : `1.8px solid rgba(0,212,204,0.22)`,
+              color: T.pitchText,
+              cursor: "pointer",
+              textAlign: "left",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 12,
+              transition: "border-color .15s",
+            }}
+          >
+            {/* Left column: plan label + badge → price → sub line */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 4,
+                alignItems: "flex-start",
+                minWidth: 0,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  height: 17,
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: 10.5,
+                    fontWeight: 400,
+                    color: "rgba(255,255,255,0.70)",
+                    lineHeight: 1.3,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {tier.name}
+                </span>
+                {badge && (
+                  <span
+                    aria-hidden
+                    style={{
+                      background: "rgba(0,212,204,0.22)",
+                      color: "#ffffff",
+                      fontSize: 10.5,
+                      fontWeight: 500,
+                      lineHeight: 1,
+                      padding: "3px 8px",
+                      borderRadius: 10,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {badge}
+                  </span>
+                )}
+              </div>
+              <span
+                style={{
+                  fontSize: 16,
+                  fontWeight: 600,
+                  color: "#ffffff",
+                  lineHeight: 1.1,
+                  letterSpacing: "-0.005em",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {tier.price}
+              </span>
+              <span
+                style={{
+                  fontSize: 10.5,
+                  fontWeight: 400,
+                  color: "rgba(255,255,255,0.70)",
+                  lineHeight: 1.3,
+                }}
+              >
+                {tier.tagline}
+              </span>
+            </div>
+
+            {/* Right: per-day equivalent / "Pay Once" */}
+            <span
+              style={{
+                fontSize: 16,
+                fontWeight: 600,
+                color: "#ffffff",
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+              }}
+            >
+              {perDayText(tier)}
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+
 function StepOne({
   t,
   email,
@@ -276,6 +424,8 @@ function StepOne({
   onContinue,
   onIntroContinue,
   onMaybeLater,
+  selectedTier,
+  setSelectedTier,
 }) {
   const frames = useMemo(() => getCarouselFrames(t), [t]);
   const pills = useMemo(() => getFeaturePills(t), [t]);
@@ -344,6 +494,7 @@ function StepOne({
 
         {/* Carousel */}
         <div
+          className="dont-miss-carousel"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
           style={{ display: "flex", flexDirection: "column", gap: 10 }}
@@ -371,7 +522,7 @@ function StepOne({
           </div>
         </div>
 
-        {/* Feature pills (2 rows of 3) */}
+        {/* Feature pills (2 rows of 3) — desktop only; hidden on mobile via SCSS. */}
         <div
           className="dont-miss-pills"
           style={{
@@ -455,11 +606,20 @@ function StepOne({
           </span>
         </div>
 
-        {/* Mobile-only Continue CTA for the intro step. Matches the site's
-            primary `.pc-cta-primary` style. Hidden on desktop and on form/tiers. */}
+        {/* Mobile-only tier cards (3 horizontal mini-cards with ribbon, price,
+            period, sub-line, and selection radio). Hidden on desktop. */}
+        <MobileTierCards
+          t={t}
+          email={email}
+          selectedTier={selectedTier}
+          setSelectedTier={setSelectedTier}
+        />
+
+        {/* Mobile-only CTAs for the intro step. Continue takes the user to the
+            sign-up form (and on submit they're routed by selectedTier). */}
         <div
           className="dont-miss-mobile-intro-ctas"
-          style={{ display: "none", marginTop: 6 }}
+          style={{ display: "none", flexDirection: "column", gap: 10, marginTop: 6 }}
         >
           <button
             type="button"
@@ -472,6 +632,21 @@ function StepOne({
               "Get Full Access"}
             <ArrowRight size={16} />
           </button>
+          <a
+            href="/app/sign-up?tier=free"
+            style={{
+              alignSelf: "center",
+              padding: "8px 4px",
+              color: T.pitchMuted,
+              fontSize: 12.5,
+              fontWeight: 500,
+              textDecoration: "underline",
+              textUnderlineOffset: 2,
+              textDecorationColor: "rgba(255,255,255,0.25)",
+            }}
+          >
+            {t?.dontMissOutModal?.startFreeLink || "Start Free, Upgrade Later"}
+          </a>
         </div>
       </div>
 
@@ -687,11 +862,6 @@ function getTiers(t, email) {
       price: tr.monthlyPrice || "$10",
       period: tr.monthlyPeriod || "/ Month",
       tagline: tr.monthlyTagline || "Full Power, Flexible Billing",
-      bullets: [
-        tr.proBullet1 || "Unlimited Transcripts",
-        tr.proBullet2 || "Bulk Imports + AI Agents",
-        tr.proBullet3 || "Claude & ChatGPT Integration",
-      ],
       cta: tr.monthlyCta || "Get Monthly",
       href: `https://tokscript.lemonsqueezy.com/checkout/buy/${monthlySlug}${emailQuery}`,
       external: true,
@@ -703,11 +873,6 @@ function getTiers(t, email) {
       period: tr.annualPeriod || "/ Year",
       tagline: tr.annualTagline || "Save $81 vs Monthly",
       pricePill: tr.annualPricePill || "That's $3.25/Month",
-      bullets: [
-        tr.proBullet1 || "Unlimited Transcripts",
-        tr.proBullet2 || "Bulk Imports + AI Agents",
-        tr.proBullet3 || "Claude & ChatGPT Integration",
-      ],
       cta: tr.annualCta || "Get Annual, Save $81",
       href: `https://tokscript.lemonsqueezy.com/checkout/buy/${annualSlug}${emailQuery}`,
       external: true,
@@ -720,11 +885,6 @@ function getTiers(t, email) {
       period: tr.lifetimePeriod || "Once",
       originalPrice: tr.lifetimeOriginalPrice || "$468",
       tagline: tr.lifetimeTagline || "Pay Once. Use Forever.",
-      bullets: [
-        tr.lifetimeBullet1 || "Everything In Annual, Forever",
-        tr.lifetimeBullet2 || "All Future Features Included",
-        tr.lifetimeBullet3 || "No Subscriptions, Ever",
-      ],
       cta: tr.lifetimeCta || "Get Lifetime, Save $269",
       href: `https://tokscript.lemonsqueezy.com/checkout/buy/${lifetimeSlug}${emailQuery}`,
       external: true,
@@ -734,9 +894,11 @@ function getTiers(t, email) {
 }
 
 function TierCard({ tier, t, onSelect }) {
+  // Desktop Step 2 (Select Plan): only the `recommended` tier (Annual) gets the
+  // teal accent treatment. Lifetime is rendered identically to Monthly — the
+  // bestValue flag is intentionally ignored here.
   const isRec = !!tier.recommended;
-  const isBest = !!tier.bestValue;
-  const accented = isRec || isBest;
+  const accented = isRec;
 
   const cardStyle = {
     position: "relative",
@@ -750,9 +912,7 @@ function TierCard({ tier, t, onSelect }) {
     border: accented
       ? `1px solid rgba(0,212,204,0.55)`
       : `1px solid ${T.formBorder}`,
-    boxShadow: isBest
-      ? "0 0 0 5px rgba(0,212,204,0.16), 0 12px 32px rgba(0,212,204,0.18)"
-      : isRec
+    boxShadow: isRec
       ? "0 0 0 4px rgba(0,212,204,0.10)"
       : "none",
     display: "flex",
@@ -783,9 +943,7 @@ function TierCard({ tier, t, onSelect }) {
     ? { href: tier.href, target: "_blank", rel: "noopener noreferrer", onClick: onSelect }
     : { href: tier.href, onClick: onSelect };
 
-  const badgeText = isBest
-    ? t?.dontMissOutModal?.tiers?.bestValueBadge || "Best Value"
-    : isRec
+  const badgeText = isRec
     ? t?.dontMissOutModal?.tiers?.recommendedBadge || "Recommended"
     : null;
 
@@ -883,38 +1041,6 @@ function TierCard({ tier, t, onSelect }) {
           {tier.pricePill}
         </span>
       )}
-
-      <ul
-        style={{
-          listStyle: "none",
-          padding: 0,
-          margin: "6px 0 8px",
-          display: "flex",
-          flexDirection: "column",
-          gap: 7,
-        }}
-      >
-        {tier.bullets.map((b) => (
-          <li
-            key={b}
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: 7,
-              color: T.pitchText,
-              fontSize: 12.5,
-              lineHeight: 1.4,
-            }}
-          >
-            <Check
-              size={14}
-              style={{ color: T.accent, marginTop: 2, flexShrink: 0 }}
-              aria-hidden
-            />
-            <span>{b}</span>
-          </li>
-        ))}
-      </ul>
 
       <a {...ctaProps} style={ctaStyle}>
         {tier.cta}
@@ -1087,6 +1213,9 @@ export default function DontMissOutModal({ show, onHide, t }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
+  // Mobile flow: tier is chosen on the intro screen, then form submission
+  // routes the user directly to checkout/sign-up based on this value.
+  const [selectedTier, setSelectedTier] = useState("annual");
 
   // Track viewport size so we can branch the flow (desktop = 2 steps, mobile = 3 steps).
   useEffect(() => {
@@ -1119,6 +1248,18 @@ export default function DontMissOutModal({ show, onHide, t }) {
 
   const handleContinue = () => {
     saveSignupProgress(email);
+    if (isMobile) {
+      // Mobile: tier was already chosen on the intro screen; route directly.
+      const tiers = getTiers(t, email);
+      const chosen = tiers.find((tr) => tr.key === selectedTier) || tiers[0];
+      clearSignupProgress();
+      if (typeof window !== "undefined") {
+        window.location.href = chosen.href;
+      }
+      onHide?.();
+      return;
+    }
+    // Desktop keeps the existing 2-step flow with tier selection on step 2.
     setStep("tiers");
   };
 
@@ -1156,6 +1297,15 @@ export default function DontMissOutModal({ show, onHide, t }) {
             minHeight: step === "signup" ? 0 : 460,
           }}
         >
+          {/* Soft swirl background (Figma asset). Sits behind all modal content
+              at 14% opacity on both desktop and mobile. */}
+          <img
+            className="dont-miss-bg-image"
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/figma-rows/modal-bg-mobile.png`}
+            alt=""
+            aria-hidden
+          />
+
           {/* Accent glow */}
           <div
             aria-hidden
@@ -1218,6 +1368,8 @@ export default function DontMissOutModal({ show, onHide, t }) {
               onContinue={handleContinue}
               onIntroContinue={handleIntroContinue}
               onMaybeLater={onHide}
+              selectedTier={selectedTier}
+              setSelectedTier={setSelectedTier}
             />
           )}
         </div>
