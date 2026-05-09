@@ -3,6 +3,25 @@
 .dont-miss-out-modal-v3 {
   padding-left: 0 !important;
 
+  // Kill the glow on the mobile Continue button so it sits flat against the dark modal bg.
+  // Also force white text in both rest and hover states (overrides .pc-cta-primary's dark text).
+  .dont-miss-mobile-intro-ctas .pc-cta-primary,
+  .dont-miss-mobile-intro-ctas .pc-cta-primary:hover {
+    box-shadow: none !important;
+    color: #ffffff !important;
+  }
+
+  // Pill copy varies by viewport — desktop shows the long label, mobile a short one.
+  // Force both span variants to inherit the parent pill's typography so swapping
+  // them doesn't visually shift weight, color, or letter-spacing.
+  .pill-desktop-label,
+  .pill-mobile-label {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+  }
+  .pill-mobile-label { display: none; }
+
   .modal-dialog {
     max-width: 880px;
     @media screen and (max-width: 920px) {
@@ -25,15 +44,67 @@
 
   @media screen and (max-width: 760px) {
     .dont-miss-shell {
-      flex-direction: column !important;
       min-height: 0 !important;
+      flex-direction: column !important;
     }
+
+    // Mobile is a 3-step wizard:
+    //   .dont-miss-step-intro  → show pitch only (with intro CTAs at bottom)
+    //   .dont-miss-step-signup → show form only
+    //   .dont-miss-step-tiers  → show tier cards only
+    &.dont-miss-step-intro .dont-miss-form { display: none !important; }
+    &.dont-miss-step-intro .dont-miss-mobile-intro-ctas { display: flex !important; }
+
+    &.dont-miss-step-signup .dont-miss-pitch { display: none !important; }
+    &.dont-miss-step-signup .dont-miss-mobile-intro-ctas { display: none !important; }
+
     .dont-miss-pitch {
-      padding: 28px 24px 20px !important;
+      padding: 24px 22px 18px !important;
+      gap: 14px !important;
+    }
+    // Mobile step 1: keep pills (extra info row) but hide the social-proof
+    // row to save vertical space. Stats still render on desktop.
+    .dont-miss-stats {
+      display: none !important;
+    }
+    // 2 columns on mobile so longer pill labels fit; allow wrap as a fallback
+    // for very narrow viewports.
+    .dont-miss-pills {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+    .dont-miss-pill {
+      white-space: normal !important;
+      text-overflow: initial !important;
+      line-height: 1.25 !important;
+    }
+    .pill-desktop-label { display: none; }
+    .pill-mobile-label { display: inline; }
+    .dont-miss-h2 {
+      white-space: normal !important;
+      font-size: 22px !important;
     }
     .dont-miss-form {
       width: 100% !important;
+      margin: 0 !important;
+      padding: 26px 22px 24px !important;
+      border-radius: 0 !important;
+      border: none !important;
+      min-height: 100% !important;
+    }
+    // Step 2 mobile: stack 3 cards vertically. Tier order in JSX is
+    // [Monthly, Annual, Lifetime]; mobile order is Lifetime → Annual →
+    // Monthly (highest value first).
+    .dont-miss-step-two {
       padding: 24px 22px 28px !important;
+    }
+    .dont-miss-tier-row {
+      flex-direction: column !important;
+      gap: 14px !important;
+    }
+    .dont-miss-tier-card {
+      &:nth-child(1) { order: 3; } // Monthly
+      &:nth-child(2) { order: 2; } // Annual
+      &:nth-child(3) { order: 1; } // Lifetime (pinned to top)
     }
   }
 }
