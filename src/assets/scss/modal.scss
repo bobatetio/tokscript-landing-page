@@ -84,6 +84,11 @@
       white-space: pre-line !important;
       font-size: 22px !important;
     }
+    // 16px is the iOS Safari threshold below which focusing an input
+    // auto-zooms the page. Force 16px on mobile to prevent the zoom.
+    .dont-miss-input {
+      font-size: 16px !important;
+    }
     .dont-miss-form {
       width: 100% !important;
       margin: 0 !important;

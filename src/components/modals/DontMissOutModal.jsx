@@ -106,6 +106,7 @@ function FormField({ label, icon, type = "text", placeholder, value, onChange, t
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          className="dont-miss-input"
           style={{
             flex: 1,
             background: "transparent",

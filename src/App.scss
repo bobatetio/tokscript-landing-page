@@ -273,7 +273,9 @@
 
             @media screen and (max-width: 767px) {
               height: 112px;
-              font-size: 14px;
+              // 16px is the iOS Safari threshold below which focusing an input
+              // auto-zooms the page. Keep at 16px to prevent the hero zoom bug.
+              font-size: 16px;
               padding: 10px 12px 6px;
               font-style: normal;
               color: #e6e6e6;
@@ -286,7 +288,7 @@
               opacity: 1;
 
               @media screen and (max-width: 767px) {
-                font-size: 14px;
+                font-size: 16px;
                 font-style: normal;
                 color: rgba(255, 255, 255, 0.65);
               }
