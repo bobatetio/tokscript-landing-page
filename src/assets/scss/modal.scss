@@ -1,5 +1,10 @@
 @use "./variables.scss" as *;
 
+@keyframes tsSlideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
 .dont-miss-out-modal-v3 {
   padding-left: 0 !important;
 
@@ -58,9 +63,30 @@
   }
 
   @media screen and (max-width: 760px) {
+    // Bottom-sheet behavior on mobile: dialog hugs the bottom edge but has
+    // side margins so it doesn't touch the screen edges. Slides up on open.
+    .modal-dialog {
+      position: fixed !important;
+      bottom: 12px !important;
+      left: 12px !important;
+      right: 12px !important;
+      margin: 0 !important;
+      max-width: calc(100% - 24px) !important;
+      width: auto !important;
+    }
+    .modal-content {
+      border-radius: 22px !important;
+      max-height: 92vh;
+      overflow-y: auto;
+    }
     .dont-miss-shell {
       min-height: 0 !important;
       flex-direction: column !important;
+      border-radius: 22px !important;
+    }
+    // Slide-up animation when the modal opens.
+    &.show .modal-dialog {
+      animation: tsSlideUp 280ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     // Mobile is a 3-step wizard:
@@ -70,15 +96,14 @@
     &.dont-miss-step-intro .dont-miss-form { display: none !important; }
     &.dont-miss-step-intro .dont-miss-mobile-intro-ctas { display: flex !important; }
     &.dont-miss-step-intro .dont-miss-mobile-features { display: flex !important; }
-    // Mini-tier strip is hidden in the simplified mobile flow; the form submit
-    // routes the user to the default tier (Annual). Re-enable later if you
-    // want plan selection back on mobile.
-    &.dont-miss-step-intro .dont-miss-mobile-tiers { display: none !important; }
 
     &.dont-miss-step-signup .dont-miss-pitch { display: none !important; }
     &.dont-miss-step-signup .dont-miss-mobile-intro-ctas { display: none !important; }
-    &.dont-miss-step-signup .dont-miss-mobile-tiers { display: none !important; }
     &.dont-miss-step-signup .dont-miss-mobile-features { display: none !important; }
+
+    // Step 7 (Tier Selection) on mobile renders MobileTierCards inside
+    // StepTwo — keep the cards visible.
+    &.dont-miss-step-tiers .dont-miss-mobile-features { display: flex !important; }
 
     .dont-miss-pitch {
       padding: 24px 22px 18px !important;

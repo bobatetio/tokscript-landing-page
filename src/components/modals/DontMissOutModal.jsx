@@ -10,6 +10,7 @@ import {
   Lock,
   Eye,
   EyeOff,
+  Check,
   ArrowRight,
   ArrowLeft,
   Crown,
@@ -20,6 +21,65 @@ import { LemonProducts } from "@/components/LemonProducts";
 // hasn't picked a tier yet, jump them straight to Step 2 next time.
 const SIGNUP_PROGRESS_KEY = "tokscript_signup_progress_v1";
 const SIGNUP_PROGRESS_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+// ─── Mock backend (client-side stubs for the prototype flow) ─────────────────
+// These simulate the API behavior described in the mobile signup spec. They
+// run entirely in the browser; swap for real fetch() calls when backend lands.
+
+// Pretend these emails already exist. Anything else is treated as new.
+const MOCK_EXISTING_EMAILS = new Set([
+  "user@example.com",
+  "existing@tokscript.com",
+  "demo@tokscript.com",
+]);
+
+// For sign-in: pretend these emails are already on a paid plan; everyone else
+// is on the free plan (so the sign-in flow can demonstrate the "paid users go
+// straight back to the feature" branch).
+const MOCK_PAID_EMAILS = new Set(["paid@tokscript.com", "demo@tokscript.com"]);
+
+function mockCheckEmailExists(email) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(MOCK_EXISTING_EMAILS.has(email.trim().toLowerCase()));
+    }, 350);
+  });
+}
+
+function mockSignIn(email /* , password */) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const e = email.trim().toLowerCase();
+      const plan = MOCK_PAID_EMAILS.has(e) ? "pro" : "free";
+      const user = { email: e, plan };
+      try {
+        window.localStorage.setItem("user", JSON.stringify(user));
+      } catch (_) {}
+      resolve(user);
+    }, 350);
+  });
+}
+
+// In-app browser detection (Instagram, TikTok, Twitter, FB, etc). Modal shows
+// a small banner suggesting users open the page in their real browser.
+function detectInAppBrowser() {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent || "";
+  return /Instagram|FBAN|FBAV|FB_IAB|FBIOS|TikTok|musical_ly|Twitter|Line\//i.test(ua);
+}
+
+function mockCreateAccount(email /* , password */) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const e = email.trim().toLowerCase();
+      const user = { email: e, plan: "free" };
+      try {
+        window.localStorage.setItem("user", JSON.stringify(user));
+      } catch (_) {}
+      resolve(user);
+    }, 350);
+  });
+}
 
 function readSignupProgress() {
   if (typeof window === "undefined") return null;
@@ -264,23 +324,20 @@ function CarouselFrame({ frame }) {
   );
 }
 
-function MobileTierCards({ t, email, selectedTier, setSelectedTier }) {
+function MobileTierCards({ t, email, selectedTier, setSelectedTier, onConfirm }) {
   const tiers = useMemo(() => getTiers(t, email), [t, email]);
 
-  // Per-day cost shown on the right side of each card. Recurring plans use the
-  // numeric calculation; Lifetime swaps to "Pay Once" since per-day doesn't apply.
+  // Per-day cost shown on the right side of each card.
   const perDayText = (tier) => {
     if (tier.key === "monthly") return "$0.33 / day";
     if (tier.key === "annual") return "$0.11 / day";
-    return "Pay Once";
+    return "";
   };
 
   // Inline savings badge on the top row (matches the SAVE 17% / SAVE 29% chip
-  // pattern in the Figma). Lifetime swaps to "BEST VALUE" since the savings
-  // depend on time horizon.
+  // pattern in the Figma).
   const savingsBadge = (tier) => {
     if (tier.key === "annual") return "SAVE 68%";
-    if (tier.key === "lifetime") return "BEST VALUE";
     return null;
   };
 
@@ -301,7 +358,10 @@ function MobileTierCards({ t, email, selectedTier, setSelectedTier }) {
           <button
             key={tier.key}
             type="button"
-            onClick={() => setSelectedTier(tier.key)}
+            onClick={() => {
+              setSelectedTier(tier.key);
+              onConfirm?.(tier);
+            }}
             aria-pressed={isSelected}
             style={{
               width: "100%",
@@ -413,6 +473,393 @@ function MobileTierCards({ t, email, selectedTier, setSelectedTier }) {
 }
 
 
+// ─── Mobile multi-step components (Steps 4 / 5 / 6a / 6b) ───────────────────
+
+function MobilePaywallStep({ t, trigger, user, onContinue, onSignIn, onClose }) {
+  const tr = t?.dontMissOutModal?.paywall || {};
+  // Guest (not signed in) has a 3/day cap; free users have 5/day.
+  const dailyCap = user ? 5 : 3;
+  // Shared value-prop bullets for every trigger variant (per latest spec).
+  const sharedBullets = [
+    tr.bullet1 || "Unlimited Scans",
+    tr.bullet2 || "Bulk Downloads",
+    tr.bullet3 || "Works Inside Claude & ChatGPT",
+    tr.bullet4 || "Access Top Chrome Extension",
+  ];
+  // Trigger-aware copy. Falls back to a generic message.
+  const copy = (() => {
+    switch (trigger) {
+      case "daily-limit":
+        return {
+          title:
+            (tr.dailyLimitTitleTemplate &&
+              tr.dailyLimitTitleTemplate.replace("{cap}", dailyCap)) ||
+            `You've Used Your ${dailyCap} Free Transcripts Today.`,
+          sub: user
+            ? tr.dailyLimitSubFree || "Upgrade To Keep Going."
+            : tr.dailyLimitSub || "Create An Account To Keep Going.",
+        };
+      case "translation-limit":
+        return {
+          title: tr.transLimitTitle || "You've Hit Your Daily Translation Limit.",
+          sub: tr.transLimitSub || "Create An Account To Keep Translating.",
+        };
+      case "paid-feature":
+        return {
+          title: tr.paidTitle || "This Feature Unlocks With A Paid Plan.",
+          sub: tr.paidSub || "Sign Up To Get Full Access.",
+        };
+      default:
+        return {
+          title: tr.generalTitle || "Get Full Access To TokScript.",
+          sub: tr.generalSub || "Create An Account To Continue.",
+        };
+    }
+  })();
+  const lockIconSrc = `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/figma-rows/lock-bold.svg`;
+
+  return (
+    <div className="dont-miss-mobile-step" style={{ width: "100%", padding: "28px 22px 24px", display: "flex", flexDirection: "column", gap: 18, position: "relative", zIndex: 2 }}>
+      <div
+        aria-hidden
+        style={{
+          width: 48,
+          height: 48,
+          borderRadius: 14,
+          background: T.accent,
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <img
+          src={lockIconSrc}
+          alt=""
+          aria-hidden
+          style={{
+            width: 22,
+            height: 22,
+            display: "block",
+            // brightness(0) invert(1) → forces any source color to pure white,
+            // matching the Continue button's white text on teal background.
+            filter: "brightness(0) invert(1)",
+          }}
+        />
+      </div>
+      <div>
+        <h2 style={{ margin: 0, color: T.pitchText, fontSize: 22, fontWeight: 700, lineHeight: 1.2, letterSpacing: "-0.015em" }}>
+          {copy.title}
+        </h2>
+        <p style={{ margin: "8px 0 0", color: T.pitchMuted, fontSize: 14, lineHeight: 1.45 }}>
+          {copy.sub}
+        </p>
+      </div>
+      <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
+        {sharedBullets.map((b) => (
+          <li key={b} style={{ display: "flex", alignItems: "center", gap: 10, color: T.pitchText, fontSize: 13.5, lineHeight: 1.35 }}>
+            <span
+              aria-hidden
+              style={{
+                width: 18,
+                height: 18,
+                borderRadius: "50%",
+                background: T.accent,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+            >
+              <Check size={11} strokeWidth={3} color="#06302e" />
+            </span>
+            <span>{b}</span>
+          </li>
+        ))}
+      </ul>
+      <button
+        type="button"
+        onClick={onContinue}
+        className="pc-cta pc-cta-primary"
+        style={{ width: "100%", boxShadow: "0 4px 0 rgba(0,0,0,0.85)", color: "#ffffff", borderRadius: 14 }}
+      >
+        {t?.dontMissOutModal?.continueCta || "Continue"}
+        <ArrowRight size={16} />
+      </button>
+      <p style={{ margin: 0, textAlign: "center", color: T.pitchMuted, fontSize: 13 }}>
+        {t?.dontMissOutModal?.alreadyMember || "Already A Member?"}{" "}
+        <button
+          type="button"
+          onClick={onSignIn}
+          style={{ background: "none", border: "none", padding: 0, color: T.accent, fontWeight: 700, cursor: "pointer" }}
+        >
+          {t?.dontMissOutModal?.signIn || "Sign In"}
+        </button>
+      </p>
+    </div>
+  );
+}
+
+function MobileEmailStep({ t, pendingEmail, setPendingEmail, onSubmit, onGoogle, onBack, busy, error }) {
+  return (
+    <form
+      className="dont-miss-mobile-step"
+      onSubmit={onSubmit}
+      style={{ width: "100%", padding: "26px 22px 24px", display: "flex", flexDirection: "column", gap: 14, position: "relative", zIndex: 2 }}
+    >
+      <BackChip t={t} onBack={onBack} />
+      <div>
+        <h2 style={{ margin: 0, color: T.pitchText, fontSize: 22, fontWeight: 700, lineHeight: 1.2, letterSpacing: "-0.015em" }}>
+          {t?.dontMissOutModal?.emailStepTitle || "What's Your Email?"}
+        </h2>
+        <p style={{ margin: "6px 0 0", color: T.pitchMuted, fontSize: 13.5, lineHeight: 1.45 }}>
+          {t?.dontMissOutModal?.emailStepSub || "We'll Sign You In Or Get You Started."}
+        </p>
+      </div>
+      <FormField
+        label={t?.dontMissOutModal?.emailLabel || "Email"}
+        icon={<Mail size={16} />}
+        type="email"
+        placeholder={t?.dontMissOutModal?.emailPlaceholder || "you@example.com"}
+        value={pendingEmail}
+        onChange={(e) => setPendingEmail(e.target.value)}
+      />
+      {error && (
+        <div style={{ color: "#ff7575", fontSize: 12.5, marginTop: -6 }}>{error}</div>
+      )}
+      <button
+        type="submit"
+        disabled={busy}
+        className="pc-cta pc-cta-primary"
+        style={{ width: "100%", boxShadow: "0 4px 0 rgba(0,0,0,0.85)", color: "#ffffff", borderRadius: 14, opacity: busy ? 0.7 : 1 }}
+      >
+        {busy
+          ? t?.dontMissOutModal?.checking || "Checking…"
+          : t?.dontMissOutModal?.continueCta || "Continue"}
+        {!busy && <ArrowRight size={16} />}
+      </button>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, color: T.formMuted, fontSize: 11 }}>
+        <span style={{ flex: 1, height: 1, background: T.formBorder }} />
+        {t?.dontMissOutModal?.or || "or"}
+        <span style={{ flex: 1, height: 1, background: T.formBorder }} />
+      </div>
+      <button
+        type="button"
+        onClick={onGoogle}
+        disabled={busy}
+        style={{
+          display: "inline-flex",
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 10,
+          padding: "12px 16px",
+          borderRadius: 12,
+          background: T.formInputBg,
+          border: `1px solid ${T.formBorder}`,
+          color: T.formText,
+          fontSize: 14,
+          fontWeight: 600,
+          cursor: busy ? "not-allowed" : "pointer",
+        }}
+      >
+        <GoogleG />
+        {t?.dontMissOutModal?.googleCta || "Continue With Google"}
+      </button>
+    </form>
+  );
+}
+
+function MobileSignInStep({ t, email, password, setPassword, showPw, setShowPw, onSubmit, onBack, busy, error }) {
+  return (
+    <form
+      className="dont-miss-mobile-step"
+      onSubmit={onSubmit}
+      style={{ width: "100%", padding: "26px 22px 24px", display: "flex", flexDirection: "column", gap: 14, position: "relative", zIndex: 2 }}
+    >
+      <BackChip t={t} onBack={onBack} />
+      <h2 style={{ margin: 0, color: T.pitchText, fontSize: 22, fontWeight: 700, lineHeight: 1.2, letterSpacing: "-0.015em" }}>
+        {t?.dontMissOutModal?.welcomeBackTitle || "Welcome Back."}
+      </h2>
+      <ReadonlyEmail email={email} t={t} />
+      <FormField
+        label={t?.dontMissOutModal?.passwordLabel || "Password"}
+        icon={<Lock size={16} />}
+        type={showPw ? "text" : "password"}
+        placeholder={t?.dontMissOutModal?.passwordPlaceholder || "Min. 8 characters"}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        trailing={<PwToggle showPw={showPw} setShowPw={setShowPw} />}
+      />
+      {error && (
+        <div style={{ color: "#ff7575", fontSize: 12.5, marginTop: -6 }}>{error}</div>
+      )}
+      <button
+        type="submit"
+        disabled={busy}
+        className="pc-cta pc-cta-primary"
+        style={{ width: "100%", boxShadow: "0 4px 0 rgba(0,0,0,0.85)", color: "#ffffff", borderRadius: 14, opacity: busy ? 0.7 : 1 }}
+      >
+        {busy
+          ? t?.dontMissOutModal?.signingIn || "Signing In…"
+          : t?.dontMissOutModal?.signInCta || "Sign In"}
+        {!busy && <ArrowRight size={16} />}
+      </button>
+      <a
+        href="/app/forgot-password"
+        style={{ alignSelf: "center", color: T.pitchMuted, fontSize: 12.5, textDecoration: "underline", textUnderlineOffset: 2 }}
+      >
+        {t?.dontMissOutModal?.forgotPassword || "Forgot Password?"}
+      </a>
+    </form>
+  );
+}
+
+function MobileCreateAccountStep({ t, email, password, setPassword, showPw, setShowPw, onSubmit, onBack, busy, error }) {
+  return (
+    <form
+      className="dont-miss-mobile-step"
+      onSubmit={onSubmit}
+      style={{ width: "100%", padding: "26px 22px 24px", display: "flex", flexDirection: "column", gap: 14, position: "relative", zIndex: 2 }}
+    >
+      <BackChip t={t} onBack={onBack} />
+      <h2 style={{ margin: 0, color: T.pitchText, fontSize: 22, fontWeight: 700, lineHeight: 1.2, letterSpacing: "-0.015em" }}>
+        {t?.dontMissOutModal?.createPasswordTitle || "Create Your Password."}
+      </h2>
+      <ReadonlyEmail email={email} t={t} />
+      <FormField
+        label={t?.dontMissOutModal?.passwordLabel || "Password"}
+        icon={<Lock size={16} />}
+        type={showPw ? "text" : "password"}
+        placeholder={t?.dontMissOutModal?.passwordPlaceholder || "Min. 8 characters"}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        trailing={<PwToggle showPw={showPw} setShowPw={setShowPw} />}
+      />
+      {error && (
+        <div style={{ color: "#ff7575", fontSize: 12.5, marginTop: -6 }}>{error}</div>
+      )}
+      <button
+        type="submit"
+        disabled={busy}
+        className="pc-cta pc-cta-primary"
+        style={{ width: "100%", boxShadow: "0 4px 0 rgba(0,0,0,0.85)", color: "#ffffff", borderRadius: 14, opacity: busy ? 0.7 : 1 }}
+      >
+        {busy
+          ? t?.dontMissOutModal?.creating || "Creating…"
+          : t?.dontMissOutModal?.continueCta || "Continue"}
+        {!busy && <ArrowRight size={16} />}
+      </button>
+      <p style={{ margin: 0, color: T.pitchMuted, fontSize: 11.5, lineHeight: 1.5, textAlign: "center" }}>
+        {t?.dontMissOutModal?.termsLine1 || "By continuing, you agree to our"}{" "}
+        <a
+          href="/terms"
+          style={{
+            color: T.pitchMuted,
+            textDecoration: "underline",
+            fontSize: "inherit",
+            fontWeight: "inherit",
+            lineHeight: "inherit",
+            fontFamily: "inherit",
+          }}
+        >
+          {t?.dontMissOutModal?.terms || "Terms"}
+        </a>
+        {" "}{t?.dontMissOutModal?.and || "and"}{" "}
+        <a
+          href="/privacy"
+          style={{
+            color: T.pitchMuted,
+            textDecoration: "underline",
+            fontSize: "inherit",
+            fontWeight: "inherit",
+            lineHeight: "inherit",
+            fontFamily: "inherit",
+          }}
+        >
+          {t?.dontMissOutModal?.privacy || "Privacy Policy"}
+        </a>.
+      </p>
+    </form>
+  );
+}
+
+// Small helpers used across the new mobile steps.
+function BackChip({ t, onBack }) {
+  return (
+    <button
+      type="button"
+      onClick={onBack}
+      style={{
+        alignSelf: "flex-start",
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        padding: "5px 10px",
+        borderRadius: 999,
+        background: "rgba(255,255,255,0.06)",
+        border: `1px solid ${T.formBorder}`,
+        color: T.pitchMuted,
+        fontSize: 11.5,
+        fontWeight: 600,
+        cursor: "pointer",
+      }}
+    >
+      <ArrowLeft size={12} />
+      {t?.dontMissOutModal?.back || "Back"}
+    </button>
+  );
+}
+
+function ReadonlyEmail({ email, t }) {
+  return (
+    <div>
+      <label
+        style={{
+          display: "block",
+          color: T.formText,
+          fontSize: 11,
+          fontWeight: 600,
+          letterSpacing: "0.06em",
+          textTransform: "uppercase",
+          marginBottom: 6,
+        }}
+      >
+        {t?.dontMissOutModal?.emailLabel || "Email"}
+      </label>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          padding: "11px 14px",
+          borderRadius: 12,
+          background: "rgba(255,255,255,0.04)",
+          border: `1px solid ${T.formBorder}`,
+        }}
+      >
+        <Mail size={16} style={{ color: T.formMuted }} />
+        <span style={{ flex: 1, color: T.formText, fontSize: 14, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          {email}
+        </span>
+        <span aria-hidden style={{ color: T.accent, fontWeight: 800 }}>✓</span>
+      </div>
+    </div>
+  );
+}
+
+function PwToggle({ showPw, setShowPw }) {
+  return (
+    <button
+      type="button"
+      onClick={() => setShowPw((s) => !s)}
+      aria-label={showPw ? "Hide password" : "Show password"}
+      style={{ background: "none", border: "none", color: T.formMuted, cursor: "pointer", display: "inline-flex", padding: 0 }}
+    >
+      {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
+    </button>
+  );
+}
+
 function StepOne({
   t,
   email,
@@ -426,6 +873,8 @@ function StepOne({
   onMaybeLater,
   selectedTier,
   setSelectedTier,
+  user,
+  onMobileTierConfirm,
 }) {
   const frames = useMemo(() => getCarouselFrames(t), [t]);
   const pills = useMemo(() => getFeaturePills(t), [t]);
@@ -490,6 +939,35 @@ function StepOne({
           >
             {t?.dontMissOutModal?.title || "Everything TokScript,\nIn One Account."}
           </h2>
+        </div>
+
+        {/* Mobile-only headline + signed-in line. The desktop block above is
+            hidden on mobile via the `dont-miss-desktop-only` rule. */}
+        <div className="dont-miss-mobile-header" style={{ display: "none", flexDirection: "column", gap: 4 }}>
+          <h2
+            style={{
+              margin: 0,
+              color: T.pitchText,
+              fontSize: 22,
+              fontWeight: 700,
+              lineHeight: 1.2,
+              letterSpacing: "-0.015em",
+            }}
+          >
+            {t?.dontMissOutModal?.mobileTitle || "Pick Your Plan To Continue."}
+          </h2>
+          <p
+            style={{
+              margin: 0,
+              color: T.pitchMuted,
+              fontSize: 13,
+              lineHeight: 1.4,
+            }}
+          >
+            {user?.email
+              ? `${t?.dontMissOutModal?.signedInAs || "Signed in as"} ${user.email}`
+              : t?.dontMissOutModal?.signUpNext || "Sign up next to confirm your plan."}
+          </p>
         </div>
 
         {/* Carousel */}
@@ -888,7 +1366,8 @@ function getTiers(t, email) {
       cta: tr.lifetimeCta || "Get Lifetime, Save $269",
       href: `https://tokscript.lemonsqueezy.com/checkout/buy/${lifetimeSlug}${emailQuery}`,
       external: true,
-      bestValue: true,
+      // bestValue flag intentionally omitted — Lifetime renders as a plain
+      // card with no "BEST VALUE" badge.
     },
   ];
 }
@@ -1050,8 +1529,26 @@ function TierCard({ tier, t, onSelect }) {
   );
 }
 
-function StepTwo({ t, email, onBack, onTierSelect }) {
-  const tiers = useMemo(() => getTiers(t, email), [t, email]);
+function StepTwo({
+  t,
+  email,
+  onBack,
+  onTierSelect,
+  user,
+  trigger,
+  isMobile,
+  selectedTier,
+  setSelectedTier,
+}) {
+  // Variations per the mobile signup spec:
+  //   - Existing free user upgrading: hide the Free tier and the "Start Free" link.
+  //     (Detected via signed-in `user` with plan="free".)
+  //   - Paid-feature trigger: hide "Start Free, Upgrade Later" (don't dilute intent).
+  //   - Otherwise: show all paid tiers + the "Start Free, Upgrade Later" link.
+  const allTiers = useMemo(() => getTiers(t, email), [t, email]);
+  const isFreeUserUpgrading = !!user && user.plan === "free";
+  const showStartFreeLink = !isFreeUserUpgrading && trigger !== "paid-feature";
+  const tiers = allTiers;
   return (
     <div
       className="dont-miss-step-two"
@@ -1112,7 +1609,19 @@ function StepTwo({ t, email, onBack, onTierSelect }) {
         </p>
       </div>
 
-      {email && (
+      {user?.email ? (
+        <div
+          style={{
+            margin: "-6px auto 0",
+            color: T.pitchMuted,
+            fontSize: 12,
+            textAlign: "center",
+          }}
+        >
+          {t?.dontMissOutModal?.signedInAs || "Signed in as"}{" "}
+          <span style={{ color: T.pitchText, fontWeight: 600 }}>{user.email}</span>
+        </div>
+      ) : email ? (
         <div
           style={{
             margin: "-6px auto 0",
@@ -1141,26 +1650,44 @@ function StepTwo({ t, email, onBack, onTierSelect }) {
             {t?.dontMissOutModal?.useDifferentEmail || "Use Different Email"}
           </button>
         </div>
+      ) : null}
+
+      {isMobile ? (
+        // Mobile uses the Figma row format — each card is fully tappable and
+        // navigates straight to the tier's checkout (or signup for free).
+        <MobileTierCards
+          t={t}
+          email={email}
+          selectedTier={selectedTier}
+          setSelectedTier={setSelectedTier}
+          onConfirm={(tier) => {
+            onTierSelect?.(tier);
+            if (typeof window !== "undefined" && tier?.href) {
+              window.location.href = tier.href;
+            }
+          }}
+        />
+      ) : (
+        <div
+          className="dont-miss-tier-row"
+          style={{
+            display: "flex",
+            gap: 8,
+            alignItems: "stretch",
+          }}
+        >
+          {tiers.map((tier) => (
+            <TierCard
+              key={tier.key}
+              tier={tier}
+              t={t}
+              onSelect={() => onTierSelect?.(tier)}
+            />
+          ))}
+        </div>
       )}
 
-      <div
-        className="dont-miss-tier-row"
-        style={{
-          display: "flex",
-          gap: 8,
-          alignItems: "stretch",
-        }}
-      >
-        {tiers.map((tier) => (
-          <TierCard
-            key={tier.key}
-            tier={tier}
-            t={t}
-            onSelect={() => onTierSelect?.(tier)}
-          />
-        ))}
-      </div>
-
+      {showStartFreeLink && (
       <a
         href={
           email
@@ -1186,6 +1713,7 @@ function StepTwo({ t, email, onBack, onTierSelect }) {
       >
         {t?.dontMissOutModal?.tryFreeFirst || "Try Free First, Decide Later"}
       </a>
+      )}
 
       <p
         style={{
@@ -1203,12 +1731,25 @@ function StepTwo({ t, email, onBack, onTierSelect }) {
   );
 }
 
-export default function DontMissOutModal({ show, onHide, t }) {
+export default function DontMissOutModal({ show, onHide, t, trigger = "general" }) {
   // step values:
-  //   "intro" — mobile-only pitch screen (carousel + Continue / Maybe Later)
-  //   "signup" — desktop two-panel layout, OR mobile form-only screen
-  //   "tiers"  — plan selection
+  //   Mobile flow:
+  //     "paywall" → "email" → "signin"|"create" → "tiers"
+  //   Desktop flow (unchanged):
+  //     "signup" (combined pitch + form) → "tiers"
+  // The two flows share the "tiers" terminal step.
   const [step, setStep] = useState("signup");
+  // Entry-context for trigger-aware copy + tier visibility rules.
+  // "daily-limit" | "translation-limit" | "paid-feature" | "general"
+  const [entryTrigger] = useState(trigger);
+  // Paid-feature trigger optionally carries which feature(s) — set by caller
+  // via the trigger prop in a future extension; for now we just key off the
+  // trigger kind for copy variations.
+  const [pendingEmail, setPendingEmail] = useState("");
+  const [emailExists, setEmailExists] = useState(false);
+  const [authBusy, setAuthBusy] = useState(false);
+  const [authError, setAuthError] = useState("");
+  const [successToast, setSuccessToast] = useState("");
   const [isMobile, setIsMobile] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -1216,6 +1757,10 @@ export default function DontMissOutModal({ show, onHide, t }) {
   // Mobile flow: tier is chosen on the intro screen, then form submission
   // routes the user directly to checkout/sign-up based on this value.
   const [selectedTier, setSelectedTier] = useState("annual");
+  // Detect a signed-in user from localStorage so we can skip the signup form
+  // on mobile (sign-in screen-out).
+  const [user, setUser] = useState(null);
+  const [inAppBrowser, setInAppBrowser] = useState(false);
 
   // Track viewport size so we can branch the flow (desktop = 2 steps, mobile = 3 steps).
   useEffect(() => {
@@ -1224,26 +1769,150 @@ export default function DontMissOutModal({ show, onHide, t }) {
     setIsMobile(mq.matches);
     const handler = (e) => setIsMobile(e.matches);
     mq.addEventListener?.("change", handler);
+    setInAppBrowser(detectInAppBrowser());
     return () => mq.removeEventListener?.("change", handler);
   }, []);
 
-  // On every open: if there's saved Step 1 progress, hydrate the email and
-  // skip directly to tiers. Otherwise: mobile starts at intro, desktop starts
-  // at signup (which shows pitch + form side-by-side).
+  // On every open: hydrate user state + saved Step 1 progress, decide step.
   useEffect(() => {
     if (!show) return;
+    // Hydrate signed-in user (if any) from localStorage.
+    let signedInUser = null;
+    if (typeof window !== "undefined") {
+      try {
+        const raw = window.localStorage.getItem("user");
+        if (raw) signedInUser = JSON.parse(raw);
+      } catch (_) {}
+    }
+    setUser(signedInUser);
+    if (signedInUser?.email) setEmail(signedInUser.email);
+
     const progress = readSignupProgress();
-    if (progress?.email) {
+    setAuthError("");
+    setAuthBusy(false);
+    setSuccessToast("");
+    setPendingEmail("");
+    if (signedInUser?.email) {
+      // Signed-in user opens the modal → straight to tier selection (upgrade).
+      setStep("tiers");
+    } else if (progress?.email) {
+      // Returning visitor with saved progress → tier selection with hydrated email.
       setEmail(progress.email);
       setStep("tiers");
+    } else if (isMobile) {
+      // Cold mobile open → start at the contextual paywall (Step 4).
+      setStep("paywall");
     } else {
-      setStep(isMobile ? "intro" : "signup");
+      setStep("signup");
     }
     setPassword("");
   }, [show, isMobile]);
 
   const handleIntroContinue = () => {
     setStep("signup");
+  };
+
+  // Inline tap-to-choose CTA on each mobile tier card. For a signed-in user we
+  // skip the form and redirect straight to the tier's destination; otherwise
+  // we advance to the sign-up form (where submit then redirects).
+  const handleMobileTierConfirm = (tierKey) => {
+    setSelectedTier(tierKey);
+    if (user?.email) {
+      const t2 = getTiers(t, user.email).find((tr) => tr.key === tierKey);
+      if (t2 && typeof window !== "undefined") {
+        clearSignupProgress();
+        window.location.href = t2.href;
+        onHide?.();
+      }
+      return;
+    }
+    setStep("signup");
+  };
+
+  // ─── Mobile multi-step signup handlers ─────────────────────────────────
+  const handlePaywallContinue = () => {
+    setAuthError("");
+    setStep("email");
+  };
+
+  const handleEmailSubmit = async (e) => {
+    e?.preventDefault?.();
+    const value = pendingEmail.trim().toLowerCase();
+    if (!value || !value.includes("@")) {
+      setAuthError("Please enter a valid email address.");
+      return;
+    }
+    setAuthError("");
+    setAuthBusy(true);
+    try {
+      const exists = await mockCheckEmailExists(value);
+      setEmailExists(exists);
+      setEmail(value);
+      saveSignupProgress(value);
+      setStep(exists ? "signin" : "create");
+    } finally {
+      setAuthBusy(false);
+    }
+  };
+
+  const handleGoogleAuth = async () => {
+    // Mock Google OAuth: pretend Google returned this email. Hydrate as a
+    // new account on the free plan and advance to tier selection.
+    setAuthBusy(true);
+    const u = await mockCreateAccount("google.user@tokscript.com");
+    setUser(u);
+    setEmail(u.email);
+    setAuthBusy(false);
+    setStep("tiers");
+  };
+
+  const handleSignIn = async (e) => {
+    e?.preventDefault?.();
+    if (!password || password.length < 8) {
+      setAuthError("Password must be at least 8 characters.");
+      return;
+    }
+    setAuthError("");
+    setAuthBusy(true);
+    const u = await mockSignIn(email, password);
+    setUser(u);
+    setAuthBusy(false);
+
+    // Paid users → close modal + toast (route back to the feature is handled
+    // by the parent page since the modal doesn't own routing).
+    if (u.plan && u.plan !== "free") {
+      clearSignupProgress();
+      setSuccessToast(
+        `${t?.dontMissOutModal?.welcomeBack || "Welcome back,"} ${u.email}.`
+      );
+      setTimeout(() => {
+        setSuccessToast("");
+        onHide?.();
+      }, 1600);
+      return;
+    }
+    // Free user → upgrade options only (no Free card / no "Start Free" link).
+    setStep("tiers");
+  };
+
+  const handleCreateAccount = async (e) => {
+    e?.preventDefault?.();
+    if (!password || password.length < 8) {
+      setAuthError("Password must be at least 8 characters.");
+      return;
+    }
+    setAuthError("");
+    setAuthBusy(true);
+    const u = await mockCreateAccount(email);
+    setUser(u);
+    // Mark this user as never-welcomed so the dashboard (separate codebase)
+    // can show the Step 10 welcome state on first visit. Cleared on dismissal
+    // there. Stubbed here since the dashboard lives in another repo.
+    try {
+      window.localStorage.setItem("tokscript_welcomed_v1", "pending");
+    } catch (_) {}
+    setAuthBusy(false);
+    setStep("tiers");
   };
 
   const handleContinue = () => {
@@ -1306,13 +1975,30 @@ export default function DontMissOutModal({ show, onHide, t }) {
             aria-hidden
           />
 
-          {/* Accent glow */}
+          {/* Accent glow — top-left */}
           <div
             aria-hidden
             style={{
               position: "absolute",
               top: -120,
               left: -80,
+              width: 320,
+              height: 320,
+              borderRadius: "50%",
+              background:
+                "radial-gradient(ellipse at center, rgba(0,212,204,0.20), transparent 65%)",
+              pointerEvents: "none",
+              zIndex: 0,
+            }}
+          />
+
+          {/* Accent glow — bottom-right (mirrors the top glow). */}
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              bottom: -120,
+              right: -80,
               width: 320,
               height: 320,
               borderRadius: "50%",
@@ -1346,17 +2032,96 @@ export default function DontMissOutModal({ show, onHide, t }) {
             <X size={14} />
           </button>
 
-          {step === "tiers" ? (
+          {/* In-app browser banner (Instagram/TikTok/etc). Suggests opening
+              the page in a real browser for the best signup experience. */}
+          {inAppBrowser && (
+            <a
+              href={typeof window !== "undefined" ? window.location.href : "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "block",
+                margin: "12px 12px 0",
+                padding: "8px 12px",
+                borderRadius: 10,
+                background: "rgba(0,212,204,0.10)",
+                border: `1px solid rgba(0,212,204,0.30)`,
+                color: T.accent,
+                fontSize: 12,
+                fontWeight: 600,
+                textAlign: "center",
+                textDecoration: "none",
+                position: "relative",
+                zIndex: 4,
+              }}
+            >
+              {t?.dontMissOutModal?.openInBrowser ||
+                "For Best Experience, Open In Safari →"}
+            </a>
+          )}
+
+          {/* Mobile multi-step flow (Steps 4 / 5 / 6a / 6b). Desktop keeps the
+              existing side-by-side signup → tier-selection flow. */}
+          {step === "paywall" ? (
+            <MobilePaywallStep
+              t={t}
+              trigger={entryTrigger}
+              user={user}
+              onContinue={handlePaywallContinue}
+              onSignIn={() => setStep("email")}
+              onClose={onHide}
+            />
+          ) : step === "email" ? (
+            <MobileEmailStep
+              t={t}
+              pendingEmail={pendingEmail}
+              setPendingEmail={setPendingEmail}
+              onSubmit={handleEmailSubmit}
+              onGoogle={handleGoogleAuth}
+              onBack={() => setStep("paywall")}
+              busy={authBusy}
+              error={authError}
+            />
+          ) : step === "signin" ? (
+            <MobileSignInStep
+              t={t}
+              email={email}
+              password={password}
+              setPassword={setPassword}
+              showPw={showPw}
+              setShowPw={setShowPw}
+              onSubmit={handleSignIn}
+              onBack={() => setStep("email")}
+              busy={authBusy}
+              error={authError}
+            />
+          ) : step === "create" ? (
+            <MobileCreateAccountStep
+              t={t}
+              email={email}
+              password={password}
+              setPassword={setPassword}
+              showPw={showPw}
+              setShowPw={setShowPw}
+              onSubmit={handleCreateAccount}
+              onBack={() => setStep("email")}
+              busy={authBusy}
+              error={authError}
+            />
+          ) : step === "tiers" ? (
             <StepTwo
               t={t}
               email={email}
-              onBack={() => setStep("signup")}
+              onBack={() => setStep(isMobile ? "email" : "signup")}
               onTierSelect={handleTierSelect}
+              user={user}
+              trigger={entryTrigger}
+              isMobile={isMobile}
+              selectedTier={selectedTier}
+              setSelectedTier={setSelectedTier}
             />
           ) : (
-            // step === "intro" or "signup". On desktop both render the same
-            // side-by-side layout. On mobile, CSS hides the form panel for
-            // "intro" and the pitch panel for "signup".
+            // Desktop "signup" → existing pitch + form side-by-side.
             <StepOne
               t={t}
               email={email}
@@ -1370,7 +2135,33 @@ export default function DontMissOutModal({ show, onHide, t }) {
               onMaybeLater={onHide}
               selectedTier={selectedTier}
               setSelectedTier={setSelectedTier}
+              user={user}
+              onMobileTierConfirm={handleMobileTierConfirm}
             />
+          )}
+
+          {successToast && (
+            <div
+              role="status"
+              aria-live="polite"
+              style={{
+                position: "absolute",
+                bottom: 16,
+                left: 16,
+                right: 16,
+                padding: "12px 16px",
+                borderRadius: 12,
+                background: T.accent,
+                color: "#06302e",
+                fontSize: 13.5,
+                fontWeight: 700,
+                textAlign: "center",
+                zIndex: 50,
+                boxShadow: "0 8px 22px -4px rgba(0,184,178,0.4)",
+              }}
+            >
+              {successToast}
+            </div>
           )}
         </div>
       </Modal.Body>
