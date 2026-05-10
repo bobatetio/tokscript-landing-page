@@ -526,10 +526,11 @@ function MobilePaywallStep({ t, trigger, user, onContinue, onSignIn, onClose }) 
           width: 48,
           height: 48,
           borderRadius: 14,
-          background: T.accent,
+          background: T.accentSoft,
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "center",
+          border: `1px solid rgba(0,212,204,0.30)`,
         }}
       >
         <img
