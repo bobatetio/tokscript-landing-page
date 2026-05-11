@@ -2153,6 +2153,16 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
 
   const handleContinue = () => {
     saveSignupProgress(email);
+    // Persist a temporary free-tier user in localStorage so this prototype
+    // can demo the signed-in free-user experience right after sign-up. The
+    // real backend would replace this with an actual account creation call.
+    if (typeof window !== "undefined" && email && email.includes("@")) {
+      try {
+        const newUser = { email, plan: "free" };
+        window.localStorage.setItem("user", JSON.stringify(newUser));
+        setUser(newUser);
+      } catch (_) {}
+    }
     // Both viewports: form submit advances to the tier-selection step.
     setStep("tiers");
   };
