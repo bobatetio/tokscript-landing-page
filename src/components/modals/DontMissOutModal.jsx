@@ -1555,6 +1555,7 @@ function StepTwo({
   isMobile,
   selectedTier,
   setSelectedTier,
+  wasSignedInOnOpen,
 }) {
   // Active tab on mobile (drives which single card is visible). Desktop ignores
   // this because all four cards render in the grid.
@@ -1567,13 +1568,17 @@ function StepTwo({
   const signinHref = `${process.env.NEXT_PUBLIC_FRONTEND_URL || ""}/signin`;
 
   // Free tier visibility per spec:
-  //   - Guest (no localStorage user) → show Free (4 options)
-  //   - Free user (signed in, plan="free") → hide Free (3 paid options to upgrade)
-  //   - Paid user (signed in, plan!="free") → hide Free (also 3 options)
-  const hideFree = !!user;
-  // Used to swap the tier-step headline from generic 'Pick Your Plan'
-  // to 'Pay To Upgrade' for signed-in free users.
-  const isFreeUserUpgrading = !!user && user.plan === "free";
+  //   - Guest who just signed up (wasSignedInOnOpen=false, user exists now) →
+  //     show Free as a 4th option, since this is their first plan choice.
+  //   - Returning signed-in user (wasSignedInOnOpen=true) → hide Free; they
+  //     already have an account, so only paid upgrades make sense.
+  //   - Pure guest (no user at all) → show Free (this branch normally doesn't
+  //     reach StepTwo, but kept for safety).
+  const hideFree = !!user && wasSignedInOnOpen;
+  // 'Pay To Upgrade' headline only fires for returning signed-in free users.
+  // New signups see the generic 'Pick Your Plan' copy.
+  const isFreeUserUpgrading =
+    !!user && user.plan === "free" && wasSignedInOnOpen;
 
   const choose = (tierKey) => {
     onTierSelect?.({ key: tierKey });
@@ -2011,6 +2016,11 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
   // Detect a signed-in user from localStorage so we can skip the signup form
   // on mobile (sign-in screen-out).
   const [user, setUser] = useState(null);
+  // Distinguishes a returning signed-in user (was already in localStorage when
+  // the modal opened) from a brand-new signup completed during THIS session.
+  //   - returning  → hide Free in the tier step (already past the free trial)
+  //   - new signup → show Free in the tier step (it's their first plan choice)
+  const [wasSignedInOnOpen, setWasSignedInOnOpen] = useState(false);
   const [inAppBrowser, setInAppBrowser] = useState(false);
 
   // Track viewport size so we can branch the flow (desktop = 2 steps, mobile = 3 steps).
@@ -2036,6 +2046,7 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
       } catch (_) {}
     }
     setUser(signedInUser);
+    setWasSignedInOnOpen(!!signedInUser?.email);
     if (signedInUser?.email) setEmail(signedInUser.email);
 
     const progress = readSignupProgress();
@@ -2326,6 +2337,7 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
               isMobile={isMobile}
               selectedTier={selectedTier}
               setSelectedTier={setSelectedTier}
+              wasSignedInOnOpen={wasSignedInOnOpen}
             />
           ) : (
             // intro (mobile pitch) and signup (form) both render StepOne. SCSS
