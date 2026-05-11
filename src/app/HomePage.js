@@ -631,10 +631,18 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
     const links = detectMultipleLinks(videoLink);
 
     // Daily limit gate: guests = 3/day, free users = 5/day, paid users skip.
-    // When the cap is hit, surface the upgrade modal with the right trigger
-    // so the modal copy reflects the user's state.
-    if (isOverDailyLimit(user)) {
-      setModalTrigger(user?.plan === "free" ? "free-limit" : "daily-limit");
+    // Read user from localStorage directly so the limit logic matches what
+    // the modal reads (HomePage's `user` state needs authToken too, which is
+    // overkill for surfacing the upgrade flow).
+    let localUser = null;
+    if (typeof window !== "undefined") {
+      try {
+        const raw = window.localStorage.getItem("user");
+        if (raw) localUser = JSON.parse(raw);
+      } catch (_) {}
+    }
+    if (isOverDailyLimit(localUser)) {
+      setModalTrigger(localUser?.plan === "free" ? "free-limit" : "daily-limit");
       setDontMissOutModalShow(true);
       return;
     }
