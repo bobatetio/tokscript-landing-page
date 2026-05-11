@@ -429,7 +429,7 @@ function BulkListItem({ item, isSelected, onClick }) {
         style={{
           flexShrink: 0,
           width: 38,
-          height: 38,
+          aspectRatio: "9 / 16",
           borderRadius: 8,
           overflow: "hidden",
           background: "#0a0a0a",
@@ -628,7 +628,7 @@ export default function BulkTranscriptResult({
             height: auto !important;
           }
           .bulk-transcript-video {
-            aspect-ratio: 16 / 11 !important;
+            aspect-ratio: 9 / 16 !important;
           }
           .bulk-transcript-list {
             max-height: 380px;
