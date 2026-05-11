@@ -59,4 +59,4 @@
           aspect-ratio: 16 / 10 !important;
         }
       }
-    `})}e.s(["default",()=>R],62522)},82800,e=>{e.v(t=>Promise.all(["static/chunks/587a7cd60456903d.css","static/chunks/9f23427dd91573c2.js","static/chunks/9011e5c7f3264537.js","static/chunks/1fe946a0be6f632c.js"].map(t=>e.l(t))).then(()=>t(88834)))}]);
+    `})}e.s(["default",()=>R],62522)},82800,e=>{e.v(t=>Promise.all(["static/chunks/587a7cd60456903d.css","static/chunks/465e3f41c4535a98.js","static/chunks/a2114e963d7b860b.js","static/chunks/1fe946a0be6f632c.js"].map(t=>e.l(t))).then(()=>t(88834)))}]);
