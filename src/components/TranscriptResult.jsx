@@ -453,7 +453,7 @@ export default function TranscriptResult({ videoData, upgrade }) {
           .transcript-result-video {
             width: 100% !important;
             height: auto !important;
-            aspect-ratio: 16 / 11 !important;
+            aspect-ratio: 9 / 16 !important;
           }
           .transcript-result-transcript {
             padding-top: 4px !important;
