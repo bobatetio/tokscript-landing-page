@@ -1122,6 +1122,177 @@ function StepOne({
         </div>
       </div>
 
+      {/* ── Right: Create Your Account form (sign-up / sign-in entry). ── */}
+      <div
+        className="dont-miss-form"
+        style={{
+          width: 380,
+          flexShrink: 0,
+          margin: "16px 16px 16px 0",
+          padding: "30px 28px 24px",
+          background: T.formBg,
+          borderRadius: 18,
+          border: `1px solid ${T.formBorder}`,
+          display: "flex",
+          flexDirection: "column",
+          gap: 14,
+          position: "relative",
+          zIndex: 2,
+        }}
+      >
+        <div>
+          <h3
+            style={{
+              margin: 0,
+              color: T.formText,
+              fontSize: 20,
+              fontWeight: 700,
+              letterSpacing: "-0.005em",
+            }}
+          >
+            {t?.dontMissOutModal?.formTitle || "Create Your Account"}
+          </h3>
+          <p
+            style={{
+              margin: "6px 0 0",
+              color: T.formMuted,
+              fontSize: 13,
+              lineHeight: 1.45,
+            }}
+          >
+            {t?.dontMissOutModal?.formSubtitle || "One account. Pick your plan next."}
+          </p>
+        </div>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onContinue();
+          }}
+          style={{ display: "flex", flexDirection: "column", gap: 12 }}
+        >
+          <FormField
+            label={t?.dontMissOutModal?.emailLabel || "Email"}
+            icon={<Mail size={16} />}
+            type="email"
+            placeholder={t?.dontMissOutModal?.emailPlaceholder || "you@example.com"}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <FormField
+            label={t?.dontMissOutModal?.passwordLabel || "Password"}
+            icon={<Lock size={16} />}
+            type={showPw ? "text" : "password"}
+            placeholder={t?.dontMissOutModal?.passwordPlaceholder || "Min. 8 characters"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            trailing={
+              <button
+                type="button"
+                onClick={() => setShowPw((s) => !s)}
+                aria-label={showPw ? "Hide password" : "Show password"}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: T.formMuted,
+                  cursor: "pointer",
+                  display: "inline-flex",
+                  padding: 0,
+                }}
+              >
+                {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            }
+          />
+
+          <button
+            type="submit"
+            style={{
+              marginTop: 4,
+              padding: "13px 16px",
+              borderRadius: 12,
+              background: T.formCtaBg,
+              border: "none",
+              color: T.formCtaText,
+              fontSize: 14,
+              fontWeight: 700,
+              cursor: "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              transition: "transform .08s, opacity .15s",
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = "scale(0.99)";
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+            }}
+          >
+            {t?.dontMissOutModal?.continueCta || "Continue"}
+            <ArrowRight size={16} />
+          </button>
+        </form>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            color: T.formMuted,
+            fontSize: 11,
+          }}
+        >
+          <span style={{ flex: 1, height: 1, background: T.formBorder }} />
+          {t?.dontMissOutModal?.or || "or"}
+          <span style={{ flex: 1, height: 1, background: T.formBorder }} />
+        </div>
+
+        <a
+          href="/app/sign-up"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 10,
+            padding: "12px 16px",
+            borderRadius: 12,
+            background: T.formInputBg,
+            border: `1px solid ${T.formBorder}`,
+            color: T.formText,
+            fontSize: 13.5,
+            fontWeight: 500,
+            textDecoration: "none",
+          }}
+        >
+          <GoogleG />
+          {t?.dontMissOutModal?.googleCta || "Continue With Google"}
+        </a>
+
+        <div style={{ flex: 1 }} />
+
+        <p
+          style={{
+            margin: 0,
+            textAlign: "center",
+            color: T.formMuted,
+            fontSize: 12.5,
+          }}
+        >
+          {t?.dontMissOutModal?.haveAccount || "Already Have An Account?"}{" "}
+          <Link
+            href="/app/login"
+            style={{
+              color: T.formText,
+              fontWeight: 700,
+              textDecoration: "none",
+            }}
+          >
+            {t?.dontMissOutModal?.signIn || "Sign In"}
+          </Link>
+        </p>
+      </div>
     </>
   );
 }
@@ -1841,23 +2012,26 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
     setSuccessToast("");
     setPendingEmail("");
     if (signedInUser?.email) {
-      // Signed-in user opens the modal → straight to tier selection (upgrade).
+      // Signed-in user (free or paid) → straight to tier selection.
+      // Free user sees 3 paid options to upgrade. (Free card hidden via hideFree.)
       setStep("tiers");
     } else if (progress?.email) {
-      // Returning visitor with saved progress → tier selection with hydrated email.
+      // Returning guest with saved email → also skip to tiers.
       setEmail(progress.email);
       setStep("tiers");
-    } else {
-      // Both viewports: cold open lands on the pitch screen.
-      // Mobile + desktop see the same eyebrow + headline + Get Full Access CTA.
+    } else if (isMobile) {
+      // Guest on mobile → 3-step flow: intro pitch → signup form → tiers.
       setStep("intro");
+    } else {
+      // Guest on desktop → pitch + signup form side-by-side (one "signup" step).
+      setStep("signup");
     }
     setPassword("");
   }, [show, isMobile]);
 
   const handleIntroContinue = () => {
-    // Guest path: pitch screen → email collection → tier selection.
-    setStep("email");
+    // Mobile guest: pitch screen → form panel (signup step).
+    setStep("signup");
   };
 
   // Inline tap-to-choose CTA on each mobile tier card. For a signed-in user we
@@ -2105,7 +2279,7 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
             <StepTwo
               t={t}
               email={email}
-              onBack={() => setStep(user ? "intro" : "email")}
+              onBack={() => setStep(isMobile ? "signup" : "signup")}
               onTierSelect={handleTierSelect}
               user={user}
               trigger={entryTrigger}
@@ -2113,19 +2287,10 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
               selectedTier={selectedTier}
               setSelectedTier={setSelectedTier}
             />
-          ) : step === "email" ? (
-            <MobileEmailStep
-              t={t}
-              pendingEmail={pendingEmail}
-              setPendingEmail={setPendingEmail}
-              onSubmit={handleEmailSubmit}
-              onGoogle={handleGoogleAuth}
-              onBack={() => setStep("intro")}
-              busy={authBusy}
-              error={authError}
-            />
           ) : (
-            // Intro pitch screen for guests. Free / paid users skip it.
+            // intro (mobile pitch) and signup (form) both render StepOne. SCSS
+            // rules hide the form on mobile-intro and hide the pitch on
+            // mobile-signup; desktop shows both panels side-by-side.
             <StepOne
               t={t}
               email={email}
