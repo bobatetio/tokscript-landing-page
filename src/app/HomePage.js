@@ -379,9 +379,59 @@ function buildMockTikTokResponse(videoLink) {
   };
 }
 
+// ─── Daily transcript-limit tracking ─────────────────────────────────────────
+// Counts how many transcripts a guest / free user has run today. Stored in
+// localStorage keyed by ISO date so the count auto-resets at midnight.
+// Guest cap = 3/day · Free user cap = 5/day · Paid = no cap.
+const TS_DAILY_COUNT_KEY = "tokscript_daily_count";
+
+function getTodayKey() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function getDailyTranscriptCount() {
+  if (typeof window === "undefined") return 0;
+  try {
+    const raw = window.localStorage.getItem(TS_DAILY_COUNT_KEY);
+    if (!raw) return 0;
+    const parsed = JSON.parse(raw);
+    if (parsed?.date !== getTodayKey()) return 0;
+    return parsed?.count || 0;
+  } catch (_) {
+    return 0;
+  }
+}
+
+function incrementDailyTranscriptCount() {
+  if (typeof window === "undefined") return;
+  try {
+    const next = getDailyTranscriptCount() + 1;
+    window.localStorage.setItem(
+      TS_DAILY_COUNT_KEY,
+      JSON.stringify({ date: getTodayKey(), count: next })
+    );
+  } catch (_) {}
+}
+
+function getDailyLimitForUser(user) {
+  // Guest (no signed-in user) → 3/day
+  // Free user → 5/day
+  // Anything else (paid plan) → unlimited
+  if (!user || !user.email) return 3;
+  if (user.plan === "free") return 5;
+  return Infinity;
+}
+
+function isOverDailyLimit(user) {
+  return getDailyTranscriptCount() >= getDailyLimitForUser(user);
+}
+
 export default function LandingPage({ platform = "tiktok" } = {}) {
   const copy = getPlatformCopy(platform);
   const [dontMissOutModalShow, setDontMissOutModalShow] = useState(false);
+  // Context for the upgrade modal — drives which copy it shows.
+  // "daily-limit" → guest hit 3/day · "free-limit" → free user hit 5/day · "general" default.
+  const [modalTrigger, setModalTrigger] = useState("general");
   const [isClient, setIsClient] = useState(false);
   const [videoLink, setVideoLink] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -580,6 +630,15 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
   const handleSendClick = () => {
     const links = detectMultipleLinks(videoLink);
 
+    // Daily limit gate: guests = 3/day, free users = 5/day, paid users skip.
+    // When the cap is hit, surface the upgrade modal with the right trigger
+    // so the modal copy reflects the user's state.
+    if (isOverDailyLimit(user)) {
+      setModalTrigger(user?.plan === "free" ? "free-limit" : "daily-limit");
+      setDontMissOutModalShow(true);
+      return;
+    }
+
     if (links.length > 1) {
       // Always render a mock bulk view — no rate limits, demo-friendly.
       if (typeof window !== "undefined") {
@@ -593,6 +652,8 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
           setSelectedBulkItem(mock.transcript.bulkItems[firstComplete]);
           setSelectedBulkIndex(firstComplete);
         }
+        // Each link in a bulk run counts toward the daily cap.
+        for (let i = 0; i < links.length; i++) incrementDailyTranscriptCount();
         return;
       }
       if (!user || user == null) {
@@ -764,6 +825,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
     if (typeof window !== "undefined") {
       await new Promise((r) => setTimeout(r, 400));
       setVideoData(buildMockTikTokResponse(videoLink.trim()));
+      incrementDailyTranscriptCount();
       setIsLoading(false);
       return;
     }
@@ -2716,6 +2778,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
         <DontMissOutModal
           show={dontMissOutModalShow}
           onHide={handleDontMissOutModalClose}
+          trigger={modalTrigger}
         />
       )}
       {showConfirmation && (
