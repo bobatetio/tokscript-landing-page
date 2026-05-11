@@ -1871,7 +1871,12 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
             display: "flex",
             background: T.outerBg,
             borderRadius: 20,
-            overflow: "hidden",
+            // Let the shell scroll internally instead of clipping card content
+            // when the modal hits its viewport cap. Horizontal stays clipped so
+            // the bg image + glows respect the rounded corners.
+            overflowX: "hidden",
+            overflowY: "auto",
+            maxHeight: "90vh",
             minHeight: step === "signup" ? 0 : 460,
           }}
         >
