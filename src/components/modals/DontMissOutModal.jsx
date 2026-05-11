@@ -2037,16 +2037,13 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
       // Signed-in user (free or paid) → straight to tier selection.
       // Free user sees 3 paid options to upgrade. (Free card hidden via hideFree.)
       setStep("tiers");
-    } else if (progress?.email) {
-      // Returning guest with saved email → also skip to tiers.
-      setEmail(progress.email);
-      setStep("tiers");
-    } else if (isMobile) {
-      // Guest on mobile → 3-step flow: intro pitch → signup form → tiers.
-      setStep("intro");
     } else {
-      // Guest on desktop → pitch + signup form side-by-side (one "signup" step).
-      setStep("signup");
+      // Guest always lands on the paywall pitch first (mobile = intro screen,
+      // desktop = signup screen with pitch + form side-by-side). Saved-progress
+      // email is hydrated for form pre-fill but no longer skips the paywall —
+      // the daily-limit message must be the first thing every guest sees.
+      if (progress?.email) setEmail(progress.email);
+      setStep(isMobile ? "intro" : "signup");
     }
     setPassword("");
   }, [show, isMobile]);
