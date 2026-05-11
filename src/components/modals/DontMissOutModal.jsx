@@ -16,8 +16,6 @@ import {
   Crown,
 } from "lucide-react";
 import { LemonProducts } from "@/components/LemonProducts";
-import ClaudeIcon from "../../assets/images/icons/ai/ClaudeIcon";
-import ChatGPTIcon from "../../assets/images/icons/ai/ChatGPTIcon";
 
 // Returning-visitor skip: if the user finished Step 1 in a prior session and
 // hasn't picked a tier yet, jump them straight to Step 2 next time.
@@ -1373,12 +1371,10 @@ function StepTwo({
   const signupBase = `${process.env.NEXT_PUBLIC_FRONTEND_URL || ""}/sign-up`;
   const signinHref = `${process.env.NEXT_PUBLIC_FRONTEND_URL || ""}/signin`;
 
-  // Visibility rules:
-  //   - Existing free user upgrading: hide Free card.
-  //   - Paid-feature trigger: also hide Free card to focus intent.
-  //   - Otherwise: show all four cards (Free / Monthly / Annual / Lifetime).
-  const isFreeUserUpgrading = !!user && user.plan === "free";
-  const hideFree = isFreeUserUpgrading || trigger === "paid-feature";
+  // Free is always shown in the modal so users see the no-cost option
+  // alongside the paid plans. The previous "hide for paid-feature trigger"
+  // logic was removed per design feedback.
+  const hideFree = false;
 
   const choose = (tierKey) => {
     onTierSelect?.({ key: tierKey });
@@ -1521,33 +1517,10 @@ function StepTwo({
               </div>
               <div className="pc-body">
                 <ul className="pc-list">
-                  <li><Check size={16} strokeWidth={3} /><span>3 Transcripts Per Day</span></li>
-                  <li><Check size={16} strokeWidth={3} /><span>5 Translations Per Day</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>3 transcripts per day</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>5 translations per day</span></li>
                   <li><Check size={16} strokeWidth={3} /><span>TikTok, Reels, Shorts</span></li>
-                </ul>
-                <div className="pc-platforms pc-platforms-row">
-                  <span className="pc-ai-logo pc-ai-logo--platform" aria-label="TikTok">
-                    <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/pricing-icons/tiktok-tile.png?v=2`} alt="" />
-                  </span>
-                  <span className="pc-ai-logo pc-ai-logo--platform" aria-label="Instagram">
-                    <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/pricing-icons/instagram-tile.png?v=2`} alt="" />
-                  </span>
-                  <span className="pc-ai-logo pc-ai-logo--platform" aria-label="YouTube">
-                    <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/pricing-icons/youtube-tile.png?v=2`} alt="" />
-                  </span>
-                </div>
-                <ul className="pc-list">
                   <li><Check size={16} strokeWidth={3} /><span>Basic Chrome Extension</span></li>
-                </ul>
-                <div className="pc-separator">
-                  <span className="pc-sep-line" />
-                  <span>Not included</span>
-                  <span className="pc-sep-line" />
-                </div>
-                <ul className="pc-list pc-list-locked">
-                  <li><X size={16} strokeWidth={3} /><span>AI Agents</span></li>
-                  <li><X size={16} strokeWidth={3} /><span>Bulk Import</span></li>
-                  <li><X size={16} strokeWidth={3} /><span>Claude &amp; ChatGPT</span></li>
                 </ul>
               </div>
             </div>
@@ -1577,17 +1550,13 @@ function StepTwo({
               </button>
             </div>
             <div className="pc-body">
-              <div className="pc-group">
-                <div className="pc-group-title">Everything in Annual</div>
-                <ul className="pc-list">
-                  <li><Check size={16} strokeWidth={3} /><span>All 3 AI Agents</span></li>
-                  <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts &amp; translations</span></li>
-                  <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos</span></li>
-                  <li><Check size={16} strokeWidth={3} /><span>Claude &amp; ChatGPT</span></li>
-                  <li><Check size={16} strokeWidth={3} /><span>Chrome, mobile &amp; desktop</span></li>
-                </ul>
-              </div>
-              <div className="pc-warn-callout">Costs $81 more per year</div>
+              <ul className="pc-list">
+                <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts &amp; translations</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>All 3 AI Agents</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Claude &amp; ChatGPT integration</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Chrome, mobile &amp; desktop</span></li>
+              </ul>
             </div>
           </div>
         </div>
@@ -1620,68 +1589,13 @@ function StepTwo({
               </button>
             </div>
             <div className="pc-body">
-              <div className="pc-group">
-                <div className="pc-group-title">Bulk Processing</div>
-                <div className="pc-platforms pc-platforms-row">
-                  <span className="pc-ai-logo pc-ai-logo--platform" aria-label="TikTok">
-                    <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/pricing-icons/tiktok-tile.png?v=2`} alt="" />
-                  </span>
-                  <span className="pc-ai-logo pc-ai-logo--platform" aria-label="Instagram">
-                    <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/pricing-icons/instagram-tile.png?v=2`} alt="" />
-                  </span>
-                  <span className="pc-ai-logo pc-ai-logo--platform" aria-label="YouTube">
-                    <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/pricing-icons/youtube-tile.png?v=2`} alt="" />
-                  </span>
-                </div>
-                <ul className="pc-list">
-                  <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts</span></li>
-                  <li><Check size={16} strokeWidth={3} /><span>Unlimited translations</span></li>
-                  <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos at once</span></li>
-                  <li><Check size={16} strokeWidth={3} /><span>HD downloads, no watermarks</span></li>
-                </ul>
-              </div>
-              <div className="pc-group">
-                <div className="pc-group-title">Add to Claude &amp; ChatGPT</div>
-                <div className="pc-ai-pair">
-                  <span className="pc-ai-logo pc-ai-logo--claude" aria-label="Claude"><ClaudeIcon /></span>
-                  <span className="pc-ai-logo pc-ai-logo--chatgpt" aria-label="ChatGPT"><ChatGPTIcon /></span>
-                </div>
-                <p className="pc-group-blurb">Ask anything about any TikTok, Instagram, or YouTube — right inside your AI chat.</p>
-              </div>
-              <div className="pc-group">
-                <div className="pc-group-title">Everywhere You Work</div>
-                <ul className="pc-list">
-                  <li><Check size={16} strokeWidth={3} /><span>Chrome Extension</span></li>
-                  <li><Check size={16} strokeWidth={3} /><span>Mobile + Desktop apps</span></li>
-                  <li><Check size={16} strokeWidth={3} /><span>Cloud-synced dashboard</span></li>
-                </ul>
-              </div>
-              <div className="pc-group">
-                <div className="pc-group-title">AI Agents</div>
-                <ul className="pc-list pc-list-detailed">
-                  <li>
-                    <Check size={16} strokeWidth={3} />
-                    <div>
-                      <strong>Viral Hook Generator</strong>
-                      <span>Creates scroll-stopping hooks from any transcript topic.</span>
-                    </div>
-                  </li>
-                  <li>
-                    <Check size={16} strokeWidth={3} />
-                    <div>
-                      <strong>Viral Script Writer</strong>
-                      <span>Rewrites transcripts into better viral scripts.</span>
-                    </div>
-                  </li>
-                  <li>
-                    <Check size={16} strokeWidth={3} />
-                    <div>
-                      <strong>Virality Explainer</strong>
-                      <span>Decodes why a video went viral, plus new script ideas.</span>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+              <ul className="pc-list">
+                <li><Check size={16} strokeWidth={3} /><span>Everything in Monthly</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Save $81 vs Monthly</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>4 months free</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Priority support</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>7-day refund guarantee</span></li>
+              </ul>
             </div>
           </div>
         </div>
@@ -1705,57 +1619,13 @@ function StepTwo({
               </button>
             </div>
             <div className="pc-body">
-              <div className="pc-group">
-                <div className="pc-group-title">Everything in Annual, forever</div>
-                <ul className="pc-list">
-                  <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts &amp; translations</span></li>
-                  <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos at once</span></li>
-                  <li><Check size={16} strokeWidth={3} /><span>HD downloads, no watermarks</span></li>
-                  <li><Check size={16} strokeWidth={3} /><span>All future features included</span></li>
-                </ul>
-              </div>
-              <div className="pc-group">
-                <div className="pc-group-title">Add to Claude &amp; ChatGPT</div>
-                <div className="pc-ai-pair">
-                  <span className="pc-ai-logo pc-ai-logo--claude" aria-label="Claude"><ClaudeIcon /></span>
-                  <span className="pc-ai-logo pc-ai-logo--chatgpt" aria-label="ChatGPT"><ChatGPTIcon /></span>
-                </div>
-                <p className="pc-group-blurb">Lifetime access to TokScript inside your AI conversations.</p>
-              </div>
-              <div className="pc-group">
-                <div className="pc-group-title">Everywhere You Work</div>
-                <ul className="pc-list">
-                  <li><Check size={16} strokeWidth={3} /><span>Chrome Extension</span></li>
-                  <li><Check size={16} strokeWidth={3} /><span>Mobile + Desktop apps</span></li>
-                  <li><Check size={16} strokeWidth={3} /><span>Cloud-synced dashboard</span></li>
-                </ul>
-              </div>
-              <div className="pc-group">
-                <div className="pc-group-title">AI Agents</div>
-                <ul className="pc-list pc-list-detailed">
-                  <li>
-                    <Check size={16} strokeWidth={3} />
-                    <div>
-                      <strong>Viral Hook Generator</strong>
-                      <span>Creates scroll-stopping hooks from any transcript topic.</span>
-                    </div>
-                  </li>
-                  <li>
-                    <Check size={16} strokeWidth={3} />
-                    <div>
-                      <strong>Viral Script Writer</strong>
-                      <span>Rewrites transcripts into better viral scripts.</span>
-                    </div>
-                  </li>
-                  <li>
-                    <Check size={16} strokeWidth={3} />
-                    <div>
-                      <strong>Virality Explainer</strong>
-                      <span>Decodes why a video went viral, plus new script ideas.</span>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+              <ul className="pc-list">
+                <li><Check size={16} strokeWidth={3} /><span>Everything in Annual, forever</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>All future features included</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>No subscriptions, ever</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>Priority support for life</span></li>
+                <li><Check size={16} strokeWidth={3} /><span>One-time payment</span></li>
+              </ul>
             </div>
           </div>
         </div>
