@@ -932,7 +932,7 @@ function StepOne({
               marginBottom: 12,
             }}
           >
-            {t?.dontMissOutModal?.eyebrow || "Get Full Access"}
+            {t?.dontMissOutModal?.eyebrow || "Daily Limit Reached"}
           </span>
           <h2
             className="dont-miss-h2"
@@ -946,8 +946,20 @@ function StepOne({
               whiteSpace: "normal",
             }}
           >
-            {t?.dontMissOutModal?.title || "Everything TokScript,\nIn One Account."}
+            {t?.dontMissOutModal?.title ||
+              "You've Used Your 3 Free Transcripts Today."}
           </h2>
+          <p
+            style={{
+              margin: "8px 0 0",
+              color: T.pitchMuted,
+              fontSize: 14,
+              lineHeight: 1.45,
+            }}
+          >
+            {t?.dontMissOutModal?.guestPaywallSub ||
+              "Create An Account To Keep Going."}
+          </p>
         </div>
 
         {/* Mobile-only headline + signed-in line. The desktop block above is
@@ -1549,6 +1561,9 @@ function StepTwo({
   //   - Free user (signed in, plan="free") → hide Free (3 paid options to upgrade)
   //   - Paid user (signed in, plan!="free") → hide Free (also 3 options)
   const hideFree = !!user;
+  // Used to swap the tier-step headline from generic 'Pick Your Plan'
+  // to 'Pay To Upgrade' for signed-in free users.
+  const isFreeUserUpgrading = !!user && user.plan === "free";
 
   const choose = (tierKey) => {
     onTierSelect?.({ key: tierKey });
@@ -1596,6 +1611,8 @@ function StepTwo({
       )}
 
       <div style={{ textAlign: "center" }}>
+        {/* Free user upgrade context: 'Pay To Upgrade'. Otherwise (guest who
+            completed sign-up form, or paid user opening modal): generic 'Pick Your Plan'. */}
         <h2
           style={{
             margin: 0,
@@ -1605,7 +1622,9 @@ function StepTwo({
             letterSpacing: "-0.015em",
           }}
         >
-          {t?.dontMissOutModal?.tiersTitle || "Pick Your Plan To Continue."}
+          {isFreeUserUpgrading
+            ? t?.dontMissOutModal?.freeUpgradeTitle || "Pay To Upgrade."
+            : t?.dontMissOutModal?.tiersTitle || "Pick Your Plan To Continue."}
         </h2>
         <p
           style={{
@@ -1615,8 +1634,11 @@ function StepTwo({
             lineHeight: 1.5,
           }}
         >
-          {t?.dontMissOutModal?.tiersSubtitle ||
-            "Start Free, Or Unlock Everything From Day One."}
+          {isFreeUserUpgrading
+            ? t?.dontMissOutModal?.freeUpgradeSub ||
+              "Pick A Plan To Continue Using TokScript."
+            : t?.dontMissOutModal?.tiersSubtitle ||
+              "Start Free, Or Unlock Everything From Day One."}
         </p>
         {user?.email && (
           <p
