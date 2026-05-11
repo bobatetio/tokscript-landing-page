@@ -932,7 +932,9 @@ function StepOne({
               marginBottom: 12,
             }}
           >
-            {t?.dontMissOutModal?.eyebrow || "Daily Limit Reached"}
+            {user
+              ? t?.dontMissOutModal?.freeEyebrow || "Upgrade"
+              : t?.dontMissOutModal?.eyebrow || "Daily Limit Reached"}
           </span>
           <h2
             className="dont-miss-h2"
@@ -946,8 +948,10 @@ function StepOne({
               whiteSpace: "normal",
             }}
           >
-            {t?.dontMissOutModal?.title ||
-              "You've Used Your 3 Free Transcripts Today."}
+            {user
+              ? t?.dontMissOutModal?.freeTitle || "Upgrade To Pro."
+              : t?.dontMissOutModal?.title ||
+                "You've Used Your 3 Free Transcripts Today."}
           </h2>
           <p
             style={{
@@ -957,8 +961,11 @@ function StepOne({
               lineHeight: 1.45,
             }}
           >
-            {t?.dontMissOutModal?.guestPaywallSub ||
-              "Create An Account To Keep Going."}
+            {user
+              ? t?.dontMissOutModal?.freePaywallSub ||
+                "Unlock Everything With A Paid Plan."
+              : t?.dontMissOutModal?.guestPaywallSub ||
+                "Create An Account To Keep Going."}
           </p>
         </div>
 
@@ -1134,7 +1141,9 @@ function StepOne({
         </div>
       </div>
 
-      {/* ── Right: Create Your Account form (sign-up / sign-in entry). ── */}
+      {/* ── Right: Create Your Account form (guest-only).  Signed-in users
+          already have an account, so this panel is hidden for them. ── */}
+      {!user && (
       <div
         className="dont-miss-form"
         style={{
@@ -1305,6 +1314,7 @@ function StepOne({
           </Link>
         </p>
       </div>
+      )}
     </>
   );
 }
@@ -2034,14 +2044,14 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
     setSuccessToast("");
     setPendingEmail("");
     if (signedInUser?.email) {
-      // Signed-in user (free or paid) → straight to tier selection.
-      // Free user sees 3 paid options to upgrade. (Free card hidden via hideFree.)
-      setStep("tiers");
+      // Signed-in user (free or paid) → first see the "Upgrade To Pro" pitch
+      // screen (carousel + value props + Get Full Access CTA), then on
+      // Continue → tier selection. No form panel for them; that's hidden
+      // via JSX conditional inside StepOne.
+      setStep("intro");
     } else {
-      // Guest always lands on the paywall pitch first (mobile = intro screen,
-      // desktop = signup screen with pitch + form side-by-side). Saved-progress
-      // email is hydrated for form pre-fill but no longer skips the paywall —
-      // the daily-limit message must be the first thing every guest sees.
+      // Guest: same pitch screen but with the daily-limit copy, and the
+      // Create-Your-Account form on the right (or as step 2 on mobile).
       if (progress?.email) setEmail(progress.email);
       setStep(isMobile ? "intro" : "signup");
     }
@@ -2049,8 +2059,9 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
   }, [show, isMobile]);
 
   const handleIntroContinue = () => {
-    // Mobile guest: pitch screen → form panel (signup step).
-    setStep("signup");
+    // Signed-in user already has an account — skip the form and go to tiers.
+    // Guest needs to create an account first → form panel (signup step).
+    setStep(user ? "tiers" : "signup");
   };
 
   // Inline tap-to-choose CTA on each mobile tier card. For a signed-in user we
