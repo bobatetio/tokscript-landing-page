@@ -1373,10 +1373,11 @@ function StepTwo({
   const signupBase = `${process.env.NEXT_PUBLIC_FRONTEND_URL || ""}/sign-up`;
   const signinHref = `${process.env.NEXT_PUBLIC_FRONTEND_URL || ""}/signin`;
 
-  // Free is always shown in the modal so users see the no-cost option
-  // alongside the paid plans. The previous "hide for paid-feature trigger"
-  // logic was removed per design feedback.
-  const hideFree = false;
+  // Free tier visibility per spec:
+  //   - Guest (no localStorage user) → show Free (4 options)
+  //   - Free user (signed in, plan="free") → hide Free (3 paid options to upgrade)
+  //   - Paid user (signed in, plan!="free") → hide Free (also 3 options)
+  const hideFree = !!user;
 
   const choose = (tierKey) => {
     onTierSelect?.({ key: tierKey });
@@ -1855,9 +1856,8 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
   }, [show, isMobile]);
 
   const handleIntroContinue = () => {
-    // Form lives on a separate /sign-up page now; the modal jumps straight
-    // from the pitch screen to tier selection.
-    setStep("tiers");
+    // Guest path: pitch screen → email collection → tier selection.
+    setStep("email");
   };
 
   // Inline tap-to-choose CTA on each mobile tier card. For a signed-in user we
@@ -1891,16 +1891,11 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
       return;
     }
     setAuthError("");
-    setAuthBusy(true);
-    try {
-      const exists = await mockCheckEmailExists(value);
-      setEmailExists(exists);
-      setEmail(value);
-      saveSignupProgress(value);
-      setStep(exists ? "signin" : "create");
-    } finally {
-      setAuthBusy(false);
-    }
+    // Save email for the tier-step CTAs (so they can pass ?email= in the
+    // /sign-up redirect). Account creation happens on the separate page.
+    setEmail(value);
+    saveSignupProgress(value);
+    setStep("tiers");
   };
 
   const handleGoogleAuth = async () => {
@@ -1983,7 +1978,6 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
       size="lg"
       className={`dont-miss-out-modal-v3 dont-miss-step-${step}`}
       aria-labelledby="contained-modal-title-vcenter"
-      centered
     >
       <Modal.Body style={{ padding: 0 }}>
         <style>{`
@@ -2111,7 +2105,7 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
             <StepTwo
               t={t}
               email={email}
-              onBack={() => setStep(isMobile ? "email" : "signup")}
+              onBack={() => setStep(user ? "intro" : "email")}
               onTierSelect={handleTierSelect}
               user={user}
               trigger={entryTrigger}
@@ -2119,8 +2113,19 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
               selectedTier={selectedTier}
               setSelectedTier={setSelectedTier}
             />
+          ) : step === "email" ? (
+            <MobileEmailStep
+              t={t}
+              pendingEmail={pendingEmail}
+              setPendingEmail={setPendingEmail}
+              onSubmit={handleEmailSubmit}
+              onGoogle={handleGoogleAuth}
+              onBack={() => setStep("intro")}
+              busy={authBusy}
+              error={authError}
+            />
           ) : (
-            // Desktop "signup" → existing pitch + form side-by-side.
+            // Intro pitch screen for guests. Free / paid users skip it.
             <StepOne
               t={t}
               email={email}

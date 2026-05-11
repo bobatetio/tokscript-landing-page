@@ -44,6 +44,11 @@
 
   .modal-dialog {
     max-width: 880px;
+    // Pin the top so the modal doesn't shift vertically as content height
+    // changes between steps. The shell's max-height + overflow-y handle
+    // taller content via internal scroll.
+    margin-top: 5vh !important;
+    margin-bottom: 5vh !important;
     @media screen and (max-width: 920px) {
       margin-inline: 16px;
     }
@@ -74,10 +79,12 @@
   }
 
   @media screen and (max-width: 760px) {
-    // Bottom-sheet behavior on mobile: dialog hugs the bottom edge but has
-    // side margins so it doesn't touch the screen edges. Slides up on open.
+    // Bottom-sheet behavior on mobile: dialog hugs the bottom edge with
+    // side margins. Top is also pinned so the dialog's top doesn't shift
+    // as content height changes — the shell scrolls internally instead.
     .modal-dialog {
       position: fixed !important;
+      top: 8vh !important;
       bottom: 12px !important;
       left: 12px !important;
       right: 12px !important;
