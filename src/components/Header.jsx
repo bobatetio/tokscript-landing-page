@@ -426,8 +426,8 @@ export default function Header({ t }) {
               <Image
                 src={user?.profilePicture || avatarIcon}
                 alt="User avatar"
-                width={40}
-                height={40}
+                width={28}
+                height={28}
               />
             </div>
             <div className="text-wrapper">
@@ -530,24 +530,14 @@ export default function Header({ t }) {
                 <div className="mobile-right-menu">
                   {user ? (
                     <>
-                      {(user?.plan || "free").toLowerCase() === "free" ? (
-                        <>
-                          <Link
-                            href="/upgrade"
-                            className={`badge-wrapper green-gradient normal w-500`}
-                          >
-                            <Image src={lighteningIcon} alt="" />
-                            {t?.header?.nav?.upgradePlan || "Upgrade My Plan"}
-                          </Link>
-                        </>
-                      ) : (
-                        <>
-                          <span className={`badge-wrapper  normal w-500`}>
-                            {(user?.plan || "Free").charAt(0).toUpperCase() +
-                              (user?.plan || "free").slice(1)}
-                            {" Plan"}
-                          </span>
-                        </>
+                      {/* On mobile, suppress the "Upgrade My Plan" badge to
+                          declutter the bar. Paid users still see their plan. */}
+                      {(user?.plan || "free").toLowerCase() !== "free" && (
+                        <span className={`badge-wrapper  normal w-500`}>
+                          {(user?.plan || "Free").charAt(0).toUpperCase() +
+                            (user?.plan || "free").slice(1)}
+                          {" Plan"}
+                        </span>
                       )}
                       <div className="text-wrapper">
                         <DropdownButton

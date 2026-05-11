@@ -51,6 +51,17 @@
       margin-inline: 10px;
     }
   }
+  // Tier-selection step needs more horizontal room so all 4 pc-cards fit
+  // without the Lifetime card spilling out of frame. Bumping to ~1280px on
+  // desktop matches the homepage's pricing grid breathing room.
+  &.dont-miss-step-tiers .modal-dialog {
+    @media screen and (min-width: 1300px) {
+      max-width: 1280px;
+    }
+    @media screen and (min-width: 1024px) and (max-width: 1299px) {
+      max-width: calc(100vw - 48px);
+    }
+  }
   .modal-content {
     background: transparent;
     border: 0;
@@ -95,7 +106,9 @@
     //   .dont-miss-step-tiers  → show tier cards only
     &.dont-miss-step-intro .dont-miss-form { display: none !important; }
     &.dont-miss-step-intro .dont-miss-mobile-intro-ctas { display: flex !important; }
-    &.dont-miss-step-intro .dont-miss-mobile-features { display: flex !important; }
+    // Mobile intro shows the pills row (older simpler design); the tier
+    // cards (`dont-miss-mobile-features`) only appear on the tiers step.
+    &.dont-miss-step-intro .dont-miss-mobile-features { display: none !important; }
 
     &.dont-miss-step-signup .dont-miss-pitch { display: none !important; }
     &.dont-miss-step-signup .dont-miss-mobile-intro-ctas { display: none !important; }
@@ -109,17 +122,9 @@
       padding: 24px 22px 18px !important;
       gap: 14px !important;
     }
-    // Carousel images are hidden on mobile per the Figma reference; the
-    // tier cards + CTA carry the page on their own.
-    .dont-miss-carousel {
-      display: none !important;
-    }
-    // Feature pills row is desktop-only; mobile hides it.
-    .dont-miss-pills {
-      display: none !important;
-    }
-    // Mobile step 1: keep pills (extra info row) but hide the social-proof
-    // row to save vertical space. Stats still render on desktop.
+    // Mobile step 1 (intro) shows the carousel + pills + Get Full Access CTA
+    // — the older simpler design. Social-proof row stays hidden on mobile
+    // to save vertical space.
     .dont-miss-stats {
       display: none !important;
     }

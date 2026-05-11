@@ -16,6 +16,8 @@ import {
   Crown,
 } from "lucide-react";
 import { LemonProducts } from "@/components/LemonProducts";
+import ClaudeIcon from "../../assets/images/icons/ai/ClaudeIcon";
+import ChatGPTIcon from "../../assets/images/icons/ai/ChatGPTIcon";
 
 // Returning-visitor skip: if the user finished Step 1 in a prior session and
 // hasn't picked a tier yet, jump them straight to Step 2 next time.
@@ -484,7 +486,7 @@ function MobilePaywallStep({ t, trigger, user, onContinue, onSignIn, onClose }) 
     tr.bullet1 || "Unlimited Scans",
     tr.bullet2 || "Bulk Downloads",
     tr.bullet3 || "Works Inside Claude & ChatGPT",
-    tr.bullet4 || "Access Top Chrome Extension",
+    tr.bullet4 || "Access To Chrome Extension",
   ];
   // Trigger-aware copy. Falls back to a generic message.
   const copy = (() => {
@@ -533,17 +535,23 @@ function MobilePaywallStep({ t, trigger, user, onContinue, onSignIn, onClose }) 
           border: `1px solid rgba(0,212,204,0.30)`,
         }}
       >
-        <img
-          src={lockIconSrc}
-          alt=""
+        <span
           aria-hidden
           style={{
             width: 22,
             height: 22,
             display: "block",
-            // brightness(0) invert(1) → forces any source color to pure white,
-            // matching the Continue button's white text on teal background.
-            filter: "brightness(0) invert(1)",
+            // Tint the SVG via CSS mask so the lock matches the Continue
+            // button's solid teal (`#00b8b2`) exactly — no filter math.
+            backgroundColor: "#00b8b2",
+            WebkitMaskImage: `url(${lockIconSrc})`,
+            maskImage: `url(${lockIconSrc})`,
+            WebkitMaskSize: "contain",
+            maskSize: "contain",
+            WebkitMaskRepeat: "no-repeat",
+            maskRepeat: "no-repeat",
+            WebkitMaskPosition: "center",
+            maskPosition: "center",
           }}
         />
       </div>
@@ -1094,11 +1102,11 @@ function StepOne({
           setSelectedTier={setSelectedTier}
         />
 
-        {/* Mobile-only CTAs for the intro step. Continue takes the user to the
-            sign-up form (and on submit they're routed by selectedTier). */}
+        {/* Intro CTAs for the pitch step — visible on both desktop and mobile.
+            Continue advances to tier selection; Start Free routes free signup. */}
         <div
           className="dont-miss-mobile-intro-ctas"
-          style={{ display: "none", flexDirection: "column", gap: 10, marginTop: 6 }}
+          style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 6 }}
         >
           <button
             type="button"
@@ -1111,195 +1119,9 @@ function StepOne({
               "Get Full Access"}
             <ArrowRight size={16} />
           </button>
-          <a
-            href="/app/sign-up?tier=free"
-            style={{
-              alignSelf: "center",
-              padding: "8px 4px",
-              color: T.pitchMuted,
-              fontSize: 12.5,
-              fontWeight: 500,
-              textDecoration: "underline",
-              textUnderlineOffset: 2,
-              textDecorationColor: "rgba(255,255,255,0.25)",
-            }}
-          >
-            {t?.dontMissOutModal?.startFreeLink || "Start Free, Upgrade Later"}
-          </a>
         </div>
       </div>
 
-      {/* ── Right: form panel ──────────────────────────────────────── */}
-      <div
-        className="dont-miss-form"
-        style={{
-          width: 380,
-          flexShrink: 0,
-          margin: "16px 16px 16px 0",
-          padding: "30px 28px 24px",
-          background: T.formBg,
-          borderRadius: 18,
-          border: `1px solid ${T.formBorder}`,
-          display: "flex",
-          flexDirection: "column",
-          gap: 14,
-          position: "relative",
-          zIndex: 2,
-        }}
-      >
-        <div>
-          <h3
-            style={{
-              margin: 0,
-              color: T.formText,
-              fontSize: 20,
-              fontWeight: 700,
-              letterSpacing: "-0.005em",
-            }}
-          >
-            {t?.dontMissOutModal?.formTitle || "Create Your Account"}
-          </h3>
-          <p
-            style={{
-              margin: "6px 0 0",
-              color: T.formMuted,
-              fontSize: 13,
-              lineHeight: 1.45,
-            }}
-          >
-            {t?.dontMissOutModal?.formSubtitle || "One account. Pick your plan next."}
-          </p>
-        </div>
-
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            onContinue();
-          }}
-          style={{ display: "flex", flexDirection: "column", gap: 12 }}
-        >
-          <FormField
-            label={t?.dontMissOutModal?.emailLabel || "Email"}
-            icon={<Mail size={16} />}
-            type="email"
-            placeholder={t?.dontMissOutModal?.emailPlaceholder || "you@example.com"}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <FormField
-            label={t?.dontMissOutModal?.passwordLabel || "Password"}
-            icon={<Lock size={16} />}
-            type={showPw ? "text" : "password"}
-            placeholder={t?.dontMissOutModal?.passwordPlaceholder || "Min. 8 characters"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            trailing={
-              <button
-                type="button"
-                onClick={() => setShowPw((s) => !s)}
-                aria-label={showPw ? "Hide password" : "Show password"}
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: T.formMuted,
-                  cursor: "pointer",
-                  display: "inline-flex",
-                  padding: 0,
-                }}
-              >
-                {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            }
-          />
-
-          <button
-            type="submit"
-            style={{
-              marginTop: 4,
-              padding: "13px 16px",
-              borderRadius: 12,
-              background: T.formCtaBg,
-              border: "none",
-              color: T.formCtaText,
-              fontSize: 14,
-              fontWeight: 700,
-              cursor: "pointer",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 8,
-              transition: "transform .08s, opacity .15s",
-            }}
-            onMouseDown={(e) => {
-              e.currentTarget.style.transform = "scale(0.99)";
-            }}
-            onMouseUp={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
-            }}
-          >
-            {t?.dontMissOutModal?.continueCta || "Continue"}
-            <ArrowRight size={16} />
-          </button>
-        </form>
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            color: T.formMuted,
-            fontSize: 11,
-          }}
-        >
-          <span style={{ flex: 1, height: 1, background: T.formBorder }} />
-          {t?.dontMissOutModal?.or || "or"}
-          <span style={{ flex: 1, height: 1, background: T.formBorder }} />
-        </div>
-
-        <a
-          href="/app/sign-up"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 10,
-            padding: "12px 16px",
-            borderRadius: 12,
-            background: T.formInputBg,
-            border: `1px solid ${T.formBorder}`,
-            color: T.formText,
-            fontSize: 13.5,
-            fontWeight: 500,
-            textDecoration: "none",
-          }}
-        >
-          <GoogleG />
-          {t?.dontMissOutModal?.googleCta || "Continue With Google"}
-        </a>
-
-        <div style={{ flex: 1 }} />
-
-        <p
-          style={{
-            margin: 0,
-            textAlign: "center",
-            color: T.formMuted,
-            fontSize: 12.5,
-          }}
-        >
-          {t?.dontMissOutModal?.haveAccount || "Already Have An Account?"}{" "}
-          <Link
-            href="/app/login"
-            style={{
-              color: T.formText,
-              fontWeight: 700,
-              textDecoration: "none",
-            }}
-          >
-            {t?.dontMissOutModal?.signIn || "Sign In"}
-          </Link>
-        </p>
-      </div>
     </>
   );
 }
@@ -1541,21 +1363,37 @@ function StepTwo({
   selectedTier,
   setSelectedTier,
 }) {
-  // Variations per the mobile signup spec:
-  //   - Existing free user upgrading: hide the Free tier and the "Start Free" link.
-  //     (Detected via signed-in `user` with plan="free".)
-  //   - Paid-feature trigger: hide "Start Free, Upgrade Later" (don't dilute intent).
-  //   - Otherwise: show all paid tiers + the "Start Free, Upgrade Later" link.
-  const allTiers = useMemo(() => getTiers(t, email), [t, email]);
+  // Active tab on mobile (drives which single card is visible). Desktop ignores
+  // this because all four cards render in the grid.
+  const [activeTab, setActiveTab] = useState(selectedTier || "annual");
+
+  // Account creation happens on the separate /sign-up page at the app domain.
+  // The marketing site routes the user there with the chosen tier; the app
+  // handles the actual account flow + checkout.
+  const signupBase = `${process.env.NEXT_PUBLIC_FRONTEND_URL || ""}/sign-up`;
+  const signinHref = `${process.env.NEXT_PUBLIC_FRONTEND_URL || ""}/signin`;
+
+  // Visibility rules:
+  //   - Existing free user upgrading: hide Free card.
+  //   - Paid-feature trigger: also hide Free card to focus intent.
+  //   - Otherwise: show all four cards (Free / Monthly / Annual / Lifetime).
   const isFreeUserUpgrading = !!user && user.plan === "free";
-  const showStartFreeLink = !isFreeUserUpgrading && trigger !== "paid-feature";
-  const tiers = allTiers;
+  const hideFree = isFreeUserUpgrading || trigger === "paid-feature";
+
+  const choose = (tierKey) => {
+    onTierSelect?.({ key: tierKey });
+    if (typeof window !== "undefined") {
+      window.location.href = `${signupBase}?tier=${tierKey}`;
+    }
+  };
+
   return (
     <div
-      className="dont-miss-step-two"
+      className="dont-miss-step-two pricing-page-new"
       style={{
         flex: "1 1 0",
-        padding: "30px 22px 24px",
+        width: "100%",
+        padding: "26px 22px 24px",
         display: "flex",
         flexDirection: "column",
         gap: 18,
@@ -1563,27 +1401,29 @@ function StepTwo({
         zIndex: 2,
       }}
     >
-      <button
-        type="button"
-        onClick={onBack}
-        style={{
-          alignSelf: "flex-start",
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 6,
-          padding: "5px 10px",
-          borderRadius: 999,
-          background: "rgba(255,255,255,0.06)",
-          border: `1px solid ${T.formBorder}`,
-          color: T.pitchMuted,
-          fontSize: 11.5,
-          fontWeight: 600,
-          cursor: "pointer",
-        }}
-      >
-        <ArrowLeft size={12} />
-        {t?.dontMissOutModal?.back || "Back"}
-      </button>
+      {isMobile && (
+        <button
+          type="button"
+          onClick={onBack}
+          style={{
+            alignSelf: "flex-start",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            padding: "5px 10px",
+            borderRadius: 999,
+            background: "rgba(255,255,255,0.06)",
+            border: `1px solid ${T.formBorder}`,
+            color: T.pitchMuted,
+            fontSize: 11.5,
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+        >
+          <ArrowLeft size={12} />
+          {t?.dontMissOutModal?.back || "Back"}
+        </button>
+      )}
 
       <div style={{ textAlign: "center" }}>
         <h2
@@ -1595,7 +1435,7 @@ function StepTwo({
             letterSpacing: "-0.015em",
           }}
         >
-          {t?.dontMissOutModal?.tiersTitle || "Welcome. Pick Your Plan."}
+          {t?.dontMissOutModal?.tiersTitle || "Pick Your Plan To Continue."}
         </h2>
         <p
           style={{
@@ -1608,113 +1448,318 @@ function StepTwo({
           {t?.dontMissOutModal?.tiersSubtitle ||
             "Start Free, Or Unlock Everything From Day One."}
         </p>
-      </div>
-
-      {user?.email ? (
-        <div
-          style={{
-            margin: "-6px auto 0",
-            color: T.pitchMuted,
-            fontSize: 12,
-            textAlign: "center",
-          }}
-        >
-          {t?.dontMissOutModal?.signedInAs || "Signed in as"}{" "}
-          <span style={{ color: T.pitchText, fontWeight: 600 }}>{user.email}</span>
-        </div>
-      ) : email ? (
-        <div
-          style={{
-            margin: "-6px auto 0",
-            color: T.pitchMuted,
-            fontSize: 12,
-            textAlign: "center",
-          }}
-        >
-          {t?.dontMissOutModal?.continuingAs || "Continuing as"}{" "}
-          <span style={{ color: T.pitchText, fontWeight: 600 }}>{email}</span>
-          <span style={{ margin: "0 6px" }}>·</span>
-          <button
-            type="button"
-            onClick={onBack}
+        {user?.email && (
+          <p
             style={{
-              background: "none",
-              border: "none",
-              padding: 0,
-              color: T.accent,
+              margin: "8px 0 0",
+              color: T.pitchMuted,
               fontSize: 12,
-              fontWeight: 600,
-              cursor: "pointer",
-              textDecoration: "underline",
             }}
           >
-            {t?.dontMissOutModal?.useDifferentEmail || "Use Different Email"}
+            {t?.dontMissOutModal?.signedInAs || "Signed in as"}{" "}
+            <span style={{ color: T.pitchText, fontWeight: 600 }}>{user.email}</span>
+          </p>
+        )}
+      </div>
+
+      {/* Mobile tabs: only visible on mobile, picks the active tier card. */}
+      <div className="mobile-tabs">
+        <div className="tab-container">
+          {!hideFree && (
+            <button
+              type="button"
+              className={`tab-btn ${activeTab === "free" ? "active" : "inactive"}`}
+              onClick={() => setActiveTab("free")}
+            >
+              Free
+            </button>
+          )}
+          <button
+            type="button"
+            className={`tab-btn ${activeTab === "monthly" ? "active" : "inactive"}`}
+            onClick={() => setActiveTab("monthly")}
+          >
+            Monthly
+          </button>
+          <button
+            type="button"
+            className={`tab-btn featured ${activeTab === "annual" ? "active" : "inactive"}`}
+            onClick={() => setActiveTab("annual")}
+          >
+            Annual
+          </button>
+          <button
+            type="button"
+            className={`tab-btn ${activeTab === "lifetime" ? "active" : "inactive"}`}
+            onClick={() => setActiveTab("lifetime")}
+          >
+            Lifetime
           </button>
         </div>
-      ) : null}
+      </div>
 
-      {isMobile ? (
-        // Mobile uses the Figma row format — each card is fully tappable and
-        // navigates straight to the tier's checkout (or signup for free).
-        <MobileTierCards
-          t={t}
-          email={email}
-          selectedTier={selectedTier}
-          setSelectedTier={setSelectedTier}
-          onConfirm={(tier) => {
-            onTierSelect?.(tier);
-            if (typeof window !== "undefined" && tier?.href) {
-              window.location.href = tier.href;
-            }
-          }}
-        />
-      ) : (
-        <div
-          className="dont-miss-tier-row"
-          style={{
-            display: "flex",
-            gap: 8,
-            alignItems: "stretch",
-          }}
-        >
-          {tiers.map((tier) => (
-            <TierCard
-              key={tier.key}
-              tier={tier}
-              t={t}
-              onSelect={() => onTierSelect?.(tier)}
-            />
-          ))}
+      {/* Card grid: desktop shows all cards; mobile shows only the active tab. */}
+      <div className="pc-grid">
+        {!hideFree && (
+          <div className={`pc-card-wrapper ${activeTab === "free" ? "active" : ""}`}>
+            <div className="pc-card">
+              <div className="pc-header">
+                <div className="pc-plan-row">
+                  <div className="pc-plan-name">Free</div>
+                  <span className="pc-badge">Forever</span>
+                </div>
+                <p className="pc-description">Test the basics</p>
+                <div className="pc-price-row">
+                  <span className="pc-price-main">$0</span>
+                  <span className="pc-price-period">forever</span>
+                </div>
+              </div>
+              <div className="pc-cta-wrap">
+                <button type="button" className="pc-cta" onClick={() => choose("free")}>
+                  Get Started
+                </button>
+              </div>
+              <div className="pc-body">
+                <ul className="pc-list">
+                  <li><Check size={16} strokeWidth={3} /><span>3 Transcripts Per Day</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>5 Translations Per Day</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>TikTok, Reels, Shorts</span></li>
+                </ul>
+                <div className="pc-platforms pc-platforms-row">
+                  <span className="pc-ai-logo pc-ai-logo--platform" aria-label="TikTok">
+                    <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/pricing-icons/tiktok-tile.png?v=2`} alt="" />
+                  </span>
+                  <span className="pc-ai-logo pc-ai-logo--platform" aria-label="Instagram">
+                    <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/pricing-icons/instagram-tile.png?v=2`} alt="" />
+                  </span>
+                  <span className="pc-ai-logo pc-ai-logo--platform" aria-label="YouTube">
+                    <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/pricing-icons/youtube-tile.png?v=2`} alt="" />
+                  </span>
+                </div>
+                <ul className="pc-list">
+                  <li><Check size={16} strokeWidth={3} /><span>Basic Chrome Extension</span></li>
+                </ul>
+                <div className="pc-separator">
+                  <span className="pc-sep-line" />
+                  <span>Not included</span>
+                  <span className="pc-sep-line" />
+                </div>
+                <ul className="pc-list pc-list-locked">
+                  <li><X size={16} strokeWidth={3} /><span>AI Agents</span></li>
+                  <li><X size={16} strokeWidth={3} /><span>Bulk Import</span></li>
+                  <li><X size={16} strokeWidth={3} /><span>Claude &amp; ChatGPT</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className={`pc-card-wrapper ${activeTab === "monthly" ? "active" : ""}`}>
+          <div className="pc-card">
+            <div className="pc-header">
+              <div className="pc-plan-row">
+                <div className="pc-plan-name">Monthly</div>
+                <span className="pc-badge">Flexible</span>
+              </div>
+              <p className="pc-description">Full power, flexible billing</p>
+              <div className="pc-price-row">
+                <span className="pc-price-main">$10</span>
+                <span className="pc-price-period">per month</span>
+              </div>
+              <div className="pc-price-highlight pc-price-highlight-warn">
+                <span className="pc-price-highlight-equivalent">= $120/year</span>
+                <span className="pc-price-highlight-note">Annual saves $81</span>
+              </div>
+            </div>
+            <div className="pc-cta-wrap">
+              <button type="button" className="pc-cta" onClick={() => choose("monthly")}>
+                Get Monthly
+              </button>
+            </div>
+            <div className="pc-body">
+              <div className="pc-group">
+                <div className="pc-group-title">Everything in Annual</div>
+                <ul className="pc-list">
+                  <li><Check size={16} strokeWidth={3} /><span>All 3 AI Agents</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts &amp; translations</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>Claude &amp; ChatGPT</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>Chrome, mobile &amp; desktop</span></li>
+                </ul>
+              </div>
+              <div className="pc-warn-callout">Costs $81 more per year</div>
+            </div>
+          </div>
         </div>
-      )}
 
-      {showStartFreeLink && (
-      <a
-        href={
-          email
-            ? `/app/sign-up?email=${encodeURIComponent(email)}&tier=free`
-            : "/app/sign-up?tier=free"
-        }
-        onClick={() => onTierSelect?.({ key: "free" })}
-        style={{
-          alignSelf: "center",
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 6,
-          padding: "9px 16px",
-          borderRadius: 999,
-          background: "transparent",
-          border: `1px solid ${T.formBorder}`,
-          color: T.pitchMuted,
-          fontSize: 12.5,
-          fontWeight: 600,
-          textDecoration: "none",
-          marginTop: -2,
-        }}
-      >
-        {t?.dontMissOutModal?.tryFreeFirst || "Try Free First, Decide Later"}
-      </a>
-      )}
+        <div className={`pc-card-wrapper ${activeTab === "annual" ? "active" : ""}`}>
+          <div className="pc-card pc-card-featured">
+            <div className="pc-header">
+              <div className="pc-plan-row">
+                <div className="pc-plan-name">Annual</div>
+                <span className="pc-badge pc-badge-recommended">
+                  <Crown size={12} strokeWidth={2.5} /> Save 68%
+                </span>
+              </div>
+              <p className="pc-description">Best value, save $81 vs Monthly</p>
+              <div className="pc-price-row">
+                <span className="pc-price-main">$39</span>
+                <span className="pc-price-period">/ year</span>
+              </div>
+              <div className="pc-price-highlight">
+                <span className="pc-price-highlight-pill">That's $3.25/month</span>
+              </div>
+            </div>
+            <div className="pc-cta-wrap">
+              <button
+                type="button"
+                className="pc-cta pc-cta-primary"
+                onClick={() => choose("annual")}
+              >
+                Get Annual
+              </button>
+            </div>
+            <div className="pc-body">
+              <div className="pc-group">
+                <div className="pc-group-title">Bulk Processing</div>
+                <div className="pc-platforms pc-platforms-row">
+                  <span className="pc-ai-logo pc-ai-logo--platform" aria-label="TikTok">
+                    <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/pricing-icons/tiktok-tile.png?v=2`} alt="" />
+                  </span>
+                  <span className="pc-ai-logo pc-ai-logo--platform" aria-label="Instagram">
+                    <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/pricing-icons/instagram-tile.png?v=2`} alt="" />
+                  </span>
+                  <span className="pc-ai-logo pc-ai-logo--platform" aria-label="YouTube">
+                    <img src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/pricing-icons/youtube-tile.png?v=2`} alt="" />
+                  </span>
+                </div>
+                <ul className="pc-list">
+                  <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>Unlimited translations</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos at once</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>HD downloads, no watermarks</span></li>
+                </ul>
+              </div>
+              <div className="pc-group">
+                <div className="pc-group-title">Add to Claude &amp; ChatGPT</div>
+                <div className="pc-ai-pair">
+                  <span className="pc-ai-logo pc-ai-logo--claude" aria-label="Claude"><ClaudeIcon /></span>
+                  <span className="pc-ai-logo pc-ai-logo--chatgpt" aria-label="ChatGPT"><ChatGPTIcon /></span>
+                </div>
+                <p className="pc-group-blurb">Ask anything about any TikTok, Instagram, or YouTube — right inside your AI chat.</p>
+              </div>
+              <div className="pc-group">
+                <div className="pc-group-title">Everywhere You Work</div>
+                <ul className="pc-list">
+                  <li><Check size={16} strokeWidth={3} /><span>Chrome Extension</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>Mobile + Desktop apps</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>Cloud-synced dashboard</span></li>
+                </ul>
+              </div>
+              <div className="pc-group">
+                <div className="pc-group-title">AI Agents</div>
+                <ul className="pc-list pc-list-detailed">
+                  <li>
+                    <Check size={16} strokeWidth={3} />
+                    <div>
+                      <strong>Viral Hook Generator</strong>
+                      <span>Creates scroll-stopping hooks from any transcript topic.</span>
+                    </div>
+                  </li>
+                  <li>
+                    <Check size={16} strokeWidth={3} />
+                    <div>
+                      <strong>Viral Script Writer</strong>
+                      <span>Rewrites transcripts into better viral scripts.</span>
+                    </div>
+                  </li>
+                  <li>
+                    <Check size={16} strokeWidth={3} />
+                    <div>
+                      <strong>Virality Explainer</strong>
+                      <span>Decodes why a video went viral, plus new script ideas.</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className={`pc-card-wrapper ${activeTab === "lifetime" ? "active" : ""}`}>
+          <div className="pc-card">
+            <div className="pc-header">
+              <div className="pc-plan-row">
+                <div className="pc-plan-name">Lifetime</div>
+              </div>
+              <p className="pc-description">Pay once. Use forever.</p>
+              <div className="pc-price-row">
+                <span className="pc-price-main">$199</span>
+                <span className="pc-price-period">one-time</span>
+                <span className="pc-price-original">$468</span>
+              </div>
+            </div>
+            <div className="pc-cta-wrap">
+              <button type="button" className="pc-cta" onClick={() => choose("lifetime")}>
+                Get Lifetime
+              </button>
+            </div>
+            <div className="pc-body">
+              <div className="pc-group">
+                <div className="pc-group-title">Everything in Annual, forever</div>
+                <ul className="pc-list">
+                  <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts &amp; translations</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos at once</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>HD downloads, no watermarks</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>All future features included</span></li>
+                </ul>
+              </div>
+              <div className="pc-group">
+                <div className="pc-group-title">Add to Claude &amp; ChatGPT</div>
+                <div className="pc-ai-pair">
+                  <span className="pc-ai-logo pc-ai-logo--claude" aria-label="Claude"><ClaudeIcon /></span>
+                  <span className="pc-ai-logo pc-ai-logo--chatgpt" aria-label="ChatGPT"><ChatGPTIcon /></span>
+                </div>
+                <p className="pc-group-blurb">Lifetime access to TokScript inside your AI conversations.</p>
+              </div>
+              <div className="pc-group">
+                <div className="pc-group-title">Everywhere You Work</div>
+                <ul className="pc-list">
+                  <li><Check size={16} strokeWidth={3} /><span>Chrome Extension</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>Mobile + Desktop apps</span></li>
+                  <li><Check size={16} strokeWidth={3} /><span>Cloud-synced dashboard</span></li>
+                </ul>
+              </div>
+              <div className="pc-group">
+                <div className="pc-group-title">AI Agents</div>
+                <ul className="pc-list pc-list-detailed">
+                  <li>
+                    <Check size={16} strokeWidth={3} />
+                    <div>
+                      <strong>Viral Hook Generator</strong>
+                      <span>Creates scroll-stopping hooks from any transcript topic.</span>
+                    </div>
+                  </li>
+                  <li>
+                    <Check size={16} strokeWidth={3} />
+                    <div>
+                      <strong>Viral Script Writer</strong>
+                      <span>Rewrites transcripts into better viral scripts.</span>
+                    </div>
+                  </li>
+                  <li>
+                    <Check size={16} strokeWidth={3} />
+                    <div>
+                      <strong>Virality Explainer</strong>
+                      <span>Decodes why a video went viral, plus new script ideas.</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <p
         style={{
@@ -1726,7 +1771,10 @@ function StepTwo({
         }}
       >
         {t?.dontMissOutModal?.tiersFooter ||
-          "All Plans Include Cancel-Anytime and A 7-Day Refund Guarantee."}
+          "All Plans Include Cancel-Anytime and A 7-Day Refund Guarantee."}{" "}
+        <a href={signinHref} style={{ color: T.accent, textDecoration: "none" }}>
+          {t?.dontMissOutModal?.signIn || "Sign In"}
+        </a>
       </p>
     </div>
   );
@@ -1800,17 +1848,18 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
       // Returning visitor with saved progress → tier selection with hydrated email.
       setEmail(progress.email);
       setStep("tiers");
-    } else if (isMobile) {
-      // Cold mobile open → start at the contextual paywall (Step 4).
-      setStep("paywall");
     } else {
-      setStep("signup");
+      // Both viewports: cold open lands on the pitch screen.
+      // Mobile + desktop see the same eyebrow + headline + Get Full Access CTA.
+      setStep("intro");
     }
     setPassword("");
   }, [show, isMobile]);
 
   const handleIntroContinue = () => {
-    setStep("signup");
+    // Form lives on a separate /sign-up page now; the modal jumps straight
+    // from the pitch screen to tier selection.
+    setStep("tiers");
   };
 
   // Inline tap-to-choose CTA on each mobile tier card. For a signed-in user we
@@ -1918,18 +1967,7 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
 
   const handleContinue = () => {
     saveSignupProgress(email);
-    if (isMobile) {
-      // Mobile: tier was already chosen on the intro screen; route directly.
-      const tiers = getTiers(t, email);
-      const chosen = tiers.find((tr) => tr.key === selectedTier) || tiers[0];
-      clearSignupProgress();
-      if (typeof window !== "undefined") {
-        window.location.href = chosen.href;
-      }
-      onHide?.();
-      return;
-    }
-    // Desktop keeps the existing 2-step flow with tier selection on step 2.
+    // Both viewports: form submit advances to the tier-selection step.
     setStep("tiers");
   };
 
@@ -2061,55 +2099,12 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
             </a>
           )}
 
-          {/* Mobile multi-step flow (Steps 4 / 5 / 6a / 6b). Desktop keeps the
-              existing side-by-side signup → tier-selection flow. */}
-          {step === "paywall" ? (
-            <MobilePaywallStep
-              t={t}
-              trigger={entryTrigger}
-              user={user}
-              onContinue={handlePaywallContinue}
-              onSignIn={() => setStep("email")}
-              onClose={onHide}
-            />
-          ) : step === "email" ? (
-            <MobileEmailStep
-              t={t}
-              pendingEmail={pendingEmail}
-              setPendingEmail={setPendingEmail}
-              onSubmit={handleEmailSubmit}
-              onGoogle={handleGoogleAuth}
-              onBack={() => setStep("paywall")}
-              busy={authBusy}
-              error={authError}
-            />
-          ) : step === "signin" ? (
-            <MobileSignInStep
-              t={t}
-              email={email}
-              password={password}
-              setPassword={setPassword}
-              showPw={showPw}
-              setShowPw={setShowPw}
-              onSubmit={handleSignIn}
-              onBack={() => setStep("email")}
-              busy={authBusy}
-              error={authError}
-            />
-          ) : step === "create" ? (
-            <MobileCreateAccountStep
-              t={t}
-              email={email}
-              password={password}
-              setPassword={setPassword}
-              showPw={showPw}
-              setShowPw={setShowPw}
-              onSubmit={handleCreateAccount}
-              onBack={() => setStep("email")}
-              busy={authBusy}
-              error={authError}
-            />
-          ) : step === "tiers" ? (
+          {/* Mobile 3-step flow: intro (pitch + Get Full Access) → signup
+              (email/password form) → tiers (plan selection). Desktop renders
+              the same 2-step flow it always did. The contextual-paywall +
+              email-check components stay defined in the file but are not used
+              in this simpler flow. */}
+          {step === "tiers" ? (
             <StepTwo
               t={t}
               email={email}
