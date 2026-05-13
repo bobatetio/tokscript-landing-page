@@ -110,18 +110,23 @@ export const PRICING_CATEGORIES = [
     },
     features: [
       {
-        name: "Transcribe from any Chrome tab",
-        tooltip: "Right-click any video URL inside Chrome and grab the transcript without leaving the page.",
+        name: "Pull real engagement metrics",
+        tooltip: "Skip inflated follower counts. See actual views, likes, comments, shares, and bookmarks with mean and median for every metric.",
         tiers: ["monthly", "annual", "lifetime"],
       },
       {
-        name: "Save direct to your library",
-        tooltip: "Transcripts you capture in the extension auto-save to your cloud library.",
+        name: "Reverse-engineer any creator",
+        tooltip: "See exactly when they post, how often, and which days drive results, with a full-year heatmap to track patterns over time.",
         tiers: ["monthly", "annual", "lifetime"],
       },
       {
-        name: "No copy-paste, ever",
-        tooltip: "Skip the URL shuffle — capture from wherever you are browsing.",
+        name: "Format & duration intelligence",
+        tooltip: "Long-vs-short split and the exact video durations that cluster for any creator, at a glance.",
+        tiers: ["monthly", "annual", "lifetime"],
+      },
+      {
+        name: "Bulk research, 50 links at once",
+        tooltip: "Paste up to 50 TikTok links and drop them straight into a folder. HD videos and cover image downloads included.",
         tiers: ["monthly", "annual", "lifetime"],
       },
     ],

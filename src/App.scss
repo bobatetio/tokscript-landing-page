@@ -19250,8 +19250,13 @@ $ds-font: "Inter", system-ui, sans-serif;
   font-weight: 800;
   letter-spacing: 0;
 }
+/* Explicit color / weight / size on the label span so it wins over the global
+   `span { color: $text_primary; font-weight: 400; }` rule in global.scss. */
 .pc-cat-header-label {
   flex-shrink: 0;
+  color: inherit;
+  font-weight: inherit;
+  font-size: inherit;
 }
 
 /* "NEW" tag beside the MCP Access header. Solid teal pill with white text
