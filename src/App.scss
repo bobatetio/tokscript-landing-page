@@ -19236,9 +19236,9 @@ $ds-font: "Inter", system-ui, sans-serif;
    it sits in the same rhythm as the other categories. The NEW tag beside the
    header keeps its prominence. */
 
-/* Section header for each feature group inside a pricing card. Full white
-   (no opacity reduction across tiers) at weight 800 so it sits clearly above
-   the rows underneath. */
+/* Section header for each feature group inside a pricing card. Rendered in
+   uppercase so it reads as a section divider rather than another row, with a
+   slight letter-spacing kick to keep the caps from feeling cramped. */
 .pc-cat-header {
   display: flex;
   align-items: center;
@@ -19246,9 +19246,10 @@ $ds-font: "Inter", system-ui, sans-serif;
   padding: 12px 0 8px;
   color: #ffffff;
   font-family: $ds-font;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 /* Explicit color / weight / size on the label span so it wins over the global
    `span { color: $text_primary; font-weight: 400; }` rule in global.scss. */
@@ -19303,7 +19304,9 @@ $ds-font: "Inter", system-ui, sans-serif;
   flex-direction: column;
 }
 
-/* Single feature row: ✓ or — on the left, name in the middle, (i) on the right. */
+/* Single feature row: ✓ or — on the left, name in the middle, (i) on the right.
+   Two-line variant (.has-sub) top-aligns the indicator so it lines up with the
+   name rather than floating between name and sub. */
 .pc-cat-feature {
   display: flex;
   align-items: center;
@@ -19311,9 +19314,71 @@ $ds-font: "Inter", system-ui, sans-serif;
   padding: 6px 0;
   color: rgba(255, 255, 255, 0.88);
 
+  &.has-sub {
+    align-items: flex-start;
+    padding: 8px 0;
+
+    .pc-cat-feature-indicator {
+      margin-top: 1px;
+    }
+  }
+
   &.is-disabled {
     color: rgba(255, 255, 255, 0.36);
   }
+}
+
+/* Wrapper around name + optional sub line so the two stack as a column while
+   the row's flex layout keeps the indicator and (i) icon aligned to the side. */
+.pc-cat-feature-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+/* Secondary description under the feature name (e.g. "Paste any transcript →
+   Get 20+ proven hooks" under "Viral Hook Generator"). Muted so the name stays
+   primary. */
+.pc-cat-feature-sub {
+  font-family: $ds-font;
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.5);
+
+  .pc-cat-feature.is-disabled & {
+    color: rgba(255, 255, 255, 0.28);
+  }
+}
+
+/* Inline platform glyph row that sits between feature rows (vs. the original
+   top-of-section .pc-platform-glyphs). Aligned with the feature text column by
+   leaving a blank indicator slot on the left so the icons line up under the
+   feature names rather than under the checkmarks. */
+.pc-cat-inline-glyphs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0 6px;
+  list-style: none;
+}
+
+.pc-cat-inline-glyphs-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pc-cat-inline-glyphs-label {
+  font-family: $ds-font;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-left: 4px;
 }
 
 .pc-cat-feature-indicator {

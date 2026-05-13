@@ -8,6 +8,13 @@
 .dont-miss-out-modal-v3 {
   padding-left: 0 !important;
 
+  // New Figma-redesigned mobile paywall + the mobile-only headline block are
+  // hidden on desktop; the @media block below flips them on under 760px.
+  .dont-miss-mobile-header,
+  .dont-miss-mobile-paywall {
+    display: none;
+  }
+
   // Mobile primary CTA matches the Figma's chunky offset-shadow style:
   // hard-edge black shadow ~4px down, no blur, plus white text on aqua bg.
   .dont-miss-mobile-intro-ctas .pc-cta-primary,
@@ -79,43 +86,73 @@
   }
 
   @media screen and (max-width: 760px) {
-    // Bottom-sheet behavior on mobile: dialog hugs the bottom edge with
-    // side margins. Top is also pinned so the dialog's top doesn't shift
-    // as content height changes — the shell scrolls internally instead.
+    // Vertically-centered mobile sheet: the dialog spans the full viewport
+    // and uses flex to center the .modal-content (which is capped at 70vh
+    // so the modal is shorter than the screen).
     .modal-dialog {
       position: fixed !important;
-      top: 8vh !important;
-      bottom: 12px !important;
+      top: 0 !important;
+      bottom: 0 !important;
       left: 12px !important;
       right: 12px !important;
       margin: 0 !important;
       max-width: calc(100% - 24px) !important;
       width: auto !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+
+    // Carousel hero is image-only on mobile — text caption + dark fade
+    // overlay are hidden so the screenshot reads cleanly.
+    .carousel-overlay-fade,
+    .carousel-overlay-text {
+      display: none !important;
     }
     .modal-content {
+      width: 100% !important;
       border-radius: 22px !important;
-      max-height: 92vh;
-      overflow-y: auto;
+      // Fixed height (not max-height) so percentage heights inside resolve
+      // and the sticky .paywall-panel always pins to this box's bottom.
+      // overflow-y:auto makes modal-content the scroll container — the
+      // sticky panel then computes against the visible 64vh modal box, so
+      // the CTA + sign-in are always visible without scrolling.
+      height: 80vh !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
     }
     .dont-miss-shell {
+      // Bypass the shell as a scroll container so position:sticky on
+      // .paywall-panel walks up to .modal-content (the new scroll
+      // container) instead of pinning to the shell's own 90vh inline
+      // viewport (which sits below the visible modal).
+      overflow: visible !important;
       min-height: 0 !important;
+      max-height: none !important;
       flex-direction: column !important;
       border-radius: 22px !important;
     }
-    // Slide-up animation when the modal opens.
-    &.show .modal-dialog {
+    // Slide-up animation runs on .modal-content (the visible card) rather
+    // than .modal-dialog, since the dialog now spans the full viewport for
+    // centering and animating its transform would do nothing visible.
+    &.show .modal-content {
       animation: tsSlideUp 280ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     // Mobile is a 3-step wizard:
-    //   .dont-miss-step-intro  → show pitch only (with intro CTAs at bottom)
+    //   .dont-miss-step-intro  → show pitch only (Figma paywall — new design)
     //   .dont-miss-step-signup → show form only
     //   .dont-miss-step-tiers  → show tier cards only
     &.dont-miss-step-intro .dont-miss-form { display: none !important; }
-    &.dont-miss-step-intro .dont-miss-mobile-intro-ctas { display: flex !important; }
-    // Mobile intro shows the pills row (older simpler design); the tier
-    // cards (`dont-miss-mobile-features`) only appear on the tiers step.
+    // The Figma redesign collapses tier-pick into the intro screen, so the old
+    // intro CTA button and the pills row are both hidden on mobile intro.
+    &.dont-miss-step-intro .dont-miss-mobile-intro-ctas { display: none !important; }
+    &.dont-miss-step-intro .dont-miss-pills { display: none !important; }
     &.dont-miss-step-intro .dont-miss-mobile-features { display: none !important; }
+    &.dont-miss-step-intro .dont-miss-mobile-paywall { display: flex !important; }
+    // Hide the desktop title block on mobile intro — the `.dont-miss-mobile-header`
+    // (gradient h2) renders the Figma-styled headline instead.
+    &.dont-miss-step-intro .dont-miss-desktop-title { display: none !important; }
+    &.dont-miss-step-intro .dont-miss-mobile-header { display: flex !important; }
 
     &.dont-miss-step-signup .dont-miss-pitch { display: none !important; }
     &.dont-miss-step-signup .dont-miss-mobile-intro-ctas { display: none !important; }
@@ -126,8 +163,218 @@
     &.dont-miss-step-tiers .dont-miss-mobile-features { display: flex !important; }
 
     .dont-miss-pitch {
-      padding: 24px 22px 18px !important;
-      gap: 14px !important;
+      // 20px symmetric horizontal padding; no bottom padding so the sticky
+      // .paywall-panel can hug the modal's bottom edge.
+      padding: 20px 20px 0 !important;
+      gap: 12px !important;
+    }
+
+    // ── Figma mobile-paywall headline (gradient h2 + sub) ──────────────────
+    .dont-miss-mobile-header {
+      flex-direction: column;
+      gap: 2px;
+    }
+    .dont-miss-mobile-h2 {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.22;
+      letter-spacing: -0.01em;
+      background: linear-gradient(129.59deg, #ffffff 51.4%, #88fffb 121%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+    .dont-miss-mobile-sub {
+      margin: 4px 0 0;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 400;
+    }
+
+    // ── Figma mobile-paywall body (checklist + dark gradient panel) ────────
+    .dont-miss-mobile-paywall {
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 0;
+    }
+
+    .paywall-checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .paywall-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .paywall-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #0b2827;
+      color: #00d3cb;
+
+      svg {
+        width: 11px;
+        height: 11px;
+      }
+    }
+    .paywall-row.is-x .paywall-icon {
+      background: #2a2a2a;
+      color: #ff5a8a;
+    }
+    .paywall-label {
+      flex: 1;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    .paywall-panel {
+      // Break out of the .dont-miss-pitch horizontal padding so the dark
+      // panel hugs the modal edges. Rounded top corners only — the modal's
+      // own rounded bottom-corners clip this panel into shape.
+      margin: 6px -20px 0;
+      background: linear-gradient(144.25deg, #232323 26.94%, #040404 105.89%);
+      border-radius: 20px 20px 0 0;
+      padding: 14px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      // Pin to the bottom of the modal so the tier picker + CTA + sign-in
+      // are always visible while the headline, carousel, and checklist
+      // scroll under it. Computes relative to .dont-miss-shell, which is
+      // the nearest scrolling ancestor (overflow-y: auto, max-height: 90vh).
+      position: sticky;
+      bottom: 0;
+      z-index: 5;
+      box-shadow: 0 -10px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .paywall-tier-row {
+      display: flex;
+      gap: 6px;
+      // Horizontal scroll if all 4 cards don't fit; Lifetime peeks off the
+      // right edge as a scroll affordance, matching the Figma.
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-top: 8px; // room for the SAVE $81 ribbon
+      &::-webkit-scrollbar { display: none; }
+    }
+    .paywall-tier {
+      position: relative;
+      flex: 0 0 auto;
+      width: 80px;
+      height: 64px;
+      // Asymmetric vertical padding: extra top-padding nudges the label
+      // down a few pixels from the card's top edge while space-between
+      // keeps the price pinned to the bottom.
+      padding: 14px 8px 9px;
+      border-radius: 10px;
+      background: #161616;
+      border: 1px solid #2a2a2a;
+      color: #cacaca;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color .15s, background .15s, box-shadow .15s;
+    }
+    .paywall-tier.is-featured {
+      background: #0b2827;
+      border-color: rgba(0, 211, 203, 0.45);
+    }
+    .paywall-tier.is-selected {
+      border-color: #00d3cb;
+      box-shadow: 0 0 0 1px #00d3cb inset;
+    }
+    .paywall-ribbon {
+      position: absolute;
+      top: -7px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #00d3cb;
+      color: #0c1717;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 2px 6px;
+      border-radius: 12px;
+      white-space: nowrap;
+      line-height: 1.4;
+    }
+    .paywall-tier-label {
+      font-size: 9px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.55);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+    .paywall-tier-price {
+      display: flex;
+      align-items: baseline;
+      gap: 2px;
+    }
+    .paywall-price-main {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1;
+      letter-spacing: -0.01em;
+    }
+    .paywall-price-period {
+      font-size: 9px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    .paywall-cta {
+      width: 100%;
+      height: 42px;
+      background: #ffffff;
+      color: #0d0d0d;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+      border: none;
+      border-radius: 11px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+      transition: transform .08s;
+      &:active { transform: scale(0.985); }
+    }
+
+    .paywall-signin {
+      margin: 0;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 400;
+    }
+    .paywall-signin-link {
+      // Match surrounding sentence font-size so the link doesn't visually
+      // pop larger; only the color + underline distinguish it.
+      font-size: inherit;
+      line-height: inherit;
+      font-weight: 400;
+      color: #ffffff;
+      text-decoration: underline;
+      text-underline-offset: 2px;
     }
     // Mobile step 1 (intro) shows the carousel + pills + Get Full Access CTA
     // — the older simpler design. Social-proof row stays hidden on mobile

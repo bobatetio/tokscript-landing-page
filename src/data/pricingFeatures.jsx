@@ -24,10 +24,50 @@ export const PLATFORM_GLYPHS = [
   { key: "youtube", label: "YouTube", Glyph: YoutubeGlyph },
 ];
 
-/* Section order is intentional: MCP first (headline feature), AI Agents
-   last (lowest-priority basic). Chrome Extension stands alone since its
+/* Section order is intentional: Bulk Processing first (volume — the most
+   tangible upgrade trigger), MCP next (headline integration), AI Agents last
+   (lowest-priority basic). Chrome Extension stands alone since its
    capabilities don't belong inside the Library section. */
 export const PRICING_CATEGORIES = [
+  {
+    key: "transcripts",
+    tierLabels: {
+      free: "Basic Transcripts",
+      monthly: "Bulk Processing",
+      annual: "Bulk Processing",
+      lifetime: "Bulk Processing",
+    },
+    /* Platform glyph row renders inline after the feature at this index,
+       with an "All Platforms" label. Index 2 places it between "Bulk import
+       50 videos at once" and "HD video downloads". Only shown on paid tiers
+       since free is TikTok-only and "All Platforms" would mislead. */
+    inlineGlyphsAfter: 2,
+    inlineGlyphsTiers: ["monthly", "annual", "lifetime"],
+    features: [
+      {
+        name: "Unlimited transcripts",
+        nameByTier: { free: "5 transcripts per day" },
+        tooltip: "Transcribe as many TikTok, Instagram, or YouTube videos as you want — no daily limit.",
+        tiers: ["free", "monthly", "annual", "lifetime"],
+      },
+      {
+        name: "Unlimited translations",
+        nameByTier: { free: "Translate to 50+ languages" },
+        tooltip: "Translate every transcript into any of 50+ supported languages.",
+        tiers: ["free", "monthly", "annual", "lifetime"],
+      },
+      {
+        name: "Bulk import 50 videos at once",
+        tooltip: "Drop up to 50 URLs in one batch, plus full TikTok collections, Instagram Reels, and YouTube playlists.",
+        tiers: ["monthly", "annual", "lifetime"],
+      },
+      {
+        name: "HD video downloads",
+        tooltip: "Download the original-quality video file with no watermark.",
+        tiers: ["monthly", "annual", "lifetime"],
+      },
+    ],
+  },
   {
     key: "mcp",
     tierLabels: {
@@ -65,38 +105,6 @@ export const PRICING_CATEGORIES = [
         name: "28 actions inside chat",
         tooltip: "The full TokScript toolkit, every action available in Claude or ChatGPT.",
         tiers: ["monthly", "annual", "lifetime"],
-      },
-    ],
-  },
-  {
-    key: "transcripts",
-    tierLabels: {
-      free: "Basic Transcripts",
-      monthly: "Unlimited Transcripts",
-      annual: "Unlimited Transcripts",
-      lifetime: "Unlimited Transcripts",
-    },
-    platformGlyphs: true,
-    features: [
-      {
-        name: "Transcribe any video",
-        tooltip: "Paste any TikTok, Instagram, or YouTube URL and get a clean transcript.",
-        tiers: ["free", "monthly", "annual", "lifetime"],
-      },
-      {
-        name: "50 videos per batch",
-        tooltip: "Drop up to 50 URLs in one batch instead of pasting one by one.",
-        tiers: ["monthly", "annual", "lifetime"],
-      },
-      {
-        name: "Import collections & playlists",
-        tooltip: "Pull whole TikTok collections, Instagram Reels, and YouTube playlists at once.",
-        tiers: ["monthly", "annual", "lifetime"],
-      },
-      {
-        name: "Translate to 50+ languages",
-        tooltip: "Drop your transcript into any of 50+ languages.",
-        tiers: ["free", "monthly", "annual", "lifetime"],
       },
     ],
   },
@@ -166,23 +174,26 @@ export const PRICING_CATEGORIES = [
     key: "agents",
     tierLabels: {
       free: "AI Agents",
-      monthly: "All AI Agents",
-      annual: "All AI Agents",
-      lifetime: "All AI Agents",
+      monthly: "Unlimited AI Agents",
+      annual: "Unlimited AI Agents",
+      lifetime: "Unlimited AI Agents",
     },
     features: [
       {
-        name: "Generate viral hooks",
+        name: "Viral Hook Generator",
+        sub: "Paste any transcript → Get 20+ proven hooks",
         tooltip: "Get 20+ hook variations per video, tuned to your style.",
         tiers: ["monthly", "annual", "lifetime"],
       },
       {
-        name: "Rewrite into your script",
+        name: "Viral Script Writer",
+        sub: "Turn any viral video into YOUR script",
         tooltip: "Turn any video into a script in your own voice.",
         tiers: ["monthly", "annual", "lifetime"],
       },
       {
-        name: "See why videos blow up",
+        name: "Virality Explainer",
+        sub: "See exactly WHY videos blow up",
         tooltip: "Get a breakdown of why a clip went viral.",
         tiers: ["monthly", "annual", "lifetime"],
       },

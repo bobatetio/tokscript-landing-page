@@ -281,6 +281,7 @@ function CarouselFrame({ frame }) {
         }}
       />
       <div
+        className="carousel-overlay-fade"
         aria-hidden
         style={{
           position: "absolute",
@@ -291,6 +292,7 @@ function CarouselFrame({ frame }) {
         }}
       />
       <div
+        className="carousel-overlay-text"
         style={{
           position: "absolute",
           left: 14,
@@ -869,6 +871,98 @@ function PwToggle({ showPw, setShowPw }) {
   );
 }
 
+/* ── Mobile-only paywall (Figma node 2016:7529). Renders the checklist +
+   4-tier picker panel + white "Subscribe to ..." CTA + sign-in line that
+   replace the pills + intro CTA on mobile. Display is gated to mobile by
+   the parent CSS rule on `.dont-miss-mobile-paywall`. */
+function MobilePaywallV2({ t, selectedTier, setSelectedTier, onConfirm }) {
+  const tr = t?.dontMissOutModal?.mobilePaywall || {};
+  const checklist = tr.checklist || [
+    { check: true, label: "Unlimited transcripts & bulk downloads" },
+    { check: true, label: "Unlimited translations" },
+    { check: true, label: "Instagram Reels & YouTube Shorts (unlimited)" },
+    { check: true, label: "Download HD videos (no watermark)" },
+    { check: true, label: "Download Cover Images" },
+    { check: false, label: "Export videos without watermark" },
+    { check: true, label: "Approved for commercial use" },
+  ];
+  const tiers = [
+    { key: "free", label: "FREE", price: "$0", period: "/forever", ctaPrice: "$0/forever" },
+    { key: "monthly", label: "MONTHLY", price: "$10", period: "/month", ctaPrice: "$10/month" },
+    { key: "annual", label: "ANNUAL", price: "$39", period: "/year", featured: true, ribbon: "SAVE $81", ctaPrice: "$39/year" },
+    { key: "lifetime", label: "LIFETIME", price: "$199", period: "/forever", ctaPrice: "$199 once" },
+  ];
+  const sel = tiers.find((tt) => tt.key === selectedTier) || tiers[2];
+  const ctaText =
+    sel.key === "free"
+      ? tr.ctaFree || "Create Free Account"
+      : `${tr.ctaPrefix || "Subscribe To"} ${sel.label.charAt(0) + sel.label.slice(1).toLowerCase()} ${sel.ctaPrice}`;
+
+  return (
+    <div className="dont-miss-mobile-paywall">
+      <ul className="paywall-checklist">
+        {checklist.map((row, i) => (
+          <li
+            key={i}
+            className={`paywall-row ${row.check ? "is-check" : "is-x"}`}
+          >
+            <span className="paywall-icon" aria-hidden="true">
+              {row.check ? (
+                <Check size={14} strokeWidth={3} />
+              ) : (
+                <X size={14} strokeWidth={3} />
+              )}
+            </span>
+            <span className="paywall-label">{row.label}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div className="paywall-panel">
+        <div className="paywall-tier-row">
+          {tiers.map((tier) => {
+            const isSelected = selectedTier === tier.key;
+            return (
+              <button
+                key={tier.key}
+                type="button"
+                onClick={() => setSelectedTier(tier.key)}
+                aria-pressed={isSelected}
+                className={`paywall-tier${tier.featured ? " is-featured" : ""}${isSelected ? " is-selected" : ""}`}
+              >
+                {tier.ribbon && (
+                  <span className="paywall-ribbon">{tier.ribbon}</span>
+                )}
+                <span className="paywall-tier-label">{tier.label}</span>
+                <span className="paywall-tier-price">
+                  <span className="paywall-price-main">{tier.price}</span>
+                  <span className="paywall-price-period">{tier.period}</span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <button
+          type="button"
+          className="paywall-cta"
+          onClick={() => onConfirm?.(selectedTier)}
+        >
+          {ctaText}
+        </button>
+
+        <p className="paywall-signin">
+          {tr.haveAccount || "Already have an account?"}{" "}
+          <Link href="/app/login" className="paywall-signin-link">
+            {tr.signIn || "Sign In"}
+          </Link>{" "}
+          {tr.toContinue || "to continue"}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function StepOne({
   t,
   email,
@@ -914,7 +1008,7 @@ function StepOne({
           zIndex: 2,
         }}
       >
-        <div>
+        <div className="dont-miss-desktop-title">
           <span
             style={{
               display: "inline-flex",
@@ -969,32 +1063,24 @@ function StepOne({
           </p>
         </div>
 
-        {/* Mobile-only headline + signed-in line. The desktop block above is
-            hidden on mobile via the `dont-miss-desktop-only` rule. */}
-        <div className="dont-miss-mobile-header" style={{ display: "none", flexDirection: "column", gap: 4 }}>
-          <h2
-            style={{
-              margin: 0,
-              color: T.pitchText,
-              fontSize: 22,
-              fontWeight: 700,
-              lineHeight: 1.2,
-              letterSpacing: "-0.015em",
-            }}
-          >
-            {t?.dontMissOutModal?.mobileTitle || "Pick Your Plan To Continue."}
+        {/* Mobile-only headline + sub. Hidden on desktop via SCSS; the
+            `.dont-miss-desktop-title` block above handles desktop instead.
+            Matches the Figma guest-paywall design (white→teal gradient on h2). */}
+        <div className="dont-miss-mobile-header">
+          <h2 className="dont-miss-mobile-h2">
+            {user
+              ? t?.dontMissOutModal?.freeTitleMobile ||
+                t?.dontMissOutModal?.freeTitle ||
+                "Upgrade To Pro."
+              : t?.dontMissOutModal?.titleMobile ||
+                "You've Used Your 3 Free Guest Transcripts."}
           </h2>
-          <p
-            style={{
-              margin: 0,
-              color: T.pitchMuted,
-              fontSize: 13,
-              lineHeight: 1.4,
-            }}
-          >
-            {user?.email
-              ? `${t?.dontMissOutModal?.signedInAs || "Signed in as"} ${user.email}`
-              : t?.dontMissOutModal?.signUpNext || "Sign up next to confirm your plan."}
+          <p className="dont-miss-mobile-sub">
+            {user
+              ? t?.dontMissOutModal?.freePaywallSub ||
+                "Unlock Everything With A Paid Plan."
+              : t?.dontMissOutModal?.guestPaywallSub ||
+                "Create An Account To Keep Going."}
           </p>
         </div>
 
@@ -1027,6 +1113,16 @@ function StepOne({
             ))}
           </div>
         </div>
+
+        {/* ── Mobile-only paywall (Figma redesign). Shown on mobile intro step
+            only; hidden on desktop via SCSS. Replaces the pills row + bottom
+            intro-CTA on mobile with a checklist + 4-tier picker + white CTA. */}
+        <MobilePaywallV2
+          t={t}
+          selectedTier={selectedTier}
+          setSelectedTier={setSelectedTier}
+          onConfirm={onMobileTierConfirm}
+        />
 
         {/* Feature pills (2 rows of 3) — desktop only; hidden on mobile via SCSS. */}
         <div
