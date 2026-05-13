@@ -3,6 +3,8 @@
 import { Check, Minus, Info } from "lucide-react";
 import PRICING_CATEGORIES from "@/data/pricingFeatures";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 export default function PricingCategoryList({ tier }) {
   return (
     <div className="pc-category-list">
@@ -34,7 +36,7 @@ export default function PricingCategoryList({ tier }) {
                 {category.rowIcons.map((icon) => (
                   <img
                     key={icon.src}
-                    src={icon.src}
+                    src={`${BASE_PATH}${icon.src}`}
                     alt={icon.alt}
                     className="pc-section-icon"
                   />
