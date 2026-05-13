@@ -12,29 +12,20 @@ import {
 import {
   Check,
   X,
-  Zap,
   Crown,
-  Sparkles,
   ChevronDown,
   ArrowRight,
-  TrendingUp,
-  Video,
-  Layers,
   Lock,
-  ShieldCheck,
-  Globe,
-  Star,
 } from "lucide-react";
 import Header from "@/components/Header";
 import ShareBar from "@/components/ShareBar";
+import PricingCategoryList from "@/components/PricingCategoryList";
 import dynamic from "next/dynamic";
 const Footer = dynamic(() => import("@/components/Footer"));
 const ViralMomentsCarousel = dynamic(() => import("@/components/ViralMomentsCarousel"), { ssr: false });
 const HomeSocialProof = dynamic(() => import("@/components/HomeSocialProof"), { ssr: false });
 const FaqSection = dynamic(() => import("@/components/FaqSection"));
 
-import ClaudeIcon from "../../assets/images/icons/ai/ClaudeIcon";
-import ChatGPTIcon from "../../assets/images/icons/ai/ChatGPTIcon";
 import { getPlatformCopy } from "../platformContent";
 
 const copy = getPlatformCopy("tiktok");
@@ -274,11 +265,11 @@ export default function PricingPage({ initialProductsData }) {
     },
     {
       q: "What's the difference between Annual and Monthly?",
-      a: "Same product, same features — just billing cadence. Annual is $39/year ($3.25/month). Monthly is $10/month ($120/year). Annual saves you $81 a year.",
+      a: "Same product, same features, just billing cadence. Annual is $39/year ($3.25/month). Monthly is $10/month ($120/year). Annual saves you $81 a year.",
     },
     {
       q: "Can I switch between plans?",
-      a: "Yes, anytime. Upgrade from Free to paid in one click. Switch between Monthly and Annual whenever you want — billing prorates automatically.",
+      a: "Yes, anytime. Upgrade from Free to paid in one click. Switch between Monthly and Annual whenever you want, billing prorates automatically.",
     },
     {
       q: "Is there a refund policy?",
@@ -294,7 +285,7 @@ export default function PricingPage({ initialProductsData }) {
     },
     {
       q: "Are there discounts for students or creators?",
-      a: "The annual plan ($3.25/month effective) is already heavily discounted compared to monthly. For verified educators or large creator partnerships, reach out — we work with serious users.",
+      a: "The annual plan ($3.25/month effective) is already heavily discounted compared to monthly. For verified educators or large creator partnerships, reach out, we work with serious users.",
     },
     {
       q: "What payment methods do you accept?",
@@ -630,36 +621,19 @@ export default function PricingPage({ initialProductsData }) {
               <button onClick={() => setDontMissOutModalShow(true)} className="pc-cta">Get Started</button>
             )}
           </div>
+          <div className="pc-cta-subinfo">
+            <span className="pc-cta-subinfo-primary">1 user · daily caps</span>
+            <span className="pc-cta-subinfo-secondary">All three platforms supported</span>
+          </div>
+          <div className="pc-body-divider" />
           <div className="pc-body">
-            <ul className="pc-list">
-              <li><Check size={16} strokeWidth={3} /><span>{copy.pricingDailyFreeLine}</span></li>
-              <li><Check size={16} strokeWidth={3} /><span>5 translations per day</span></li>
-              <li><Check size={16} strokeWidth={3} /><span>TikTok, Reels, Shorts</span></li>
-            </ul>
-            <div className="pc-platforms pc-platforms-row">
-              <span className="pc-ai-logo pc-ai-logo--platform" aria-label="TikTok"><img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/pricing-icons/tiktok-tile.png?v=2`} alt="" /></span>
-              <span className="pc-ai-logo pc-ai-logo--platform" aria-label="Instagram"><img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/pricing-icons/instagram-tile.png?v=2`} alt="" /></span>
-              <span className="pc-ai-logo pc-ai-logo--platform" aria-label="YouTube"><img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/pricing-icons/youtube-tile.png?v=2`} alt="" /></span>
-            </div>
-            <ul className="pc-list">
-              <li><Check size={16} strokeWidth={3} /><span>Basic Chrome Extension</span></li>
-            </ul>
-            <div className="pc-separator">
-              <span className="pc-sep-line" />
-              <span>Not included</span>
-              <span className="pc-sep-line" />
-            </div>
-            <ul className="pc-list pc-list-locked">
-              <li><X size={16} strokeWidth={3} /><span>AI Agents</span></li>
-              <li><X size={16} strokeWidth={3} /><span>Bulk Import</span></li>
-              <li><X size={16} strokeWidth={3} /><span>Claude &amp; ChatGPT</span></li>
-            </ul>
+            <PricingCategoryList tier="free" />
           </div>
         </div>
       </div>
       {/* Annual (Featured) */}
       <div className={`pc-card-wrapper ${activeTab === "annual" ? "active" : ""}`}>
-        <div className="pc-card pc-card-featured">
+        <div className="pc-card pc-card-featured pc-card-recommended">
           <div className="pc-header">
             <div className="pc-plan-row">
               <div className="pc-plan-name">Annual</div>
@@ -674,7 +648,7 @@ export default function PricingPage({ initialProductsData }) {
               <span className="pc-price-original">$120</span>
             </div>
             <div className="pc-price-highlight">
-              <span className="pc-price-highlight-pill">That&apos;s $3.25/month</span>
+              <span className="pc-price-highlight-pill">That&apos;s $3.25/month, save $81</span>
             </div>
           </div>
           <div className="pc-cta-wrap">
@@ -708,13 +682,13 @@ export default function PricingPage({ initialProductsData }) {
                     }}
                     className="pc-cta pc-cta-primary d-none d-md-flex"
                   >
-                    Get Annual — Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+                    Get Annual · Save $81 <ArrowRight size={18} strokeWidth={2.5} />
                   </button>
                   <a
                     href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.buyUrl}`}
                     className="pc-cta pc-cta-primary d-flex d-md-none"
                   >
-                    Get Annual — Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+                    Get Annual · Save $81 <ArrowRight size={18} strokeWidth={2.5} />
                   </a>
                 </>
               )
@@ -727,74 +701,24 @@ export default function PricingPage({ initialProductsData }) {
                   }}
                   className="pc-cta pc-cta-primary d-none d-md-flex"
                 >
-                  Get Annual — Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+                  Get Annual · Save $81 <ArrowRight size={18} strokeWidth={2.5} />
                 </button>
                 <a
                   href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.buyUrl}`}
                   className="pc-cta pc-cta-primary d-flex d-md-none"
                 >
-                  Get Annual — Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+                  Get Annual · Save $81 <ArrowRight size={18} strokeWidth={2.5} />
                 </a>
               </>
             )}
           </div>
+          <div className="pc-cta-subinfo">
+            <span className="pc-cta-subinfo-primary">1 user · unlimited usage</span>
+            <span className="pc-cta-subinfo-secondary">Commercial use · priority support</span>
+          </div>
+          <div className="pc-body-divider" />
           <div className="pc-body">
-            <div className="pc-group">
-              <div className="pc-group-title">Bulk Processing</div>
-              <div className="pc-platforms pc-platforms-row">
-                <span className="pc-ai-logo pc-ai-logo--platform" aria-label="TikTok"><img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/pricing-icons/tiktok-tile.png?v=2`} alt="" /></span>
-                <span className="pc-ai-logo pc-ai-logo--platform" aria-label="Instagram"><img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/pricing-icons/instagram-tile.png?v=2`} alt="" /></span>
-                <span className="pc-ai-logo pc-ai-logo--platform" aria-label="YouTube"><img src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/pricing-icons/youtube-tile.png?v=2`} alt="" /></span>
-              </div>
-              <ul className="pc-list">
-                <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts</span></li>
-                <li><Check size={16} strokeWidth={3} /><span>Unlimited translations</span></li>
-                <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos at once</span></li>
-                <li><Check size={16} strokeWidth={3} /><span>HD downloads, no watermarks</span></li>
-              </ul>
-            </div>
-            <div className="pc-group">
-              <div className="pc-group-title">Add to Claude &amp; ChatGPT</div>
-              <div className="pc-ai-pair">
-                <span className="pc-ai-logo pc-ai-logo--claude" aria-label="Claude"><ClaudeIcon /></span>
-                <span className="pc-ai-logo pc-ai-logo--chatgpt" aria-label="ChatGPT"><ChatGPTIcon /></span>
-              </div>
-              <p className="pc-group-blurb">Ask anything about any TikTok, Instagram, or YouTube — right inside your AI chat.</p>
-            </div>
-            <div className="pc-group">
-              <div className="pc-group-title">Everywhere You Work</div>
-              <ul className="pc-list">
-                <li><Check size={16} strokeWidth={3} /><span>Chrome Extension</span></li>
-                <li><Check size={16} strokeWidth={3} /><span>Mobile + Desktop apps</span></li>
-                <li><Check size={16} strokeWidth={3} /><span>Cloud-synced dashboard</span></li>
-              </ul>
-            </div>
-            <div className="pc-group">
-              <div className="pc-group-title">AI Agents</div>
-              <ul className="pc-list pc-list-detailed">
-                <li>
-                  <Check size={16} strokeWidth={3} />
-                  <div>
-                    <strong>Viral Hook Generator</strong>
-                    <span>{copy.agents.hook}</span>
-                  </div>
-                </li>
-                <li>
-                  <Check size={16} strokeWidth={3} />
-                  <div>
-                    <strong>Viral Script Writer</strong>
-                    <span>{copy.agents.script}</span>
-                  </div>
-                </li>
-                <li>
-                  <Check size={16} strokeWidth={3} />
-                  <div>
-                    <strong>Virality Explainer</strong>
-                    <span>{copy.agents.explainer}</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
+            <PricingCategoryList tier="annual" />
           </div>
         </div>
       </div>
@@ -878,20 +802,13 @@ export default function PricingPage({ initialProductsData }) {
               </>
             )}
           </div>
+          <div className="pc-cta-subinfo">
+            <span className="pc-cta-subinfo-primary">1 user · unlimited usage</span>
+            <span className="pc-cta-subinfo-secondary">Commercial use · priority support</span>
+          </div>
+          <div className="pc-body-divider" />
           <div className="pc-body">
-            <div className="pc-group">
-              <div className="pc-group-title">Everything in Annual</div>
-              <ul className="pc-list">
-                <li><Check size={16} strokeWidth={3} /><span>All 3 AI Agents</span></li>
-                <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts &amp; translations</span></li>
-                <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos</span></li>
-                <li><Check size={16} strokeWidth={3} /><span>Claude &amp; ChatGPT</span></li>
-                <li><Check size={16} strokeWidth={3} /><span>Chrome, mobile &amp; desktop</span></li>
-              </ul>
-            </div>
-            <div className="pc-warn-callout">
-              Costs $81 more per year
-            </div>
+            <PricingCategoryList tier="monthly" />
           </div>
         </div>
       </div>
@@ -902,9 +819,7 @@ export default function PricingPage({ initialProductsData }) {
           <div className="pc-header">
             <div className="pc-plan-row">
               <div className="pc-plan-name">Lifetime</div>
-              <span className="pc-badge pc-badge-recommended">
-                <Crown size={12} strokeWidth={2.5} /> Best Value
-              </span>
+              <span className="pc-badge">Best Value</span>
             </div>
             <p className="pc-description">Pay once. Use TokScript forever.</p>
             <div className="pc-price-row">
@@ -913,7 +828,7 @@ export default function PricingPage({ initialProductsData }) {
               <span className="pc-price-original">$468</span>
             </div>
             <div className="pc-price-highlight">
-              <span className="pc-price-highlight-pill">No subscriptions, ever</span>
+              <span className="pc-price-highlight-pill pc-price-highlight-pill-muted"><Lock size={13} strokeWidth={2} /> No subscriptions, ever</span>
             </div>
           </div>
           <div className="pc-cta-wrap">
@@ -977,58 +892,14 @@ export default function PricingPage({ initialProductsData }) {
               </>
             )}
           </div>
+          <div className="pc-cta-subinfo">
+            <span className="pc-cta-subinfo-primary">1 user · unlimited usage</span>
+            <span className="pc-cta-subinfo-secondary">Commercial use · priority support</span>
+          </div>
+          <div className="pc-body-divider" />
           <div className="pc-body">
-            <div className="pc-group">
-              <div className="pc-group-title">Everything in Annual, forever</div>
-              <ul className="pc-list">
-                <li><Check size={16} strokeWidth={3} /><span>Unlimited transcripts &amp; translations</span></li>
-                <li><Check size={16} strokeWidth={3} /><span>Bulk import 50 videos at once</span></li>
-                <li><Check size={16} strokeWidth={3} /><span>HD downloads, no watermarks</span></li>
-                <li><Check size={16} strokeWidth={3} /><span>All future features included</span></li>
-              </ul>
-            </div>
-            <div className="pc-group">
-              <div className="pc-group-title">Add to Claude &amp; ChatGPT</div>
-              <div className="pc-ai-pair">
-                <span className="pc-ai-logo pc-ai-logo--claude" aria-label="Claude"><ClaudeIcon /></span>
-                <span className="pc-ai-logo pc-ai-logo--chatgpt" aria-label="ChatGPT"><ChatGPTIcon /></span>
-              </div>
-              <p className="pc-group-blurb">Lifetime access to TokScript inside your AI conversations.</p>
-            </div>
-            <div className="pc-group">
-              <div className="pc-group-title">Everywhere You Work</div>
-              <ul className="pc-list">
-                <li><Check size={16} strokeWidth={3} /><span>Chrome Extension</span></li>
-                <li><Check size={16} strokeWidth={3} /><span>Mobile + Desktop apps</span></li>
-                <li><Check size={16} strokeWidth={3} /><span>Cloud-synced dashboard</span></li>
-              </ul>
-            </div>
-            <div className="pc-group">
-              <div className="pc-group-title">AI Agents</div>
-              <ul className="pc-list pc-list-detailed">
-                <li>
-                  <Check size={16} strokeWidth={3} />
-                  <div>
-                    <strong>Viral Hook Generator</strong>
-                    <span>{copy.agents.hook}</span>
-                  </div>
-                </li>
-                <li>
-                  <Check size={16} strokeWidth={3} />
-                  <div>
-                    <strong>Viral Script Writer</strong>
-                    <span>{copy.agents.script}</span>
-                  </div>
-                </li>
-                <li>
-                  <Check size={16} strokeWidth={3} />
-                  <div>
-                    <strong>Virality Explainer</strong>
-                    <span>{copy.agents.explainer}</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
+            <p className="pc-group-blurb">Lifetime access to TokScript inside your AI conversations.</p>
+            <PricingCategoryList tier="lifetime" />
           </div>
         </div>
       </div>
@@ -1112,7 +983,7 @@ export default function PricingPage({ initialProductsData }) {
                 if (annualPlan) handleCheckout(annualPlan);
               }}
             >
-              Get Annual — Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+              Get Annual · Save $81 <ArrowRight size={18} strokeWidth={2.5} />
             </button>
             <a
               href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up`}
@@ -1242,7 +1113,7 @@ export default function PricingPage({ initialProductsData }) {
                       transition: "transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease",
                     }}
                   >
-                    Get Annual — Save $81
+                    Get Annual · Save $81
                   </button>
                   <Link
                     href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up`}
