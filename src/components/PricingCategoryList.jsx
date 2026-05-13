@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, Minus, Info } from "lucide-react";
-import PRICING_CATEGORIES from "@/data/pricingFeatures";
+import PRICING_CATEGORIES, { PLATFORM_GLYPHS } from "@/data/pricingFeatures";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
@@ -21,7 +21,7 @@ export default function PricingCategoryList({ tier }) {
             key={category.key}
             className={`pc-cat-group${isHighlighted ? " is-highlighted" : ""}`}
           >
-            <div className={`pc-cat-header${hasAccess ? "" : " is-disabled"}`}>
+            <div className="pc-cat-header">
               <span className="pc-cat-header-label">{label}</span>
               {category.key === "mcp" && hasAccess && (
                 <span className="pc-cat-new-tag">NEW</span>
@@ -40,6 +40,20 @@ export default function PricingCategoryList({ tier }) {
                     alt={icon.alt}
                     className="pc-section-icon"
                   />
+                ))}
+              </div>
+            )}
+
+            {category.platformGlyphs && hasAccess && (
+              <div className="pc-platform-glyphs">
+                {PLATFORM_GLYPHS.map(({ key, label, Glyph }) => (
+                  <span
+                    key={key}
+                    className="pc-platform-glyph"
+                    aria-label={label}
+                  >
+                    <Glyph />
+                  </span>
                 ))}
               </div>
             )}

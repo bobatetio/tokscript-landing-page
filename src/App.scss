@@ -19232,34 +19232,23 @@ $ds-font: "Inter", system-ui, sans-serif;
   padding-bottom: 10px;
 }
 
-/* Highlighted section (Slack "Basic AI" treatment): wraps the entire category
-   block (header + brand pills + feature rows) in a soft teal-tinted panel that
-   spans the FULL width of the card, touching the inner edge of the card border.
-   Negative horizontal margin cancels both .pc-body's 14px padding AND .pc-card's
-   8px padding (14 + 8 = 22px). Padding is added back so content stays aligned
-   with neighboring sections. */
-.pc-cat-group.is-highlighted {
-  background: rgba(0, 184, 178, 0.08);
-  padding: 4px 22px 10px;
-  margin: 6px -22px;
-}
+/* MCP section used to render in a teal-tinted panel; removed per feedback so
+   it sits in the same rhythm as the other categories. The NEW tag beside the
+   header keeps its prominence. */
 
-/* Section header: tier-specific label, optional badge. Full white + heavier
-   weight so it reads as a real section header rather than body text. */
+/* Section header for each feature group inside a pricing card. Full white
+   (no opacity reduction across tiers) at weight 800 so it sits clearly above
+   the rows underneath. */
 .pc-cat-header {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 0 8px;
+  padding: 12px 0 8px;
   color: #ffffff;
   font-family: $ds-font;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0;
-
-  &.is-disabled {
-    color: rgba(255, 255, 255, 0.4);
-  }
 }
 .pc-cat-header-label {
   flex-shrink: 0;
@@ -19485,6 +19474,28 @@ $ds-font: "Inter", system-ui, sans-serif;
   flex-shrink: 0;
   border-radius: 6px;
   object-fit: cover;
+}
+
+/* Plain white platform glyphs sitting under the Transcripts section header.
+   No frame, no fill, just the brand silhouette in white. */
+.pc-platform-glyphs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 8px;
+}
+.pc-platform-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+
+  svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
 }
 
 /* Sub-info row under CTA button */
