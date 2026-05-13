@@ -5,6 +5,37 @@
   to   { transform: translateY(0); }
 }
 
+// Backdrop for the .dont-miss-out-modal-v3 — strongly darkened + heavily
+// blurred so the page behind reads as an unreadable wash. Bootstrap's default
+// backdrop sits at ~50% opacity with no filter and CSS variables for color;
+// we need to win specificity + override the fade-opacity rule for the blur
+// to render at full strength.
+//
+// Notes on getting blur to actually render:
+//   1. Bootstrap puts `opacity` on .modal-backdrop.fade and .modal-backdrop.show
+//      — backdrop-filter is silently skipped when the element's own opacity
+//      is < 1, so we MUST force opacity: 1 on .show.
+//   2. The alpha on background-color (.88) controls the dark layer; the blur
+//      is what's left over (12%) — at 40px blur, that's enough to render the
+//      page as colored noise rather than legible content.
+//   3. body-prefixed selectors guarantee we beat Bootstrap's var-driven rule.
+body .modal-backdrop.dont-miss-backdrop,
+body .dont-miss-backdrop.modal-backdrop,
+body .dont-miss-backdrop,
+.modal-backdrop.dont-miss-backdrop.show,
+.dont-miss-backdrop.modal-backdrop.show,
+.dont-miss-backdrop.show {
+  background-color: rgba(0, 0, 0, 0.88) !important;
+  opacity: 1 !important;
+  -webkit-backdrop-filter: blur(40px) saturate(110%) !important;
+  backdrop-filter: blur(40px) saturate(110%) !important;
+}
+// Belt-and-braces: also force-set on the fade state in case Bootstrap's
+// transition leaves it on .fade temporarily.
+.dont-miss-backdrop.modal-backdrop.fade {
+  opacity: 1 !important;
+}
+
 .dont-miss-out-modal-v3 {
   padding-left: 0 !important;
 
@@ -119,6 +150,15 @@
       height: 80vh !important;
       overflow-x: hidden !important;
       overflow-y: auto !important;
+      // Hide the scrollbar gutter — the modal scrolls via swipe on mobile,
+      // and the visible scroll line interrupts the gradient panel below.
+      scrollbar-width: none; // Firefox
+      -ms-overflow-style: none; // legacy Edge / IE
+      &::-webkit-scrollbar { // Chrome / Safari / new Edge
+        width: 0;
+        height: 0;
+        display: none;
+      }
     }
     .dont-miss-shell {
       // Bypass the shell as a scroll container so position:sticky on
@@ -173,13 +213,28 @@
     .dont-miss-mobile-header {
       flex-direction: column;
       gap: 2px;
+      // Reserve room on the right for the absolute-positioned X close
+      // button (right:18, width:30) so the title can't wrap into it.
+      padding-right: 42px;
     }
     .dont-miss-mobile-h2 {
       margin: 0;
-      font-size: 19px;
+      // Sized so "You've Used Your 3 Free Guest Transcripts." wraps to
+      // exactly 2 lines on a 320px-wide viewport with 62px reserved on
+      // the right for the X close button (pitch 20px + header 42px).
+      font-size: 20px;
       font-weight: 700;
       line-height: 1.22;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.012em;
+      // Even out the two lines so the second isn't a stub (modern browsers).
+      text-wrap: balance;
+      // Safety clamp: even if the title gains a word, never spill past 2
+      // lines. Combined with the gradient background-clip below, both rules
+      // need to coexist — Safari/Chrome honor both.
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
       background: linear-gradient(129.59deg, #ffffff 51.4%, #88fffb 121%);
       -webkit-background-clip: text;
       background-clip: text;

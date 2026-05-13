@@ -209,34 +209,40 @@ function GoogleG() {
 
 function getCarouselFrames(t) {
   const tr = t?.dontMissOutModal?.carousel || {};
-  // Placeholder images pulled from public/figma-rows/. Swap for final assets
-  // when ready by changing the `image` field. Prefix with NEXT_PUBLIC_BASE_PATH
-  // so static-export builds (gh-pages) resolve to /tokscript-landing-page/...
+  // Final hero images live in public/figma-rows/ as "Modal image 1.png"
+  // through "Modal image 5.png". Prefix with NEXT_PUBLIC_BASE_PATH so
+  // static-export builds (gh-pages) resolve to /tokscript-landing-page/...
   const BP = process.env.NEXT_PUBLIC_BASE_PATH || "";
   return [
     {
-      key: "dashboard",
-      image: `${BP}/figma-rows/Your%20Dashboard.png`,
-      label: tr.dashboardLabel || "The Dashboard",
-      sub: tr.dashboardSub || "All Your Research, In One Place",
+      key: "modal-1",
+      image: `${BP}/figma-rows/Modal%20image%201.png`,
+      label: tr.frame1Label || "",
+      sub: tr.frame1Sub || "",
     },
     {
-      key: "extension",
-      image: `${BP}/figma-rows/Chrome%20Extension.png`,
-      label: tr.extensionLabel || "Chrome Extension",
-      sub: tr.extensionSub || "Live On Every TikTok",
+      key: "modal-2",
+      image: `${BP}/figma-rows/Modal%20image%202.png`,
+      label: tr.frame2Label || "",
+      sub: tr.frame2Sub || "",
     },
     {
-      key: "ai",
-      image: `${BP}/figma-rows/Mcp.png`,
-      label: tr.aiLabel || "Claude & ChatGPT",
-      sub: tr.aiSub || "TikTok Data Inside Your AI",
+      key: "modal-3",
+      image: `${BP}/figma-rows/Modal%20image%203.png`,
+      label: tr.frame3Label || "",
+      sub: tr.frame3Sub || "",
     },
     {
-      key: "bulk",
-      image: `${BP}/figma-rows/Bulk%20Input.png`,
-      label: tr.bulkLabel || "Bulk Imports",
-      sub: tr.bulkSub || "50 Links Or A Whole Collection",
+      key: "modal-4",
+      image: `${BP}/figma-rows/Modal%20image%204.png`,
+      label: tr.frame4Label || "",
+      sub: tr.frame4Sub || "",
+    },
+    {
+      key: "modal-5",
+      image: `${BP}/figma-rows/Modal%20image%205.png`,
+      label: tr.frame5Label || "",
+      sub: tr.frame5Sub || "",
     },
   ];
 }
@@ -2298,6 +2304,7 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
       onHide={onHide}
       size="lg"
       className={`dont-miss-out-modal-v3 dont-miss-step-${step}`}
+      backdropClassName="dont-miss-backdrop"
       aria-labelledby="contained-modal-title-vcenter"
     >
       <Modal.Body style={{ padding: 0 }}>
