@@ -621,11 +621,6 @@ export default function PricingPage({ initialProductsData }) {
               <button onClick={() => setDontMissOutModalShow(true)} className="pc-cta">Get Started</button>
             )}
           </div>
-          <div className="pc-cta-subinfo">
-            <span className="pc-cta-subinfo-primary">1 user · daily caps</span>
-            <span className="pc-cta-subinfo-secondary">All three platforms supported</span>
-          </div>
-          <div className="pc-body-divider" />
           <div className="pc-body">
             <PricingCategoryList tier="free" />
           </div>
@@ -712,11 +707,6 @@ export default function PricingPage({ initialProductsData }) {
               </>
             )}
           </div>
-          <div className="pc-cta-subinfo">
-            <span className="pc-cta-subinfo-primary">1 user · unlimited usage</span>
-            <span className="pc-cta-subinfo-secondary">Commercial use · priority support</span>
-          </div>
-          <div className="pc-body-divider" />
           <div className="pc-body">
             <PricingCategoryList tier="annual" />
           </div>
@@ -802,11 +792,6 @@ export default function PricingPage({ initialProductsData }) {
               </>
             )}
           </div>
-          <div className="pc-cta-subinfo">
-            <span className="pc-cta-subinfo-primary">1 user · unlimited usage</span>
-            <span className="pc-cta-subinfo-secondary">Commercial use · priority support</span>
-          </div>
-          <div className="pc-body-divider" />
           <div className="pc-body">
             <PricingCategoryList tier="monthly" />
           </div>
@@ -892,11 +877,6 @@ export default function PricingPage({ initialProductsData }) {
               </>
             )}
           </div>
-          <div className="pc-cta-subinfo">
-            <span className="pc-cta-subinfo-primary">1 user · unlimited usage</span>
-            <span className="pc-cta-subinfo-secondary">Commercial use · priority support</span>
-          </div>
-          <div className="pc-body-divider" />
           <div className="pc-body">
             <p className="pc-group-blurb">Lifetime access to TokScript inside your AI conversations.</p>
             <PricingCategoryList tier="lifetime" />

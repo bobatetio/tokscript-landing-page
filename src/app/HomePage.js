@@ -2017,11 +2017,6 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                           <button onClick={() => setDontMissOutModalShow(true)} className="pc-cta">Get Started</button>
                         )}
                       </div>
-                      <div className="pc-cta-subinfo">
-                        <span className="pc-cta-subinfo-primary">1 user · daily caps</span>
-                        <span className="pc-cta-subinfo-secondary">All three platforms supported</span>
-                      </div>
-                      <div className="pc-body-divider" />
                       <div className="pc-body">
                         <PricingCategoryList tier="free" />
                         <a href="#" onClick={(e) => { e.preventDefault(); setActiveTab("annual"); }} className="pc-upgrade-link">
@@ -2108,11 +2103,6 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                           </>
                         )}
                       </div>
-                      <div className="pc-cta-subinfo">
-                        <span className="pc-cta-subinfo-primary">1 user · unlimited usage</span>
-                        <span className="pc-cta-subinfo-secondary">Commercial use · priority support</span>
-                      </div>
-                      <div className="pc-body-divider" />
                       <div className="pc-body">
                         <PricingCategoryList tier="monthly" />
                       </div>
@@ -2200,11 +2190,6 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                           </>
                         )}
                       </div>
-                      <div className="pc-cta-subinfo">
-                        <span className="pc-cta-subinfo-primary">1 user · unlimited usage</span>
-                        <span className="pc-cta-subinfo-secondary">Commercial use · priority support</span>
-                      </div>
-                      <div className="pc-body-divider" />
                       <div className="pc-body">
                         <PricingCategoryList tier="annual" />
                       </div>
@@ -2290,11 +2275,6 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                           </>
                         )}
                       </div>
-                      <div className="pc-cta-subinfo">
-                        <span className="pc-cta-subinfo-primary">1 user · unlimited usage</span>
-                        <span className="pc-cta-subinfo-secondary">Commercial use · priority support</span>
-                      </div>
-                      <div className="pc-body-divider" />
                       <div className="pc-body">
                         <PricingCategoryList tier="lifetime" />
                       </div>

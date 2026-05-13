@@ -19244,17 +19244,18 @@ $ds-font: "Inter", system-ui, sans-serif;
   margin: 6px -22px;
 }
 
-/* Section header: tier-specific label, optional badge. */
+/* Section header: tier-specific label, optional badge. Full white + heavier
+   weight so it reads as a real section header rather than body text. */
 .pc-cat-header {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 10px 0 8px;
-  color: #00b8b2;
+  color: #ffffff;
   font-family: $ds-font;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
 
   &.is-disabled {
     color: rgba(255, 255, 255, 0.4);
