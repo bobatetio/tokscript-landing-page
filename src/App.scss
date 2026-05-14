@@ -20494,14 +20494,12 @@ $ds-font: "Inter", system-ui, sans-serif;
   }
 
   @media (max-width: 767px) {
-    // Reduced side padding so the stats card has more room to breathe
-    // on mobile (the trust band's 49-char string needs every pixel).
-    padding: 18px 10px 48px;
+    padding: 18px 6px 48px;
     gap: 18px;
   }
 
   @media (max-width: 480px) {
-    padding: 14px 8px 40px;
+    padding: 14px 4px 40px;
     gap: 16px;
   }
 
@@ -20595,24 +20593,21 @@ $ds-font: "Inter", system-ui, sans-serif;
   font-family: var(--font-inter), "Inter", system-ui, sans-serif !important;
   font-weight: 900 !important;
   font-style: normal !important;
-  // Responsive size — slightly reduced from the 10vw / 84px max so the
-  // headline reads less imposing while still anchoring the section.
-  font-size: clamp(28px, 9vw, 76px) !important;
-  line-height: 1.05 !important;
+  font-size: clamp(26px, 7.6vw, 64px) !important;
+  line-height: 1.06 !important;
   letter-spacing: -0.05em !important;
   color: #ffffff !important;
-  // Prevent any ancestor's transform/opacity from leaking down.
   opacity: 1 !important;
   transform: none !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   @media (max-width: 1024px) {
-    font-size: clamp(32px, 8.5vw, 64px) !important;
+    font-size: clamp(28px, 7.2vw, 54px) !important;
     letter-spacing: -0.04em !important;
   }
   @media (max-width: 600px) {
-    font-size: clamp(26px, 9vw, 50px) !important;
+    font-size: clamp(26px, 8.4vw, 48px) !important;
     line-height: 1.08 !important;
     letter-spacing: -0.035em !important;
   }
@@ -20654,8 +20649,6 @@ $ds-font: "Inter", system-ui, sans-serif;
   word-break: normal;
   overflow-wrap: normal;
   hyphens: none;
-  // Modern browsers balance the two lines so they're roughly equal
-  // length — eliminates the lone "scripts." stuck on its own line.
   text-wrap: balance;
 
   @media (max-width: 1024px) {
@@ -20667,9 +20660,15 @@ $ds-font: "Inter", system-ui, sans-serif;
     max-width: 420px;
   }
   @media (max-width: 480px) {
-    font-size: 13px;
-    max-width: 320px;
+    // Mobile: two fixed lines. Line 1 ("Reverse-engineer…scripts.")
+    // forced onto one line via .pricing-hero-sub-lead white-space:nowrap;
+    // line 2 ("Start for free…") starts on its own via .pricing-hero-sub-emph
+    // display:block. Disable text-wrap:balance so the manual break holds.
+    font-size: 12px;
+    max-width: 100%;
     line-height: 1.5;
+    text-wrap: normal;
+    letter-spacing: -0.005em;
   }
 }
 
@@ -20679,15 +20678,23 @@ $ds-font: "Inter", system-ui, sans-serif;
   font-weight: 400;
   font-size: inherit !important;
   line-height: inherit !important;
+
+  @media (max-width: 480px) {
+    white-space: nowrap !important;
+  }
 }
 .pricing-hero-sub-emph {
-  // Force inline so the global `strong` rule can't make it block-display
-  // and force a hard line break between "scripts." and "Start for free".
   display: inline !important;
   color: #cbd5e1;
   font-weight: 600;
   font-size: inherit !important;
   line-height: inherit !important;
+
+  @media (max-width: 480px) {
+    display: block !important;
+    margin-top: 4px;
+    font-size: 11px !important;
+  }
 }
 
 /* Stats card (Figma node 755:646) — glass panel with backdrop blur,
@@ -20726,26 +20733,24 @@ $ds-font: "Inter", system-ui, sans-serif;
     gap: 14px;
   }
   @media (max-width: 600px) {
-    padding: 22px 18px;
-    gap: 10px;
+    padding: 16px 8px;
+    gap: 18px;
   }
   @media (max-width: 420px) {
-    padding: 20px 14px;
-    gap: 8px;
+    padding: 14px 6px;
+    gap: 14px;
   }
 
   .cx-stat {
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 14px;
     min-width: 0;
 
-    // Mobile: center number + label inside each column.
     @media (max-width: 768px) {
-      align-items: center;
-      gap: 10px;
+      gap: 6px;
     }
   }
 
@@ -20762,10 +20767,10 @@ $ds-font: "Inter", system-ui, sans-serif;
       font-size: 26px;
     }
     @media (max-width: 600px) {
-      font-size: 22px;
+      font-size: 20px;
     }
     @media (max-width: 420px) {
-      font-size: 19px;
+      font-size: 18px;
     }
   }
 
@@ -20777,21 +20782,22 @@ $ds-font: "Inter", system-ui, sans-serif;
     color: #64748b;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    text-align: left;
-    // Standard word-wrap so multi-word labels break between words
-    // ("VIDEOS PROCESSED" → "VIDEOS / PROCESSED") not inside a word.
+    text-align: center;
     word-break: normal;
     overflow-wrap: normal;
 
-    // Mobile: center under the number.
     @media (max-width: 768px) {
-      text-align: center;
       font-size: 10px;
       letter-spacing: 0.1em;
     }
+    @media (max-width: 600px) {
+      font-size: 8px;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
     @media (max-width: 420px) {
-      font-size: 9.5px;
-      letter-spacing: 0.08em;
+      font-size: 7.5px;
+      letter-spacing: 0.03em;
     }
   }
 }
@@ -20971,19 +20977,11 @@ $ds-font: "Inter", system-ui, sans-serif;
   font-family: $inter;
   font-size: 14px;
   color: #27272a;
-  // Mobile keeps the same column count but with a smaller min-width so
-  // the table fits more easily within a 320–480px viewport, with
-  // horizontal scroll if extra room is needed.
-  min-width: 860px;
-
-  @media (max-width: 768px) {
-    min-width: 560px;
-    font-size: 12px;
-  }
-  @media (max-width: 480px) {
-    min-width: 480px;
-    font-size: 11px;
-  }
+  // Fixed layout so the <colgroup> widths are honored — all 4 plan columns
+  // are equal width regardless of cell content. Feature column is wider
+  // (38%) and the four plan columns share the remainder evenly (15.5% each).
+  table-layout: fixed;
+  min-width: 0;
 
   thead th {
     position: sticky;
@@ -20993,16 +20991,19 @@ $ds-font: "Inter", system-ui, sans-serif;
     padding: 18px 16px;
     text-align: center;
     font-family: $inter;
-    font-size: 14px;
+    // Matches the Platforms column header so Free / Monthly / Annual /
+    // Lifetime read at the same scale as PLATFORMS on desktop.
+    font-size: 11px;
     font-weight: 700;
     color: #0a0a0a;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 
     @media (max-width: 768px) {
       padding: 12px 10px;
       font-size: 11.5px;
+      letter-spacing: 0.02em;
     }
     @media (max-width: 480px) {
       padding: 10px 8px;
@@ -21020,6 +21021,61 @@ $ds-font: "Inter", system-ui, sans-serif;
     text-transform: uppercase;
   }
 
+  thead th.pc-platforms-col {
+    color: #71717a;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+
+    @media (max-width: 768px) {
+      font-size: 9.5px;
+      letter-spacing: 0.08em;
+    }
+  }
+
+  /* Platforms cell — left-aligned row of brand glyphs so a single icon
+     sits flush with the left edge and pairs read consistently left-to-right. */
+  td.pc-platforms-cell {
+    text-align: left;
+    padding: 10px 8px;
+  }
+  td.pc-platforms-cell .pc-feat-platforms {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+    margin-left: 0;
+    // Light grey so the TikTok / Instagram / YouTube glyphs read as
+    // quiet metadata next to the feature label, not visual competitors.
+    // Only affects the currentColor-based icons; the AI glyphs keep
+    // their baked-in brand fills.
+    color: #a1a1aa;
+  }
+  td.pc-platforms-cell .pc-feat-glyph svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    // Beat the broader `td svg { color: #0a0a0a }` rule above so the
+    // currentColor-based platform glyphs (TikTok, Instagram, YouTube)
+    // pick up the light grey from .pc-feat-platforms instead of black.
+    color: #a1a1aa;
+
+    @media (max-width: 768px) {
+      width: 12px;
+      height: 12px;
+    }
+  }
+  td.pc-platforms-cell .pc-feat-glyph.is-ai svg {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    @media (max-width: 768px) {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
   /* Annual column — subtle teal tint running the full table height
      to mirror the featured Annual card in the pricing grid above. */
   thead th.pc-col-featured {
@@ -21034,6 +21090,18 @@ $ds-font: "Inter", system-ui, sans-serif;
     gap: 6px;
     color: #00807a;
     font-weight: 800;
+    font-size: inherit;
+
+    @media (max-width: 768px) {
+      // Match the plain plan-name headers (Free / Monthly / Lifetime) so
+      // Annual doesn't read larger or heavier than the others on mobile.
+      font-weight: 700;
+      gap: 3px;
+      svg { width: 11px; height: 11px; }
+    }
+    @media (max-width: 480px) {
+      svg { display: none; }
+    }
   }
 
   tbody {
@@ -21050,8 +21118,8 @@ $ds-font: "Inter", system-ui, sans-serif;
       padding: 12px 16px;
       font-family: $inter;
       font-weight: 500;
-      font-size: 14px;
-      color: #27272a;
+      font-size: 11.5px;
+      color: #a1a1aa;
       width: 38%;
       min-width: 260px;
       position: sticky;
@@ -21061,13 +21129,13 @@ $ds-font: "Inter", system-ui, sans-serif;
 
       @media (max-width: 768px) {
         padding: 10px 12px;
-        font-size: 12px;
+        font-size: 10px;
         min-width: 180px;
         width: 42%;
       }
       @media (max-width: 480px) {
         padding: 9px 10px;
-        font-size: 11px;
+        font-size: 9.5px;
         min-width: 140px;
       }
     }
@@ -21101,7 +21169,7 @@ $ds-font: "Inter", system-ui, sans-serif;
     }
 
     td svg {
-      color: #00b8b2;
+      color: #0a0a0a;
       vertical-align: middle;
     }
 
@@ -21109,17 +21177,18 @@ $ds-font: "Inter", system-ui, sans-serif;
       color: #d4d4d8;
       font-size: 16px;
     }
+    .pc-na svg {
+      color: #d4d4d8;
+    }
 
     .pc-col-featured {
       background: rgba(0, 184, 178, 0.06);
-      color: #18181b;
+      color: #0a0a0a;
       font-weight: 600;
     }
 
     .pc-col-featured svg {
-      // Slightly higher visual weight in the Annual column to reinforce
-      // it as the recommended option.
-      color: #00807a;
+      color: #0a0a0a;
     }
   }
 
@@ -21199,7 +21268,7 @@ $ds-font: "Inter", system-ui, sans-serif;
       font-family: $inter;
       font-size: 14px;
       font-weight: 700;
-      color: #18181b;
+      color: #0a0a0a;
       letter-spacing: -0.005em;
       margin-right: 12px;
     }
@@ -21238,6 +21307,164 @@ $ds-font: "Inter", system-ui, sans-serif;
     svg { width: 12px; height: 12px; flex-shrink: 0; }
 
     &.is-ai svg { width: 14px; height: 14px; border-radius: 50%; }
+  }
+
+  /* Column widths via <colgroup>: feature column wider, Platforms column
+     compact, 4 plan columns equal. Annual gets no extra width — only the
+     teal tint distinguishes it. Prevents the Annual-is-wider bug where
+     intrinsic content sized the column. */
+  col.pc-col-feat      { width: 30%; }
+  col.pc-col-platforms { width: 14%; }
+  col.pc-col-plan      { width: 14%; }
+
+  /* Column-header CTA row (sits directly under the plan name row).
+     Top padding gives breathing room between the plan name above and
+     the button so it doesn't slam into the row divider. */
+  .pc-thead-row-cta th {
+    position: static;
+    padding: 14px 10px 18px;
+    background: #ffffff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+    @media (max-width: 1024px) {
+      padding: 12px 8px 16px;
+    }
+    @media (max-width: 768px) {
+      // Tighten cell padding so the CTA can claim more of the column on
+      // mobile (otherwise the buttons read pinched against "Get Monthly").
+      padding: 10px 3px 14px;
+    }
+    @media (max-width: 480px) {
+      padding: 8px 2px 12px;
+    }
+  }
+  .pc-thead-row-cta th.pc-col-featured {
+    background: linear-gradient(180deg, rgba(0, 184, 178, 0.06) 0%, rgba(0, 184, 178, 0.04) 100%);
+    border-bottom-color: rgba(0, 184, 178, 0.35);
+  }
+
+  .pc-col-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 100%;
+    max-width: 160px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-family: $inter;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 150ms ease, color 150ms ease, transform 80ms ease;
+
+    svg { flex-shrink: 0; }
+
+    @media (max-width: 1024px) {
+      font-size: 11px;
+      padding: 6px 8px;
+      gap: 3px;
+    }
+    @media (max-width: 768px) {
+      font-size: 10.5px;
+      padding: 7px 4px;
+      gap: 2px;
+      max-width: 100%;
+      width: 100%;
+
+      // Hide the trailing arrow icon at narrow widths so labels like
+      // "Get Monthly" fit inside the column without overflow.
+      svg { display: none; }
+    }
+    @media (max-width: 480px) {
+      font-size: 10px;
+      padding: 6px 2px;
+    }
+  }
+  .pc-col-cta-secondary {
+    background: #18181b;
+    color: #ffffff;
+    border: 1px solid #18181b;
+
+    &:hover {
+      background: #27272a;
+      color: #ffffff;
+    }
+  }
+  .pc-col-cta-primary {
+    background: linear-gradient(180deg, #00b8b2 0%, #00807a 100%);
+    color: #ffffff;
+    border: 1px solid #00807a;
+    box-shadow: 0 4px 12px -4px rgba(0, 184, 178, 0.45);
+
+    &:hover {
+      background: linear-gradient(180deg, #00d4cc 0%, #00807a 100%);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+  }
+
+  /* Section header — flex layout so icon + label + intro stay on one
+     line at desktop. Tinted bg reads as a clear divider; no accent rail. */
+  .pc-section-row th {
+    padding: 14px 18px;
+    background: #ececef;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  }
+
+  .pc-section-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: nowrap;
+    min-width: 0;
+  }
+
+  /* Cell text values (Unlimited / 5/day) — plain text, no pill bg.
+     Strong black for available cells, light grey for unavailable. */
+  .pc-cell-val {
+    display: inline-block;
+    color: #0a0a0a;
+    font-family: $inter;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    line-height: 1.4;
+  }
+  .pc-col-featured .pc-cell-val {
+    color: #0a0a0a;
+  }
+  .pc-na .pc-cell-val {
+    color: #d4d4d8;
+  }
+
+  /* Prevent any cell from wrapping — every value must read on one line. */
+  tbody td,
+  tbody th[scope="row"] {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* Mobile keeps the rows-and-columns table. Restore a min-width so the
+   4 plan columns + feature column stay readable; the wrapper scrolls
+   horizontally when the viewport is narrower than this. */
+@media (max-width: 768px) {
+  .pricing-compare-table {
+    min-width: 620px;
+    font-size: 12px;
+  }
+}
+@media (max-width: 480px) {
+  .pricing-compare-table {
+    min-width: 560px;
+    font-size: 11px;
   }
 }
 
@@ -21300,14 +21527,30 @@ $ds-font: "Inter", system-ui, sans-serif;
 
   .pcm-bucket-head {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
     padding: 12px 16px;
-    background: #f4f4f5;
-    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    background: #ececef;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-left: 3px solid rgba(0, 184, 178, 0.55);
 
     &:first-child {
       border-top: none;
+    }
+
+    .pcm-bucket-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    .pcm-bucket-intro {
+      font-family: $inter;
+      font-size: 11.5px;
+      font-weight: 400;
+      line-height: 1.35;
+      color: #52525b;
     }
 
     .pc-row-tile {
@@ -21359,7 +21602,7 @@ $ds-font: "Inter", system-ui, sans-serif;
       font-family: $inter;
       font-size: 13.5px;
       font-weight: 500;
-      color: #27272a;
+      color: #0a0a0a;
       flex: 1 1 auto;
       min-width: 0;
     }
@@ -21368,11 +21611,13 @@ $ds-font: "Inter", system-ui, sans-serif;
       font-family: $inter;
       font-size: 13px;
       font-weight: 600;
-      color: #18181b;
+      color: #0a0a0a;
       flex-shrink: 0;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 4px;
+      white-space: nowrap;
     }
 
     .pcm-row-value svg {
@@ -21380,8 +21625,16 @@ $ds-font: "Inter", system-ui, sans-serif;
     }
     .pcm-row-value.pc-na {
       color: #d4d4d8;
-      font-size: 16px;
     }
+    .pcm-row-value.pc-na svg {
+      color: #d4d4d8;
+    }
+  }
+
+  // Locked feature rows (X marker) — slightly muted so available features
+  // visually dominate the column.
+  .pcm-row.is-locked .pcm-row-name {
+    color: #a1a1aa;
   }
 }
 

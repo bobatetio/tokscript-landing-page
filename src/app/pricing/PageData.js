@@ -49,20 +49,137 @@ const COMPARE_BUCKET_ICONS = {
   direct: Zap,
 };
 
-// Cell content for a feature × tier intersection. Returns either a check
-// icon (accessible), the "5 / day" hint for free's transcripts, or an em-
-// dash for locked. Kept inline rather than as a sub-component so React-Bootstrap's
-// table consumer can render it without an extra wrapper.
+// Features whose accessible-paid cells should render the word "Unlimited"
+// instead of a generic checkmark. These are all quantity/usage-based
+// features where the value matters more than a binary yes/no — matching
+// the Foreplay pattern of writing out the actual allowance.
+const UNLIMITED_FEATURES = new Set([
+  "Individual videos",
+  "Bulk videos",
+  "TikTok profiles",
+  "Instagram profiles",
+  "YouTube channels",
+  "Translations",
+  "Unlimited runs",
+]);
+
+// Cell content for a feature × tier intersection. Outputs:
+//   - "5/day" compact label for Free's metered transcript + translation rows
+//   - "Unlimited" word for paid tiers of quantity-based features
+//   - Check icon for binary features that are simply included
+//   - X icon for non-included features
 function CompareCell({ feature, tier, isFeatured, isFreeTranscriptsCell }) {
   const accessible = feature.tiers.includes(tier);
   const className = `${isFeatured ? "pc-col-featured " : ""}${!accessible ? "pc-na" : ""}`.trim();
   if (isFreeTranscriptsCell) {
-    return <td className={className}>5 / day</td>;
+    return <td className={className}><span className="pc-cell-val">5/day</span></td>;
+  }
+  if (!accessible) {
+    return (
+      <td className={className}>
+        <X size={16} strokeWidth={2.5} />
+      </td>
+    );
+  }
+  if (UNLIMITED_FEATURES.has(feature.name)) {
+    return <td className={className}><span className="pc-cell-val">Unlimited</span></td>;
   }
   return (
     <td className={className}>
-      {accessible ? <Check size={16} strokeWidth={3} /> : <X size={16} strokeWidth={2.5} />}
+      <Check size={16} strokeWidth={3} />
     </td>
+  );
+}
+
+// Tabbed mobile view of the compare table. Same data + section headers as
+// desktop; one tier visible at a time. Renders nothing on >768px because
+// the desktop table covers it (controlled by SCSS display rules).
+function CompareMobile({ categories }) {
+  const [activeTier, setActiveTier] = useState("annual");
+  const BP = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
+  const valueFor = (feature, tier) => {
+    const accessible = feature.tiers.includes(tier);
+    if (!accessible) return { kind: "x" };
+    const isFreeTrMetered =
+      tier === "free" &&
+      ["Individual videos", "Translations"].includes(feature.name);
+    if (isFreeTrMetered) return { kind: "text", text: "5/day" };
+    if (UNLIMITED_FEATURES.has(feature.name))
+      return { kind: "text", text: "Unlimited" };
+    return { kind: "check" };
+  };
+
+  return (
+    <div className="pricing-compare-mobile" role="tabpanel">
+      <div className="pcm-tabs" role="tablist">
+        {[
+          { key: "free", label: "Free" },
+          { key: "monthly", label: "Monthly" },
+          { key: "annual", label: "Annual" },
+          { key: "lifetime", label: "Lifetime" },
+        ].map((t) => (
+          <button
+            key={t.key}
+            type="button"
+            role="tab"
+            aria-selected={activeTier === t.key}
+            className={`pcm-tab${activeTier === t.key ? " is-active" : ""}${
+              t.key === "annual" ? " is-featured" : ""
+            }`}
+            onClick={() => setActiveTier(t.key)}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="pcm-card">
+        {categories.map((cat) => {
+          const Icon = COMPARE_BUCKET_ICONS[cat.key];
+          return (
+            <React.Fragment key={cat.key}>
+              <div className="pcm-bucket-head">
+                <span
+                  className={`pc-row-tile is-${cat.key}${cat.iconImage ? " has-image" : ""}`}
+                  aria-hidden="true"
+                >
+                  {cat.iconImage ? (
+                    <img src={`${BP}${cat.iconImage}?v=20260514a`} alt="" />
+                  ) : (
+                    Icon && <Icon size={12} strokeWidth={2} />
+                  )}
+                </span>
+                <div className="pcm-bucket-text">
+                  <span className="pcm-bucket-label">{cat.label}</span>
+                  {cat.intro && (
+                    <span className="pcm-bucket-intro">{cat.intro}</span>
+                  )}
+                </div>
+              </div>
+              {cat.features.map((feature) => {
+                const v = valueFor(feature, activeTier);
+                return (
+                  <div
+                    key={`${cat.key}-${feature.name}`}
+                    className={`pcm-row${v.kind === "x" ? " is-locked" : ""}`}
+                  >
+                    <span className="pcm-row-name">{feature.name}</span>
+                    <span
+                      className={`pcm-row-value${v.kind === "x" ? " pc-na" : ""}`}
+                    >
+                      {v.kind === "check" && <Check size={15} strokeWidth={3} />}
+                      {v.kind === "x" && <X size={15} strokeWidth={2.5} />}
+                      {v.kind === "text" && v.text}
+                    </span>
+                  </div>
+                );
+              })}
+            </React.Fragment>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 import dynamic from "next/dynamic";
@@ -992,9 +1109,18 @@ export default function PricingPage({ initialProductsData }) {
 
           <div className="pricing-compare-table-wrap">
             <table className="pricing-compare-table">
+              <colgroup>
+                <col className="pc-col-feat" />
+                <col className="pc-col-platforms" />
+                <col className="pc-col-plan" />
+                <col className="pc-col-plan" />
+                <col className="pc-col-plan pc-col-plan-featured" />
+                <col className="pc-col-plan" />
+              </colgroup>
               <thead>
-                <tr>
-                  <th scope="col" className="pc-feat-col">Feature</th>
+                <tr className="pc-thead-row-name">
+                  <th scope="col" className="pc-feat-col" aria-label="Feature"></th>
+                  <th scope="col" className="pc-platforms-col">Platforms</th>
                   <th scope="col">Free</th>
                   <th scope="col">Monthly</th>
                   <th scope="col" className="pc-col-featured">
@@ -1004,6 +1130,42 @@ export default function PricingPage({ initialProductsData }) {
                   </th>
                   <th scope="col">Lifetime</th>
                 </tr>
+                <tr className="pc-thead-row-cta">
+                  <th scope="col" aria-hidden="true"></th>
+                  <th scope="col" aria-hidden="true"></th>
+                  <th scope="col">
+                    <a
+                      href={`${process.env.NEXT_PUBLIC_FRONTEND_URL || ""}/sign-up?tier=free`}
+                      className="pc-col-cta pc-col-cta-secondary"
+                    >
+                      Get Started <ArrowRight size={12} strokeWidth={2.5} />
+                    </a>
+                  </th>
+                  <th scope="col">
+                    <a
+                      href={`${process.env.NEXT_PUBLIC_FRONTEND_URL || ""}/sign-up?tier=monthly`}
+                      className="pc-col-cta pc-col-cta-secondary"
+                    >
+                      Get Monthly <ArrowRight size={12} strokeWidth={2.5} />
+                    </a>
+                  </th>
+                  <th scope="col" className="pc-col-featured">
+                    <a
+                      href={`${process.env.NEXT_PUBLIC_FRONTEND_URL || ""}/sign-up?tier=annual`}
+                      className="pc-col-cta pc-col-cta-primary"
+                    >
+                      Get Annual <ArrowRight size={12} strokeWidth={2.5} />
+                    </a>
+                  </th>
+                  <th scope="col">
+                    <a
+                      href={`${process.env.NEXT_PUBLIC_FRONTEND_URL || ""}/sign-up?tier=lifetime`}
+                      className="pc-col-cta pc-col-cta-secondary"
+                    >
+                      Get Lifetime <ArrowRight size={12} strokeWidth={2.5} />
+                    </a>
+                  </th>
+                </tr>
               </thead>
               <tbody>
                 {PRICING_CATEGORIES.map((cat) => {
@@ -1012,21 +1174,23 @@ export default function PricingPage({ initialProductsData }) {
                   return (
                     <React.Fragment key={cat.key}>
                       <tr className="pc-section-row">
-                        <th colSpan={5} scope="rowgroup">
-                          <span
-                            className={`pc-row-tile is-${cat.key}${cat.iconImage ? " has-image" : ""}`}
-                            aria-hidden="true"
-                          >
-                            {cat.iconImage ? (
-                              <img src={`${BP}${cat.iconImage}?v=20260514a`} alt="" />
-                            ) : (
-                              Icon && <Icon size={12} strokeWidth={2} />
+                        <th colSpan={6} scope="rowgroup">
+                          <span className="pc-section-head">
+                            <span
+                              className={`pc-row-tile is-${cat.key}${cat.iconImage ? " has-image" : ""}`}
+                              aria-hidden="true"
+                            >
+                              {cat.iconImage ? (
+                                <img src={`${BP}${cat.iconImage}?v=20260514a`} alt="" />
+                              ) : (
+                                Icon && <Icon size={14} strokeWidth={2} />
+                              )}
+                            </span>
+                            <span className="pc-row-label">{cat.label}</span>
+                            {cat.intro && (
+                              <span className="pc-row-intro">{cat.intro}</span>
                             )}
                           </span>
-                          <span className="pc-row-label">{cat.label}</span>
-                          {cat.intro && (
-                            <span className="pc-row-intro">{cat.intro}</span>
-                          )}
                         </th>
                       </tr>
                       {cat.features.map((feature) => {
@@ -1037,6 +1201,8 @@ export default function PricingPage({ initialProductsData }) {
                           <tr key={`${cat.key}-${feature.name}`}>
                             <th scope="row">
                               <span className="pc-feat-name">{feature.name}</span>
+                            </th>
+                            <td className="pc-platforms-cell">
                               {feature.platforms && feature.platforms.length > 0 && (
                                 <span className="pc-feat-platforms" aria-hidden="true">
                                   {feature.platforms.map((pkey) => {
@@ -1056,7 +1222,7 @@ export default function PricingPage({ initialProductsData }) {
                                   })}
                                 </span>
                               )}
-                            </th>
+                            </td>
                             <CompareCell feature={feature} tier="free" isFreeTranscriptsCell={isFreeTr} />
                             <CompareCell feature={feature} tier="monthly" />
                             <CompareCell feature={feature} tier="annual" isFeatured />
@@ -1070,6 +1236,8 @@ export default function PricingPage({ initialProductsData }) {
               </tbody>
             </table>
           </div>
+
+
 
           <div className="pricing-compare-cta">
             <button
