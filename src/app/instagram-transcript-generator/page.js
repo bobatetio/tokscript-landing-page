@@ -55,9 +55,9 @@ const schema = {
     {
       "@type": "FAQPage",
       mainEntity: [
-        { "@type": "Question", name: "How do I download an Instagram Reels transcript?", acceptedAnswer: { "@type": "Answer", text: "Open the Reel in Instagram, tap the paper plane share icon, and select Copy Link. Paste the URL into TokScript and hit Scan Video — your transcript is ready in 5–10 seconds." }},
+        { "@type": "Question", name: "How do I download an Instagram Reels transcript?", acceptedAnswer: { "@type": "Answer", text: "Open the Reel in Instagram, tap the paper plane share icon, and select Copy Link. Paste the URL into TokScript and hit Scan Video ,  your transcript is ready in 5–10 seconds." }},
         { "@type": "Question", name: "Does it work with all Instagram content?", acceptedAnswer: { "@type": "Answer", text: "TokScript works with public Instagram Reels only. Stories, feed posts, and Lives are not supported." }},
-        { "@type": "Question", name: "Can I bulk download Reels transcripts?", acceptedAnswer: { "@type": "Answer", text: "Yes — paste up to 50 Reels links at once. Bulk import is included on paid plans." }},
+        { "@type": "Question", name: "Can I bulk download Reels transcripts?", acceptedAnswer: { "@type": "Answer", text: "Yes ,  paste up to 50 Reels links at once. Bulk import is included on paid plans." }},
         { "@type": "Question", name: "Is it free?", acceptedAnswer: { "@type": "Answer", text: "Free accounts get 5 Reels transcripts per day. Paid plans start at $39/year for unlimited transcripts, AI agents, and HD downloads." }},
       ],
     },

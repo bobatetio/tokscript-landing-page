@@ -42,7 +42,7 @@ export const bodyHtml = `<!-- ① HERO -->
         <div class="say-it-body">
           <p class="say-it-title">Transcribe any video instantly</p>
           <ul class="say-it-bullets">
-            <li>"Get me the transcript for this TikTok" — just paste the link and ask</li>
+            <li>"Get me the transcript for this TikTok" ,  just paste the link and ask</li>
             <li>Full transcripts with timestamps, across TikTok, Instagram, YouTube &amp; Shorts</li>
           </ul>
         </div>
@@ -53,7 +53,7 @@ export const bodyHtml = `<!-- ① HERO -->
         <div class="say-it-body">
           <p class="say-it-title">Analyze creator performance</p>
           <ul class="say-it-bullets">
-            <li>"How is this creator performing?" — views, likes, engagement, all in one response</li>
+            <li>"How is this creator performing?" ,  views, likes, engagement, all in one response</li>
             <li>Trend analysis across an entire catalog, not just one video</li>
           </ul>
         </div>
@@ -64,7 +64,7 @@ export const bodyHtml = `<!-- ① HERO -->
         <div class="say-it-body">
           <p class="say-it-title">Download without watermarks</p>
           <ul class="say-it-bullets">
-            <li>"Download this in HD" — one command, no third-party tools needed</li>
+            <li>"Download this in HD" ,  one command, no third-party tools needed</li>
             <li>Direct HD downloads straight from your ChatGPT conversation</li>
           </ul>
         </div>
@@ -75,7 +75,7 @@ export const bodyHtml = `<!-- ① HERO -->
         <div class="say-it-body">
           <p class="say-it-title">Research creators at scale</p>
           <ul class="say-it-bullets">
-            <li>"Find top creators in the fitness niche" — instant results, no tab switching</li>
+            <li>"Find top creators in the fitness niche" ,  instant results, no tab switching</li>
             <li>Bulk import up to 3,000 videos and analyze for patterns and trends</li>
           </ul>
         </div>
@@ -135,7 +135,7 @@ export const bodyHtml = `<!-- ① HERO -->
       <div class="tools-header-content">
         <div class="tools-pill">Tools</div>
         <h2 class="tools-h2">21 Tools Available</h2>
-        <p class="tools-sub">Every tool your ChatGPT agent needs to transcribe content, download videos, and analyze creator libraries — all 21 work natively over MCP.</p>
+        <p class="tools-sub">Every tool your ChatGPT agent needs to transcribe content, download videos, and analyze creator libraries ,  all 21 work natively over MCP.</p>
       </div>
     </div>
     <table class="tools-table reveal">
@@ -243,7 +243,7 @@ export const bodyHtml = `<!-- ① HERO -->
     <div class="ur-header">
       <div class="ur-pill">Quick setup</div>
       <h2 class="ur-title">Up and running in 2 minutes.</h2>
-      <p class="ur-sub">Watch how to connect ChatGPT to your favourite tools — one link, one setting, done.</p>
+      <p class="ur-sub">Watch how to connect ChatGPT to your favourite tools ,  one link, one setting, done.</p>
     </div>
     <div class="ur-video">
       <iframe
@@ -264,7 +264,7 @@ export const bodyHtml = `<!-- ① HERO -->
       <div class="tools-header-content">
         <div class="tools-pill">Use Cases</div>
         <h2 class="tools-h2">What You Can Build With It</h2>
-        <p class="tools-sub">Real workflows ChatGPT handles the moment TokScript is connected — from research to repurposing to competitive analysis.</p>
+        <p class="tools-sub">Real workflows ChatGPT handles the moment TokScript is connected ,  from research to repurposing to competitive analysis.</p>
       </div>
     </div>
     <table class="tools-table reveal">
@@ -304,7 +304,7 @@ export const bodyHtml = `<!-- ① HERO -->
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#2a1040"/><circle cx="14" cy="12" r="4" stroke="#a78bfa" stroke-width="1.5"/><path d="M8 20c0-2.21 2.69-4 6-4s6 1.79 6 4" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round"/></svg></td>
           <td class="t-name">Creator Profiling</td>
-          <td class="t-desc">Pull a creator's full video library and stats. ChatGPT builds a detailed profile — posting cadence, top topics, engagement benchmarks.</td>
+          <td class="t-desc">Pull a creator's full video library and stats. ChatGPT builds a detailed profile ,  posting cadence, top topics, engagement benchmarks.</td>
           <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
@@ -316,7 +316,7 @@ export const bodyHtml = `<!-- ① HERO -->
         <tr>
           <td class="t-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="7" fill="#0a1f40"/><path d="M9 10l5 4-5 4V10z" fill="#60a5fa"/><rect x="8" y="8" width="12" height="12" rx="2.5" stroke="#60a5fa" stroke-width="1.5"/></svg></td>
           <td class="t-name">Podcast Summarisation</td>
-          <td class="t-desc">Paste a long-form YouTube podcast link. ChatGPT returns a structured summary — key takeaways, timestamps, and the best quotes to share.</td>
+          <td class="t-desc">Paste a long-form YouTube podcast link. ChatGPT returns a structured summary ,  key takeaways, timestamps, and the best quotes to share.</td>
           <td class="t-check"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" fill="rgba(0, 184, 178,0.12)" stroke="rgba(0, 184, 178,0.3)" stroke-width="1"/><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#00B8B2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></td>
         </tr>
         <tr>
@@ -375,7 +375,7 @@ export const bodyHtml = `<!-- ① HERO -->
         TikTok
       </div>
       <h2 class="pfs-h2">Everything TikTok, inside ChatGPT</h2>
-      <p class="pfs-sub">Transcribe, analyze, and download TikTok content — without leaving your ChatGPT conversation.</p>
+      <p class="pfs-sub">Transcribe, analyze, and download TikTok content ,  without leaving your ChatGPT conversation.</p>
     </div>
 
   <!-- 3×2 card mosaic -->
@@ -397,13 +397,13 @@ export const bodyHtml = `<!-- ① HERO -->
           <img class="pfs-card-bg" src="/assets/tt-card-bg2.png" alt="">
           <p class="pfs-card-title">Video Downloads</p>
           <div class="pfs-card-img"><img src="/assets/tt-card-downloads2.png" alt="Video Downloads"></div>
-          <p class="pfs-card-desc">HD downloads with no watermark—straight from your conversation, no third-party tools.</p>
+          <p class="pfs-card-desc">HD downloads with no watermark, straight from your conversation, no third-party tools.</p>
         </div>
         <div class="pfs-card has-desc">
           <img class="pfs-card-bg" src="/assets/tt-card-bg2.png" alt="">
           <p class="pfs-card-title">Creator Profiles</p>
           <div class="pfs-card-img"><img src="/assets/tt-card-creators2.png" alt="Creator Profiles"></div>
-          <p class="pfs-card-desc">Followers, bio, verified status, recent videos—any creator, instant lookup.</p>
+          <p class="pfs-card-desc">Followers, bio, verified status, recent videos, any creator, instant lookup.</p>
         </div>
         <div class="pfs-card has-desc">
           <img class="pfs-card-bg" src="/assets/tt-card-bg2.png" alt="">
@@ -445,7 +445,7 @@ export const bodyHtml = `<!-- ① HERO -->
           <img class="pfs-card-bg" src="/assets/ig-card-bg2.png" alt="">
           <p class="pfs-card-title">Transcripts</p>
           <div class="pfs-card-img"><img src="/assets/ig-card-transcripts2.png" alt="Transcripts"></div>
-          <p class="pfs-card-desc">Full transcript in seconds—spoken content and metadata included.</p>
+          <p class="pfs-card-desc">Full transcript in seconds, spoken content and metadata included.</p>
         </div>
         <div class="pfs-card has-desc">
           <img class="pfs-card-bg" src="/assets/ig-card-bg2.png" alt="">
@@ -457,7 +457,7 @@ export const bodyHtml = `<!-- ① HERO -->
           <img class="pfs-card-bg" src="/assets/ig-card-bg2.png" alt="">
           <p class="pfs-card-title">Video Downloads</p>
           <div class="pfs-card-img"><img src="/assets/ig-card-downloads2.png" alt="Video Downloads"></div>
-          <p class="pfs-card-desc">HD quality, no watermark, cover images included—straight from your conversation.</p>
+          <p class="pfs-card-desc">HD quality, no watermark, cover images included, straight from your conversation.</p>
         </div>
         <div class="pfs-card has-desc">
           <img class="pfs-card-bg" src="/assets/ig-card-bg2.png" alt="">
@@ -492,7 +492,7 @@ export const bodyHtml = `<!-- ① HERO -->
         YouTube Shorts
       </div>
       <h2 class="pfs-h2">YouTube Shorts, fully extracted</h2>
-      <p class="pfs-sub">Extract full transcripts, timestamps, and insights from any YouTube Shorts video — instantly.</p>
+      <p class="pfs-sub">Extract full transcripts, timestamps, and insights from any YouTube Shorts video ,  instantly.</p>
     </div>
     <div class="pfs-grid-outer">
       <div class="pfs-grid pfs-grid-2">
@@ -536,7 +536,7 @@ export const bodyHtml = `<!-- ① HERO -->
         YouTube Longs
       </div>
       <h2 class="pfs-h2">Full-length YouTube video transcripts and analysis inside ChatGPT</h2>
-      <p class="pfs-sub">Long-form is where the depth lives. Tutorials, podcasts, interviews—now fully searchable.</p>
+      <p class="pfs-sub">Long-form is where the depth lives. Tutorials, podcasts, interviews, now fully searchable.</p>
     </div>
     <div class="pfs-grid-outer">
       <div class="pfs-grid pfs-grid-ytl">
@@ -544,7 +544,7 @@ export const bodyHtml = `<!-- ① HERO -->
           <img class="pfs-card-bg" src="/assets/ytl-card-bg.png" alt="">
           <p class="pfs-card-title">Full Transcripts</p>
           <div class="pfs-card-img"><img src="/assets/ytl-card-transcripts.png" alt="Full Transcripts"></div>
-          <p class="pfs-card-desc">Paste any YouTube link. 10 minutes or 2 hours—full transcript back in seconds.</p>
+          <p class="pfs-card-desc">Paste any YouTube link. 10 minutes or 2 hours, full transcript back in seconds.</p>
         </div>
         <div class="pfs-card has-desc">
           <img class="pfs-card-bg" src="/assets/ytl-card-bg.png" alt="">
@@ -556,7 +556,7 @@ export const bodyHtml = `<!-- ① HERO -->
           <img class="pfs-card-bg" src="/assets/ytl-card-bg.png" alt="">
           <p class="pfs-card-title">Content Repurposing</p>
           <div class="pfs-card-img"><img src="/assets/ytl-card-repurpose.png" alt="Content Repurposing"></div>
-          <p class="pfs-card-desc">Turn one video into a Twitter thread, newsletter, quote list, or checklist—one conversation.</p>
+          <p class="pfs-card-desc">Turn one video into a Twitter thread, newsletter, quote list, or checklist, one conversation.</p>
         </div>
         <div class="pfs-card has-desc">
           <img class="pfs-card-bg" src="/assets/ytl-card-bg.png" alt="">
@@ -597,8 +597,8 @@ export const bodyHtml = `<!-- ① HERO -->
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I download videos from all platforms? <span class="faq-icon">+</span></button><div class="faq-a">Video downloads are currently available for TikTok and Instagram content. YouTube videos cannot be downloaded due to platform restrictions. Transcription and stats work across all four platforms.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I mix platforms in the same conversation? <span class="faq-icon">+</span></button><div class="faq-a">Yes. Drop a TikTok link, an Instagram Reel, a YouTube Short, and a full YouTube video into the same conversation. ChatGPT pulls data from all of them through TokScript. Ask it to compare content across platforms or build reports that span all four.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Does this work on ChatGPT Desktop and ChatGPT Web? <span class="faq-icon">+</span></button><div class="faq-a">Yes. The TokScript connector works on ChatGPT's web interface at chatgpt.com and the ChatGPT desktop app. Same connection link, same features, same experience.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What is MCP? <span class="faq-icon">+</span></button><div class="faq-a">MCP stands for Model Context Protocol. It's the technology that lets ChatGPT connect directly to external tools like TokScript. You don't need to understand MCP to use it — just paste the connection link and you're set.</div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">I already use TokScript. Will my saved library be accessible? <span class="faq-icon">+</span></button><div class="faq-a">Yes. Every video you've ever scanned on TokScript is searchable through ChatGPT once you connect. Your entire library, all your collections, all your saved transcripts — it all syncs automatically.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">What is MCP? <span class="faq-icon">+</span></button><div class="faq-a">MCP stands for Model Context Protocol. It's the technology that lets ChatGPT connect directly to external tools like TokScript. You don't need to understand MCP to use it ,  just paste the connection link and you're set.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">I already use TokScript. Will my saved library be accessible? <span class="faq-icon">+</span></button><div class="faq-a">Yes. Every video you've ever scanned on TokScript is searchable through ChatGPT once you connect. Your entire library, all your collections, all your saved transcripts ,  it all syncs automatically.</div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">I need help getting set up. Where do I go? <span class="faq-icon">+</span></button><div class="faq-a">We have a full documentation center at <a href="https://feedback.tokscript.com/help/collections/claude-and-chatgpt-integration-mcp">feedback.tokscript.com/help</a>. If that doesn't cover it, email <a href="mailto:support@tokscript.com">support@tokscript.com</a> and we'll help you directly.</div></div>
     </div>
   </div>
@@ -608,7 +608,7 @@ export const bodyHtml = `<!-- ① HERO -->
 <section id="problem-what-changes">
   <div class="pwc-inner">
 
-    <!-- Row 1: Image left, content right — The Problem -->
+    <!-- Row 1: Image left, content right ,  The Problem -->
     <div class="pwc-row">
       <div class="pwc-card-wrap">
         <img class="pwc-card-img" src="/assets/pwc-problem.png" alt="" />
@@ -618,7 +618,7 @@ export const bodyHtml = `<!-- ① HERO -->
           <div class="pwc-pill">The Problem</div>
         </div>
         <h2 class="pwc-h2">You're still doing this the hard way.</h2>
-        <p class="pwc-desc">Copy link. Paste in TokScript. Copy transcript. Paste in ChatGPT. Need stats? Go back. Copy. Paste. Repeat—for every single video.</p>
+        <p class="pwc-desc">Copy link. Paste in TokScript. Copy transcript. Paste in ChatGPT. Need stats? Go back. Copy. Paste. Repeat, for every single video.</p>
         <ul class="pwc-list">
           <li class="pwc-list-item">
             <span class="pwc-bullet pwc-bullet-x"><img src="/assets/pwc-x.svg" alt="" /></span>
@@ -640,14 +640,14 @@ export const bodyHtml = `<!-- ① HERO -->
       </div>
     </div>
 
-    <!-- Row 2: Content left, image right — What Changes -->
+    <!-- Row 2: Content left, image right ,  What Changes -->
     <div class="pwc-row">
       <div class="pwc-content">
         <div class="pwc-pill-wrap">
           <div class="pwc-pill">What Changes When You Connect With TokScript</div>
         </div>
         <h2 class="pwc-h2">One conversation. Every platform. Every tool</h2>
-        <p class="pwc-desc">Connect TokScript to ChatGPT and your AI pulls transcripts, stats, downloads, creator profiles, and your saved library—automatically. Just ask in plain English.</p>
+        <p class="pwc-desc">Connect TokScript to ChatGPT and your AI pulls transcripts, stats, downloads, creator profiles, and your saved library, automatically. Just ask in plain English.</p>
         <ul class="pwc-list">
           <li class="pwc-list-item">
             <span class="pwc-bullet pwc-bullet-check"><img src="/assets/pwc-check.svg" alt="" /></span>

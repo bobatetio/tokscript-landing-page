@@ -259,10 +259,10 @@ function buildMockBulkResponse(links) {
     "First, get a really big pot of water boiling.",
     "",
     "00:00:10.000 --> 00:00:14.000",
-    "Salt it like the sea — that's the only seasoning the pasta gets.",
+    "Salt it like the sea ,  that's the only seasoning the pasta gets.",
     "",
     "00:00:14.000 --> 00:00:18.000",
-    "While that boils, slice your garlic — don't crush it.",
+    "While that boils, slice your garlic ,  don't crush it.",
     "",
     "00:00:18.000 --> 00:00:22.000",
     "Cold oil, cold garlic, low heat. We want golden, not brown.",
@@ -1531,13 +1531,13 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
             <div className="ur-header">
               <span className="ur-pill">New · TokScript MCP</span>
               <h2 className="ur-title">TokScript now lives inside Claude &amp; ChatGPT.</h2>
-              <p className="ur-sub">Connect TokScript to your AI in one click. Pull transcripts, download videos, and analyze creator libraries — all without leaving the conversation.</p>
+              <p className="ur-sub">Connect TokScript to your AI in one click. Pull transcripts, download videos, and analyze creator libraries ,  all without leaving the conversation.</p>
             </div>
             <div className="ur-video">
               <iframe
                 src="https://www.youtube.com/embed/5m37dBH-G_g?autoplay=1&mute=1&loop=1&playlist=5m37dBH-G_g&controls=0&rel=0&modestbranding=1&playsinline=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0"
                 allow="autoplay; encrypted-media"
-                title="TokScript MCP — works inside Claude and ChatGPT"
+                title="TokScript MCP ,  works inside Claude and ChatGPT"
               ></iframe>
             </div>
             <Link href="/mcp" className="ur-cta">Try it Free Today</Link>
@@ -1579,12 +1579,12 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
               <div className="vt-text">
                 <div className="vt-text-inner">
                   <h3 className="vt-row-title">TokScript MCP</h3>
-                  <p className="vt-row-body">TokScript now lives inside Claude and ChatGPT. Pull transcripts, download videos, and analyze creator libraries — all without leaving the conversation.</p>
+                  <p className="vt-row-body">TokScript now lives inside Claude and ChatGPT. Pull transcripts, download videos, and analyze creator libraries ,  all without leaving the conversation.</p>
                   <ul className="vt-list">
                     <li>Native integration with Claude &amp; ChatGPT</li>
                     <li>Pull transcripts directly inside your AI</li>
                     <li>Analyze creator libraries in chat</li>
-                    <li>One-click setup — no API wiring required</li>
+                    <li>One-click setup ,  no API wiring required</li>
                   </ul>
                   <Link href="/mcp" className="vt-cta">Get Started now</Link>
                 </div>
@@ -1673,7 +1673,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
               <div className="vt-text">
                 <div className="vt-text-inner">
                   <h3 className="vt-row-title">Chrome Extension</h3>
-                  <p className="vt-row-body">Copy video transcripts to your clipboard or download them as .txt files while watching TikTok, Instagram Reels, or YouTube Shorts — no URL copying required.</p>
+                  <p className="vt-row-body">Copy video transcripts to your clipboard or download them as .txt files while watching TikTok, Instagram Reels, or YouTube Shorts ,  no URL copying required.</p>
                   <ul className="vt-list">
                     <li>One-click transcript download</li>
                     <li>Instant clipboard copying</li>
@@ -1831,7 +1831,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                       alt: "Cloud transcript library with saved YouTube transcripts organized by date",
                     },
                     {
-                      title: "YouTube Video to Text — Multiple Export Formats",
+                      title: "YouTube Video to Text ,  Multiple Export Formats",
                       body: "Once TokScript converts your YouTube video to text, you choose how to use it. Export your transcript as a plain TXT file for copying into documents, a structured XML file for developers and subtitles, or a formatted PDF for sharing and archiving. Every export is clean, accurate, and ready to use immediately, free to download with no watermarks.",
                       bullets: [
                         "TXT for copy-paste into any document or AI tool",
@@ -1856,7 +1856,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                       alt: "Media download interface with video and cover image save options",
                     },
                     {
-                      title: "Quick URL Method — Transcript in One Step",
+                      title: "Quick URL Method ,  Transcript in One Step",
                       body: "Want even faster access? Add tokscript.com/ before any YouTube video URL in your browser address bar and hit Enter. TokScript auto-processes the link and delivers your transcript instantly. No homepage visit, no paste, no extra clicks. The fastest way to convert YouTube to text online on any device.",
                       bullets: [
                         "Add tokscript.com/ before any YouTube URL for instant transcription",

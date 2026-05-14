@@ -358,7 +358,7 @@ export default function LandingPage() {
                 <h4>History & Bookmarking</h4>
                 <p className="bulk-text-div">
                   Access a complete transcript history for every video you
-                  process—automatically logging download dates, transcript
+                  process, automatically logging download dates, transcript
                   details, video sources, and durations. Instantly re-download
                   transcripts in TXT, XML, or PDF formats, and organize your
                   entire video library with custom bookmark folders.
@@ -507,7 +507,7 @@ export default function LandingPage() {
                 <p className="bulk-text-div">
                   Instant video transcripts just add ‘tokscript.com/’ in front
                   of any video URL. Instantly redirect and download transcripts
-                  without logging in or visiting the main website—fast,
+                  without logging in or visiting the main website, fast,
                   automatic, and works with every platform.
                 </p>
                 <ul>
@@ -529,7 +529,7 @@ export default function LandingPage() {
                 <p className="bulk-text-div">
                   Use our Chrome extension to instantly copy video transcripts
                   to your clipboard or download them as .txt files while
-                  watching TikTok, Instagram Reels, or YouTube Shorts—no need to
+                  watching TikTok, Instagram Reels, or YouTube Shorts, no need to
                   copy the URL. Works on both web and mobile browsers for
                   ultimate convenience.
                 </p>
@@ -630,7 +630,7 @@ export default function LandingPage() {
                 <p className="bulk-text-div">
                   For Agencies and Brands. Share, manage, and organize
                   transcripts with your team. Set permissions, collaborate in
-                  real-time, and control access—perfect for agencies, editors,
+                  real-time, and control access, perfect for agencies, editors,
                   and educators.
                 </p>
                 <ul>
@@ -659,7 +659,7 @@ export default function LandingPage() {
                     <li>
                       Viral Hook Generator:
                       <p>
-                        Generate scroll-stopping, proven hooks in seconds—no
+                        Generate scroll-stopping, proven hooks in seconds, no
                         more guessing or losing viewers in the first five
                         seconds.
                       </p>
@@ -677,7 +677,7 @@ export default function LandingPage() {
                       <p>
                         See exactly why a video went viral. Get actionable
                         breakdowns of psychological triggers and algorithm
-                        secrets—so you can repeat the formula.viral, teaching
+                        secrets, so you can repeat the formula.viral, teaching
                         and educating users along the way.
                       </p>
                     </li>

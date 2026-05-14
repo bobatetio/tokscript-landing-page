@@ -85,7 +85,7 @@ export const PRICING_CATEGORIES = [
       },
       {
         name: "Bulk videos",
-        tooltip: "Drop in up to 50 URLs at once and TokScript transcribes them all in a single batch — paste once, get everything back together.",
+        tooltip: "Drop in up to 50 URLs at once and TokScript transcribes them all in a single batch ,  paste once, get everything back together.",
         tiers: ["monthly", "annual", "lifetime"],
         platforms: ["tiktok", "instagram", "youtube"],
       },
@@ -97,13 +97,13 @@ export const PRICING_CATEGORIES = [
       },
       {
         name: "Instagram profiles",
-        tooltip: "Pull every Reel from any Instagram creator's profile in one batch — great for competitor research and trend analysis.",
+        tooltip: "Pull every Reel from any Instagram creator's profile in one batch ,  great for competitor research and trend analysis.",
         tiers: ["monthly", "annual", "lifetime"],
         platforms: ["instagram"],
       },
       {
         name: "YouTube channels",
-        tooltip: "Pull YouTube Shorts, full-length videos and podcasts, or entire playlists from any channel — yours or a competitor's.",
+        tooltip: "Pull YouTube Shorts, full-length videos and podcasts, or entire playlists from any channel ,  yours or a competitor's.",
         tiers: ["monthly", "annual", "lifetime"],
         platforms: ["youtube"],
       },
@@ -124,7 +124,7 @@ export const PRICING_CATEGORIES = [
     features: [
       {
         name: "Claude",
-        tooltip: "Use TokScript inside Claude. Paste any video URL and TokScript returns transcripts, downloads, creator data, and more — without leaving the chat.",
+        tooltip: "Use TokScript inside Claude. Paste any video URL and TokScript returns transcripts, downloads, creator data, and more ,  without leaving the chat.",
         tiers: ["monthly", "annual", "lifetime"],
         platforms: ["claude"],
       },
@@ -175,7 +175,7 @@ export const PRICING_CATEGORIES = [
       },
       {
         name: "Bulk export selected videos",
-        tooltip: "Multi-select videos on a creator's profile and export all of them at once — transcripts, metadata, the works.",
+        tooltip: "Multi-select videos on a creator's profile and export all of them at once ,  transcripts, metadata, the works.",
         tiers: ["monthly", "annual", "lifetime"],
         platforms: ["tiktok", "instagram", "youtube"],
       },
@@ -214,7 +214,7 @@ export const PRICING_CATEGORIES = [
       },
       {
         name: "Up to 3,000 videos",
-        tooltip: "Each import can process up to 3,000 videos at once. Run multiple imports if you need more — there's no monthly cap.",
+        tooltip: "Each import can process up to 3,000 videos at once. Run multiple imports if you need more ,  there's no monthly cap.",
         tiers: ["monthly", "annual", "lifetime"],
         platforms: ["tiktok", "instagram", "youtube"],
       },
@@ -229,7 +229,7 @@ export const PRICING_CATEGORIES = [
     features: [
       {
         name: "Download HD Video",
-        tooltip: "Original-quality MP4 file with no watermark stamped on it — perfect for repurposing, archiving, or sharing.",
+        tooltip: "Original-quality MP4 file with no watermark stamped on it ,  perfect for repurposing, archiving, or sharing.",
         tiers: ["monthly", "annual", "lifetime"],
         platforms: ["tiktok", "instagram", "youtube"],
       },
@@ -247,13 +247,13 @@ export const PRICING_CATEGORIES = [
       },
       {
         name: "Download Transcript",
-        tooltip: "The transcript exported as a clean text file — no timestamps, no formatting, just the words.",
+        tooltip: "The transcript exported as a clean text file ,  no timestamps, no formatting, just the words.",
         tiers: ["monthly", "annual", "lifetime"],
         platforms: ["tiktok", "instagram", "youtube"],
       },
       {
         name: "Download Caption",
-        tooltip: "The original caption the creator wrote — useful for hook analysis, CTA studies, and copy benchmarking.",
+        tooltip: "The original caption the creator wrote ,  useful for hook analysis, CTA studies, and copy benchmarking.",
         tiers: ["monthly", "annual", "lifetime"],
         platforms: ["tiktok", "instagram", "youtube"],
       },
@@ -273,13 +273,13 @@ export const PRICING_CATEGORIES = [
     features: [
       {
         name: "Cloud-synced dashboard",
-        tooltip: "Your library lives in the cloud. Log in anywhere — web, Chrome, desktop, mobile — and it's already there.",
+        tooltip: "Your library lives in the cloud. Log in anywhere ,  web, Chrome, desktop, mobile ,  and it's already there.",
         tiers: ["monthly", "annual", "lifetime"],
         platforms: ["tiktok", "instagram", "youtube"],
       },
       {
         name: "Library search",
-        tooltip: "Find any transcript, caption, or video by keyword, creator handle, or date — full-text search across everything you've ever pulled.",
+        tooltip: "Find any transcript, caption, or video by keyword, creator handle, or date ,  full-text search across everything you've ever pulled.",
         tiers: ["monthly", "annual", "lifetime"],
         platforms: ["tiktok", "instagram", "youtube"],
       },
@@ -349,13 +349,13 @@ export const PRICING_CATEGORIES = [
       },
       {
         name: "Viral Script Writer",
-        tooltip: "Rewrite any viral video as a script in your own niche, voice, and style — while keeping the structural beats that made the original work.",
+        tooltip: "Rewrite any viral video as a script in your own niche, voice, and style ,  while keeping the structural beats that made the original work.",
         tiers: ["monthly", "annual", "lifetime"],
         platforms: ["tiktok", "instagram", "youtube"],
       },
       {
         name: "Virality Explainer",
-        tooltip: "Get a structural breakdown of exactly why a specific video popped — hook, pacing, retention beats, CTAs, all called out.",
+        tooltip: "Get a structural breakdown of exactly why a specific video popped ,  hook, pacing, retention beats, CTAs, all called out.",
         tiers: ["monthly", "annual", "lifetime"],
         platforms: ["tiktok", "instagram", "youtube"],
       },
@@ -383,7 +383,7 @@ export const PRICING_CATEGORIES = [
       },
       {
         name: "JSON responses",
-        tooltip: "Structured JSON payloads — easy to parse with any HTTP client in any language.",
+        tooltip: "Structured JSON payloads ,  easy to parse with any HTTP client in any language.",
         tiers: ["annual", "lifetime"],
         platforms: ["tiktok", "instagram", "youtube"],
       },
@@ -416,7 +416,7 @@ export const PRICING_CATEGORIES = [
       },
       {
         name: "Priority support",
-        tooltip: "Lifetime members get bumped to the top of the queue — most messages get a reply within minutes during work hours.",
+        tooltip: "Lifetime members get bumped to the top of the queue ,  most messages get a reply within minutes during work hours.",
         tiers: ["lifetime"],
       },
       {

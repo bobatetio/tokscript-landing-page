@@ -37,7 +37,7 @@ export default function EnhenceExperience({ title, subtitle, cta, ctaHref }) {
             </h2>
             <p className="mcp-cta-subtitle">
               {subtitle ||
-                "TokScript MCP plugs every transcript, video download, and creator insight straight into Claude and ChatGPT — so creators can research, script, and ship without ever leaving the conversation."}
+                "TokScript MCP plugs every transcript, video download, and creator insight straight into Claude and ChatGPT ,  so creators can research, script, and ship without ever leaving the conversation."}
             </p>
 
             <Link href={ctaHref || "/mcp"} className="mcp-cta-button">

@@ -136,7 +136,7 @@
     },
     "history": {
       "title": "History & Bookmarking",
-      "description": "Access a complete transcript history for every video you process—automatically logging download dates, transcript details, video sources, and durations. Instantly re-download transcripts in TXT, XML, or PDF formats, and organize your entire video library with custom bookmark folders. Effortlessly share, bulk export, or review transcripts, collections, and playlists for ultimate video transcript organization and workflow management.",
+      "description": "Access a complete transcript history for every video you process, automatically logging download dates, transcript details, video sources, and durations. Instantly re-download transcripts in TXT, XML, or PDF formats, and organize your entire video library with custom bookmark folders. Effortlessly share, bulk export, or review transcripts, collections, and playlists for ultimate video transcript organization and workflow management.",
       "feature1": "Complete download history with metadata",
       "feature2": "Custom bookmark folders",
       "feature3": "Re-download in TXT, XML, PDF formats",
@@ -156,7 +156,7 @@
     },
     "quickUrl": {
       "title": "Quick URL Download",
-      "description": "Instant video transcripts just add 'tokscript.com/' in front of any video URL. Instantly redirect and download transcripts without logging in or visiting the main website—fast, automatic, and works with every platform.",
+      "description": "Instant video transcripts just add 'tokscript.com/' in front of any video URL. Instantly redirect and download transcripts without logging in or visiting the main website, fast, automatic, and works with every platform.",
       "feature1": "Instant URL-based downloading",
       "feature2": "No need to visit main website",
       "feature3": "Works with all supported platforms",
@@ -166,7 +166,7 @@
     },
     "chromeExtension": {
       "title": "Chrome Extension",
-      "description": "Use our Chrome extension to instantly copy video transcripts to your clipboard or download them as .txt files while watching TikTok, Instagram Reels, or YouTube Shorts—no need to copy the URL. Works on both web and mobile browsers for ultimate convenience.",
+      "description": "Use our Chrome extension to instantly copy video transcripts to your clipboard or download them as .txt files while watching TikTok, Instagram Reels, or YouTube Shorts, no need to copy the URL. Works on both web and mobile browsers for ultimate convenience.",
       "feature1": "One-click transcript download",
       "feature2": "Instant clipboard copying",
       "feature3": "Works on web and mobile browsers",
@@ -176,7 +176,7 @@
     },
     "teamCollab": {
       "title": "Team Collaboration",
-      "description": "For Agencies and Brands. Share, manage, and organize transcripts with your team. Set permissions, collaborate in real-time, and control access—perfect for agencies, editors, and educators.",
+      "description": "For Agencies and Brands. Share, manage, and organize transcripts with your team. Set permissions, collaborate in real-time, and control access, perfect for agencies, editors, and educators.",
       "feature1": "Share transcripts with team members",
       "feature2": "Collaborate on projects in real-time",
       "feature3": "Manage workspace permissions",
@@ -188,7 +188,7 @@
       "description": "AI-Powered Virality: Hooks, Viral Script writing & Video Breakdown Unlock the secret weapons behind today's top viral videos, powered by AI. Designed for those who want to win attention and grow fast.",
       "hookGenerator": {
         "title": "Viral Hook Generator:",
-        "description": "Generate scroll-stopping, proven hooks in seconds—no more guessing or losing viewers in the first five seconds."
+        "description": "Generate scroll-stopping, proven hooks in seconds, no more guessing or losing viewers in the first five seconds."
       },
       "scriptWriter": {
         "title": "Agent #2 Viral Script Writer:",
@@ -196,7 +196,7 @@
       },
       "viralityExplainer": {
         "title": "Agent #3 Virality Explainer:",
-        "description": "See exactly why a video went viral. Get actionable breakdowns of psychological triggers and algorithm secrets—so you can repeat the formula.viral, teaching and educating users along the way."
+        "description": "See exactly why a video went viral. Get actionable breakdowns of psychological triggers and algorithm secrets, so you can repeat the formula.viral, teaching and educating users along the way."
       },
       "feature1": "Viral Hook Generator for instant engagement",
       "feature2": "Script rewriter with viral essence preservation",
@@ -256,7 +256,7 @@
       "feature3": "Bulk import 50 videos at once",
       "allPlatforms": "All Platforms",
       "feature4": "HD video downloads (no watermark)",
-      "ctaGetAnnual": "Get Annual — Save $81",
+      "ctaGetAnnual": "Get Annual ,  Save $81",
       "ctaCurrentPlan": "Current Plan",
       "ctaUpgrade": "Upgrade",
       "ctaProcessing": "Processing...",

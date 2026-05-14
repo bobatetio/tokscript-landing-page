@@ -55,10 +55,10 @@ const schema = {
     {
       "@type": "FAQPage",
       mainEntity: [
-        { "@type": "Question", name: "How do I download a YouTube Shorts transcript?", acceptedAnswer: { "@type": "Answer", text: "Open the Short, tap Share, then Copy Link — or copy the URL directly from the address bar. Paste into TokScript and hit Scan Video. Your transcript is ready in 5–10 seconds." }},
+        { "@type": "Question", name: "How do I download a YouTube Shorts transcript?", acceptedAnswer: { "@type": "Answer", text: "Open the Short, tap Share, then Copy Link ,  or copy the URL directly from the address bar. Paste into TokScript and hit Scan Video. Your transcript is ready in 5–10 seconds." }},
         { "@type": "Question", name: "Does it work with long-form YouTube videos?", acceptedAnswer: { "@type": "Answer", text: "TokScript is built for YouTube Shorts. Long-form videos are supported but optimized for short-form content." }},
         { "@type": "Question", name: "Why is it more accurate than YouTube's own captions?", acceptedAnswer: { "@type": "Answer", text: "TokScript layers AI transcription on top of YouTube's native captions for dual-verification accuracy. Where YouTube auto-captions fall short, our AI fills the gaps." }},
-        { "@type": "Question", name: "Can I bulk download Shorts transcripts?", acceptedAnswer: { "@type": "Answer", text: "Yes — paste up to 50 Shorts links at once. Bulk import is included on paid plans." }},
+        { "@type": "Question", name: "Can I bulk download Shorts transcripts?", acceptedAnswer: { "@type": "Answer", text: "Yes ,  paste up to 50 Shorts links at once. Bulk import is included on paid plans." }},
         { "@type": "Question", name: "Is it free?", acceptedAnswer: { "@type": "Answer", text: "Free accounts get 5 Shorts transcripts per day. Paid plans start at $39/year for unlimited transcripts, AI agents, and HD downloads." }},
       ],
     },

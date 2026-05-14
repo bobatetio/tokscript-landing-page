@@ -971,7 +971,7 @@ export default function YouTubeLandingPage() {
                   </div>
                   <div className="col-12 col-lg-6 order-1 order-lg-2 mb-4 mb-lg-0">
                     <div className="content-main-wrapper">
-                      <h3>YouTube Video to Text — Multiple Export Formats</h3>
+                      <h3>YouTube Video to Text ,  Multiple Export Formats</h3>
                       <p className="bulk-text-div">
                         Once TokScript converts your YouTube video to text, you choose how to use it. Export your transcript as a plain TXT file for copying into documents, a structured XML file for developers and subtitles, or a formatted PDF for sharing and archiving. Every export is clean, accurate, and ready to use immediately, free to download with no watermarks.
                       </p>
@@ -1028,7 +1028,7 @@ export default function YouTubeLandingPage() {
                   </div>
                   <div className="col-12 col-lg-6 order-1 order-lg-2 mb-4 mb-lg-0">
                     <div className="content-main-wrapper">
-                      <h3>Quick URL Method — Transcript in One Step</h3>
+                      <h3>Quick URL Method ,  Transcript in One Step</h3>
                       <p className="bulk-text-div">
                         Want even faster access? Add tokscript.com/ before any YouTube video URL in your browser address bar and hit Enter. TokScript auto-processes the link and delivers your transcript instantly. No homepage visit, no paste, no extra clicks. The fastest way to convert YouTube to text online on any device.
                       </p>

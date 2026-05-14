@@ -4,7 +4,7 @@ import { LemonProducts } from "@/components/LemonProducts";
 import { LemonProductsStaging } from "@/components/LemonProductsStaging";
 
 export const metadata = {
-  title: "TokScript Pricing — Free Plan + $39/yr Pro with AI Script Writer & Viral Hook Generator",
+  title: "TokScript Pricing ,  Free Plan + $39/yr Pro with AI Script Writer & Viral Hook Generator",
   description:
     "Choose the right TokScript plan. Free: 3 transcripts/day. Pro ($39/year or $10/month): unlimited transcripts, AI Script Writer, Viral Hook Generator, Chrome Extension. 41,000+ creators trust TokScript.",
   keywords: [
@@ -18,7 +18,7 @@ export const metadata = {
     canonical: "https://tokscript.com/pricing",
   },
   openGraph: {
-    title: "TokScript Pricing — Free Plan + $39/yr Pro with AI Agents",
+    title: "TokScript Pricing ,  Free Plan + $39/yr Pro with AI Agents",
     description:
       "Free: 3 transcripts/day. Pro: unlimited transcripts, AI Script Writer, Viral Hook Generator, Chrome Extension. Cancel anytime.",
     url: "https://tokscript.com/pricing",
@@ -34,7 +34,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "TokScript Pricing — Free Plan + $39/yr Pro with AI Agents",
+    title: "TokScript Pricing ,  Free Plan + $39/yr Pro with AI Agents",
     description:
       "Free: 3 transcripts/day. Pro: unlimited transcripts, AI Script Writer, Viral Hook Generator, Chrome Extension. Cancel anytime.",
     images: ["https://tokscript.com/og-image.png"],

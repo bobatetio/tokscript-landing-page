@@ -21,7 +21,7 @@ const VIRAL_MOMENTS = [
     id: 1,
     username: "mrbeast",
     date: "2 days ago",
-    caption: "I gave 1000 strangers $1000 each — here's what happened",
+    caption: "I gave 1000 strangers $1000 each ,  here's what happened",
     thumbnail: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=900&fit=crop",
     transcript: null,
   },
@@ -77,7 +77,7 @@ const VIRAL_MOMENTS = [
     id: 8,
     username: "willsmith",
     date: "1 week ago",
-    caption: "The lesson nobody told me at 25 — and I wish they had",
+    caption: "The lesson nobody told me at 25 ,  and I wish they had",
     thumbnail: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=900&fit=crop",
     transcript: null,
   },
@@ -101,7 +101,7 @@ const VIRAL_MOMENTS = [
     id: 11,
     username: "shakira",
     date: "5 days ago",
-    caption: "Hips don't lie — and apparently the algorithm agrees",
+    caption: "Hips don't lie ,  and apparently the algorithm agrees",
     thumbnail: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600&h=900&fit=crop",
     transcript: null,
   },
@@ -405,7 +405,7 @@ export default function ViralMomentsCarousel({ variant = "home" }) {
                 src={buildEmbedSrc(activeCard)}
                 allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
                 allowFullScreen
-                title={`@${activeCard.username} on TikTok — ${activeCard.caption}`}
+                title={`@${activeCard.username} on TikTok ,  ${activeCard.caption}`}
               />
             ) : (
               <div className="vm-lightbox-fallback">

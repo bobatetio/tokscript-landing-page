@@ -75,7 +75,7 @@ function formatDuration(sec) {
 }
 function formatDate(ts) {
   const t = Number(ts);
-  if (!t) return "—";
+  if (!t) return ", ";
   const d = new Date(t * (t < 1e12 ? 1000 : 1));
   return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
 }
@@ -593,7 +593,7 @@ function AnalyticsTab({ upgrade, video }) {
   const suggestions = [
     "Hook is in the top 10% for food education content.",
     'Consider a "pattern interrupt" around the 30-second mark.',
-    "Short sentence bursts work well — keep them under 12 words.",
+    "Short sentence bursts work well ,  keep them under 12 words.",
   ];
 
   return (
@@ -692,7 +692,7 @@ function PromptsTab({ upgrade }) {
         {free.map((p) => <Card key={p.label} p={p} free />)}
       </div>
 
-      <p style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.09em", color: T.muted, fontWeight: 600, margin: 0, marginTop: 4 }}>More formats — Pro</p>
+      <p style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.09em", color: T.muted, fontWeight: 600, margin: 0, marginTop: 4 }}>More formats ,  Pro</p>
       <div style={{ position: "relative" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, filter: "blur(4px)", opacity: 0.5, pointerEvents: "none", userSelect: "none" }}>
           {locked.map((p) => <Card key={p.label} p={p} free={false} />)}
@@ -700,7 +700,7 @@ function PromptsTab({ upgrade }) {
         <LockOverlay
           upgrade={upgrade}
           title={`${locked.length} more formats waiting`}
-          description="Sign up to unlock all content formats — newsletters, scripts, hooks, and more."
+          description="Sign up to unlock all content formats ,  newsletters, scripts, hooks, and more."
         />
       </div>
     </div>

@@ -76,7 +76,7 @@ const faqSchema = {
       name: "Is TokScript free to use?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. Your first transcripts are completely free — no account required. Premium plans unlock unlimited bulk processing and AI agents."
+        text: "Yes. Your first transcripts are completely free ,  no account required. Premium plans unlock unlimited bulk processing and AI agents."
       }
     },
     {

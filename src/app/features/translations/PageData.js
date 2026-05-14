@@ -272,7 +272,7 @@ export default function TranslationsPage() {
 
   const faqItems = [
     { q: "Can I translate transcripts I extracted months ago?", a: "Yes. Any transcript saved in your TokScript library can be re-translated with one click. You don't have to scan the video all over again; just select your target language and the engine processes the translation instantly." },
-    { q: "Does the translation work for TikTok, Instagram, and YouTube?", a: "Absolutely. No matter where the video originated—TikTok, Instagram Reels, or YouTube Shorts—our platform perfectly processes the transcript into any supported native language." },
+    { q: "Does the translation work for TikTok, Instagram, and YouTube?", a: "Absolutely. No matter where the video originated, TikTok, Instagram Reels, or YouTube Shorts, our platform perfectly processes the transcript into any supported native language." },
     { q: "Will the translated transcript maintain the timestamps?", a: "Yes, if you choose to export with timestamps, the translated text will perfectly map to the original pacing of the video, making it seamless for dubbing or native subtitling." },
     { q: "How many languages are supported?", a: "We support over 50 of the most widely spoken languages globally, ensuring that you can reach your native clients and customers wherever they are." },
     { q: "Do I need to leave the platform to translate?", a: "No. Everything happens natively within the TokScript dashboard. Say goodbye to copying text, pasting into external translators, and losing your formatting." },

@@ -830,7 +830,7 @@ export default function PricingPage() {
                                 window.location.href = checkoutUrl;
                               }}
                             >
-                              Get Annual — Save $81
+                              Get Annual ,  Save $81
                             </button>
                           )}
                         </>

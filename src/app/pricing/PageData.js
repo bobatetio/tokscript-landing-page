@@ -61,7 +61,7 @@ function CompareCell({ feature, tier, isFeatured, isFreeTranscriptsCell }) {
   }
   return (
     <td className={className}>
-      {accessible ? <Check size={16} strokeWidth={3} /> : "—"}
+      {accessible ? <Check size={16} strokeWidth={3} /> : <X size={16} strokeWidth={2.5} />}
     </td>
   );
 }
@@ -309,7 +309,7 @@ export default function PricingPage({ initialProductsData }) {
   const faqs = [
     {
       q: "Is there really a free plan?",
-      a: "Yes. The free plan is free forever — no trial, no credit card required. You get 5 transcripts per day, 5 translations per day, and access to the basic Chrome extension. Upgrade only if you need more.",
+      a: "Yes. The free plan is free forever ,  no trial, no credit card required. You get 5 transcripts per day, 5 translations per day, and access to the basic Chrome extension. Upgrade only if you need more.",
     },
     {
       q: "What's the difference between Annual and Monthly?",
@@ -337,7 +337,7 @@ export default function PricingPage({ initialProductsData }) {
     },
     {
       q: "What payment methods do you accept?",
-      a: "All major credit and debit cards, plus standard digital wallets (Apple Pay, Google Pay). Billing runs through Stripe — secure, encrypted, PCI-compliant.",
+      a: "All major credit and debit cards, plus standard digital wallets (Apple Pay, Google Pay). Billing runs through Stripe ,  secure, encrypted, PCI-compliant.",
     },
     {
       q: "Will my price ever go up?",
@@ -986,7 +986,7 @@ export default function PricingPage({ initialProductsData }) {
               Every Feature, Side By Side.
             </h2>
             <p className="pricing-compare-sub">
-              The full breakdown — so you know exactly what you&apos;re getting before you commit.
+              The full breakdown ,  so you know exactly what you&apos;re getting before you commit.
             </p>
           </div>
 
@@ -1125,7 +1125,7 @@ export default function PricingPage({ initialProductsData }) {
         <FaqSection
           faqData={faqs.map((f) => ({ title: f.q, content: f.a }))}
           title="Pricing, Plans, And Everything In Between."
-          subtitle="Everything you need to know about pricing, plans, billing, and refunds — answered."
+          subtitle="Everything you need to know about pricing, plans, billing, and refunds ,  answered."
         />
       </div>
 
