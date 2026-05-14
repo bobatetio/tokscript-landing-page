@@ -20543,7 +20543,7 @@ $ds-font: "Inter", system-ui, sans-serif;
   padding: 7px 16px;
   border-radius: 999px;
   font-family: $inter;
-  font-size: 12px;
+  font-size: 10.5px;
   font-weight: 700;
   line-height: 1.4;
   letter-spacing: 0.12em;
@@ -20564,7 +20564,7 @@ $ds-font: "Inter", system-ui, sans-serif;
   }
 
   @media (max-width: 480px) {
-    font-size: 11px;
+    font-size: 9.5px;
     padding: 6px 13px;
     letter-spacing: 0.1em;
   }
@@ -20694,7 +20694,7 @@ $ds-font: "Inter", system-ui, sans-serif;
    subtle white border, soft shadow. Contains the 3-stat row + trust band. */
 .pricing-hero-stats-card {
   width: 100%;
-  max-width: 880px;
+  max-width: 800px;
   margin: 17px auto 0; // 27 + 17 = 44px gap from subhead per Figma
   background: rgba(26, 38, 43, 0.57);
   backdrop-filter: blur(4px);
@@ -20751,7 +20751,7 @@ $ds-font: "Inter", system-ui, sans-serif;
 
   .cx-stat-number {
     font-family: $inter;
-    font-size: 36px;
+    font-size: 32px;
     font-weight: 900;
     line-height: 1;
     color: #ffffff;
@@ -20759,13 +20759,13 @@ $ds-font: "Inter", system-ui, sans-serif;
     white-space: nowrap;
 
     @media (max-width: 1024px) {
-      font-size: 30px;
-    }
-    @media (max-width: 600px) {
       font-size: 26px;
     }
-    @media (max-width: 420px) {
+    @media (max-width: 600px) {
       font-size: 22px;
+    }
+    @media (max-width: 420px) {
+      font-size: 19px;
     }
   }
 
@@ -20810,9 +20810,7 @@ $ds-font: "Inter", system-ui, sans-serif;
   background: rgba(34, 211, 238, 0.05);
   color: #00b8b2 !important;
   font-family: $inter !important;
-  // Slight bump from the 14/13/11/9 set — adds ~2px so the trust line
-  // reads more comfortably without crowding the container width.
-  font-size: 16px !important;
+  font-size: 14px !important;
   font-weight: 500 !important;
   line-height: 1.4 !important;
   white-space: nowrap !important;
@@ -20834,24 +20832,24 @@ $ds-font: "Inter", system-ui, sans-serif;
   }
 
   @media (max-width: 1024px) {
-    font-size: 14px !important;
-    svg { width: 14px !important; height: 14px !important; }
+    font-size: 12.5px !important;
+    svg { width: 13px !important; height: 13px !important; }
   }
 
   @media (max-width: 768px) {
-    font-size: 12px !important;
+    font-size: 11px !important;
     height: 42px;
     gap: 7px !important;
     padding: 0 10px !important;
-    svg { width: 12px !important; height: 12px !important; }
+    svg { width: 11px !important; height: 11px !important; }
   }
 
   @media (max-width: 480px) {
-    font-size: 10px !important;
+    font-size: 9px !important;
     height: 38px;
     gap: 5px !important;
     padding: 0 8px !important;
-    svg { width: 10px !important; height: 10px !important; }
+    svg { width: 9px !important; height: 9px !important; }
   }
 }
 
