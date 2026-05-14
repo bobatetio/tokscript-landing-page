@@ -16,6 +16,8 @@ import {
   ChevronDown,
   ArrowRight,
   Lock,
+  Gift,
+  AlertTriangle,
   FileText,
   LayoutGrid,
   Download,
@@ -585,20 +587,20 @@ export default function PricingPage({ initialProductsData }) {
         Free
       </button>
       <button
-        className={`tab-btn featured ${
-          activeTab === "annual" ? "active" : "inactive"
-        }`}
-        onClick={() => setActiveTab("annual")}
-      >
-        Annual
-      </button>
-      <button
         className={`tab-btn ${
           activeTab === "monthly" ? "active" : "inactive"
         }`}
         onClick={() => setActiveTab("monthly")}
       >
         Monthly
+      </button>
+      <button
+        className={`tab-btn featured ${
+          activeTab === "annual" ? "active" : "inactive"
+        }`}
+        onClick={() => setActiveTab("annual")}
+      >
+        Annual
       </button>
       <button
         className={`tab-btn ${
@@ -613,320 +615,321 @@ export default function PricingPage({ initialProductsData }) {
 
   {/* Pricing Grid — glass card style */}
   <div className="pc-grid">
-      {/* Free */}
-      <div className={`pc-card-wrapper ${activeTab === "free" ? "active" : ""}`}>
-        <div className="pc-card">
-          <div className="pc-header">
-            <div className="pc-plan-row">
-              <div className="pc-plan-name">Free</div>
-              <span className="pc-badge">Forever</span>
-            </div>
-            <p className="pc-description">Test the basics</p>
-            <div className="pc-price-row">
-              <span className="pc-price-main">$0</span>
-              <span className="pc-price-period">forever</span>
-            </div>
-          </div>
-          <div className="pc-cta-wrap">
-            {user && user?.plan == "free" ? (
-              <button disabled className="pc-cta">Current Plan</button>
-            ) : !user ? (
-              <>
-                <button
-                  onClick={() => {
-                    setPendingCheckoutUrl(null);
-                    setPendingPlan({
-                      name: "Free Plan",
-                      price: "$0",
-                      period: "/forever",
-                      badge: null,
-                      features: [
-                        "5 transcripts per day",
-                        "TikTok only",
-                        "Chrome Extension (free features)",
-                      ],
-                      buttonText: "Create Free Account",
-                    });
-                    setCheckoutOverlayShow(true);
-                  }}
-                  className="pc-cta d-none d-md-flex"
-                >
-                  Get Started
-                </button>
-                <a
-                  href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/signin`}
-                  className="pc-cta d-flex d-md-none"
-                >
-                  Get Started
-                </a>
-              </>
-            ) : (
-              <button onClick={() => setDontMissOutModalShow(true)} className="pc-cta">Get Started</button>
-            )}
-          </div>
-          <div className="pc-body">
-            <PricingCategoryList tier="free" />
-          </div>
-        </div>
-      </div>
-      {/* Annual (Featured) */}
-      <div className={`pc-card-wrapper ${activeTab === "annual" ? "active" : ""}`}>
-        <div className="pc-card pc-card-featured pc-card-recommended">
-          <div className="pc-header">
-            <div className="pc-plan-row">
-              <div className="pc-plan-name">Annual</div>
-              <span className="pc-badge pc-badge-recommended">
-                <Crown size={12} strokeWidth={2.5} /> Recommended
-              </span>
-            </div>
-            <p className="pc-description">Best value for serious creators</p>
-            <div className="pc-price-row">
-              <span className="pc-price-main">$39</span>
-              <span className="pc-price-period">per year</span>
-              <span className="pc-price-original">$120</span>
-            </div>
-            <div className="pc-price-highlight">
-              <span className="pc-price-highlight-pill">That&apos;s $3.25/month, save $81</span>
-            </div>
-          </div>
-          <div className="pc-cta-wrap">
-            {loading ? (
-              <button disabled className="pc-cta pc-cta-primary">Loading...</button>
-            ) : user ? (
-              profile?.plan == "pro" &&
-              profile?.subscription?.status === "active" &&
-              profile.subscription.lemonSqueezyVariantId ===
-                allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.variantId ? (
-                <button disabled className="pc-cta">Current Plan</button>
-              ) : profile?.plan == "pro" &&
-                profile?.plan !== "free" &&
-                profile.subscription?.status === "active" ? (
-                <button
-                  disabled={loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.variantId]}
-                  onClick={() => {
-                    const annualPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"));
-                    if (annualPlan) handleUpgradeClick(annualPlan.variantId, "annual");
-                  }}
-                  className="pc-cta pc-cta-primary"
-                >
-                  {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.variantId] ? "Processing..." : "Upgrade"}
-                </button>
-              ) : (
-                <>
-                  <button
-                    onClick={() => {
-                      const annualPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"));
-                      if (annualPlan) handleCheckout(annualPlan);
-                    }}
-                    className="pc-cta pc-cta-primary d-none d-md-flex"
-                  >
-                    Get Annual · Save $81 <ArrowRight size={18} strokeWidth={2.5} />
-                  </button>
-                  <a
-                    href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.buyUrl}`}
-                    className="pc-cta pc-cta-primary d-flex d-md-none"
-                  >
-                    Get Annual · Save $81 <ArrowRight size={18} strokeWidth={2.5} />
-                  </a>
-                </>
-              )
-            ) : (
-              <>
-                <button
-                  onClick={() => {
-                    const annualPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"));
-                    if (annualPlan) handleCheckout(annualPlan);
-                  }}
-                  className="pc-cta pc-cta-primary d-none d-md-flex"
-                >
-                  Get Annual · Save $81 <ArrowRight size={18} strokeWidth={2.5} />
-                </button>
-                <a
-                  href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.buyUrl}`}
-                  className="pc-cta pc-cta-primary d-flex d-md-none"
-                >
-                  Get Annual · Save $81 <ArrowRight size={18} strokeWidth={2.5} />
-                </a>
-              </>
-            )}
-          </div>
-          <div className="pc-body">
-            <PricingCategoryList tier="annual" />
-          </div>
-        </div>
-      </div>
+                  {/* Free */}
+                  <div className={`pc-card-wrapper ${activeTab === "free" ? "active" : ""}`}>
+                    <div className="pc-card">
+                      <div className="pc-header">
+                        <div className="pc-plan-row">
+                          <div className="pc-plan-name">Free</div>
+                          <span className="pc-badge">Forever</span>
+                        </div>
+                        <p className="pc-description">For Trying The Basics</p>
+                        <div className="pc-price-row">
+                          <span className="pc-price-main">$0</span>
+                          <span className="pc-price-period">forever</span>
+                        </div>
+                        <div className="pc-price-highlight">
+                          <span className="pc-price-highlight-pill pc-price-highlight-pill-muted"><Gift size={13} strokeWidth={2} /> No Credit Card Needed</span>
+                        </div>
+                      </div>
+                      <div className="pc-cta-wrap">
+                        {user && user?.plan == "free" ? (
+                          <button disabled className="pc-cta">Current Plan</button>
+                        ) : !user ? (
+                          <>
+                            <button
+                              onClick={() => {
+                                setPendingCheckoutUrl(null);
+                                setPendingPlan({
+                                  name: "Free Plan",
+                                  price: "$0",
+                                  period: "/forever",
+                                  badge: null,
+                                  features: [
+                                    "5 transcripts per day",
+                                    "TikTok only",
+                                    "Chrome Extension (free features)",
+                                  ],
+                                  buttonText: "Create Free Account",
+                                });
+                                setCheckoutOverlayShow(true);
+                              }}
+                              className="pc-cta d-none d-md-flex"
+                            >
+                              Get Started
+                            </button>
+                            <a
+                              href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/signin`}
+                              className="pc-cta d-flex d-md-none"
+                            >
+                              Get Started
+                            </a>
+                          </>
+                        ) : (
+                          <button onClick={() => setDontMissOutModalShow(true)} className="pc-cta">Get Started</button>
+                        )}
+                      </div>
+                      <div className="pc-body">
+                        <PricingCategoryList tier="free" />
+                      </div>
+                    </div>
+                  </div>
+                  {/* Monthly */}
+                  <div className={`pc-card-wrapper ${activeTab === "monthly" ? "active" : ""}`}>
+                    <div className="pc-card">
+                      <div className="pc-header">
+                        <div className="pc-plan-row">
+                          <div className="pc-plan-name">Monthly</div>
+                          <span className="pc-badge">Flexible</span>
+                        </div>
+                        <p className="pc-description">Full power, flexible billing</p>
+                        <div className="pc-price-row">
+                          <span className="pc-price-main">$10</span>
+                          <span className="pc-price-period">per month</span>
+                        </div>
+                        <div className="pc-price-highlight">
+                          <span className="pc-price-highlight-pill pc-price-highlight-pill-muted"><AlertTriangle size={13} strokeWidth={2} /> Annual Saves $81</span>
+                        </div>
+                      </div>
+                      <div className="pc-cta-wrap">
+                        {loading ? (
+                          <button disabled className="pc-cta">Loading...</button>
+                        ) : user ? (
+                          profile?.plan == "pro" &&
+                          profile?.subscription?.status === "active" &&
+                          profile.subscription.lemonSqueezyVariantId ===
+                            allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.variantId ? (
+                            <button disabled className="pc-cta">Current Plan</button>
+                          ) : profile?.plan == "pro" &&
+                            profile?.plan !== "free" &&
+                            profile.subscription?.status === "active" ? (
+                            <button
+                              disabled={loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.variantId]}
+                              onClick={() => {
+                                const monthlyPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"));
+                                if (monthlyPlan) handleUpgradeClick(monthlyPlan.variantId, "monthly");
+                              }}
+                              className="pc-cta"
+                            >
+                              {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.variantId] ? "Processing..." : "Upgrade"}
+                            </button>
+                          ) : (
+                            <>
+                              <button
+                                className="pc-cta d-none d-md-flex"
+                                onClick={() => {
+                                  const monthlyPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"));
+                                  if (monthlyPlan) handleCheckout(monthlyPlan);
+                                }}
+                              >
+                                Get Monthly
+                              </button>
+                              <a
+                                href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.buyUrl}`}
+                                className="pc-cta d-flex d-md-none"
+                              >
+                                Get Monthly
+                              </a>
+                            </>
+                          )
+                        ) : (
+                          <>
+                            <button
+                              className="pc-cta d-none d-md-flex"
+                              onClick={() => {
+                                const monthlyPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"));
+                                if (monthlyPlan) handleCheckout(monthlyPlan);
+                              }}
+                            >
+                              Get Monthly
+                            </button>
+                            <a
+                              href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.buyUrl}`}
+                              className="pc-cta d-flex d-md-none"
+                            >
+                              Get Monthly
+                            </a>
+                          </>
+                        )}
+                      </div>
+                      <div className="pc-body">
+                        <PricingCategoryList tier="monthly" />
+                      </div>
+                    </div>
+                  </div>
 
-      {/* Monthly */}
-      <div className={`pc-card-wrapper ${activeTab === "monthly" ? "active" : ""}`}>
-        <div className="pc-card">
-          <div className="pc-header">
-            <div className="pc-plan-row">
-              <div className="pc-plan-name">Monthly</div>
-              <span className="pc-badge">Flexible</span>
-            </div>
-            <p className="pc-description">Full power, flexible billing</p>
-            <div className="pc-price-row">
-              <span className="pc-price-main">$10</span>
-              <span className="pc-price-period">per month</span>
-            </div>
-            <div className="pc-price-highlight pc-price-highlight-warn">
-              <span className="pc-price-highlight-equivalent">= $120/year</span>
-              <span className="pc-price-highlight-note">Annual saves $81</span>
-            </div>
-          </div>
-          <div className="pc-cta-wrap">
-            {loading ? (
-              <button disabled className="pc-cta">Loading...</button>
-            ) : user ? (
-              profile?.plan == "pro" &&
-              profile?.subscription?.status === "active" &&
-              profile.subscription.lemonSqueezyVariantId ===
-                allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.variantId ? (
-                <button disabled className="pc-cta">Current Plan</button>
-              ) : profile?.plan == "pro" &&
-                profile?.plan !== "free" &&
-                profile.subscription?.status === "active" ? (
-                <button
-                  disabled={loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.variantId]}
-                  onClick={() => {
-                    const monthlyPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"));
-                    if (monthlyPlan) handleUpgradeClick(monthlyPlan.variantId, "monthly");
-                  }}
-                  className="pc-cta"
-                >
-                  {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.variantId] ? "Processing..." : "Upgrade"}
-                </button>
-              ) : (
-                <>
-                  <button
-                    className="pc-cta d-none d-md-flex"
-                    onClick={() => {
-                      const monthlyPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"));
-                      if (monthlyPlan) handleCheckout(monthlyPlan);
-                    }}
-                  >
-                    Get Monthly
-                  </button>
-                  <a
-                    href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.buyUrl}`}
-                    className="pc-cta d-flex d-md-none"
-                  >
-                    Get Monthly
-                  </a>
-                </>
-              )
-            ) : (
-              <>
-                <button
-                  className="pc-cta d-none d-md-flex"
-                  onClick={() => {
-                    const monthlyPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"));
-                    if (monthlyPlan) handleCheckout(monthlyPlan);
-                  }}
-                >
-                  Get Monthly
-                </button>
-                <a
-                  href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.buyUrl}`}
-                  className="pc-cta d-flex d-md-none"
-                >
-                  Get Monthly
-                </a>
-              </>
-            )}
-          </div>
-          <div className="pc-body">
-            <PricingCategoryList tier="monthly" />
-          </div>
-        </div>
-      </div>
+                  {/* Annual (Featured) */}
+                  <div className={`pc-card-wrapper ${activeTab === "annual" ? "active" : ""}`}>
+                    <div className="pc-card pc-card-featured pc-card-recommended">
+                      <div className="pc-header">
+                        <div className="pc-plan-row">
+                          <div className="pc-plan-name">Annual</div>
+                          <span className="pc-badge pc-badge-bestvalue">
+                            <Crown size={12} strokeWidth={2.5} /> Recommended
+                          </span>
+                        </div>
+                        <p className="pc-description">Best value for serious creators</p>
+                        <div className="pc-price-row">
+                          <span className="pc-price-main">$39</span>
+                          <span className="pc-price-period">per year</span>
+                          <span className="pc-price-original">$120</span>
+                        </div>
+                        <div className="pc-price-highlight">
+                          <span className="pc-price-highlight-pill pc-price-highlight-pill-gold">That&apos;s $3.25/month, save $81</span>
+                        </div>
+                      </div>
+                      <div className="pc-cta-wrap">
+                        {loading ? (
+                          <button disabled className="pc-cta pc-cta-primary">Loading...</button>
+                        ) : user ? (
+                          profile?.plan == "pro" &&
+                          profile?.subscription?.status === "active" &&
+                          profile.subscription.lemonSqueezyVariantId ===
+                            allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.variantId ? (
+                            <button disabled className="pc-cta">Current Plan</button>
+                          ) : profile?.plan == "pro" &&
+                            profile?.plan !== "free" &&
+                            profile.subscription?.status === "active" ? (
+                            <button
+                              disabled={loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.variantId]}
+                              onClick={() => {
+                                const annualPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"));
+                                if (annualPlan) handleUpgradeClick(annualPlan.variantId, "annual");
+                              }}
+                              className="pc-cta pc-cta-primary"
+                            >
+                              {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.variantId] ? "Processing..." : "Upgrade"}
+                            </button>
+                          ) : (
+                            <>
+                              <button
+                                onClick={() => {
+                                  const annualPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"));
+                                  if (annualPlan) handleCheckout(annualPlan);
+                                }}
+                                className="pc-cta pc-cta-primary d-none d-md-flex"
+                              >
+                                Get Annual · Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+                              </button>
+                              <a
+                                href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.buyUrl}`}
+                                className="pc-cta pc-cta-primary d-flex d-md-none"
+                              >
+                                Get Annual · Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+                              </a>
+                            </>
+                          )
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => {
+                                const annualPlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"));
+                                if (annualPlan) handleCheckout(annualPlan);
+                              }}
+                              className="pc-cta pc-cta-primary d-none d-md-flex"
+                            >
+                              Get Annual · Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+                            </button>
+                            <a
+                              href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.buyUrl}`}
+                              className="pc-cta pc-cta-primary d-flex d-md-none"
+                            >
+                              Get Annual · Save $81 <ArrowRight size={18} strokeWidth={2.5} />
+                            </a>
+                          </>
+                        )}
+                      </div>
+                      <div className="pc-body">
+                        <PricingCategoryList tier="annual" />
+                      </div>
+                    </div>
+                  </div>
 
-      {/* Lifetime */}
-      <div className={`pc-card-wrapper ${activeTab === "lifetime" ? "active" : ""}`}>
-        <div className="pc-card pc-card-featured">
-          <div className="pc-header">
-            <div className="pc-plan-row">
-              <div className="pc-plan-name">Lifetime</div>
-              <span className="pc-badge">Best Value</span>
-            </div>
-            <p className="pc-description">Pay once. Use TokScript forever.</p>
-            <div className="pc-price-row">
-              <span className="pc-price-main">$199</span>
-              <span className="pc-price-period">one-time</span>
-              <span className="pc-price-original">$468</span>
-            </div>
-            <div className="pc-price-highlight">
-              <span className="pc-price-highlight-pill pc-price-highlight-pill-muted"><Lock size={13} strokeWidth={2} /> No subscriptions, ever</span>
-            </div>
-          </div>
-          <div className="pc-cta-wrap">
-            {loading ? (
-              <button disabled className="pc-cta">Loading...</button>
-            ) : user ? (
-              profile?.plan == "pro" &&
-              profile?.subscription?.status === "active" &&
-              profile.subscription.lemonSqueezyVariantId ===
-                allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.variantId ? (
-                <button disabled className="pc-cta">Current Plan</button>
-              ) : profile?.plan == "pro" &&
-                profile?.plan !== "free" &&
-                profile.subscription?.status === "active" ? (
-                <button
-                  disabled={loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.variantId]}
-                  onClick={() => {
-                    const lifetimePlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"));
-                    if (lifetimePlan) handleUpgradeClick(lifetimePlan.variantId, "lifetime");
-                  }}
-                  className="pc-cta"
-                >
-                  {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.variantId] ? "Processing..." : "Upgrade"}
-                </button>
-              ) : (
-                <>
-                  <button
-                    className="pc-cta d-none d-md-flex"
-                    onClick={() => {
-                      const lifetimePlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"));
-                      if (lifetimePlan) handleCheckout(lifetimePlan);
-                    }}
-                  >
-                    Get Lifetime
-                  </button>
-                  <a
-                    href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.buyUrl}`}
-                    className="pc-cta d-flex d-md-none"
-                  >
-                    Get Lifetime
-                  </a>
-                </>
-              )
-            ) : (
-              <>
-                <button
-                  className="pc-cta d-none d-md-flex"
-                  onClick={() => {
-                    const lifetimePlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"));
-                    if (lifetimePlan) handleCheckout(lifetimePlan);
-                  }}
-                >
-                  Get Lifetime
-                </button>
-                <a
-                  href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.buyUrl}`}
-                  className="pc-cta d-flex d-md-none"
-                >
-                  Get Lifetime
-                </a>
-              </>
-            )}
-          </div>
-          <div className="pc-body">
-            <p className="pc-group-blurb">Lifetime access to TokScript inside your AI conversations.</p>
-            <PricingCategoryList tier="lifetime" />
-          </div>
-        </div>
-      </div>
-  </div>
+                  {/* Lifetime */}
+                  <div className={`pc-card-wrapper ${activeTab === "lifetime" ? "active" : ""}`}>
+                    <div className="pc-card pc-card-featured">
+                      <div className="pc-header">
+                        <div className="pc-plan-row">
+                          <div className="pc-plan-name">Lifetime</div>
+                          <span className="pc-badge">Best Value</span>
+                        </div>
+                        <p className="pc-description">Pay Once. Use Forever.</p>
+                        <div className="pc-price-row">
+                          <span className="pc-price-main">$199</span>
+                          <span className="pc-price-period">one-time</span>
+                          <span className="pc-price-original">$468</span>
+                        </div>
+                        <div className="pc-price-highlight">
+                          <span className="pc-price-highlight-pill pc-price-highlight-pill-muted"><Lock size={13} strokeWidth={2} /> No Subscriptions, Ever</span>
+                        </div>
+                      </div>
+                      <div className="pc-cta-wrap">
+                        {loading ? (
+                          <button disabled className="pc-cta">Loading...</button>
+                        ) : user ? (
+                          profile?.plan == "pro" &&
+                          profile?.subscription?.status === "active" &&
+                          profile.subscription.lemonSqueezyVariantId ===
+                            allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.variantId ? (
+                            <button disabled className="pc-cta">Current Plan</button>
+                          ) : profile?.plan == "pro" &&
+                            profile?.plan !== "free" &&
+                            profile.subscription?.status === "active" ? (
+                            <button
+                              disabled={loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.variantId]}
+                              onClick={() => {
+                                const lifetimePlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"));
+                                if (lifetimePlan) handleUpgradeClick(lifetimePlan.variantId, "lifetime");
+                              }}
+                              className="pc-cta"
+                            >
+                              {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.variantId] ? "Processing..." : "Upgrade"}
+                            </button>
+                          ) : (
+                            <>
+                              <button
+                                className="pc-cta d-none d-md-flex"
+                                onClick={() => {
+                                  const lifetimePlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"));
+                                  if (lifetimePlan) handleCheckout(lifetimePlan);
+                                }}
+                              >
+                                Get Lifetime
+                              </button>
+                              <a
+                                href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.buyUrl}`}
+                                className="pc-cta d-flex d-md-none"
+                              >
+                                Get Lifetime
+                              </a>
+                            </>
+                          )
+                        ) : (
+                          <>
+                            <button
+                              className="pc-cta d-none d-md-flex"
+                              onClick={() => {
+                                const lifetimePlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"));
+                                if (lifetimePlan) handleCheckout(lifetimePlan);
+                              }}
+                            >
+                              Get Lifetime
+                            </button>
+                            <a
+                              href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.buyUrl}`}
+                              className="pc-cta d-flex d-md-none"
+                            >
+                              Get Lifetime
+                            </a>
+                          </>
+                        )}
+                      </div>
+                      <div className="pc-body">
+                        <PricingCategoryList tier="lifetime" />
+                      </div>
+                    </div>
+                  </div>
+              </div>
       </main>
 
       {/* Compare Plans */}

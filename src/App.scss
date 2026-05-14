@@ -18295,7 +18295,10 @@ $ds-font: "Inter", system-ui, sans-serif;
 .pc-header {
   position: relative;
   border-radius: 6px;
-  padding: 22px 22px 24px;
+  // Bottom padding trimmed from 24 → 12 to absorb the larger price-main
+  // text + the increased margin-top on the savings pill below, so the
+  // total header height stays the same as before.
+  padding: 22px 22px 12px;
   margin-bottom: 8px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -18379,9 +18382,20 @@ $ds-font: "Inter", system-ui, sans-serif;
   color: rgba(255, 255, 255, 0.6);
   font: 400 14px/1.4 Inter, system-ui, sans-serif;
   max-width: 100%;
+  // Force left alignment so the description renders the same on both home
+  // and /pricing — the /pricing page wraps the cards in a main that
+  // inherits centering from the hero, which would otherwise center the
+  // tagline inside the card header.
+  text-align: left;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Hard-left-align all card content so the cards on /pricing match the
+   home-page section regardless of what the parent's text-align inherits. */
+.pc-card {
+  text-align: left;
 }
 
 .pc-price-row {
@@ -18390,8 +18404,11 @@ $ds-font: "Inter", system-ui, sans-serif;
   gap: 4px;
 }
 .pc-price-main {
-  font: 800 32px/1 Inter, system-ui, sans-serif;
-  letter-spacing: -0.6px;
+  // ~25% larger than the previous 32px so the price reads more dominant
+  // in the header. Period text + strike-through original stay at their
+  // previous sizes for hierarchy.
+  font: 800 40px/1 Inter, system-ui, sans-serif;
+  letter-spacing: -0.8px;
   color: #fff;
 }
 .pc-price-period {
@@ -18541,11 +18558,18 @@ $ds-font: "Inter", system-ui, sans-serif;
   font: 500 14px/1 Inter, system-ui, sans-serif;
   text-decoration: none;
   cursor: pointer;
-  transition: opacity 200ms, transform 150ms, background 200ms, box-shadow 200ms;
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease,
+    box-shadow 150ms ease, transform 150ms ease;
+  /* High-contrast hover: full white background + black text, applied to
+     every CTA variant for consistency. Includes the icon SVGs so they
+     also invert to black on hover. */
   &:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.07);
+    background: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
     transform: translateY(-1px);
-    color: #fff;
+
+    svg { color: #000000; }
   }
   &:disabled {
     opacity: 0.5;
@@ -18555,13 +18579,20 @@ $ds-font: "Inter", system-ui, sans-serif;
 .pc-cta-primary {
   background: linear-gradient(180deg, #00b8b2 0%, #00b8b2 100%);
   border-color: rgba(0, 184, 178, 0.35);
-  color: #04221c;
+  color: #ffffff;
   font-weight: 600;
   box-shadow: 0 8px 22px -4px rgba(0, 184, 178, 0.4);
+
+  svg { color: #ffffff; }
   &:hover:not(:disabled) {
-    background: linear-gradient(180deg, #00b8b2 0%, #00b8b2 100%);
-    color: #04221c;
-    box-shadow: 0 12px 28px -4px rgba(0, 184, 178, 0.5);
+    /* Primary CTA shares the white/black hover treatment for a
+       consistent interaction pattern across all 4 cards. */
+    background: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+    box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.35);
+
+    svg { color: #000000; }
   }
 }
 
@@ -18797,7 +18828,10 @@ $ds-font: "Inter", system-ui, sans-serif;
 }
 
 .pc-price-highlight {
-  margin-top: 6px;
+  // Bumped from 6 → 18 to push the savings pill lower in the header — more
+  // breathing room between the larger price block above and the pill, less
+  // dead space below it (paired with reduced .pc-header bottom padding).
+  margin-top: 18px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -20610,10 +20644,19 @@ $ds-font: "Inter", system-ui, sans-serif;
 
 .pricing-compare-sub {
   margin: 0;
-  max-width: 560px;
+  max-width: none;
+  white-space: nowrap;
   font-size: clamp(14.5px, 1.3vw, 16px);
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.6);
+
+  // Allow wrap on narrow viewports so the sentence doesn't overflow the
+  // viewport on mobile — only force single-line on tablet/desktop where
+  // there's room.
+  @media (max-width: 640px) {
+    white-space: normal;
+    max-width: 560px;
+  }
 }
 
 .pricing-compare-table-wrap {

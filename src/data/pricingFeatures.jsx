@@ -143,39 +143,6 @@ export const PRICING_CATEGORIES = [
     ],
   },
   {
-    key: "collections",
-    label: "Collections & Playlists",
-    icon: "collections",
-    iconImage: "/figma-rows/collections%20and%20playlists.png",
-    intro: "Import full profiles and playlists, up to 3,000 videos per link.",
-    features: [
-      {
-        name: "TikTok Collections",
-        tooltip: "Save TikToks into a TikTok Collection, then paste the collection link. TokScript extracts every video in one shot.",
-        tiers: ["monthly", "annual", "lifetime"],
-        platforms: ["tiktok"],
-      },
-      {
-        name: "YouTube Playlists",
-        tooltip: "Drop in a YouTube playlist URL and TokScript pulls every video. Works on Shorts playlists and long-form video playlists alike.",
-        tiers: ["monthly", "annual", "lifetime"],
-        platforms: ["youtube"],
-      },
-      {
-        name: "Instagram Profiles",
-        tooltip: "Pull every Reel from any Instagram profile in a single batch, up to 3,000 videos per import.",
-        tiers: ["monthly", "annual", "lifetime"],
-        platforms: ["instagram"],
-      },
-      {
-        name: "Up to 3,000 videos",
-        tooltip: "Each import can process up to 3,000 videos at once. Run multiple imports if you need more — there's no monthly cap.",
-        tiers: ["monthly", "annual", "lifetime"],
-        platforms: ["tiktok", "instagram", "youtube"],
-      },
-    ],
-  },
-  {
     key: "chrome",
     label: "Chrome Extension",
     icon: "chrome",
@@ -215,6 +182,39 @@ export const PRICING_CATEGORIES = [
       {
         name: "Bulk import social links",
         tooltip: "Paste a list of TikTok, Instagram, or YouTube links and the extension queues them all for processing.",
+        tiers: ["monthly", "annual", "lifetime"],
+        platforms: ["tiktok", "instagram", "youtube"],
+      },
+    ],
+  },
+  {
+    key: "collections",
+    label: "Collections & Playlists",
+    icon: "collections",
+    iconImage: "/figma-rows/collections%20and%20playlists.png",
+    intro: "Import full profiles and playlists, up to 3,000 videos per link.",
+    features: [
+      {
+        name: "TikTok Collections",
+        tooltip: "Save TikToks into a TikTok Collection, then paste the collection link. TokScript extracts every video in one shot.",
+        tiers: ["monthly", "annual", "lifetime"],
+        platforms: ["tiktok"],
+      },
+      {
+        name: "YouTube Playlists",
+        tooltip: "Drop in a YouTube playlist URL and TokScript pulls every video. Works on Shorts playlists and long-form video playlists alike.",
+        tiers: ["monthly", "annual", "lifetime"],
+        platforms: ["youtube"],
+      },
+      {
+        name: "Instagram Profiles",
+        tooltip: "Pull every Reel from any Instagram profile in a single batch, up to 3,000 videos per import.",
+        tiers: ["monthly", "annual", "lifetime"],
+        platforms: ["instagram"],
+      },
+      {
+        name: "Up to 3,000 videos",
+        tooltip: "Each import can process up to 3,000 videos at once. Run multiple imports if you need more — there's no monthly cap.",
         tiers: ["monthly", "annual", "lifetime"],
         platforms: ["tiktok", "instagram", "youtube"],
       },
@@ -372,29 +372,31 @@ export const PRICING_CATEGORIES = [
     label: "API Access",
     iconImage: "/figma-rows/API%20Access.png",
     intro: "Every TokScript action as a REST endpoint for scripts and agents.",
+    /* API is Annual + Lifetime only — Monthly tier excluded from `tiers` on
+       every feature so the Monthly card's bucket header shows X. */
     features: [
       {
         name: "REST endpoints",
         tooltip: "Every TokScript action exposed as a clean HTTPS endpoint. Auth via API key, predictable URL structure.",
-        tiers: ["monthly", "annual", "lifetime"],
+        tiers: ["annual", "lifetime"],
         platforms: ["tiktok", "instagram", "youtube"],
       },
       {
         name: "JSON responses",
         tooltip: "Structured JSON payloads — easy to parse with any HTTP client in any language.",
-        tiers: ["monthly", "annual", "lifetime"],
+        tiers: ["annual", "lifetime"],
         platforms: ["tiktok", "instagram", "youtube"],
       },
       {
         name: "Built for automation",
         tooltip: "Plug into n8n, Zapier, Make, custom scripts, or your own agent stack. TokScript is automation-first.",
-        tiers: ["monthly", "annual", "lifetime"],
+        tiers: ["annual", "lifetime"],
         platforms: ["tiktok", "instagram", "youtube"],
       },
       {
         name: "Same 28 actions as MCP",
         tooltip: "Every MCP tool is also a REST endpoint. Use either depending on whether you're building in chat or in code.",
-        tiers: ["monthly", "annual", "lifetime"],
+        tiers: ["annual", "lifetime"],
         platforms: ["tiktok", "instagram", "youtube"],
       },
     ],
@@ -402,10 +404,10 @@ export const PRICING_CATEGORIES = [
   {
     key: "direct",
     label: "Direct Access",
+    iconImage: "/figma-rows/Direct%20Access.png",
     intro: "Direct WhatsApp line to the TokScript team, priority support.",
-    /* Bucket hidden entirely for tiers not in this list. The other 9 buckets
-       render on every tier (with disabled rows for inaccessible items). */
-    onlyForTiers: ["lifetime"],
+    /* Renders on every tier — non-lifetime tiers get the bucket-level X
+       and disabled rows so the upgrade story stays visible across cards. */
     features: [
       {
         name: "Direct access via WhatsApp",

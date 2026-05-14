@@ -2019,9 +2019,6 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                       </div>
                       <div className="pc-body">
                         <PricingCategoryList tier="free" />
-                        <a href="#" onClick={(e) => { e.preventDefault(); setActiveTab("annual"); }} className="pc-upgrade-link">
-                          Unlock Everything → Upgrade To Annual
-                        </a>
                       </div>
                     </div>
                   </div>
