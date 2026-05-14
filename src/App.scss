@@ -19236,20 +19236,39 @@ $ds-font: "Inter", system-ui, sans-serif;
    it sits in the same rhythm as the other categories. The NEW tag beside the
    header keeps its prominence. */
 
-/* Section header for each feature group inside a pricing card. Rendered in
-   uppercase so it reads as a section divider rather than another row, with a
-   slight letter-spacing kick to keep the caps from feeling cramped. */
+/* Bucket header — clickable button that toggles the bucket's expanded body.
+   Renders as a row with label on the left, status (✓ / ✗ / "5/day") next to
+   it, and a chevron toggle on the right that rotates 180° when open. Resets
+   <button> defaults so it visually reads as a section row rather than a
+   button. */
 .pc-cat-header {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 12px 0 8px;
+  width: 100%;
+  background: transparent;
+  border: none;
   color: #ffffff;
   font-family: $ds-font;
-  font-size: 12px;
+  font-size: 13.5px;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  text-align: left;
+  transition: color 150ms ease;
+
+  &:hover .pc-cat-header-label,
+  &:focus-visible .pc-cat-header-label {
+    color: #ffffff;
+  }
+
+  /* Dim the title when the bucket has no access on this tier (locked
+     state). Lets users still see what's inside on expand, but reads as
+     muted so it doesn't compete with accessible buckets. */
+  .pc-cat-group.is-locked & .pc-cat-header-label {
+    color: rgba(255, 255, 255, 0.42);
+  }
 }
 /* Explicit color / weight / size on the label span so it wins over the global
    `span { color: $text_primary; font-weight: 400; }` rule in global.scss. */
@@ -19281,6 +19300,36 @@ $ds-font: "Inter", system-ui, sans-serif;
     0 0 24px rgba(0, 184, 178, 0.25);
 }
 
+/* Colored icon tile next to each bucket title. Matches the mockup's
+   `.icon-tile` palette — one tinted square per bucket so the categories
+   are scannable at a glance. */
+.pc-cat-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.05);
+  color: #c4c4cf;
+
+  svg { width: 12px; height: 12px; }
+
+  &.is-transcripts { background: rgba(110, 160, 255, 0.10); color: #a8c2ff; }
+  &.is-mcp         { background: rgba(255, 255, 255, 0.06); color: #d6d6dd; }
+  &.is-collections { background: rgba(255, 107, 157, 0.10); color: #ffa8c8; }
+  &.is-chrome      { background: rgba(255, 200, 107, 0.10); color: #ffd9a3; }
+  &.is-download    { background: rgba(255, 168, 107, 0.10); color: #ffc8a3; }
+  &.is-library     { background: rgba(179, 155, 255, 0.10); color: #d2c4ff; }
+  &.is-exports     { background: rgba(255, 210, 90, 0.10);  color: #ffe28a; }
+  &.is-agents      { background: rgba(110, 231, 168, 0.10); color: #b1f5cd; }
+  &.is-api         { background: rgba(110, 231, 225, 0.10); color: #90e8e4; }
+  &.is-direct      { background: rgba(0, 184, 178, 0.14);   color: #00b8b2; }
+
+  .pc-cat-group.is-locked & { opacity: 0.55; }
+}
+
 /* Small chip badge, e.g. "5 / day" — pushed to right of the section header. */
 .pc-cat-badge {
   font-family: $ds-font;
@@ -19293,6 +19342,66 @@ $ds-font: "Inter", system-ui, sans-serif;
   padding: 3px 8px;
   white-space: nowrap;
   margin-left: auto;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Bucket-level status indicator on the right of the header — ✓ for buckets
+   the current tier can access, ✗ for buckets it can't. Replaces the
+   per-row check/dash that lived inside each feature item. */
+.pc-cat-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  flex-shrink: 0;
+
+  &.is-check {
+    color: #00b8b2;
+  }
+  &.is-cross {
+    color: rgba(255, 255, 255, 0.32);
+  }
+}
+
+/* Down-chevron toggle on the bucket header. Rotates 180° when the parent
+   group has `.is-expanded`. */
+.pc-cat-chevron {
+  color: rgba(255, 255, 255, 0.45);
+  flex-shrink: 0;
+  margin-left: 4px;
+  transition: transform 220ms ease, color 150ms ease;
+
+  .pc-cat-header:hover &,
+  .pc-cat-header:focus-visible & {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .pc-cat-group.is-expanded & {
+    transform: rotate(180deg);
+  }
+}
+
+/* Body shown when the bucket is expanded. Contains intro + features list. */
+.pc-cat-body {
+  padding: 2px 0 12px;
+  animation: pcCatBodyFadeIn 180ms ease;
+}
+@keyframes pcCatBodyFadeIn {
+  from { opacity: 0; transform: translateY(-2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Small 1-2 line intro under each bucket header — describes what the
+   bucket covers at a glance. Sits between header and feature rows. */
+.pc-cat-intro {
+  font-family: $ds-font;
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.52);
+  margin: 2px 0 8px;
+  padding: 0;
 }
 
 /* Flat list of feature rows under a section header. */
@@ -19407,7 +19516,49 @@ $ds-font: "Inter", system-ui, sans-serif;
   font-size: 13.5px;
   font-weight: 500;
   color: inherit;
+  // Grow to fill available space so platforms + (i) settle to the right
+  // edge. min-width:0 + line-height:1.3 allow the name to wrap to a second
+  // line on narrow cards without breaking row alignment.
+  flex: 1 1 auto;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+/* Per-row platform indicators (TikTok / IG / YT for social rows, Claude /
+   ChatGPT / Manus for AI rows). Sits between the name and the (i) tooltip,
+   pushed right via the name's flex-grow. Hidden by aria but kept visible
+   as a quick signal of which platforms a feature covers. */
+.pc-cat-feature-platforms {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.55);
+
+  .pc-cat-feature.is-disabled & {
+    opacity: 0.4;
+  }
+}
+.pc-cat-feature-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+
+  svg {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+  }
+
+  /* AI brand marks (Claude / ChatGPT / Manus) carry their own brand colors
+     and look better at a slightly larger size, since they have to compete
+     with their fills rather than a monochrome silhouette. */
+  &.is-ai svg {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+  }
 }
 
 /* (i) info icon on the right side of each feature row.
@@ -20460,7 +20611,7 @@ $ds-font: "Inter", system-ui, sans-serif;
   border-collapse: collapse;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.85);
-  min-width: 720px;
+  min-width: 860px;
 
   thead th {
     position: sticky;
@@ -20503,13 +20654,22 @@ $ds-font: "Inter", system-ui, sans-serif;
       border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
 
+    /* Subtle alternating zebra stripe so a long row's eye doesn't drift. */
+    tr:nth-child(even of :not(.pc-section-row)) {
+      background: rgba(255, 255, 255, 0.012);
+    }
+
+    tr:hover:not(.pc-section-row) {
+      background: rgba(255, 255, 255, 0.025);
+    }
+
     th[scope="row"] {
       text-align: left;
-      padding: 12px 16px;
+      padding: 13px 16px;
       font-weight: 500;
       color: rgba(255, 255, 255, 0.85);
-      width: 36%;
-      min-width: 240px;
+      width: 38%;
+      min-width: 260px;
       position: sticky;
       left: 0;
       background: hsla(240, 15%, 9%, 1);
@@ -20517,7 +20677,7 @@ $ds-font: "Inter", system-ui, sans-serif;
     }
 
     td {
-      padding: 12px 16px;
+      padding: 13px 16px;
       text-align: center;
       vertical-align: middle;
       color: rgba(255, 255, 255, 0.75);
@@ -20529,7 +20689,7 @@ $ds-font: "Inter", system-ui, sans-serif;
     }
 
     .pc-na {
-      color: rgba(255, 255, 255, 0.3);
+      color: rgba(255, 255, 255, 0.28);
     }
 
     .pc-col-featured {
@@ -20543,20 +20703,94 @@ $ds-font: "Inter", system-ui, sans-serif;
     }
   }
 
+  /* Group header row — darker bg, icon tile, label + 1-line intro. The
+     row spans all 5 columns. Sticky-left rule on `th[scope="row"]` doesn't
+     fire here since this is a `rowgroup` cell, so it scrolls normally with
+     the table. */
   .pc-section-row {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.04);
   }
 
   .pc-section-row th {
-    padding: 14px 16px;
+    padding: 16px 16px;
     text-align: left;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.55);
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.04);
     position: static;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+
+    .pc-row-tile {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      vertical-align: middle;
+      margin-right: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #c4c4cf;
+
+      svg { width: 12px; height: 12px; }
+
+      &.is-transcripts { background: rgba(110, 160, 255, 0.10); color: #a8c2ff; }
+      &.is-mcp         { background: rgba(255, 255, 255, 0.06); color: #d6d6dd; }
+      &.is-collections { background: rgba(255, 107, 157, 0.10); color: #ffa8c8; }
+      &.is-chrome      { background: rgba(255, 200, 107, 0.10); color: #ffd9a3; }
+      &.is-download    { background: rgba(255, 168, 107, 0.10); color: #ffc8a3; }
+      &.is-library     { background: rgba(179, 155, 255, 0.10); color: #d2c4ff; }
+      &.is-exports     { background: rgba(255, 210, 90, 0.10);  color: #ffe28a; }
+      &.is-agents      { background: rgba(110, 231, 168, 0.10); color: #b1f5cd; }
+      &.is-api         { background: rgba(110, 231, 225, 0.10); color: #90e8e4; }
+      &.is-direct      { background: rgba(0, 184, 178, 0.14);   color: #00b8b2; }
+    }
+
+    .pc-row-label {
+      font-family: $ds-font;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.005em;
+      margin-right: 12px;
+    }
+
+    .pc-row-intro {
+      font-family: $ds-font;
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0;
+      text-transform: none;
+    }
+  }
+
+  /* Feature-name cell — label + optional brand glyphs trailing. Glyphs
+     sit inline next to the name so the row reads as "feature for these
+     platforms". */
+  .pc-feat-name {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .pc-feat-platforms {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: 10px;
+    vertical-align: middle;
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  .pc-feat-glyph {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+
+    svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+    &.is-ai svg { width: 14px; height: 14px; border-radius: 50%; }
   }
 }
 

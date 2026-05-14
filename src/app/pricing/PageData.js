@@ -16,10 +16,53 @@ import {
   ChevronDown,
   ArrowRight,
   Lock,
+  FileText,
+  LayoutGrid,
+  Download,
+  BookOpen,
+  FileUp,
+  Sparkles,
+  Code,
+  Zap,
+  Chrome,
+  Network,
 } from "lucide-react";
 import Header from "@/components/Header";
 import ShareBar from "@/components/ShareBar";
 import PricingCategoryList from "@/components/PricingCategoryList";
+import PRICING_CATEGORIES, { PLATFORM_GLYPH_MAP } from "@/data/pricingFeatures";
+
+// Same bucket icon map used in PricingCategoryList — keeps the compare-table
+// group rows visually aligned with the pricing-card bucket tiles.
+const COMPARE_BUCKET_ICONS = {
+  transcripts: FileText,
+  mcp: Network,
+  collections: LayoutGrid,
+  chrome: Chrome,
+  download: Download,
+  library: BookOpen,
+  exports: FileUp,
+  agents: Sparkles,
+  api: Code,
+  direct: Zap,
+};
+
+// Cell content for a feature × tier intersection. Returns either a check
+// icon (accessible), the "5 / day" hint for free's transcripts, or an em-
+// dash for locked. Kept inline rather than as a sub-component so React-Bootstrap's
+// table consumer can render it without an extra wrapper.
+function CompareCell({ feature, tier, isFeatured, isFreeTranscriptsCell }) {
+  const accessible = feature.tiers.includes(tier);
+  const className = `${isFeatured ? "pc-col-featured " : ""}${!accessible ? "pc-na" : ""}`.trim();
+  if (isFreeTranscriptsCell) {
+    return <td className={className}>5 / day</td>;
+  }
+  return (
+    <td className={className}>
+      {accessible ? <Check size={16} strokeWidth={3} /> : "—"}
+    </td>
+  );
+}
 import dynamic from "next/dynamic";
 const Footer = dynamic(() => import("@/components/Footer"));
 const ViralMomentsCarousel = dynamic(() => import("@/components/ViralMomentsCarousel"), { ssr: false });
@@ -905,51 +948,69 @@ export default function PricingPage({ initialProductsData }) {
                 <tr>
                   <th scope="col" className="pc-feat-col">Feature</th>
                   <th scope="col">Free</th>
+                  <th scope="col">Monthly</th>
                   <th scope="col" className="pc-col-featured">
                     <span className="pc-col-featured-label">
                       <Crown size={14} strokeWidth={2.5} /> Annual
                     </span>
                   </th>
-                  <th scope="col">Monthly</th>
+                  <th scope="col">Lifetime</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="pc-section-row"><th colSpan={4} scope="rowgroup">Transcripts</th></tr>
-                <tr><th scope="row">Daily transcripts</th><td>5 / day</td><td className="pc-col-featured">Unlimited</td><td>Unlimited</td></tr>
-                <tr><th scope="row">Daily translations</th><td>5 / day</td><td className="pc-col-featured">Unlimited</td><td>Unlimited</td></tr>
-                <tr><th scope="row">TikTok, Reels, Shorts support</th><td><Check size={16} strokeWidth={3} /></td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
-                <tr><th scope="row">Export formats (TXT, PDF, XML)</th><td><Check size={16} strokeWidth={3} /></td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
-
-                <tr className="pc-section-row"><th colSpan={4} scope="rowgroup">Bulk Processing</th></tr>
-                <tr><th scope="row">Bulk import up to 50 videos</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
-                <tr><th scope="row">TikTok Collection imports</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
-                <tr><th scope="row">Bulk export all transcripts</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
-                <tr><th scope="row">HD video downloads (no watermark)</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
-                <tr><th scope="row">Cover image downloads</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
-
-                <tr className="pc-section-row"><th colSpan={4} scope="rowgroup">AI Agents</th></tr>
-                <tr><th scope="row">Viral Hook Generator</th><td className="pc-na">—</td><td className="pc-col-featured">Unlimited</td><td>Unlimited</td></tr>
-                <tr><th scope="row">Viral Script Writer</th><td className="pc-na">—</td><td className="pc-col-featured">Unlimited</td><td>Unlimited</td></tr>
-                <tr><th scope="row">Virality Explainer</th><td className="pc-na">—</td><td className="pc-col-featured">Unlimited</td><td>Unlimited</td></tr>
-
-                <tr className="pc-section-row"><th colSpan={4} scope="rowgroup">Integrations</th></tr>
-                <tr><th scope="row">Claude integration</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
-                <tr><th scope="row">ChatGPT integration</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
-                <tr><th scope="row">Chrome Extension</th><td>Basic</td><td className="pc-col-featured">Full</td><td>Full</td></tr>
-                <tr><th scope="row">Mobile + Desktop apps</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
-                <tr><th scope="row">Cloud-synced dashboard</th><td><Check size={16} strokeWidth={3} /></td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
-
-                <tr className="pc-section-row"><th colSpan={4} scope="rowgroup">Teams &amp; Sharing</th></tr>
-                <tr><th scope="row">Team workspaces</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
-                <tr><th scope="row">Real-time collaboration</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
-                <tr><th scope="row">Permission controls</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
-
-                <tr className="pc-section-row"><th colSpan={4} scope="rowgroup">Billing</th></tr>
-                <tr><th scope="row">Price</th><td>$0 forever</td><td className="pc-col-featured">$39 / year</td><td>$10 / month</td></tr>
-                <tr><th scope="row">Effective monthly rate</th><td>Free</td><td className="pc-col-featured">$3.25 / month</td><td>$10 / month</td></tr>
-                <tr><th scope="row">Annual savings</th><td className="pc-na">—</td><td className="pc-col-featured">Save $81</td><td className="pc-na">—</td></tr>
-                <tr><th scope="row">Cancel anytime</th><td><Check size={16} strokeWidth={3} /></td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
-                <tr><th scope="row">7-day refund</th><td className="pc-na">—</td><td className="pc-col-featured"><Check size={16} strokeWidth={3} /></td><td><Check size={16} strokeWidth={3} /></td></tr>
+                {PRICING_CATEGORIES.map((cat) => {
+                  const Icon = COMPARE_BUCKET_ICONS[cat.key];
+                  return (
+                    <React.Fragment key={cat.key}>
+                      <tr className="pc-section-row">
+                        <th colSpan={5} scope="rowgroup">
+                          <span className={`pc-row-tile is-${cat.key}`} aria-hidden="true">
+                            {Icon && <Icon size={12} strokeWidth={2} />}
+                          </span>
+                          <span className="pc-row-label">{cat.label}</span>
+                          {cat.intro && (
+                            <span className="pc-row-intro">{cat.intro}</span>
+                          )}
+                        </th>
+                      </tr>
+                      {cat.features.map((feature) => {
+                        const isFreeTr =
+                          cat.key === "transcripts" &&
+                          ["Individual videos", "Translations"].includes(feature.name);
+                        return (
+                          <tr key={`${cat.key}-${feature.name}`}>
+                            <th scope="row">
+                              <span className="pc-feat-name">{feature.name}</span>
+                              {feature.platforms && feature.platforms.length > 0 && (
+                                <span className="pc-feat-platforms" aria-hidden="true">
+                                  {feature.platforms.map((pkey) => {
+                                    const g = PLATFORM_GLYPH_MAP[pkey];
+                                    if (!g) return null;
+                                    const { Glyph, label: gLabel } = g;
+                                    const isAi = ["claude", "chatgpt", "manus"].includes(pkey);
+                                    return (
+                                      <span
+                                        key={pkey}
+                                        className={`pc-feat-glyph${isAi ? " is-ai" : ""}`}
+                                        aria-label={gLabel}
+                                      >
+                                        <Glyph />
+                                      </span>
+                                    );
+                                  })}
+                                </span>
+                              )}
+                            </th>
+                            <CompareCell feature={feature} tier="free" isFreeTranscriptsCell={isFreeTr} />
+                            <CompareCell feature={feature} tier="monthly" />
+                            <CompareCell feature={feature} tier="annual" isFeatured />
+                            <CompareCell feature={feature} tier="lifetime" />
+                          </tr>
+                        );
+                      })}
+                    </React.Fragment>
+                  );
+                })}
               </tbody>
             </table>
           </div>

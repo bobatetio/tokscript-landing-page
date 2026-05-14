@@ -16,6 +16,7 @@ import {
   Crown,
 } from "lucide-react";
 import { LemonProducts } from "@/components/LemonProducts";
+import PRICING_CATEGORIES from "@/data/pricingFeatures";
 import ClaudeIcon from "../../assets/images/icons/ai/ClaudeIcon";
 import ChatGPTIcon from "../../assets/images/icons/ai/ChatGPTIcon";
 
@@ -883,15 +884,15 @@ function PwToggle({ showPw, setShowPw }) {
    the parent CSS rule on `.dont-miss-mobile-paywall`. */
 function MobilePaywallV2({ t, selectedTier, setSelectedTier, onConfirm }) {
   const tr = t?.dontMissOutModal?.mobilePaywall || {};
-  const checklist = tr.checklist || [
-    { check: true, label: "Unlimited transcripts & bulk downloads" },
-    { check: true, label: "Unlimited translations" },
-    { check: true, label: "Instagram Reels & YouTube Shorts (unlimited)" },
-    { check: true, label: "Download HD videos (no watermark)" },
-    { check: true, label: "Download Cover Images" },
-    { check: false, label: "Export videos without watermark" },
-    { check: true, label: "Approved for commercial use" },
-  ];
+  // Mirror the pricing cards: one row per pricing-card bucket, with a check
+  // if the currently-selected tier has access to anything in that bucket,
+  // an X otherwise. Selecting a different tier card below updates this list
+  // live, so users can see exactly what each plan includes.
+  const checklistTier = selectedTier || "annual";
+  const checklist = PRICING_CATEGORIES.map((cat) => ({
+    check: cat.features.some((f) => f.tiers.includes(checklistTier)),
+    label: cat.label,
+  }));
   const tiers = [
     { key: "free", label: "FREE", price: "$0", period: "/forever", ctaPrice: "$0/forever" },
     { key: "monthly", label: "MONTHLY", price: "$10", period: "/month", ctaPrice: "$10/month" },

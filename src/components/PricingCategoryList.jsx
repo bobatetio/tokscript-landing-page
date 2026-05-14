@@ -1,131 +1,168 @@
 "use client";
 
-import { Fragment } from "react";
-import { Check, Minus, Info } from "lucide-react";
-import PRICING_CATEGORIES, { PLATFORM_GLYPHS } from "@/data/pricingFeatures";
+import { useState } from "react";
+import {
+  Check,
+  X,
+  ChevronDown,
+  FileText,
+  LayoutGrid,
+  Download,
+  BookOpen,
+  FileUp,
+  Sparkles,
+  Code,
+  Zap,
+  Chrome,
+  Network,
+} from "lucide-react";
+import PRICING_CATEGORIES, { PLATFORM_GLYPH_MAP } from "@/data/pricingFeatures";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
+// Colored icon-tile per bucket, matching the mockup's `.icon-tile` palette.
+// Keyed by `category.key` so adding a new bucket only needs a single entry
+// here plus the tint class in App.scss (.pc-cat-tile.is-<key>).
+const BUCKET_ICONS = {
+  transcripts: FileText,
+  mcp: Network,
+  collections: LayoutGrid,
+  chrome: Chrome,
+  download: Download,
+  library: BookOpen,
+  exports: FileUp,
+  agents: Sparkles,
+  api: Code,
+  direct: Zap,
+};
+
 export default function PricingCategoryList({ tier }) {
+  // Track which buckets are expanded — keyed by category.key.
+  // Default: all collapsed (matches the pricing-mockup-13.html behavior).
+  const [expanded, setExpanded] = useState({});
+
+  const toggle = (key) =>
+    setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
+
   return (
     <div className="pc-category-list">
       {PRICING_CATEGORIES.map((category) => {
+        // Skip the entire bucket if it's gated to specific tiers (e.g. the
+        // Direct Access bucket on Lifetime only).
+        if (category.onlyForTiers && !category.onlyForTiers.includes(tier)) {
+          return null;
+        }
+
         const hasAccess = category.features.some((f) =>
           f.tiers.includes(tier)
         );
-        const label = category.tierLabels?.[tier] ?? category.key;
+        const label = category.label ?? category.tierLabels?.[tier] ?? category.key;
         const isHighlighted = category.key === "mcp" && tier !== "free";
-        const inlineGlyphsAllowed =
-          category.inlineGlyphsTiers?.includes(tier) ?? true;
+        const isFreeTranscripts = tier === "free" && category.key === "transcripts";
+        const isExpanded = !!expanded[category.key];
 
         return (
           <div
             key={category.key}
-            className={`pc-cat-group${isHighlighted ? " is-highlighted" : ""}`}
+            className={`pc-cat-group${isHighlighted ? " is-highlighted" : ""}${isExpanded ? " is-expanded" : ""}${!hasAccess ? " is-locked" : ""}`}
           >
-            <div className="pc-cat-header">
+            <button
+              type="button"
+              className="pc-cat-header"
+              onClick={() => toggle(category.key)}
+              aria-expanded={isExpanded}
+              aria-controls={`pc-cat-body-${category.key}`}
+            >
+              {BUCKET_ICONS[category.key] && (
+                <span
+                  className={`pc-cat-tile is-${category.key}`}
+                  aria-hidden="true"
+                >
+                  {(() => {
+                    const Ico = BUCKET_ICONS[category.key];
+                    return <Ico size={12} strokeWidth={2} />;
+                  })()}
+                </span>
+              )}
               <span className="pc-cat-header-label">{label}</span>
               {category.key === "mcp" && hasAccess && (
                 <span className="pc-cat-new-tag">NEW</span>
               )}
-            </div>
+              {isFreeTranscripts ? (
+                <span className="pc-cat-badge">5 / day</span>
+              ) : (
+                <span
+                  className={`pc-cat-status${hasAccess ? " is-check" : " is-cross"}`}
+                  aria-hidden="true"
+                >
+                  {hasAccess ? (
+                    <Check size={14} strokeWidth={3} />
+                  ) : (
+                    <X size={14} strokeWidth={3} />
+                  )}
+                </span>
+              )}
+              <ChevronDown
+                className="pc-cat-chevron"
+                size={14}
+                strokeWidth={2.5}
+                aria-hidden="true"
+              />
+            </button>
 
-            {category.rowIcons && hasAccess && (
-              <div className="pc-section-icons">
-                {category.rowIcons.map((icon) => (
-                  <img
-                    key={icon.src}
-                    src={`${BASE_PATH}${icon.src}`}
-                    alt={icon.alt}
-                    className="pc-section-icon"
-                  />
-                ))}
-              </div>
-            )}
+            {isExpanded && (
+              <div
+                className="pc-cat-body"
+                id={`pc-cat-body-${category.key}`}
+              >
+                {category.intro && (
+                  <p className="pc-cat-intro">{category.intro}</p>
+                )}
 
-            {category.platformGlyphs && hasAccess && (
-              <div className="pc-platform-glyphs">
-                {PLATFORM_GLYPHS.map(({ key, label, Glyph }) => (
-                  <span
-                    key={key}
-                    className="pc-platform-glyph"
-                    aria-label={label}
-                  >
-                    <Glyph />
-                  </span>
-                ))}
-              </div>
-            )}
+                {category.rowIcons && hasAccess && (
+                  <div className="pc-section-icons">
+                    {category.rowIcons.map((icon) => (
+                      <img
+                        key={icon.src}
+                        src={`${BASE_PATH}${icon.src}`}
+                        alt={icon.alt}
+                        className="pc-section-icon"
+                      />
+                    ))}
+                  </div>
+                )}
 
-            <ul className="pc-cat-features">
-              {category.features.map((feature, idx) => {
-                const accessible = feature.tiers.includes(tier);
-                const displayName = feature.nameByTier?.[tier] ?? feature.name;
-                const showInlineGlyphs =
-                  category.inlineGlyphsAfter === idx &&
-                  hasAccess &&
-                  inlineGlyphsAllowed;
-                return (
-                  <Fragment key={feature.name}>
-                    <li
-                      className={`pc-cat-feature${feature.sub ? " has-sub" : ""}${accessible ? "" : " is-disabled"}`}
-                    >
-                      <span className="pc-cat-feature-indicator" aria-hidden="true">
-                        {accessible ? (
-                          <Check
-                            className="pc-cat-check"
-                            size={16}
-                            strokeWidth={3}
-                          />
-                        ) : (
-                          <Minus
-                            className="pc-cat-dash"
-                            size={14}
-                            strokeWidth={2}
-                          />
-                        )}
-                      </span>
-                      <span className="pc-cat-feature-text">
-                        <span className="pc-cat-feature-name">{displayName}</span>
-                        {feature.sub && (
-                          <span className="pc-cat-feature-sub">{feature.sub}</span>
-                        )}
-                      </span>
-                      {feature.tooltip && (
+                <ul className="pc-cat-features">
+                  {category.features.map((feature) => (
+                    <li key={feature.name} className="pc-cat-feature">
+                      <span className="pc-cat-feature-name">{feature.name}</span>
+                      {feature.platforms && feature.platforms.length > 0 && (
                         <span
-                          className="pc-cat-feature-info"
-                          data-tooltip={feature.tooltip}
-                          title={feature.tooltip}
-                          tabIndex={0}
-                          aria-label={feature.tooltip}
+                          className="pc-cat-feature-platforms"
+                          aria-hidden="true"
                         >
-                          <Info size={13} strokeWidth={2} aria-hidden="true" />
+                          {feature.platforms.map((pkey) => {
+                            const glyph = PLATFORM_GLYPH_MAP[pkey];
+                            if (!glyph) return null;
+                            const { Glyph, label: gLabel } = glyph;
+                            const isAi = ["claude", "chatgpt", "manus"].includes(pkey);
+                            return (
+                              <span
+                                key={pkey}
+                                className={`pc-cat-feature-glyph${isAi ? " is-ai" : ""}`}
+                                aria-label={gLabel}
+                              >
+                                <Glyph />
+                              </span>
+                            );
+                          })}
                         </span>
                       )}
                     </li>
-                    {showInlineGlyphs && (
-                      <li className="pc-cat-inline-glyphs" aria-hidden="false">
-                        <span className="pc-cat-feature-indicator" aria-hidden="true" />
-                        <span className="pc-cat-inline-glyphs-row">
-                          {PLATFORM_GLYPHS.map(({ key, label, Glyph }) => (
-                            <span
-                              key={key}
-                              className="pc-platform-glyph"
-                              aria-label={label}
-                            >
-                              <Glyph />
-                            </span>
-                          ))}
-                          <span className="pc-cat-inline-glyphs-label">
-                            All Platforms
-                          </span>
-                        </span>
-                      </li>
-                    )}
-                  </Fragment>
-                );
-              })}
-            </ul>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         );
       })}

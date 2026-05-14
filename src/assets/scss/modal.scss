@@ -222,9 +222,9 @@ body .dont-miss-backdrop,
       // Sized so "You've Used Your 3 Free Guest Transcripts." wraps to
       // exactly 2 lines on a 320px-wide viewport with 62px reserved on
       // the right for the X close button (pitch 20px + header 42px).
-      font-size: 20px;
+      font-size: 23px;
       font-weight: 700;
-      line-height: 1.22;
+      line-height: 1.2;
       letter-spacing: -0.012em;
       // Even out the two lines so the second isn't a stub (modern browsers).
       text-wrap: balance;
