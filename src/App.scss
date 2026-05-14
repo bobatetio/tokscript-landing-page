@@ -19224,10 +19224,11 @@ $ds-font: "Inter", system-ui, sans-serif;
   flex-direction: column;
 }
 
-/* Hairline divider between categories. Last group skips the divider, and the
-   highlighted MCP section uses its own top/bottom borders so we also skip it
-   to avoid doubled lines. */
-.pc-cat-group:not(:last-child):not(.is-highlighted) {
+/* Hairline divider between categories. Last group skips the divider; the
+   `:not(.is-highlighted)` exclusion was removed since MCP no longer has
+   its own boxed highlight border — without this rule it lost its trailing
+   divider entirely. */
+.pc-cat-group:not(:last-child) {
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   padding-bottom: 10px;
 }
@@ -19313,8 +19314,25 @@ $ds-font: "Inter", system-ui, sans-serif;
   flex-shrink: 0;
   background: rgba(255, 255, 255, 0.05);
   color: #c4c4cf;
+  overflow: hidden;
 
   svg { width: 12px; height: 12px; }
+
+  /* When the bucket has a custom iconImage, bump the tile slightly larger
+     so the artwork reads at a glance, drop the background tint, and let
+     the image overshoot the tile bounds via 115% sizing for more presence
+     (overflow:hidden on the parent crops the edges cleanly). */
+  &.has-image {
+    background: transparent;
+    width: 28px;
+    height: 28px;
+  }
+  &.has-image img {
+    width: 115%;
+    height: 115%;
+    object-fit: cover;
+    display: block;
+  }
 
   &.is-transcripts { background: rgba(110, 160, 255, 0.10); color: #a8c2ff; }
   &.is-mcp         { background: rgba(255, 255, 255, 0.06); color: #d6d6dd; }
@@ -20731,8 +20749,21 @@ $ds-font: "Inter", system-ui, sans-serif;
       margin-right: 10px;
       background: rgba(255, 255, 255, 0.05);
       color: #c4c4cf;
+      overflow: hidden;
 
       svg { width: 12px; height: 12px; }
+
+      &.has-image {
+        background: transparent;
+        width: 28px;
+        height: 28px;
+      }
+      &.has-image img {
+        width: 115%;
+        height: 115%;
+        object-fit: cover;
+        display: block;
+      }
 
       &.is-transcripts { background: rgba(110, 160, 255, 0.10); color: #a8c2ff; }
       &.is-mcp         { background: rgba(255, 255, 255, 0.06); color: #d6d6dd; }

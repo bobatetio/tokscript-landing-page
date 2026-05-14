@@ -73,15 +73,22 @@ export default function PricingCategoryList({ tier }) {
               aria-expanded={isExpanded}
               aria-controls={`pc-cat-body-${category.key}`}
             >
-              {BUCKET_ICONS[category.key] && (
+              {(category.iconImage || BUCKET_ICONS[category.key]) && (
                 <span
-                  className={`pc-cat-tile is-${category.key}`}
+                  className={`pc-cat-tile is-${category.key}${category.iconImage ? " has-image" : ""}`}
                   aria-hidden="true"
                 >
-                  {(() => {
-                    const Ico = BUCKET_ICONS[category.key];
-                    return <Ico size={12} strokeWidth={2} />;
-                  })()}
+                  {category.iconImage ? (
+                    <img
+                      src={`${BASE_PATH}${category.iconImage}?v=20260514a`}
+                      alt=""
+                    />
+                  ) : (
+                    (() => {
+                      const Ico = BUCKET_ICONS[category.key];
+                      return <Ico size={12} strokeWidth={2} />;
+                    })()
+                  )}
                 </span>
               )}
               <span className="pc-cat-header-label">{label}</span>

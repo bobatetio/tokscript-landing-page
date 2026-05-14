@@ -960,12 +960,20 @@ export default function PricingPage({ initialProductsData }) {
               <tbody>
                 {PRICING_CATEGORIES.map((cat) => {
                   const Icon = COMPARE_BUCKET_ICONS[cat.key];
+                  const BP = process.env.NEXT_PUBLIC_BASE_PATH || "";
                   return (
                     <React.Fragment key={cat.key}>
                       <tr className="pc-section-row">
                         <th colSpan={5} scope="rowgroup">
-                          <span className={`pc-row-tile is-${cat.key}`} aria-hidden="true">
-                            {Icon && <Icon size={12} strokeWidth={2} />}
+                          <span
+                            className={`pc-row-tile is-${cat.key}${cat.iconImage ? " has-image" : ""}`}
+                            aria-hidden="true"
+                          >
+                            {cat.iconImage ? (
+                              <img src={`${BP}${cat.iconImage}?v=20260514a`} alt="" />
+                            ) : (
+                              Icon && <Icon size={12} strokeWidth={2} />
+                            )}
                           </span>
                           <span className="pc-row-label">{cat.label}</span>
                           {cat.intro && (
