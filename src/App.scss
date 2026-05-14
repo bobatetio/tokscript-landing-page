@@ -20684,14 +20684,14 @@ $ds-font: "Inter", system-ui, sans-serif;
   }
 }
 .pricing-hero-sub-emph {
-  display: inline !important;
+  display: block !important;
+  margin-top: 6px;
   color: #cbd5e1;
   font-weight: 600;
   font-size: inherit !important;
   line-height: inherit !important;
 
   @media (max-width: 480px) {
-    display: block !important;
     margin-top: 4px;
     font-size: 11px !important;
   }
