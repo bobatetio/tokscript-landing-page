@@ -239,6 +239,9 @@ export default function PricingPage({ initialProductsData }) {
   const heroOpacity = useTransform(scrollY, [0, 400], [1, 0]);
   const heroY = useTransform(scrollY, [0, 400], [0, 100]);
   const [activeTab, setActiveTab] = useState("annual");
+  // Mobile compare-table tab — independent from the pricing-card mobile
+  // tabs so users can browse a different plan in each surface.
+  const [activeCompareTier, setActiveCompareTier] = useState("annual");
   const [openFaq, setOpenFaq] = useState(null);
   const [dontMissOutModalShow, setDontMissOutModalShow] = useState(false);
   const [productsData, setProductsData] = useState(initialProductsData);
@@ -558,22 +561,64 @@ export default function PricingPage({ initialProductsData }) {
       <Header />
 
       <main className="container hero-wrapper">
-        {/* Hero */}
-        <motion.div
-          style={{ opacity: heroOpacity, y: heroY }}
-          className="hero-section pricing-hero"
-        >
-          <div className="pricing-hero-eyebrow">Pricing</div>
+        {/* Hero — Figma node 755:1362. Headline (84px Inter Black, sentence
+            case, second line teal-gradient) + subhead + stats panel with an
+            inline teal-tinted trust band along the bottom. No eyebrow pill.
+            Scroll-linked motion removed — heroOpacity dropped the entire
+            block to ~0 as soon as the page scrolled at all, which made
+            the 84px headline read as a faint ghost. */}
+        <div className="hero-section pricing-hero">
+          <div className="pricing-hero-eyebrow">
+            <Sparkles size={13} strokeWidth={0} fill="currentColor" aria-hidden="true" />
+            Used By 41,000+ Creators
+          </div>
 
-          <h1 className="pricing-hero-headline">
-            Pick A Plan. Get To Work.
+          {/* Fresh standalone headline (Figma node 756:1363). Uses
+              completely new class names (ts-figma-headline-*) with no
+              inherited CSS from the previous .pricing-hero-headline rules,
+              so styling can't leak across. */}
+          <h1 className="ts-figma-headline">
+            <span className="ts-figma-headline__row">Pricing that pays for</span>
+            <span className="ts-figma-headline__row ts-figma-headline__row--accent">
+              itself in 24 hours.
+            </span>
           </h1>
 
           <p className="pricing-hero-sub">
-            Free forever for the basics. $39/year for the full toolkit. Built to pay for itself the first week you use it.
+            <span className="pricing-hero-sub-lead">
+              Reverse-engineer viral videos into your own scripts.{" "}
+            </span>
+            <strong className="pricing-hero-sub-emph">
+              Start for free. Upgrade for power.
+            </strong>
           </p>
 
-        </motion.div>
+          <div className="pricing-hero-stats-card">
+            <div className="pricing-hero-stats">
+              <div className="cx-stat">
+                <div className="cx-stat-number">2M+</div>
+                <div className="cx-stat-label">Videos Processed</div>
+              </div>
+              <div className="cx-stat">
+                <div className="cx-stat-number">190K+</div>
+                <div className="cx-stat-label">Profiles Downloaded</div>
+              </div>
+              <div className="cx-stat">
+                <div className="cx-stat-number">120K+</div>
+                <div className="cx-stat-label">Hours Saved</div>
+              </div>
+            </div>
+
+            <div className="pricing-hero-trustband">
+              {/* Solid (filled) lightning bolt — lucide's Zap is outline-only
+                  by default, so we set fill="currentColor" to fill the shape
+                  with the same teal as the text. */}
+              <Zap size={13} strokeWidth={0} fill="currentColor" aria-hidden="true" />
+              <span>99% accurate transcription across 50+ languages</span>
+            </div>
+          </div>
+
+        </div>
 
         {/* Mobile Tabs */}
   <div className="mobile-tabs">
@@ -1044,15 +1089,21 @@ export default function PricingPage({ initialProductsData }) {
               Start Free
             </a>
           </div>
+
+          {/* AI agent pricing link — sits below the main CTAs as a quiet
+              text link with no background, just an arrow. */}
+          <div className="pricing-compare-aimeta">
+            <a href="/api" className="pricing-compare-ailink">
+              Are you an AI Agent? See pricing
+              <ArrowRight size={16} strokeWidth={2} />
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* Creators Talking About TokScript Carousel */}
-      <ViralMomentsCarousel variant="pricing" />
-
-      <HomeSocialProof />
-
-      {/* FAQ + Final CTA */}
+      {/* FAQ — moved above the "Creators Talking About TokScript on TikTok"
+          (ViralMomentsCarousel) section so users see pricing answers before
+          social proof. */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -1077,6 +1128,13 @@ export default function PricingPage({ initialProductsData }) {
           subtitle="Everything you need to know about pricing, plans, billing, and refunds — answered."
         />
       </div>
+
+      {/* Creators Talking About TokScript Carousel */}
+      <ViralMomentsCarousel variant="pricing" />
+
+      {/* HomeSocialProof stats block removed — the same numbers already
+          live in the hero stats card, so showing them again under the
+          tiktok carousel duplicated the trust signal. */}
 
       <div className="mcp-page">
 

@@ -19353,11 +19353,10 @@ $ds-font: "Inter", system-ui, sans-serif;
   svg { width: 12px; height: 12px; }
 
   /* When the bucket has a custom iconImage, bump the tile slightly larger
-     so the artwork reads at a glance, drop the background tint, and let
-     the image overshoot the tile bounds via 115% sizing for more presence
-     (overflow:hidden on the parent crops the edges cleanly). */
+     so the artwork reads at a glance. The per-bucket .is-* tint below
+     stays visible as a soft colored halo behind the image (matches the
+     dominant color of the icon artwork). */
   &.has-image {
-    background: transparent;
     width: 28px;
     height: 28px;
   }
@@ -19368,16 +19367,21 @@ $ds-font: "Inter", system-ui, sans-serif;
     display: block;
   }
 
-  &.is-transcripts { background: rgba(110, 160, 255, 0.10); color: #a8c2ff; }
-  &.is-mcp         { background: rgba(255, 255, 255, 0.06); color: #d6d6dd; }
-  &.is-collections { background: rgba(255, 107, 157, 0.10); color: #ffa8c8; }
-  &.is-chrome      { background: rgba(255, 200, 107, 0.10); color: #ffd9a3; }
-  &.is-download    { background: rgba(255, 168, 107, 0.10); color: #ffc8a3; }
-  &.is-library     { background: rgba(179, 155, 255, 0.10); color: #d2c4ff; }
-  &.is-exports     { background: rgba(255, 210, 90, 0.10);  color: #ffe28a; }
-  &.is-agents      { background: rgba(110, 231, 168, 0.10); color: #b1f5cd; }
-  &.is-api         { background: rgba(110, 231, 225, 0.10); color: #90e8e4; }
-  &.is-direct      { background: rgba(0, 184, 178, 0.14);   color: #00b8b2; }
+  // Uniform neutral grey backing for every bucket tile — lets the
+  // colored icon PNGs carry the visual differentiation themselves.
+  &.is-transcripts,
+  &.is-mcp,
+  &.is-chrome,
+  &.is-collections,
+  &.is-download,
+  &.is-library,
+  &.is-exports,
+  &.is-agents,
+  &.is-api,
+  &.is-direct {
+    background: rgba(255, 255, 255, 0.06);
+    color: #d6d6dd;
+  }
 
   .pc-cat-group.is-locked & { opacity: 0.55; }
 }
@@ -20451,7 +20455,12 @@ $ds-font: "Inter", system-ui, sans-serif;
   object-fit: cover !important;
 }
 
-/* ── /pricing — Hero ── */
+/* ── /pricing — Hero (Figma node 755:1362) ──
+   Exact-spec layout: 84px Inter Black headline (sentence case, second line
+   teal-gradient), muted subhead with a brighter bolded closer, and a
+   glass stats card with a teal-tinted trust band at its bottom edge.
+   Gap rhythm: 27px between headline and subhead, 44px between subhead and
+   stats card — straight from the Figma frame. */
 .pricing-hero,
 .pricing-page-new .pricing-hero {
   position: relative;
@@ -20459,13 +20468,31 @@ $ds-font: "Inter", system-ui, sans-serif;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  max-width: 720px;
+  // Widened so the 84px Inter Black headline doesn't wrap "Pricing that
+  // pays for" onto two lines at typical desktop widths. Stats card uses
+  // its own max-width so this widening doesn't push it past the design.
+  max-width: 1100px;
   margin: 0 auto !important;
-  padding: 64px 16px 72px;
-  gap: 14px;
+  // Top padding trimmed so the hero sits closer to the nav bar; bottom
+  // stays generous to keep breathing room above the pricing grid.
+  padding: 28px 16px 72px;
+  gap: 27px;
+
+  @media (max-width: 1024px) {
+    padding: 24px 20px 56px;
+    gap: 22px;
+  }
 
   @media (max-width: 767px) {
-    padding: 40px 16px 48px;
+    // Reduced side padding so the stats card has more room to breathe
+    // on mobile (the trust band's 49-char string needs every pixel).
+    padding: 18px 10px 48px;
+    gap: 18px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 14px 8px 40px;
+    gap: 16px;
   }
 
   /* Full-width light-ray background — same asset as the home-page hero,
@@ -20497,119 +20524,361 @@ $ds-font: "Inter", system-ui, sans-serif;
   }
 }
 
+/* Eyebrow pill above the headline — uppercase, tracked, teal sparkle +
+   teal-gradient border on a near-black fill. */
 .pricing-hero-eyebrow {
   display: inline-flex;
   align-items: center;
-  height: 35px;
-  padding: 0 14px;
-  border-radius: 50px;
-  background: #202223;
-  color: #ffffff;
-  font-size: 10.9px;
-  font-weight: 500;
-  letter-spacing: normal;
-  text-transform: none;
-}
+  gap: 8px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-family: $inter;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #00b8b2 !important;
+  white-space: nowrap;
+  background:
+    linear-gradient(#0a0a0a, #0a0a0a) padding-box,
+    linear-gradient(135deg, rgba(0, 184, 178, 0.65), rgba(0, 184, 178, 0.15)) border-box;
+  border: 1px solid transparent;
+  box-shadow: 0 0 24px rgba(0, 184, 178, 0.08);
 
-.pricing-hero-headline {
-  margin: 0;
-  font: 800 clamp(34px, 5vw, 56px)/1.05 Inter, system-ui, sans-serif;
-  letter-spacing: -1.5px;
-  color: #ffffff;
-}
+  svg {
+    color: #00b8b2;
+    fill: #00b8b2;
+    stroke: none;
+    flex-shrink: 0;
+  }
 
-.pricing-hero-sub {
-  margin: 0;
-  max-width: 600px;
-  font-size: clamp(15px, 1.5vw, 18px);
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.65);
-}
-
-.pricing-hero-trust {
-  margin: 14px 0 0;
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  column-gap: 12px;
-  row-gap: 4px;
-  font-size: 13.5px;
-  color: rgba(255, 255, 255, 0.45);
-
-  span[aria-hidden="true"] {
-    color: rgba(255, 255, 255, 0.25);
+  @media (max-width: 480px) {
+    font-size: 11px;
+    padding: 6px 13px;
+    letter-spacing: 0.1em;
   }
 }
 
-/* Stats row sitting under the pricing hero — reuses the cx-stat
-   number/label styling but without the dark band, headline, or framing
-   the homepage version uses. */
-.pricing-hero-stats {
+/* ──────────────────────────────────────────────────────────────────────
+   FRESH STANDALONE HEADLINE — Figma node 756:1363
+   ──────────────────────────────────────────────────────────────────────
+   Brand-new class names (.ts-figma-headline*) with no inheritance from any
+   prior rule. Every property is set explicitly + with !important so nothing
+   from global h1 styles, Bootstrap utilities, or legacy pricing rules can
+   reach in and override.
+
+   Spec verbatim from Figma:
+     • Inter Black (font-weight 900)
+     • font-size 84px on desktop, scales down on smaller viewports
+     • letter-spacing -4.2px ≈ -0.05em at 84px
+     • line-height 100.8px ≈ 1.2 ratio
+     • Two lines stacked vertically, centered
+     • Line 1 "Pricing that pays for" — solid white
+     • Line 2 "itself in 24 hours." — vertical gradient #040e0e → #00fff7
+   ───────────────────────────────────────────────────────────────────── */
+.ts-figma-headline {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+  font-family: var(--font-inter), "Inter", system-ui, sans-serif !important;
+  font-weight: 900 !important;
+  font-style: normal !important;
+  // Responsive size — slightly reduced from the 10vw / 84px max so the
+  // headline reads less imposing while still anchoring the section.
+  font-size: clamp(28px, 9vw, 76px) !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.05em !important;
+  color: #ffffff !important;
+  // Prevent any ancestor's transform/opacity from leaking down.
+  opacity: 1 !important;
+  transform: none !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: clamp(32px, 8.5vw, 64px) !important;
+    letter-spacing: -0.04em !important;
+  }
+  @media (max-width: 600px) {
+    font-size: clamp(26px, 9vw, 50px) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.035em !important;
+  }
+}
+
+.ts-figma-headline__row {
+  display: block !important;
+  width: 100% !important;
+  white-space: nowrap !important;
+  font: inherit !important;
+  color: inherit !important;
+  letter-spacing: inherit !important;
+}
+
+.ts-figma-headline__row--accent {
+  // Vertical gradient — lifted the dark stop to a mid-teal so the top of
+  // the text reads clearly instead of fading to near-invisible against
+  // the dark page background.
+  background-image: linear-gradient(180deg, #00b8b2 0%, #00fff7 100%) !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Subhead — Inter regular at 16px slate-400 #94a3b8, with a brighter
+   Inter Semibold 17px #cbd5e1 closer ("Start for free. Upgrade for power."). */
+/* Subhead — clean 2-line wrap with text-wrap: balance so the browser
+   splits the ~87-character sentence into two roughly equal lines on its
+   own. Result: "Reverse-engineer viral videos into your own" / "scripts.
+   Start for free. Upgrade for power." */
+.pricing-hero-sub {
+  margin: 0;
+  max-width: 540px;
+  font-family: $inter;
+  font-size: 16px;
+  line-height: 1.55;
+  color: #94a3b8;
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
+  // Modern browsers balance the two lines so they're roughly equal
+  // length — eliminates the lone "scripts." stuck on its own line.
+  text-wrap: balance;
+
+  @media (max-width: 1024px) {
+    font-size: 15px;
+    max-width: 480px;
+  }
+  @media (max-width: 768px) {
+    font-size: 14px;
+    max-width: 420px;
+  }
+  @media (max-width: 480px) {
+    font-size: 13px;
+    max-width: 320px;
+    line-height: 1.5;
+  }
+}
+
+.pricing-hero-sub-lead {
+  display: inline !important;
+  color: #94a3b8;
+  font-weight: 400;
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+.pricing-hero-sub-emph {
+  // Force inline so the global `strong` rule can't make it block-display
+  // and force a hard line break between "scripts." and "Start for free".
+  display: inline !important;
+  color: #cbd5e1;
+  font-weight: 600;
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+
+/* Stats card (Figma node 755:646) — glass panel with backdrop blur,
+   subtle white border, soft shadow. Contains the 3-stat row + trust band. */
+.pricing-hero-stats-card {
   width: 100%;
-  max-width: 1100px;
-  margin: 4px auto 0;
-  padding: 0 clamp(16px, 4vw, 32px);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(20px, 4vw, 56px);
-  background: transparent;
+  max-width: 880px;
+  margin: 17px auto 0; // 27 + 17 = 44px gap from subhead per Figma
+  background: rgba(26, 38, 43, 0.57);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
 
   @media (max-width: 767px) {
-    margin: 0 auto;
-    gap: 24px;
+    margin-top: 8px;
+  }
+}
+
+/* Three-column stats row inside the card. ALWAYS 3-col (desktop → tablet
+   → mobile). Numbers + labels are left-aligned within each column; labels
+   wrap to a second line as needed (e.g. "VIDEOS / PROCESSED"). No
+   stack-to-column on small mobile — the labels just truncate to two
+   wrapped words to stay readable at any width. */
+.pricing-hero-stats {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 28px 24px;
+
+  @media (max-width: 1024px) {
+    padding: 24px 20px;
+    gap: 14px;
+  }
+  @media (max-width: 600px) {
+    padding: 22px 18px;
+    gap: 10px;
+  }
+  @media (max-width: 420px) {
+    padding: 20px 14px;
+    gap: 8px;
   }
 
   .cx-stat {
     flex: 1 1 0;
-    text-align: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 6px;
+    align-items: flex-start;
+    gap: 14px;
     min-width: 0;
+
+    // Mobile: center number + label inside each column.
+    @media (max-width: 768px) {
+      align-items: center;
+      gap: 10px;
+    }
   }
 
   .cx-stat-number {
-    font-family: "Inter", system-ui, sans-serif;
-    font-size: 40px;
-    font-weight: 800;
-    line-height: 1.12;
-    letter-spacing: -1.4px;
+    font-family: $inter;
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1;
     color: #ffffff;
+    letter-spacing: -0.03em;
     white-space: nowrap;
 
-    @media (max-width: 767px) {
-      font-size: 32px;
-      letter-spacing: -1px;
+    @media (max-width: 1024px) {
+      font-size: 30px;
+    }
+    @media (max-width: 600px) {
+      font-size: 26px;
+    }
+    @media (max-width: 420px) {
+      font-size: 22px;
     }
   }
 
   .cx-stat-label {
-    font-family: "Inter", system-ui, sans-serif;
-    font-size: clamp(14px, 1.4vw, 17px);
-    font-weight: 400;
-    line-height: 1.45;
-    letter-spacing: -0.1px;
-    color: rgba(255, 255, 255, 0.55);
-    max-width: 220px;
+    font-family: $inter;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #64748b;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: left;
+    // Standard word-wrap so multi-word labels break between words
+    // ("VIDEOS PROCESSED" → "VIDEOS / PROCESSED") not inside a word.
+    word-break: normal;
+    overflow-wrap: normal;
 
-    @media (max-width: 767px) {
-      font-size: 14.5px;
+    // Mobile: center under the number.
+    @media (max-width: 768px) {
+      text-align: center;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+    }
+    @media (max-width: 420px) {
+      font-size: 9.5px;
+      letter-spacing: 0.08em;
     }
   }
 }
 
-/* ── /pricing — Compare Plans table ── */
+/* Trust band along the bottom edge of the stats card — top border
+   separator + soft teal tint background + solid teal lightning + label.
+   Text and icon explicitly forced to teal so global rules can't desaturate. */
+.pricing-hero-trustband {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  height: 43px;
+  padding: 0 10px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(34, 211, 238, 0.05);
+  color: #00b8b2 !important;
+  font-family: $inter !important;
+  // Slight bump from the 14/13/11/9 set — adds ~2px so the trust line
+  // reads more comfortably without crowding the container width.
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  white-space: nowrap !important;
+
+  span {
+    color: #00b8b2 !important;
+    white-space: nowrap !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+  }
+
+  svg {
+    color: #00b8b2 !important;
+    fill: #00b8b2 !important;
+    stroke: none !important;
+    flex-shrink: 0 !important;
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 14px !important;
+    svg { width: 14px !important; height: 14px !important; }
+  }
+
+  @media (max-width: 768px) {
+    font-size: 12px !important;
+    height: 42px;
+    gap: 7px !important;
+    padding: 0 10px !important;
+    svg { width: 12px !important; height: 12px !important; }
+  }
+
+  @media (max-width: 480px) {
+    font-size: 10px !important;
+    height: 38px;
+    gap: 5px !important;
+    padding: 0 8px !important;
+    svg { width: 10px !important; height: 10px !important; }
+  }
+}
+
+/* Legacy .pricing-hero-trust + duplicate .pricing-hero-stats removed —
+   the new Figma-spec rules live above (.pricing-hero-stats-card +
+   .pricing-hero-stats nested + .pricing-hero-trustband). */
+
+/* ── /pricing — Compare Plans table ──
+   Light off-white surface running full viewport width (edge-to-edge),
+   with rounded top + bottom corners that read against the dark page
+   sections above and below. */
 .pricing-compare {
   position: relative;
-  padding: clamp(48px, 6vw, 80px) 20px;
+  background: #fafafa;
+  color: #18181b;
+  padding: clamp(64px, 8vw, 100px) clamp(20px, 4vw, 48px);
+  // No horizontal margins — the bg stays full-bleed. Rounded top + bottom
+  // corners (visible because margins above/below let the dark page show
+  // around them) give the section a soft panel feel without breaking the
+  // full-width treatment.
+  margin: 48px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 12px 32px -12px rgba(0, 0, 0, 0.18);
+
+  @media (max-width: 768px) {
+    margin: 32px 0;
+    padding: 48px 16px;
+    border-radius: 18px;
+  }
 }
 
 .pricing-compare-inner {
-  max-width: 1100px;
+  // Matches the .pc-grid max-width (1320px) so the table aligns under
+  // the 4 pricing tier cards above.
+  max-width: 1320px;
   margin: 0 auto;
 }
 
@@ -20618,88 +20887,136 @@ $ds-font: "Inter", system-ui, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 36px;
+  gap: 16px;
+  margin-bottom: 48px;
 }
 
-.pricing-compare-eyebrow {
+/* Eyebrow pill — teal-tinted, leading dot, light surface variant of the
+   teal-gradient-border pill used elsewhere on the site. !important on
+   the color because the global `.pricing-page-new` parent sets white-on-
+   dark colors for spans/headings that would otherwise leak in here. */
+.pricing-compare .pricing-compare-eyebrow {
   display: inline-flex;
   align-items: center;
-  height: 35px;
+  gap: 8px;
+  height: 32px;
   padding: 0 14px;
-  border-radius: 50px;
-  background: #202223;
-  color: #ffffff;
-  font-size: 10.9px;
-  font-weight: 500;
+  border-radius: 999px;
+  background: rgba(0, 184, 178, 0.08) !important;
+  border: 1px solid rgba(0, 184, 178, 0.25);
+  color: #00807a !important;
+  font-family: $inter !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
 }
 
-.pricing-compare-headline {
-  margin: 0;
-  font: 700 clamp(28px, 3.6vw, 40px)/1.15 Inter, system-ui, sans-serif;
-  letter-spacing: -1px;
-  color: #ffffff;
+/* Higher-specificity selectors + !important so the headline beats both
+   the global `h2 { color: #ececec }` rule and any inherited white-on-dark
+   colors cascading from .pricing-page-new. Also resets -webkit-text-fill-
+   color in case any ancestor sets a gradient-text trick. */
+.pricing-compare .pricing-compare-headline,
+.pricing-compare h2.pricing-compare-headline,
+.pricing-page-new .pricing-compare h2.pricing-compare-headline {
+  margin: 0 !important;
+  font-family: $inter !important;
+  font-weight: 800 !important;
+  font-size: clamp(28px, 4vw, 44px) !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.03em !important;
+  color: #0a0a0a !important;
+  -webkit-text-fill-color: #0a0a0a !important;
+  background: transparent !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  max-width: 720px;
+}
+
+.pricing-compare .pricing-compare-sub {
+  margin: 0 !important;
   max-width: 640px;
+  font-family: $inter !important;
+  font-size: clamp(14px, 1.3vw, 16px) !important;
+  line-height: 1.55 !important;
+  color: #52525b !important;
+  font-weight: 400 !important;
+  white-space: normal !important;
 }
 
-.pricing-compare-sub {
-  margin: 0;
-  max-width: none;
-  white-space: nowrap;
-  font-size: clamp(14.5px, 1.3vw, 16px);
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.6);
-
-  // Allow wrap on narrow viewports so the sentence doesn't overflow the
-  // viewport on mobile — only force single-line on tablet/desktop where
-  // there's room.
-  @media (max-width: 640px) {
-    white-space: normal;
-    max-width: 560px;
-  }
-}
-
+/* Table container — soft shadow + thin border defines the table against
+   the light section surface. Mobile keeps the same rows + columns; the
+   container scrolls horizontally if the viewport is narrower than the
+   table's min-width. */
 .pricing-compare-table-wrap {
   overflow-x: auto;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 16px;
-  background: hsla(240, 15%, 9%, 1);
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px -8px rgba(0, 0, 0, 0.08);
   -webkit-overflow-scrolling: touch;
 }
 
 .pricing-compare-table {
   width: 100%;
   border-collapse: collapse;
+  font-family: $inter;
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.85);
+  color: #27272a;
+  // Mobile keeps the same column count but with a smaller min-width so
+  // the table fits more easily within a 320–480px viewport, with
+  // horizontal scroll if extra room is needed.
   min-width: 860px;
+
+  @media (max-width: 768px) {
+    min-width: 560px;
+    font-size: 12px;
+  }
+  @media (max-width: 480px) {
+    min-width: 480px;
+    font-size: 11px;
+  }
 
   thead th {
     position: sticky;
     top: 0;
     z-index: 3;
-    background: #131320;
+    background: #ffffff;
     padding: 18px 16px;
     text-align: center;
-    font-size: 13.5px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.7);
+    font-family: $inter;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0a0a0a;
     letter-spacing: 0.02em;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+    @media (max-width: 768px) {
+      padding: 12px 10px;
+      font-size: 11.5px;
+    }
+    @media (max-width: 480px) {
+      padding: 10px 8px;
+      font-size: 10.5px;
+      letter-spacing: 0.01em;
+    }
   }
 
   thead th.pc-feat-col {
     text-align: left;
-    color: rgba(255, 255, 255, 0.5);
+    color: #71717a;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.16em;
     text-transform: uppercase;
   }
 
+  /* Annual column — subtle teal tint running the full table height
+     to mirror the featured Annual card in the pricing grid above. */
   thead th.pc-col-featured {
-    color: #ffffff;
-    background: linear-gradient(180deg, rgba(0, 184, 178, 0.18) 0%, rgba(0, 184, 178, 0.10) 100%);
+    color: #00807a;
+    background: linear-gradient(180deg, rgba(0, 184, 178, 0.12) 0%, rgba(0, 184, 178, 0.06) 100%);
     border-bottom-color: rgba(0, 184, 178, 0.35);
   }
 
@@ -20707,78 +21024,127 @@ $ds-font: "Inter", system-ui, sans-serif;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: #00B8B2;
+    color: #00807a;
+    font-weight: 800;
   }
 
   tbody {
     tr {
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    /* Subtle alternating zebra stripe so a long row's eye doesn't drift. */
-    tr:nth-child(even of :not(.pc-section-row)) {
-      background: rgba(255, 255, 255, 0.012);
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
     }
 
     tr:hover:not(.pc-section-row) {
-      background: rgba(255, 255, 255, 0.025);
+      background: rgba(0, 0, 0, 0.018);
     }
 
     th[scope="row"] {
       text-align: left;
-      padding: 13px 16px;
+      padding: 12px 16px;
+      font-family: $inter;
       font-weight: 500;
-      color: rgba(255, 255, 255, 0.85);
+      font-size: 14px;
+      color: #27272a;
       width: 38%;
       min-width: 260px;
       position: sticky;
       left: 0;
-      background: hsla(240, 15%, 9%, 1);
+      background: #ffffff;
       z-index: 1;
+
+      @media (max-width: 768px) {
+        padding: 10px 12px;
+        font-size: 12px;
+        min-width: 180px;
+        width: 42%;
+      }
+      @media (max-width: 480px) {
+        padding: 9px 10px;
+        font-size: 11px;
+        min-width: 140px;
+      }
     }
 
     td {
-      padding: 13px 16px;
+      padding: 12px 16px;
       text-align: center;
       vertical-align: middle;
-      color: rgba(255, 255, 255, 0.75);
+      color: #3f3f46;
+      font-size: 14px;
+
+      @media (max-width: 768px) {
+        padding: 10px 8px;
+        font-size: 12px;
+      }
+      @media (max-width: 480px) {
+        padding: 9px 6px;
+        font-size: 11px;
+      }
     }
 
     td svg {
-      color: #00B8B2;
+      @media (max-width: 768px) {
+        width: 14px;
+        height: 14px;
+      }
+      @media (max-width: 480px) {
+        width: 13px;
+        height: 13px;
+      }
+    }
+
+    td svg {
+      color: #00b8b2;
       vertical-align: middle;
     }
 
     .pc-na {
-      color: rgba(255, 255, 255, 0.28);
+      color: #d4d4d8;
+      font-size: 16px;
     }
 
     .pc-col-featured {
       background: rgba(0, 184, 178, 0.06);
-      color: #ffffff;
+      color: #18181b;
       font-weight: 600;
     }
 
     .pc-col-featured svg {
-      color: #00B8B2;
+      // Slightly higher visual weight in the Annual column to reinforce
+      // it as the recommended option.
+      color: #00807a;
     }
   }
 
-  /* Group header row — darker bg, icon tile, label + 1-line intro. The
-     row spans all 5 columns. Sticky-left rule on `th[scope="row"]` doesn't
-     fire here since this is a `rowgroup` cell, so it scrolls normally with
-     the table. */
+  /* Bucket header row — gentle gray surface separator with the colored
+     icon tile from the data + label + 1-line intro. */
   .pc-section-row {
-    background: rgba(255, 255, 255, 0.04);
+    background: #f4f4f5;
   }
 
   .pc-section-row th {
-    padding: 16px 16px;
+    padding: 14px 16px;
     text-align: left;
-    background: rgba(255, 255, 255, 0.04);
+    background: #f4f4f5;
     position: static;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.85);
+    font-family: $inter;
+    font-weight: 600;
+    color: #18181b;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+
+    @media (max-width: 768px) {
+      padding: 10px 12px;
+
+      .pc-row-label { font-size: 13px; }
+      .pc-row-intro { display: none; } // hide the long bucket description on mobile
+    }
+    @media (max-width: 480px) {
+      padding: 9px 10px;
+
+      .pc-row-label { font-size: 12px; }
+      .pc-row-tile { width: 18px !important; height: 18px !important; margin-right: 8px; }
+      .pc-row-tile.has-image { width: 22px !important; height: 22px !important; }
+      .pc-row-tile svg { width: 10px; height: 10px; }
+    }
 
     .pc-row-tile {
       display: inline-flex;
@@ -20790,58 +21156,57 @@ $ds-font: "Inter", system-ui, sans-serif;
       flex-shrink: 0;
       vertical-align: middle;
       margin-right: 10px;
-      background: rgba(255, 255, 255, 0.05);
-      color: #c4c4cf;
+      background: rgba(0, 0, 0, 0.04);
+      color: #52525b;
       overflow: hidden;
 
       svg { width: 12px; height: 12px; }
 
       &.has-image {
-        background: transparent;
-        width: 28px;
-        height: 28px;
+        width: 26px;
+        height: 26px;
       }
       &.has-image img {
-        width: 115%;
-        height: 115%;
+        width: 110%;
+        height: 110%;
         object-fit: cover;
         display: block;
       }
 
-      &.is-transcripts { background: rgba(110, 160, 255, 0.10); color: #a8c2ff; }
-      &.is-mcp         { background: rgba(255, 255, 255, 0.06); color: #d6d6dd; }
-      &.is-collections { background: rgba(255, 107, 157, 0.10); color: #ffa8c8; }
-      &.is-chrome      { background: rgba(255, 200, 107, 0.10); color: #ffd9a3; }
-      &.is-download    { background: rgba(255, 168, 107, 0.10); color: #ffc8a3; }
-      &.is-library     { background: rgba(179, 155, 255, 0.10); color: #d2c4ff; }
-      &.is-exports     { background: rgba(255, 210, 90, 0.10);  color: #ffe28a; }
-      &.is-agents      { background: rgba(110, 231, 168, 0.10); color: #b1f5cd; }
-      &.is-api         { background: rgba(110, 231, 225, 0.10); color: #90e8e4; }
-      &.is-direct      { background: rgba(0, 184, 178, 0.14);   color: #00b8b2; }
+      // Tile background hue = dominant color of the icon artwork it
+      // carries, softened for the off-white compare-table surface.
+      &.is-transcripts { background: rgba(234, 179, 8, 0.18);   color: #a16207; }
+      &.is-mcp         { background: rgba(34, 211, 238, 0.16);  color: #0e7490; }
+      &.is-chrome      { background: rgba(34, 197, 94, 0.16);   color: #15803d; }
+      &.is-collections { background: rgba(249, 115, 22, 0.16);  color: #c2410c; }
+      &.is-download    { background: rgba(236, 72, 153, 0.16);  color: #be185d; }
+      &.is-library     { background: rgba(251, 146, 60, 0.18);  color: #c2410c; }
+      &.is-exports     { background: rgba(20, 184, 166, 0.16);  color: #0f766e; }
+      &.is-agents      { background: rgba(132, 204, 22, 0.18);  color: #65a30d; }
+      &.is-api         { background: rgba(217, 70, 239, 0.16);  color: #a21caf; }
+      &.is-direct      { background: rgba(34, 197, 94, 0.16);   color: #15803d; }
     }
 
     .pc-row-label {
-      font-family: $ds-font;
-      font-size: 14.5px;
+      font-family: $inter;
+      font-size: 14px;
       font-weight: 700;
-      color: #ffffff;
+      color: #18181b;
       letter-spacing: -0.005em;
       margin-right: 12px;
     }
 
     .pc-row-intro {
-      font-family: $ds-font;
+      font-family: $inter;
       font-size: 12px;
       font-weight: 400;
-      color: rgba(255, 255, 255, 0.5);
+      color: #71717a;
       letter-spacing: 0;
       text-transform: none;
     }
   }
 
-  /* Feature-name cell — label + optional brand glyphs trailing. Glyphs
-     sit inline next to the name so the row reads as "feature for these
-     platforms". */
+  /* Feature-name cell — label + optional brand glyphs trailing. */
   .pc-feat-name {
     display: inline-block;
     vertical-align: middle;
@@ -20853,7 +21218,7 @@ $ds-font: "Inter", system-ui, sans-serif;
     gap: 5px;
     margin-left: 10px;
     vertical-align: middle;
-    color: rgba(255, 255, 255, 0.45);
+    color: #a1a1aa;
   }
 
   .pc-feat-glyph {
@@ -20868,12 +21233,156 @@ $ds-font: "Inter", system-ui, sans-serif;
   }
 }
 
+/* ── Mobile tabbed plan view (replaces the desktop table on ≤768px) ──
+   Shows one tier's full feature list at a time, switched via the tab
+   row at top. Same data + order as the desktop table. */
+.pricing-compare-mobile {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+
+  .pcm-tabs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+    background: #f4f4f5;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    margin-bottom: 18px;
+  }
+
+  .pcm-tab {
+    flex: 1 1 0;
+    padding: 9px 8px;
+    border: none;
+    background: transparent;
+    color: #52525b;
+    font-family: $inter;
+    font-size: 12.5px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 150ms ease, color 150ms ease;
+
+    &:hover {
+      color: #18181b;
+    }
+    &.is-active {
+      background: #ffffff;
+      color: #18181b;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+    &.is-active.is-featured {
+      background: rgba(0, 184, 178, 0.10);
+      color: #00807a;
+      box-shadow: 0 0 0 1px rgba(0, 184, 178, 0.3) inset;
+    }
+  }
+
+  .pcm-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px -8px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+  .pcm-bucket-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: #f4f4f5;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+
+    &:first-child {
+      border-top: none;
+    }
+
+    .pc-row-tile {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      flex-shrink: 0;
+      background: rgba(0, 0, 0, 0.04);
+      color: #52525b;
+      overflow: hidden;
+
+      svg { width: 12px; height: 12px; }
+
+      &.has-image { background: transparent; width: 26px; height: 26px; }
+      &.has-image img { width: 110%; height: 110%; object-fit: cover; display: block; }
+
+      &.is-transcripts { background: rgba(59, 130, 246, 0.12);  color: #1d4ed8; }
+      &.is-mcp         { background: rgba(0, 0, 0, 0.05);       color: #3f3f46; }
+      &.is-collections { background: rgba(244, 114, 182, 0.14); color: #be185d; }
+      &.is-chrome      { background: rgba(245, 158, 11, 0.14);  color: #b45309; }
+      &.is-download    { background: rgba(249, 115, 22, 0.14);  color: #c2410c; }
+      &.is-library     { background: rgba(139, 92, 246, 0.14);  color: #6d28d9; }
+      &.is-exports     { background: rgba(234, 179, 8, 0.16);   color: #a16207; }
+      &.is-agents      { background: rgba(34, 197, 94, 0.14);   color: #15803d; }
+      &.is-api         { background: rgba(20, 184, 166, 0.14);  color: #0f766e; }
+      &.is-direct      { background: rgba(0, 184, 178, 0.16);   color: #00807a; }
+    }
+
+    .pcm-bucket-label {
+      font-family: $inter;
+      font-size: 13px;
+      font-weight: 700;
+      color: #18181b;
+    }
+  }
+
+  .pcm-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 11px 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+
+    .pcm-row-name {
+      font-family: $inter;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #27272a;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .pcm-row-value {
+      font-family: $inter;
+      font-size: 13px;
+      font-weight: 600;
+      color: #18181b;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pcm-row-value svg {
+      color: #00b8b2;
+    }
+    .pcm-row-value.pc-na {
+      color: #d4d4d8;
+      font-size: 16px;
+    }
+  }
+}
+
 .pricing-compare-cta {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-  margin-top: 28px;
+  margin-top: 36px;
 
   @media (max-width: 600px) {
     flex-direction: column;
@@ -20909,6 +21418,46 @@ $ds-font: "Inter", system-ui, sans-serif;
   }
 }
 
+/* Quiet text link below the main CTA buttons — no background, dark
+   text on the light surface, trailing arrow. */
+.pricing-compare-aimeta {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.pricing-compare-ailink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: transparent;
+  border: none;
+  color: #18181b;
+  font-family: $inter;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.18s ease, transform 0.15s ease;
+
+  svg {
+    color: #18181b;
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+  }
+
+  &:hover {
+    color: #00807a;
+    text-decoration: none;
+
+    svg {
+      color: #00807a;
+      transform: translateX(2px);
+    }
+  }
+}
+
+/* Light-surface variant of the secondary CTA — dark text on white border. */
 .pricing-compare-cta-secondary {
   display: inline-flex;
   align-items: center;
@@ -20916,18 +21465,18 @@ $ds-font: "Inter", system-ui, sans-serif;
   height: 48px;
   padding: 0 22px;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 14px;
-  color: #ffffff;
+  color: #18181b;
   font-size: 15px;
   font-weight: 600;
   text-decoration: none;
   transition: background 0.18s ease, border-color 0.18s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.32);
-    color: #ffffff;
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.25);
+    color: #18181b;
     text-decoration: none;
   }
 }
