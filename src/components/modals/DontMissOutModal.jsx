@@ -14,6 +14,8 @@ import {
   ArrowRight,
   ArrowLeft,
   Crown,
+  Gift,
+  AlertTriangle,
 } from "lucide-react";
 import { LemonProducts } from "@/components/LemonProducts";
 import PRICING_CATEGORIES from "@/data/pricingFeatures";
@@ -219,32 +221,42 @@ function getCarouselFrames(t) {
     {
       key: "modal-1",
       image: `${BP}/figma-rows/Modal%20image%201.png`,
-      label: tr.frame1Label || "",
-      sub: tr.frame1Sub || "",
+      label: tr.frame1Label || "Bulk transcribe up to 50 videos at once",
+      sub:
+        tr.frame1Sub ||
+        "Drop a batch of TikTok, Instagram, or YouTube links and let TokScript handle the rest.",
     },
     {
       key: "modal-2",
       image: `${BP}/figma-rows/Modal%20image%202.png`,
-      label: tr.frame2Label || "",
-      sub: tr.frame2Sub || "",
+      label: tr.frame2Label || "AI-powered content audits",
+      sub:
+        tr.frame2Sub ||
+        "Pipe any creator's catalog into Claude or ChatGPT and surface what actually works.",
     },
     {
       key: "modal-3",
       image: `${BP}/figma-rows/Modal%20image%203.png`,
-      label: tr.frame3Label || "",
-      sub: tr.frame3Sub || "",
+      label: tr.frame3Label || "Your personal transcript library",
+      sub:
+        tr.frame3Sub ||
+        "Every video you've ever transcribed, searchable by source, length, or keyword.",
     },
     {
       key: "modal-4",
       image: `${BP}/figma-rows/Modal%20image%204.png`,
-      label: tr.frame4Label || "",
-      sub: tr.frame4Sub || "",
+      label: tr.frame4Label || "Transcribe from the address bar",
+      sub:
+        tr.frame4Sub ||
+        "Prefix any TikTok URL with tokscript.com to pull a transcript in one click.",
     },
     {
       key: "modal-5",
       image: `${BP}/figma-rows/Modal%20image%205.png`,
-      label: tr.frame5Label || "",
-      sub: tr.frame5Sub || "",
+      label: tr.frame5Label || "Scrape and analyze straight from TikTok",
+      sub:
+        tr.frame5Sub ||
+        "The Chrome extension grabs transcripts and engagement data without leaving the page.",
     },
   ];
 }
@@ -271,9 +283,12 @@ function CarouselFrame({ frame }) {
       style={{
         position: "relative",
         width: "100%",
-        aspectRatio: "834 / 510",
+        // Container height is dictated by the image's natural aspect
+        // ratio — width fills the panel, height scales proportionally,
+        // no cropping. No fixed height, no objectFit:cover zoom.
         overflow: "hidden",
         animation: "tsFadeIn 360ms ease-out",
+        borderRadius: 12,
       }}
     >
       <img
@@ -282,56 +297,10 @@ function CarouselFrame({ frame }) {
         loading="lazy"
         style={{
           width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          objectPosition: "center center",
+          height: "auto",
           display: "block",
         }}
       />
-      <div
-        className="carousel-overlay-fade"
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 78%, rgba(0,0,0,0.85) 100%)",
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        className="carousel-overlay-text"
-        style={{
-          position: "absolute",
-          left: 14,
-          right: 14,
-          bottom: 12,
-        }}
-      >
-        <div
-          style={{
-            color: "#ffffff",
-            fontSize: 13,
-            fontWeight: 700,
-            lineHeight: 1.25,
-            letterSpacing: "-0.005em",
-            textShadow: "0 1px 4px rgba(0,0,0,0.6)",
-          }}
-        >
-          {frame.label}
-        </div>
-        <div
-          style={{
-            marginTop: 2,
-            color: "rgba(255,255,255,0.85)",
-            fontSize: 11.5,
-            lineHeight: 1.4,
-            textShadow: "0 1px 4px rgba(0,0,0,0.6)",
-          }}
-        >
-          {frame.sub}
-        </div>
-      </div>
     </div>
   );
 }
@@ -890,10 +859,8 @@ function MobilePaywallV2({ t, selectedTier, setSelectedTier, onConfirm }) {
   // an X otherwise. Selecting a different tier card below updates this list
   // live, so users can see exactly what each plan includes.
   const checklistTier = selectedTier || "annual";
-  const checklist = PRICING_CATEGORIES.map((cat) => ({
-    check: cat.features.some((f) => f.tiers.includes(checklistTier)),
-    label: cat.label,
-  }));
+  // Note: `checklist` array removed — PricingCategoryList now renders
+  // the full pricing-card structure for `checklistTier` directly.
   const tiers = [
     { key: "free", label: "FREE", price: "$0", period: "/forever", ctaPrice: "$0/forever" },
     { key: "monthly", label: "MONTHLY", price: "$10", period: "/month", ctaPrice: "$10/month" },
@@ -908,23 +875,13 @@ function MobilePaywallV2({ t, selectedTier, setSelectedTier, onConfirm }) {
 
   return (
     <div className="dont-miss-mobile-paywall">
-      <ul className="paywall-checklist">
-        {checklist.map((row, i) => (
-          <li
-            key={i}
-            className={`paywall-row ${row.check ? "is-check" : "is-x"}`}
-          >
-            <span className="paywall-icon" aria-hidden="true">
-              {row.check ? (
-                <Check size={14} strokeWidth={3} />
-              ) : (
-                <X size={14} strokeWidth={3} />
-              )}
-            </span>
-            <span className="paywall-label">{row.label}</span>
-          </li>
-        ))}
-      </ul>
+      {/* Feature list now mirrors the pricing-cards: expandable buckets
+          with colored icon tiles, intros, per-feature platform glyphs.
+          Tier passed in is the currently-selected tier in the tier picker
+          below, so the checks update live as the user picks a plan. */}
+      <div className="paywall-features">
+        <PricingCategoryList tier={checklistTier} />
+      </div>
 
       <div className="paywall-panel">
         <div className="paywall-tier-row">
@@ -986,6 +943,7 @@ function StepOne({
   setSelectedTier,
   user,
   onMobileTierConfirm,
+  isMobile,
 }) {
   const frames = useMemo(() => getCarouselFrames(t), [t]);
   const pills = useMemo(() => getFeaturePills(t), [t]);
@@ -996,7 +954,7 @@ function StepOne({
     if (paused) return;
     const id = setInterval(() => {
       setActiveIdx((i) => (i + 1) % frames.length);
-    }, 3500);
+    }, 5000);
     return () => clearInterval(id);
   }, [paused, frames.length]);
 
@@ -1008,10 +966,12 @@ function StepOne({
         style={{
           flex: "1 1 0",
           minWidth: 0,
-          padding: "30px 32px 22px",
+          // Trimmed top/bottom padding so the modal reads tighter now
+          // that the pill-shaped features row is gone.
+          padding: "22px 28px 18px",
           display: "flex",
           flexDirection: "column",
-          gap: 14,
+          gap: 12,
           position: "relative",
           zIndex: 2,
         }}
@@ -1120,61 +1080,37 @@ function StepOne({
               />
             ))}
           </div>
+          <div
+            className="carousel-caption"
+            style={{
+              marginTop: 6,
+              textAlign: "center",
+              color: "#ffffff",
+              fontSize: 13,
+              fontWeight: 400,
+              lineHeight: 1.35,
+              letterSpacing: "-0.005em",
+            }}
+          >
+            {frames[activeIdx].sub}
+          </div>
         </div>
 
-        {/* ── Mobile-only paywall (Figma redesign). Shown on mobile intro step
-            only; hidden on desktop via SCSS. Replaces the pills row + bottom
-            intro-CTA on mobile with a checklist + 4-tier picker + white CTA. */}
-        <MobilePaywallV2
-          t={t}
-          selectedTier={selectedTier}
-          setSelectedTier={setSelectedTier}
-          onConfirm={onMobileTierConfirm}
-        />
+        {/* ── Mobile-only paywall (Figma redesign). Gated to mobile by the
+            isMobile prop so the embedded PricingCategoryList doesn't render
+            (and so can't interact with) the desktop tree at all. The
+            sibling pitch + form panels render unchanged on desktop. */}
+        {isMobile && (
+          <MobilePaywallV2
+            t={t}
+            selectedTier={selectedTier}
+            setSelectedTier={setSelectedTier}
+            onConfirm={onMobileTierConfirm}
+          />
+        )}
 
-        {/* Feature pills (2 rows of 3) — desktop only; hidden on mobile via SCSS. */}
-        <div
-          className="dont-miss-pills"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-            gap: 6,
-          }}
-        >
-          {pills.map((p) => (
-            <span
-              key={p.label}
-              className="dont-miss-pill"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "7px 10px",
-                borderRadius: 999,
-                background: T.accentSoft,
-                border: `1px solid rgba(0,212,204,0.22)`,
-                color: T.pitchText,
-                fontSize: 11.5,
-                fontWeight: 600,
-                lineHeight: 1.2,
-                textAlign: "center",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-              title={p.label}
-            >
-              {p.mobileLabel ? (
-                <>
-                  <span className="pill-desktop-label">{p.label}</span>
-                  <span className="pill-mobile-label">{p.mobileLabel}</span>
-                </>
-              ) : (
-                p.label
-              )}
-            </span>
-          ))}
-        </div>
+        {/* Pill-shaped feature row removed per design — the carousel +
+            stats now carry the trust signal on their own. */}
 
         {/* Stats row */}
         <div
@@ -1183,7 +1119,8 @@ function StepOne({
             display: "flex",
             alignItems: "center",
             gap: 10,
-            paddingTop: 10,
+            marginTop: 18,
+            paddingTop: 18,
             borderTop: `1px solid ${T.pitchBorder}`,
           }}
         >
@@ -1225,42 +1162,29 @@ function StepOne({
           setSelectedTier={setSelectedTier}
         />
 
-        {/* Intro CTAs for the pitch step — visible on both desktop and mobile.
-            Continue advances to tier selection; Start Free routes free signup. */}
-        <div
-          className="dont-miss-mobile-intro-ctas"
-          style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 6 }}
-        >
-          <button
-            type="button"
-            onClick={onIntroContinue}
-            className="pc-cta pc-cta-primary"
-            style={{ width: "100%", boxShadow: "none", color: "#ffffff" }}
-          >
-            {t?.dontMissOutModal?.introCta ||
-              t?.dontMissOutModal?.eyebrow ||
-              "Get Full Access"}
-            <ArrowRight size={16} />
-          </button>
-        </div>
+        {/* Intro CTA row removed — the form's "Get Full Access" submit
+            button on the right panel is the only primary CTA now. */}
       </div>
 
-      {/* ── Right: Create Your Account form (guest-only).  Signed-in users
-          already have an account, so this panel is hidden for them. ── */}
-      {!user && (
+      {/* ── Right: Create Your Account form. Always renders on desktop
+          so the sign-in/up panel is never missing — signed-in users can
+          use the "Already Have An Account? Sign In" link at the bottom
+          to switch accounts. ── */}
       <div
         className="dont-miss-form"
         style={{
-          width: 380,
+          width: 360,
           flexShrink: 0,
-          margin: "16px 16px 16px 0",
-          padding: "30px 28px 24px",
+          margin: "14px 14px 14px 0",
+          // Tighter padding so the form panel matches the trimmed pitch
+          // panel's vertical rhythm.
+          padding: "22px 24px 18px",
           background: T.formBg,
           borderRadius: 18,
           border: `1px solid ${T.formBorder}`,
           display: "flex",
           flexDirection: "column",
-          gap: 14,
+          gap: 12,
           position: "relative",
           zIndex: 2,
         }}
@@ -1330,32 +1254,21 @@ function StepOne({
             }
           />
 
+          {/* Form submit reuses the teal "Get Full Access" pc-cta-primary
+              treatment — replacing the previous white Continue button.
+              Same submit behavior, just the branded CTA styling. */}
           <button
             type="submit"
+            className="pc-cta pc-cta-primary"
             style={{
               marginTop: 4,
-              padding: "13px 16px",
-              borderRadius: 12,
-              background: T.formCtaBg,
-              border: "none",
-              color: T.formCtaText,
-              fontSize: 14,
-              fontWeight: 700,
-              cursor: "pointer",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 8,
-              transition: "transform .08s, opacity .15s",
-            }}
-            onMouseDown={(e) => {
-              e.currentTarget.style.transform = "scale(0.99)";
-            }}
-            onMouseUp={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
+              width: "100%",
+              height: 44,
+              boxShadow: "none",
+              color: "#ffffff",
             }}
           >
-            {t?.dontMissOutModal?.continueCta || "Continue"}
+            {t?.dontMissOutModal?.introCta || "Get Full Access"}
             <ArrowRight size={16} />
           </button>
         </form>
@@ -1381,13 +1294,16 @@ function StepOne({
             alignItems: "center",
             justifyContent: "center",
             gap: 10,
-            padding: "12px 16px",
+            // Match the Continue button height exactly.
+            height: 44,
+            padding: "0 16px",
             borderRadius: 12,
             background: T.formInputBg,
             border: `1px solid ${T.formBorder}`,
             color: T.formText,
             fontSize: 13.5,
             fontWeight: 500,
+            lineHeight: 1,
             textDecoration: "none",
           }}
         >
@@ -1403,22 +1319,18 @@ function StepOne({
             textAlign: "center",
             color: T.formMuted,
             fontSize: 12.5,
+            lineHeight: 1.5,
           }}
         >
           {t?.dontMissOutModal?.haveAccount || "Already Have An Account?"}{" "}
           <Link
             href="/app/login"
-            style={{
-              color: T.formText,
-              fontWeight: 700,
-              textDecoration: "none",
-            }}
+            className="dont-miss-signin-link"
           >
             {t?.dontMissOutModal?.signIn || "Sign In"}
           </Link>
         </p>
       </div>
-      )}
     </>
   );
 }
@@ -1697,7 +1609,7 @@ function StepTwo({
       style={{
         flex: "1 1 0",
         width: "100%",
-        padding: "26px 22px 24px",
+        padding: "26px 22px 0",
         display: "flex",
         flexDirection: "column",
         gap: 18,
@@ -1705,29 +1617,27 @@ function StepTwo({
         zIndex: 2,
       }}
     >
-      {isMobile && (
-        <button
-          type="button"
-          onClick={onBack}
-          style={{
-            alignSelf: "flex-start",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 6,
-            padding: "5px 10px",
-            borderRadius: 999,
-            background: "rgba(255,255,255,0.06)",
-            border: `1px solid ${T.formBorder}`,
-            color: T.pitchMuted,
-            fontSize: 11.5,
-            fontWeight: 600,
-            cursor: "pointer",
-          }}
-        >
-          <ArrowLeft size={12} />
-          {t?.dontMissOutModal?.back || "Back"}
-        </button>
-      )}
+      <button
+        type="button"
+        onClick={onBack}
+        style={{
+          alignSelf: "flex-start",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          padding: "5px 10px",
+          borderRadius: 999,
+          background: "rgba(255,255,255,0.06)",
+          border: `1px solid ${T.formBorder}`,
+          color: T.pitchMuted,
+          fontSize: 11.5,
+          fontWeight: 600,
+          cursor: "pointer",
+        }}
+      >
+        <ArrowLeft size={12} />
+        {t?.dontMissOutModal?.back || "Back"}
+      </button>
 
       <div style={{ textAlign: "center" }}>
         {/* Free user upgrade context: 'Pay To Upgrade'. Otherwise (guest who
@@ -1809,8 +1719,11 @@ function StepTwo({
         </div>
       </div>
 
-      {/* Card grid: desktop shows all cards; mobile shows only the active tab. */}
-      <div className="pc-grid">
+      {/* Card grid: desktop shows all cards; mobile shows only the active tab.
+          When the Free card is hidden (returning signed-in user), drop to a
+          3-column grid so the cards fill the modal instead of leaving a dead
+          column on the right. */}
+      <div className={`pc-grid${hideFree ? " pc-grid--three" : ""}`}>
         {!hideFree && (
           <div className={`pc-card-wrapper ${activeTab === "free" ? "active" : ""}`}>
             <div className="pc-card">
@@ -1819,10 +1732,15 @@ function StepTwo({
                   <div className="pc-plan-name">Free</div>
                   <span className="pc-badge">Forever</span>
                 </div>
-                <p className="pc-description">Test the basics</p>
+                <p className="pc-description">For Trying The Basics</p>
                 <div className="pc-price-row">
                   <span className="pc-price-main">$0</span>
                   <span className="pc-price-period">forever</span>
+                </div>
+                <div className="pc-price-highlight">
+                  <span className="pc-price-highlight-pill pc-price-highlight-pill-muted">
+                    <Gift size={13} strokeWidth={2} /> No Credit Card Needed
+                  </span>
                 </div>
               </div>
               <div className="pc-cta-wrap">
@@ -1849,9 +1767,10 @@ function StepTwo({
                 <span className="pc-price-main">$10</span>
                 <span className="pc-price-period">per month</span>
               </div>
-              <div className="pc-price-highlight pc-price-highlight-warn">
-                <span className="pc-price-highlight-equivalent">= $120/year</span>
-                <span className="pc-price-highlight-note">Annual saves $81</span>
+              <div className="pc-price-highlight">
+                <span className="pc-price-highlight-pill pc-price-highlight-pill-muted">
+                  <AlertTriangle size={13} strokeWidth={2} /> Annual Saves $81
+                </span>
               </div>
             </div>
             <div className="pc-cta-wrap">
@@ -1866,21 +1785,24 @@ function StepTwo({
         </div>
 
         <div className={`pc-card-wrapper ${activeTab === "annual" ? "active" : ""}`}>
-          <div className="pc-card pc-card-featured">
+          <div className="pc-card pc-card-featured pc-card-recommended">
             <div className="pc-header">
               <div className="pc-plan-row">
                 <div className="pc-plan-name">Annual</div>
-                <span className="pc-badge pc-badge-recommended">
-                  <Crown size={12} strokeWidth={2.5} /> Save 68%
+                <span className="pc-badge pc-badge-bestvalue">
+                  <Crown size={12} strokeWidth={2.5} /> Recommended
                 </span>
               </div>
-              <p className="pc-description">Best value, save $81 vs Monthly</p>
+              <p className="pc-description">Best value for serious creators</p>
               <div className="pc-price-row">
                 <span className="pc-price-main">$39</span>
-                <span className="pc-price-period">/ year</span>
+                <span className="pc-price-period">per year</span>
+                <span className="pc-price-original">$120</span>
               </div>
               <div className="pc-price-highlight">
-                <span className="pc-price-highlight-pill">That's $3.25/month</span>
+                <span className="pc-price-highlight-pill pc-price-highlight-pill-gold">
+                  That&apos;s $3.25/month, save $81
+                </span>
               </div>
             </div>
             <div className="pc-cta-wrap">
@@ -1889,7 +1811,7 @@ function StepTwo({
                 className="pc-cta pc-cta-primary"
                 onClick={() => choose("annual")}
               >
-                Get Annual
+                Get Annual · Save $81 <ArrowRight size={18} strokeWidth={2.5} />
               </button>
             </div>
             <div className="pc-body">
@@ -1899,16 +1821,22 @@ function StepTwo({
         </div>
 
         <div className={`pc-card-wrapper ${activeTab === "lifetime" ? "active" : ""}`}>
-          <div className="pc-card">
+          <div className="pc-card pc-card-featured">
             <div className="pc-header">
               <div className="pc-plan-row">
                 <div className="pc-plan-name">Lifetime</div>
+                <span className="pc-badge">Best Value</span>
               </div>
-              <p className="pc-description">Pay once. Use forever.</p>
+              <p className="pc-description">Pay Once. Use Forever.</p>
               <div className="pc-price-row">
                 <span className="pc-price-main">$199</span>
                 <span className="pc-price-period">one-time</span>
                 <span className="pc-price-original">$468</span>
+              </div>
+              <div className="pc-price-highlight">
+                <span className="pc-price-highlight-pill pc-price-highlight-pill-muted">
+                  <Lock size={13} strokeWidth={2} /> No Subscriptions, Ever
+                </span>
               </div>
             </div>
             <div className="pc-cta-wrap">
@@ -1925,16 +1853,35 @@ function StepTwo({
 
       <p
         style={{
-          margin: 0,
+          position: "sticky",
+          bottom: 0,
+          // Negative horizontal margin pulls the bg to the shell edges so the
+          // sticky strip covers cards that scroll behind it. Top padding
+          // creates a soft fade-out band; bottom padding is the visible
+          // breathing room beneath the text.
+          margin: "0 -22px 0",
+          padding: "18px 22px 16px",
           textAlign: "center",
           color: T.pitchMuted,
           fontSize: 11.5,
           lineHeight: 1.5,
+          background: `linear-gradient(180deg, rgba(11,11,18,0) 0%, ${T.outerBg} 30%, ${T.outerBg} 100%)`,
+          zIndex: 3,
         }}
       >
         {t?.dontMissOutModal?.tiersFooter ||
           "All Plans Include Cancel-Anytime and A 7-Day Refund Guarantee."}{" "}
-        <a href={signinHref} style={{ color: T.accent, textDecoration: "none" }}>
+        <a
+          href={signinHref}
+          style={{
+            color: T.accent,
+            textDecoration: "none",
+            fontSize: "inherit",
+            fontWeight: "inherit",
+            fontFamily: "inherit",
+            lineHeight: "inherit",
+          }}
+        >
           {t?.dontMissOutModal?.signIn || "Sign In"}
         </a>
       </p>
@@ -2173,14 +2120,20 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
             position: "relative",
             display: "flex",
             background: T.outerBg,
+            // Match the .modal-content radius exactly so the modal reads
+            // with the same curve on all four corners (was previously
+            // 20 inside a 24 outer, which made the top edge appear more
+            // rounded than the bottom).
             borderRadius: 20,
             // Let the shell scroll internally instead of clipping card content
             // when the modal hits its viewport cap. Horizontal stays clipped so
             // the bg image + glows respect the rounded corners.
             overflowX: "hidden",
             overflowY: "auto",
-            maxHeight: "90vh",
-            minHeight: step === "signup" ? 0 : 460,
+            // Trimmed from 90vh → 78vh so the desktop modal feels tighter.
+            // The internal panels still scroll if content exceeds.
+            maxHeight: "78vh",
+            minHeight: 0,
           }}
         >
           {/* Soft swirl background (Figma asset). Sits behind all modal content
@@ -2314,6 +2267,7 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
               setSelectedTier={setSelectedTier}
               user={user}
               onMobileTierConfirm={handleMobileTierConfirm}
+              isMobile={isMobile}
             />
           )}
 

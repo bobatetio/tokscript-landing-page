@@ -6,6 +6,17 @@ html {
   }
 }
 
+/* iOS Safari auto-zooms when an input/textarea/select gets focus if its
+   font-size is below 16px. Defense-in-depth: force any form control to
+   at least 16px on mobile viewports so tapping never triggers the zoom. */
+@media screen and (max-width: 767px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
 body {
   font-family: $inter;
   font-weight: 400;

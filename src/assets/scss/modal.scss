@@ -36,6 +36,26 @@ body .dont-miss-backdrop,
   opacity: 1 !important;
 }
 
+/* Sign-in link inside the modal form — forced to match the surrounding
+   "Already Have An Account?" parent text (font-size/weight/color inherit)
+   with only an underline distinguishing it as a link. !important because
+   the global `a` rule sets its own font-size/color that would otherwise win. */
+.dont-miss-signin-link {
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  font-family: inherit !important;
+  line-height: inherit !important;
+  color: inherit !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px;
+
+  &:hover,
+  &:focus {
+    color: inherit !important;
+    text-decoration: underline !important;
+  }
+}
+
 .dont-miss-out-modal-v3 {
   padding-left: 0 !important;
 
@@ -94,22 +114,25 @@ body .dont-miss-backdrop,
       margin-inline: 10px;
     }
   }
-  // Tier-selection step needs more horizontal room so all 4 pc-cards fit
-  // without the Lifetime card spilling out of frame. Bumping to ~1280px on
-  // desktop matches the homepage's pricing grid breathing room.
+  // Tier-selection step. Cap the modal so the dialog matches the visible
+  // card grid (3 or 4 cards) — no dead space to the right of the cards.
   &.dont-miss-step-tiers .modal-dialog {
-    @media screen and (min-width: 1300px) {
-      max-width: 1280px;
+    @media screen and (min-width: 1080px) {
+      max-width: 1040px;
     }
-    @media screen and (min-width: 1024px) and (max-width: 1299px) {
+    @media screen and (min-width: 1024px) and (max-width: 1079px) {
       max-width: calc(100vw - 48px);
     }
   }
   .modal-content {
     background: transparent;
     border: 0;
-    border-radius: 24px;
-    overflow: visible;
+    // Uniform 20px on all four corners + overflow:hidden so the inner
+    // shell's content (which had its own different radius) doesn't leak
+    // through the bottom edge and make the top corners read as more
+    // rounded than the bottom.
+    border-radius: 20px;
+    overflow: hidden;
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
   }
   .modal-body {
@@ -133,12 +156,8 @@ body .dont-miss-backdrop,
       align-items: center !important;
     }
 
-    // Carousel hero is image-only on mobile — text caption + dark fade
-    // overlay are hidden so the screenshot reads cleanly.
-    .carousel-overlay-fade,
-    .carousel-overlay-text {
-      display: none !important;
-    }
+    // Carousel keeps the dark fade + text caption visible on mobile so
+    // the label + sub line read on top of each frame.
     .modal-content {
       width: 100% !important;
       border-radius: 22px !important;
@@ -263,6 +282,19 @@ body .dont-miss-backdrop,
       display: flex;
       flex-direction: column;
       gap: 8px;
+    }
+
+    /* PricingCategoryList rendered inside the modal — tighter horizontal
+       margins so the bucket rows align with the modal's content padding
+       while keeping the component's own internal spacing. */
+    .paywall-features {
+      margin: 0 -2px;
+
+      .pc-cat-group:not(:last-child) {
+        // Keep the existing bottom divider but shrink it slightly so the
+        // modal's tighter rhythm doesn't feel sparse.
+        padding-bottom: 6px;
+      }
     }
     .paywall-row {
       display: flex;

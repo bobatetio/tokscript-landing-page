@@ -637,7 +637,11 @@
               padding-bottom: 50px;
               min-height: 69px;
               height: 100%;
-              font-size: 12px;
+              // iOS Safari auto-zooms into any input/textarea with a
+              // font-size < 16px when focused. Pinning to 16px on mobile
+              // prevents the zoom; the placeholder still reads fine and
+              // the field still fits in the link-field layout.
+              font-size: 16px;
               padding: 8px 10px 18px;
             }
 
@@ -18186,6 +18190,12 @@ $ds-font: "Inter", system-ui, sans-serif;
   max-width: 1320px;
   margin: 0 auto;
   align-items: stretch;
+}
+/* When only 3 tiers render (Monthly / Annual / Lifetime — Free hidden for
+   returning signed-in users) drop to 3 columns so the cards fill the row. */
+.pc-grid--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 1000px;
 }
 .pc-card-wrapper { display: flex; }
 
