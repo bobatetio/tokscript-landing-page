@@ -928,6 +928,557 @@ function MobilePaywallV2({ t, selectedTier, setSelectedTier, onConfirm }) {
   );
 }
 
+// ── Ported auth form ─────────────────────────────────────────────────────
+// Ported from the v3 dashboard's LoginPage + SignUpPage. Dark-mode only,
+// visual UI only — submits are no-ops; the user still completes signup at
+// the dashboard. Tailwind utility classes from the original have been
+// expanded to inline styles so this works without Tailwind in the landing
+// page bundle. `mode` toggles between "login" and "signup"; the user can
+// switch between the two via the footer link inside the card.
+const AUTH_THEME = {
+  bg: "#0d0d0d",
+  cardBg: "#141414",
+  border: "#262626",
+  text: "#ffffff",
+  muted: "#888888",
+  inputBg: "#0d0d0d",
+  accent: "#00F2EA",
+  submitBg: "#ffffff",
+  submitText: "#111111",
+  submitHoverBg: "#e8e8e8",
+};
+
+function GoogleSvg() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
+      <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4" />
+      <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853" />
+      <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05" />
+      <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335" />
+    </svg>
+  );
+}
+
+function AuthInput({ icon, type = "text", placeholder, value, onChange, autoComplete, trailing, borderOverride }) {
+  return (
+    <div style={{ position: "relative" }}>
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          left: 12,
+          top: "50%",
+          transform: "translateY(-50%)",
+          color: AUTH_THEME.muted,
+          display: "inline-flex",
+          alignItems: "center",
+        }}
+      >
+        {icon}
+      </span>
+      <input
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        autoComplete={autoComplete}
+        style={{
+          width: "100%",
+          padding: trailing ? "12px 40px 12px 40px" : "12px 16px 12px 40px",
+          borderRadius: 12,
+          border: `1px solid ${borderOverride || AUTH_THEME.border}`,
+          background: AUTH_THEME.inputBg,
+          color: AUTH_THEME.text,
+          fontSize: 14,
+          outline: "none",
+          transition: "border-color 150ms ease",
+          // iOS Safari zoom prevention — already global, kept defensive.
+          fontFamily: "inherit",
+        }}
+      />
+      {trailing && (
+        <span
+          style={{
+            position: "absolute",
+            right: 12,
+            top: "50%",
+            transform: "translateY(-50%)",
+            color: AUTH_THEME.muted,
+            display: "inline-flex",
+            alignItems: "center",
+          }}
+        >
+          {trailing}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function DashboardAuthForm({ mode, onSwitchMode }) {
+  // Local form state — visual only, no backend calls.
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [agreed, setAgreed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const isSignup = mode === "signup";
+
+  const passwordStrength = (pw) => {
+    if (!pw) return null;
+    if (pw.length < 6) return { label: "Weak", color: "#ef4444", width: "33%" };
+    if (pw.length < 10 || !/[A-Z]/.test(pw) || !/[0-9]/.test(pw))
+      return { label: "Fair", color: "#f59e0b", width: "66%" };
+    return { label: "Strong", color: "#22c55e", width: "100%" };
+  };
+  const strength = isSignup ? passwordStrength(password) : null;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setError("");
+    if (isSignup) {
+      if (!email || !password || !confirmPassword) {
+        setError("Please fill in all fields.");
+        return;
+      }
+      if (password !== confirmPassword) {
+        setError("Passwords do not match.");
+        return;
+      }
+      if (password.length < 8) {
+        setError("Password must be at least 8 characters.");
+        return;
+      }
+      if (!agreed) {
+        setError("Please accept the terms to continue.");
+        return;
+      }
+    } else {
+      if (!email || !password) {
+        setError("Please fill in all fields.");
+        return;
+      }
+    }
+    // Visual-only submission — flash the loading state, then reset. Real
+    // auth lives on the dashboard; the landing modal doesn't wire to it.
+    setLoading(true);
+    setTimeout(() => setLoading(false), 1200);
+  };
+
+  return (
+    <div
+      style={{
+        // Replaces the previous .dont-miss-form panel: same overall slot
+        // dimensions in the modal layout, but the inner card now mirrors
+        // the dashboard's auth card visuals (cardBg + 1px border + 16px
+        // radius).
+        width: 360,
+        flexShrink: 0,
+        margin: "14px 14px 14px 0",
+        padding: 0,
+        background: "transparent",
+        border: "none",
+        display: "flex",
+        flexDirection: "column",
+        position: "relative",
+        zIndex: 2,
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          background: AUTH_THEME.cardBg,
+          border: `1px solid ${AUTH_THEME.border}`,
+          borderRadius: 16,
+          padding: 24,
+          display: "flex",
+          flexDirection: "column",
+          gap: 16,
+        }}
+      >
+        <div style={{ textAlign: "center" }}>
+          <h3
+            style={{
+              margin: "0 0 4px",
+              color: AUTH_THEME.text,
+              fontSize: 20,
+              fontWeight: 700,
+              letterSpacing: "-0.01em",
+            }}
+          >
+            {isSignup ? "Create your account" : "Welcome back"}
+          </h3>
+          <p
+            style={{
+              margin: 0,
+              color: AUTH_THEME.muted,
+              fontSize: 13,
+              lineHeight: 1.45,
+            }}
+          >
+            {isSignup
+              ? "Start transcribing for free, no credit card required"
+              : "Sign in to your Tokscript account"}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          style={{
+            width: "100%",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 10,
+            padding: "10px 12px",
+            borderRadius: 12,
+            background: AUTH_THEME.inputBg,
+            border: `1px solid ${AUTH_THEME.border}`,
+            color: AUTH_THEME.text,
+            fontSize: 13.5,
+            fontWeight: 500,
+            cursor: "pointer",
+          }}
+        >
+          <GoogleSvg />
+          {isSignup ? "Sign up with Google" : "Continue with Google"}
+        </button>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <span style={{ flex: 1, height: 1, background: AUTH_THEME.border }} />
+          <span style={{ color: AUTH_THEME.muted, fontSize: 11 }}>or</span>
+          <span style={{ flex: 1, height: 1, background: AUTH_THEME.border }} />
+        </div>
+
+        {error && (
+          <div
+            role="alert"
+            style={{
+              padding: "10px 12px",
+              borderRadius: 12,
+              background: "rgba(239,68,68,0.10)",
+              border: "1px solid rgba(239,68,68,0.30)",
+              color: "#fca5a5",
+              fontSize: 12.5,
+              lineHeight: 1.4,
+            }}
+          >
+            {error}
+          </div>
+        )}
+
+        <form
+          onSubmit={handleSubmit}
+          style={{ display: "flex", flexDirection: "column", gap: 12 }}
+        >
+          <div>
+            <label
+              style={{
+                display: "block",
+                fontSize: 13,
+                fontWeight: 500,
+                color: AUTH_THEME.text,
+                marginBottom: 6,
+              }}
+            >
+              Email
+            </label>
+            <AuthInput
+              icon={<Mail size={16} />}
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+            />
+          </div>
+
+          <div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: 6,
+              }}
+            >
+              <label style={{ fontSize: 13, fontWeight: 500, color: AUTH_THEME.text }}>
+                Password
+              </label>
+              {!isSignup && (
+                <button
+                  type="button"
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: AUTH_THEME.accent,
+                    fontSize: 12,
+                    cursor: "pointer",
+                    padding: 0,
+                  }}
+                >
+                  Forgot password?
+                </button>
+              )}
+            </div>
+            <AuthInput
+              icon={<Lock size={16} />}
+              type={showPassword ? "text" : "password"}
+              placeholder={isSignup ? "Min. 8 characters" : "••••••••"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete={isSignup ? "new-password" : "current-password"}
+              trailing={
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  tabIndex={-1}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: AUTH_THEME.muted,
+                    cursor: "pointer",
+                    padding: 0,
+                    display: "inline-flex",
+                  }}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              }
+            />
+            {isSignup && strength && (
+              <div style={{ marginTop: 6 }}>
+                <div
+                  style={{
+                    height: 4,
+                    borderRadius: 999,
+                    background: AUTH_THEME.border,
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                    style={{
+                      height: "100%",
+                      width: strength.width,
+                      background: strength.color,
+                      borderRadius: 999,
+                      transition: "width 300ms ease",
+                    }}
+                  />
+                </div>
+                <p style={{ margin: "4px 0 0", fontSize: 11, color: strength.color }}>
+                  {strength.label}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {isSignup && (
+            <div>
+              <label
+                style={{
+                  display: "block",
+                  fontSize: 13,
+                  fontWeight: 500,
+                  color: AUTH_THEME.text,
+                  marginBottom: 6,
+                }}
+              >
+                Confirm password
+              </label>
+              <AuthInput
+                icon={<Lock size={16} />}
+                type={showConfirm ? "text" : "password"}
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                autoComplete="new-password"
+                borderOverride={
+                  confirmPassword && confirmPassword !== password
+                    ? "#ef4444"
+                    : confirmPassword && confirmPassword === password
+                    ? "#22c55e"
+                    : undefined
+                }
+                trailing={
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirm((v) => !v)}
+                    tabIndex={-1}
+                    aria-label={showConfirm ? "Hide password" : "Show password"}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: AUTH_THEME.muted,
+                      cursor: "pointer",
+                      padding: 0,
+                      display: "inline-flex",
+                    }}
+                  >
+                    {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                }
+              />
+            </div>
+          )}
+
+          {isSignup && (
+            <label
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: 10,
+                cursor: "pointer",
+                userSelect: "none",
+                marginTop: 2,
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={agreed}
+                onChange={(e) => setAgreed(e.target.checked)}
+                style={{
+                  position: "absolute",
+                  width: 1,
+                  height: 1,
+                  padding: 0,
+                  margin: -1,
+                  overflow: "hidden",
+                  clip: "rect(0,0,0,0)",
+                  border: 0,
+                }}
+              />
+              <span
+                onClick={() => setAgreed((v) => !v)}
+                style={{
+                  width: 16,
+                  height: 16,
+                  borderRadius: 4,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: agreed ? AUTH_THEME.accent : "transparent",
+                  border: `1px solid ${agreed ? AUTH_THEME.accent : AUTH_THEME.border}`,
+                  flexShrink: 0,
+                  marginTop: 1,
+                }}
+              >
+                {agreed && (
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden>
+                    <path
+                      d="M1 4L3.5 6.5L9 1"
+                      stroke="#0d0d0d"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                )}
+              </span>
+              <span style={{ fontSize: 11.5, lineHeight: 1.45, color: AUTH_THEME.muted }}>
+                I agree to the{" "}
+                <span style={{ color: AUTH_THEME.accent, cursor: "pointer" }}>
+                  Terms of Service
+                </span>{" "}
+                and{" "}
+                <span style={{ color: AUTH_THEME.accent, cursor: "pointer" }}>
+                  Privacy Policy
+                </span>
+              </span>
+            </label>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              width: "100%",
+              padding: "12px 16px",
+              borderRadius: 12,
+              border: "none",
+              background: AUTH_THEME.submitBg,
+              color: AUTH_THEME.submitText,
+              fontSize: 13.5,
+              fontWeight: 600,
+              cursor: loading ? "default" : "pointer",
+              opacity: loading ? 0.6 : 1,
+              marginTop: 2,
+              transition: "background 150ms ease",
+            }}
+            onMouseEnter={(e) => {
+              if (!loading) e.currentTarget.style.background = AUTH_THEME.submitHoverBg;
+            }}
+            onMouseLeave={(e) => {
+              if (!loading) e.currentTarget.style.background = AUTH_THEME.submitBg;
+            }}
+          >
+            {loading
+              ? isSignup
+                ? "Creating account…"
+                : "Signing in…"
+              : isSignup
+              ? "Create account"
+              : "Log in"}
+          </button>
+        </form>
+
+        <p
+          style={{
+            margin: 0,
+            textAlign: "center",
+            color: AUTH_THEME.muted,
+            fontSize: 12.5,
+          }}
+        >
+          {isSignup ? "Already have an account? " : "Don't have an account? "}
+          <button
+            type="button"
+            onClick={() => onSwitchMode(isSignup ? "login" : "signup")}
+            style={{
+              background: "none",
+              border: "none",
+              color: AUTH_THEME.accent,
+              fontSize: 12.5,
+              fontWeight: 500,
+              cursor: "pointer",
+              padding: 0,
+            }}
+          >
+            {isSignup ? "Sign in" : "Sign up"}
+          </button>
+        </p>
+      </div>
+
+      {!isSignup && (
+        <p
+          style={{
+            textAlign: "center",
+            fontSize: 11,
+            lineHeight: 1.5,
+            color: AUTH_THEME.muted,
+            margin: "14px 0 0",
+          }}
+        >
+          By signing in you agree to our{" "}
+          <span style={{ textDecoration: "underline", cursor: "pointer" }}>
+            Terms of Service
+          </span>{" "}
+          and{" "}
+          <span style={{ textDecoration: "underline", cursor: "pointer" }}>
+            Privacy Policy
+          </span>
+          .
+        </p>
+      )}
+    </div>
+  );
+}
+
 function StepOne({
   t,
   email,
@@ -944,11 +1495,16 @@ function StepOne({
   user,
   onMobileTierConfirm,
   isMobile,
+  initialAuthMode = "signup",
 }) {
   const frames = useMemo(() => getCarouselFrames(t), [t]);
   const pills = useMemo(() => getFeaturePills(t), [t]);
   const [activeIdx, setActiveIdx] = useState(0);
   const [paused, setPaused] = useState(false);
+  // Toggle between the ported dashboard sign-up / log-in forms. Seeded
+  // from the modal's initialAuthMode prop so header-triggered opens
+  // preselect the right form (Log In → "login", Get Started → "signup").
+  const [authMode, setAuthMode] = useState(initialAuthMode);
 
   useEffect(() => {
     if (paused) return;
@@ -1166,171 +1722,12 @@ function StepOne({
             button on the right panel is the only primary CTA now. */}
       </div>
 
-      {/* ── Right: Create Your Account form. Always renders on desktop
-          so the sign-in/up panel is never missing — signed-in users can
-          use the "Already Have An Account? Sign In" link at the bottom
-          to switch accounts. ── */}
-      <div
-        className="dont-miss-form"
-        style={{
-          width: 360,
-          flexShrink: 0,
-          margin: "14px 14px 14px 0",
-          // Tighter padding so the form panel matches the trimmed pitch
-          // panel's vertical rhythm.
-          padding: "22px 24px 18px",
-          background: T.formBg,
-          borderRadius: 18,
-          border: `1px solid ${T.formBorder}`,
-          display: "flex",
-          flexDirection: "column",
-          gap: 12,
-          position: "relative",
-          zIndex: 2,
-        }}
-      >
-        <div>
-          <h3
-            style={{
-              margin: 0,
-              color: T.formText,
-              fontSize: 20,
-              fontWeight: 700,
-              letterSpacing: "-0.005em",
-            }}
-          >
-            {t?.dontMissOutModal?.formTitle || "Create Your Account"}
-          </h3>
-          <p
-            style={{
-              margin: "6px 0 0",
-              color: T.formMuted,
-              fontSize: 13,
-              lineHeight: 1.45,
-            }}
-          >
-            {t?.dontMissOutModal?.formSubtitle || "One account. Pick your plan next."}
-          </p>
-        </div>
-
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            onContinue();
-          }}
-          style={{ display: "flex", flexDirection: "column", gap: 12 }}
-        >
-          <FormField
-            label={t?.dontMissOutModal?.emailLabel || "Email"}
-            icon={<Mail size={16} />}
-            type="email"
-            placeholder={t?.dontMissOutModal?.emailPlaceholder || "you@example.com"}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <FormField
-            label={t?.dontMissOutModal?.passwordLabel || "Password"}
-            icon={<Lock size={16} />}
-            type={showPw ? "text" : "password"}
-            placeholder={t?.dontMissOutModal?.passwordPlaceholder || "Min. 8 characters"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            trailing={
-              <button
-                type="button"
-                onClick={() => setShowPw((s) => !s)}
-                aria-label={showPw ? "Hide password" : "Show password"}
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: T.formMuted,
-                  cursor: "pointer",
-                  display: "inline-flex",
-                  padding: 0,
-                }}
-              >
-                {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            }
-          />
-
-          {/* Form submit reuses the teal "Get Full Access" pc-cta-primary
-              treatment — replacing the previous white Continue button.
-              Same submit behavior, just the branded CTA styling. */}
-          <button
-            type="submit"
-            className="pc-cta pc-cta-primary"
-            style={{
-              marginTop: 4,
-              width: "100%",
-              height: 44,
-              boxShadow: "none",
-              color: "#ffffff",
-            }}
-          >
-            {t?.dontMissOutModal?.introCta || "Get Full Access"}
-            <ArrowRight size={16} />
-          </button>
-        </form>
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            color: T.formMuted,
-            fontSize: 11,
-          }}
-        >
-          <span style={{ flex: 1, height: 1, background: T.formBorder }} />
-          {t?.dontMissOutModal?.or || "or"}
-          <span style={{ flex: 1, height: 1, background: T.formBorder }} />
-        </div>
-
-        <a
-          href="/app/sign-up"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 10,
-            // Match the Continue button height exactly.
-            height: 44,
-            padding: "0 16px",
-            borderRadius: 12,
-            background: T.formInputBg,
-            border: `1px solid ${T.formBorder}`,
-            color: T.formText,
-            fontSize: 13.5,
-            fontWeight: 500,
-            lineHeight: 1,
-            textDecoration: "none",
-          }}
-        >
-          <GoogleG />
-          {t?.dontMissOutModal?.googleCta || "Continue With Google"}
-        </a>
-
-        <div style={{ flex: 1 }} />
-
-        <p
-          style={{
-            margin: 0,
-            textAlign: "center",
-            color: T.formMuted,
-            fontSize: 12.5,
-            lineHeight: 1.5,
-          }}
-        >
-          {t?.dontMissOutModal?.haveAccount || "Already Have An Account?"}{" "}
-          <Link
-            href="/app/login"
-            className="dont-miss-signin-link"
-          >
-            {t?.dontMissOutModal?.signIn || "Sign In"}
-          </Link>
-        </p>
-      </div>
+      {/* ── Right: Ported dashboard auth form (sign-up / log-in toggle).
+          Visual UI only — submits are no-ops; real auth happens on the
+          dashboard app. The same panel slot the previous Create Your
+          Account form occupied; styling now mirrors the dashboard's
+          dark-mode auth card. ── */}
+      <DashboardAuthForm mode={authMode} onSwitchMode={setAuthMode} />
     </>
   );
 }
@@ -1888,7 +2285,17 @@ function StepTwo({
   );
 }
 
-export default function DontMissOutModal({ show, onHide, t, trigger = "general" }) {
+export default function DontMissOutModal({
+  show,
+  onHide,
+  t,
+  trigger = "general",
+  // Header-triggered opens use this to pre-select the sign-in or
+  // sign-up form inside the ported DashboardAuthForm. Defaults to
+  // "signup" — same as the in-modal default — so existing callers
+  // (daily-limit, paid-feature, etc.) don't need to pass anything.
+  initialAuthMode = "signup",
+}) {
   // step values:
   //   Mobile flow:
   //     "paywall" → "email" → "signin"|"create" → "tiers"
@@ -2267,6 +2674,7 @@ export default function DontMissOutModal({ show, onHide, t, trigger = "general" 
               user={user}
               onMobileTierConfirm={handleMobileTierConfirm}
               isMobile={isMobile}
+              initialAuthMode={initialAuthMode}
             />
           )}
 

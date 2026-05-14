@@ -486,7 +486,7 @@ export default function Header({ t }) {
           <LanguageSwitcher />
           <li>
             <Link
-              href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/signin`}
+              href="/signin"
               className="tk-login-btn"
             >
               {t?.header?.auth?.login || "Log In"}
@@ -494,7 +494,7 @@ export default function Header({ t }) {
           </li>
           <li>
             <Link
-              href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up`}
+              href="/sign-up"
               className="tk-getstarted-btn"
             >
               {t?.header?.auth?.getStarted || "Get Started"}
@@ -576,7 +576,7 @@ export default function Header({ t }) {
                     </>
                   ) : (
                     <Link
-                      href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up`}
+                      href="/sign-up"
                       className="tk-getstarted-btn"
                     >
                       {t?.header?.auth?.getStarted || "Get Started"}
@@ -850,14 +850,14 @@ export default function Header({ t }) {
                   ) : (
                     <>
                       <Link
-                        href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/signin`}
+                        href="/signin"
                         className="tk-login-btn mobile-drawer-auth-btn"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         {t?.header?.auth?.login || "Log In"}
                       </Link>
                       <Link
-                        href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up`}
+                        href="/sign-up"
                         className="tk-getstarted-btn mobile-drawer-auth-btn"
                         onClick={() => setMobileMenuOpen(false)}
                       >
