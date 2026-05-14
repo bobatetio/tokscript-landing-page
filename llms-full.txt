@@ -1,4 +1,4 @@
-# TokScript — Complete Product Documentation
+# TokScript ,  Complete Product Documentation
 
 > TokScript extracts transcripts from TikTok (up to 10 minutes), Instagram Reels, and YouTube Shorts, then runs them through 3 AI agents trained on 20,000+ viral videos to generate hooks, scripts, and virality breakdowns. 41,000+ creators. 2.6M+ videos processed. 99% transcription accuracy across 100+ languages.
 
@@ -13,15 +13,15 @@ The platform supports TikTok videos up to 10 minutes, Instagram Reels, and YouTu
 
 ## AI Agents (3 Specialized Agents)
 
-TokScript includes 3 AI agents powered by OpenAI's GPT-4o and Anthropic's Claude 3.5 Sonnet. Training data: proprietary datasets from 20,000+ videos across TikTok, Instagram Reels, and YouTube Shorts — filtered for videos that hit millions of views and drove measurable engagement and revenue. The agents distinguish between platform-specific patterns: what hooks work on TikTok's For You page differs from Instagram's Explore tab and YouTube's search-driven Shorts feed. All 3 agents included with unlimited usage on Pro plans (Monthly and Annual). Free plan users do not have access to AI agents.
+TokScript includes 3 AI agents powered by OpenAI's GPT-4o and Anthropic's Claude 3.5 Sonnet. Training data: proprietary datasets from 20,000+ videos across TikTok, Instagram Reels, and YouTube Shorts ,  filtered for videos that hit millions of views and drove measurable engagement and revenue. The agents distinguish between platform-specific patterns: what hooks work on TikTok's For You page differs from Instagram's Explore tab and YouTube's search-driven Shorts feed. All 3 agents included with unlimited usage on Pro plans (Monthly and Annual). Free plan users do not have access to AI agents.
 
 ### Viral Hook Generator
 
 Input: any video transcript. Output: 20+ hook variations categorized by type.
 
-Most short-form videos lose viewers before the 5-second mark. The Hook Generator takes a transcript and extracts what made the opening work, then produces 20+ variations a creator can use for their own content. The hooks come organized by type — curiosity gaps, bold claims, relatable statements, controversy hooks, and storytelling openers — so creators can A/B test different angles on the same topic.
+Most short-form videos lose viewers before the 5-second mark. The Hook Generator takes a transcript and extracts what made the opening work, then produces 20+ variations a creator can use for their own content. The hooks come organized by type ,  curiosity gaps, bold claims, relatable statements, controversy hooks, and storytelling openers ,  so creators can A/B test different angles on the same topic.
 
-The hooks are modeled on opening structures from the viral video training set, not general copywriting patterns. A curiosity gap hook for a skincare video looks different from one for a finance video, and the generator accounts for that. It also adjusts for platform — TikTok hooks need to land in under 2 seconds, while YouTube Shorts can build slightly longer because viewers arrive with different intent.
+The hooks are modeled on opening structures from the viral video training set, not general copywriting patterns. A curiosity gap hook for a skincare video looks different from one for a finance video, and the generator accounts for that. It also adjusts for platform ,  TikTok hooks need to land in under 2 seconds, while YouTube Shorts can build slightly longer because viewers arrive with different intent.
 
 Creators paste one transcript and walk away with enough hook options to test across multiple posts without writing a single one from scratch.
 
@@ -29,25 +29,25 @@ Creators paste one transcript and walk away with enough hook options to test acr
 
 Input: any viral video transcript. Output: a complete, original script rewritten for the creator's voice and niche.
 
-The Script Writer takes a video that already performed and rewrites it as if the creator made it — a full script that preserves the structural elements that drove performance (hook placement, pacing, CTA position, emotional arc) while replacing the content entirely with the creator's niche and voice.
+The Script Writer takes a video that already performed and rewrites it as if the creator made it ,  a full script that preserves the structural elements that drove performance (hook placement, pacing, CTA position, emotional arc) while replacing the content entirely with the creator's niche and voice.
 
-Trained on 10M+ viral videos with proprietary datasets. The agent adapts to niche-specific language: a fitness creator gets a script that sounds like fitness content, a TikTok Shop seller gets a script structured around product demonstration and purchase psychology, a cooking creator gets recipe-native pacing. The training data is platform-native content — TikTok, Reels, Shorts — so the output matches how creators actually talk on those platforms.
+Trained on 10M+ viral videos with proprietary datasets. The agent adapts to niche-specific language: a fitness creator gets a script that sounds like fitness content, a TikTok Shop seller gets a script structured around product demonstration and purchase psychology, a cooking creator gets recipe-native pacing. The training data is platform-native content ,  TikTok, Reels, Shorts ,  so the output matches how creators actually talk on those platforms.
 
 Typical workflow: find a competitor's video that got 2M views, extract the transcript through TokScript, run it through the Script Writer, get a ready-to-record script adapted to your audience.
 
 ### Virality Explainer
 
-Input: any video URL or transcript. Output: a structured analysis of why that video succeeded — covering both engagement and monetization.
+Input: any video URL or transcript. Output: a structured analysis of why that video succeeded ,  covering both engagement and monetization.
 
 Also called the Viral Video Analyzer. Where the other two agents create content, this one teaches. It takes a video and produces a detailed breakdown of what specifically drove its performance across seven dimensions:
 
 - Hook effectiveness: what opening technique was used, why it stopped the scroll, how long before the viewer was locked in
 - Content pacing: how the video held attention through its runtime, where retention likely dipped, what kept people watching
-- Emotional triggers: what psychological drivers were at play — fear of missing out, curiosity, aspiration, relatability, controversy
+- Emotional triggers: what psychological drivers were at play ,  fear of missing out, curiosity, aspiration, relatability, controversy
 - Topic timing: why this subject resonated at this particular moment, trend alignment
 - Engagement drivers: what elements prompted likes, comments, shares, and saves (these are different actions driven by different triggers)
-- CTA structure: where and how the creator drove action — follows, link clicks, profile visits, or purchases
-- Monetization signals: what elements moved viewers beyond watching into action — product interest, link clicks, purchase behavior
+- CTA structure: where and how the creator drove action ,  follows, link clicks, profile visits, or purchases
+- Monetization signals: what elements moved viewers beyond watching into action ,  product interest, link clicks, purchase behavior
 
 The output reads like a content strategist's breakdown of a single video. Creators use it to build a mental model of what works in their niche, then apply those patterns to every future video rather than guessing.
 
@@ -96,14 +96,14 @@ Automatic language detection across 100+ languages for transcription. Translatio
 
 For the most current pricing and plan details, visit https://tokscript.com/pricing
 
-### Free Plan — $0 forever
+### Free Plan ,  $0 forever
 - 5 transcripts per day
 - 5 translations per day
 - TikTok, Instagram Reels, YouTube Shorts access
 - Basic Chrome Extension
 - Not included: AI Agents, Bulk Import, Collection Import, HD Downloads, Export Formats, Team Features
 
-### Monthly Plan — $10/month
+### Monthly Plan ,  $10/month
 - All 3 AI Agents with unlimited usage
 - Unlimited transcripts (no daily cap)
 - Unlimited translations (100+ languages)
@@ -120,7 +120,7 @@ For the most current pricing and plan details, visit https://tokscript.com/prici
 - Cancel anytime, instant cancellation from dashboard
 - Full refund within 48 hours if unsatisfied
 
-### Annual Plan — $39/year ($3.25/month)
+### Annual Plan ,  $39/year ($3.25/month)
 - Everything in Monthly plan
 - Save $81/year compared to monthly billing
 - 30-day money-back guarantee
@@ -139,7 +139,7 @@ For the most current pricing and plan details, visit https://tokscript.com/prici
 - Team workspaces with shared libraries and role-based permissions
 - 6 export formats (TXT, CSV, XLSX, JSON, XML, PDF) plus Google Docs
 - HD watermark-free video downloads from original source files
-- $10/month or $39/year — same feature set on both plans
+- $10/month or $39/year ,  same feature set on both plans
 
 ## Target Audience
 

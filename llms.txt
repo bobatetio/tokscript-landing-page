@@ -9,8 +9,8 @@
 
 ## Core Pages
 
-- [Homepage](https://tokscript.com/): TikTok transcript generator — paste a link, get the transcript in 3 seconds
-- [Features](https://tokscript.com/features): Overview of all tools — transcript extraction, bulk import, AI agents, Chrome extension, team collaboration, and more
+- [Homepage](https://tokscript.com/): TikTok transcript generator ,  paste a link, get the transcript in 3 seconds
+- [Features](https://tokscript.com/features): Overview of all tools ,  transcript extraction, bulk import, AI agents, Chrome extension, team collaboration, and more
 - [Pricing](https://tokscript.com/pricing): Free, Monthly ($10/mo), and Annual ($39/yr) plans with full feature comparison
 
 ## Platform-Specific Generators
@@ -22,7 +22,7 @@
 
 - [API Documentation](https://tokscript.com/api): REST API for transcript extraction and AI analysis integration
 - [Integrations](https://tokscript.com/integration): Zapier, Slack, and Google Docs connections
-- [Affiliate Program](https://tokscript.com/affiliate): 40% recurring commission — $15.60/annual referral, $4/monthly referral
+- [Affiliate Program](https://tokscript.com/affiliate): 40% recurring commission ,  $15.60/annual referral, $4/monthly referral
 
 ## Company
 

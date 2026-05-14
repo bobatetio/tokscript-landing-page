@@ -7,7 +7,7 @@ Disallow: /404
 Disallow: /pricing-old
 Disallow: /landing-page
 
-# Language pages (English content with translated headings only — duplicate content)
+# Language pages (English content with translated headings only ,  duplicate content)
 Disallow: /br
 Disallow: /es
 Disallow: /zh
