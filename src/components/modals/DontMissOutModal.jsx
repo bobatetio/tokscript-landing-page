@@ -1003,7 +1003,7 @@ function StepOne({
             style={{
               margin: 0,
               color: T.pitchText,
-              fontSize: 22,
+              fontSize: 30,
               fontWeight: 700,
               lineHeight: 1.18,
               letterSpacing: "-0.015em",
@@ -1739,7 +1739,7 @@ function StepTwo({
                 </div>
                 <div className="pc-price-highlight">
                   <span className="pc-price-highlight-pill pc-price-highlight-pill-muted">
-                    <Gift size={13} strokeWidth={2} /> No Credit Card Needed
+                    No Credit Card Needed
                   </span>
                 </div>
               </div>
@@ -1801,7 +1801,7 @@ function StepTwo({
               </div>
               <div className="pc-price-highlight">
                 <span className="pc-price-highlight-pill pc-price-highlight-pill-gold">
-                  That&apos;s $3.25/month, save $81
+                  That&apos;s $3.25/month
                 </span>
               </div>
             </div>
@@ -1831,7 +1831,6 @@ function StepTwo({
               <div className="pc-price-row">
                 <span className="pc-price-main">$199</span>
                 <span className="pc-price-period">one-time</span>
-                <span className="pc-price-original">$468</span>
               </div>
               <div className="pc-price-highlight">
                 <span className="pc-price-highlight-pill pc-price-highlight-pill-muted">

@@ -156,6 +156,12 @@ body .dont-miss-backdrop,
       align-items: center !important;
     }
 
+    // Hide the per-frame caption below the dot selector — mobile relies
+    // on the carousel imagery alone, descriptions stay on desktop only.
+    .carousel-caption {
+      display: none !important;
+    }
+
     // Carousel keeps the dark fade + text caption visible on mobile so
     // the label + sub line read on top of each frame.
     .modal-content {
@@ -222,9 +228,9 @@ body .dont-miss-backdrop,
     &.dont-miss-step-tiers .dont-miss-mobile-features { display: flex !important; }
 
     .dont-miss-pitch {
-      // 20px symmetric horizontal padding; no bottom padding so the sticky
-      // .paywall-panel can hug the modal's bottom edge.
-      padding: 20px 20px 0 !important;
+      // Narrower horizontal padding on mobile so the 22px headline has
+      // maximum line-width to fit on exactly 2 balanced lines.
+      padding: 20px 16px 0 !important;
       gap: 12px !important;
     }
 
@@ -232,28 +238,26 @@ body .dont-miss-backdrop,
     .dont-miss-mobile-header {
       flex-direction: column;
       gap: 2px;
-      // Reserve room on the right for the absolute-positioned X close
-      // button (right:18, width:30) so the title can't wrap into it.
-      padding-right: 42px;
+      // Reserve only enough room for the absolute-positioned X close
+      // button (right:18, width:30 → button-left at right:48px). Drops
+      // from 38 to 30 to give the headline ~8px more horizontal room so
+      // the 22px title can fit on 2 lines without truncation.
+      padding-right: 30px;
     }
     .dont-miss-mobile-h2 {
       margin: 0;
-      // Sized so "You've Used Your 3 Free Guest Transcripts." wraps to
-      // exactly 2 lines on a 320px-wide viewport with 62px reserved on
-      // the right for the X close button (pitch 20px + header 42px).
-      font-size: 23px;
+      // 22px is the target; clamp scales the headline down only on
+      // viewports too narrow to fit the balanced two-line wrap (iPhone
+      // SE 320px and similar). On every modern phone width (≥390px) the
+      // size renders at exactly 22px.
+      font-size: clamp(19px, 5.7vw, 22px);
       font-weight: 700;
       line-height: 1.2;
-      letter-spacing: -0.012em;
-      // Even out the two lines so the second isn't a stub (modern browsers).
+      letter-spacing: -0.025em;
       text-wrap: balance;
-      // Safety clamp: even if the title gains a word, never spill past 2
-      // lines. Combined with the gradient background-clip below, both rules
-      // need to coexist — Safari/Chrome honor both.
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      overflow-wrap: break-word;
+      word-break: normal;
+      hyphens: none;
       background: linear-gradient(129.59deg, #ffffff 51.4%, #88fffb 121%);
       -webkit-background-clip: text;
       background-clip: text;
@@ -285,15 +289,22 @@ body .dont-miss-backdrop,
     }
 
     /* PricingCategoryList rendered inside the modal — tighter horizontal
-       margins so the bucket rows align with the modal's content padding
-       while keeping the component's own internal spacing. */
+       margins so the bucket rows align with the modal's content padding,
+       and compressed vertical rhythm so the buckets sit closer together
+       on the cramped mobile sheet. */
     .paywall-features {
       margin: 0 -2px;
 
+      .pc-category-list { gap: 4px; }
+
       .pc-cat-group:not(:last-child) {
-        // Keep the existing bottom divider but shrink it slightly so the
-        // modal's tighter rhythm doesn't feel sparse.
-        padding-bottom: 6px;
+        padding-bottom: 2px;
+      }
+
+      // Bucket header (Transcripts / MCP Access / etc.) — trim the
+      // vertical padding so each row reads in a tighter rhythm.
+      .pc-cat-header {
+        padding: 6px 0 4px;
       }
     }
     .paywall-row {

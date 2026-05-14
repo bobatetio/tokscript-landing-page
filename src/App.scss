@@ -18425,6 +18425,9 @@ $ds-font: "Inter", system-ui, sans-serif;
   color: rgba(255, 255, 255, 0.7);
   font: 400 13px/1.4 Inter, system-ui, sans-serif;
   padding-bottom: 4px;
+  // Keep "per year", "per month", "one-time" on a single line. Narrow
+  // card columns (the modal's 4-tier grid) were breaking "per\nyear".
+  white-space: nowrap;
 }
 .pc-price-original {
   margin-left: auto;
@@ -18863,6 +18866,16 @@ $ds-font: "Inter", system-ui, sans-serif;
   font-size: 13px;
   font-weight: 600;
   line-height: 1.4;
+  // Lock the pill to a single line so "No Credit Card Needed" and
+  // "That's $3.25/month, save $81" never wrap. The pill grows to fit
+  // its content (max-content) with no upper cap so text never spills
+  // past the pill border, even when the card column is narrower than
+  // the natural pill width. The card's overflow: hidden may clip the
+  // pill at the card edge, but inside the pill itself the text always
+  // sits cleanly within the border.
+  white-space: nowrap;
+  width: max-content;
+  flex-shrink: 0;
 
   > svg {
     flex-shrink: 0;
