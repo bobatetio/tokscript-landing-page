@@ -9,11 +9,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
-import dynamic from "next/dynamic";
-import Header from "@/components/Header";
-
-const Footer = dynamic(() => import("@/components/Footer"));
+import tokscriptLogo from "../../assets/images/icons/logo.png";
 
 const THEME = {
   bg: "#0d0d0d",
@@ -135,12 +133,13 @@ export default function SignUpPage() {
     setTimeout(() => setLoading(false), 1400);
   };
 
+  const BP = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
   return (
     <>
-      <Header />
       <main
         style={{
-          minHeight: "calc(100vh - 80px)",
+          minHeight: "100vh",
           background: THEME.bg,
           display: "flex",
           flexDirection: "column",
@@ -150,6 +149,21 @@ export default function SignUpPage() {
         }}
       >
         <div style={{ width: "100%", maxWidth: 440 }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}>
+            <Link
+              href="/"
+              aria-label="TokScript home"
+              style={{ display: "inline-flex" }}
+            >
+              <Image
+                src={tokscriptLogo}
+                alt="TokScript"
+                height={40}
+                style={{ height: 40, width: "auto", display: "block" }}
+                priority
+              />
+            </Link>
+          </div>
           <div
             style={{
               background: THEME.cardBg,
@@ -382,8 +396,13 @@ export default function SignUpPage() {
                 </span>
                 <span style={{ fontSize: 12, lineHeight: 1.5, color: THEME.muted }}>
                   I agree to the{" "}
-                  <span style={{ color: THEME.accent, cursor: "pointer" }}>Terms of Service</span> and{" "}
-                  <span style={{ color: THEME.accent, cursor: "pointer" }}>Privacy Policy</span>
+                  <span className="auth-inline-link" style={{ color: THEME.accent, cursor: "pointer" }}>
+                    Terms of Service
+                  </span>{" "}
+                  and{" "}
+                  <span className="auth-inline-link" style={{ color: THEME.accent, cursor: "pointer" }}>
+                    Privacy Policy
+                  </span>
                 </span>
               </label>
 
@@ -417,14 +436,17 @@ export default function SignUpPage() {
 
             <p style={{ textAlign: "center", marginTop: 24, fontSize: 14, color: THEME.muted }}>
               Already have an account?{" "}
-              <Link href="/signin" style={{ color: THEME.accent, fontWeight: 500, textDecoration: "none" }}>
+              <Link
+                href="/signin"
+                className="auth-inline-link"
+                style={{ color: THEME.accent, fontWeight: 500, textDecoration: "none" }}
+              >
                 Sign in
               </Link>
             </p>
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

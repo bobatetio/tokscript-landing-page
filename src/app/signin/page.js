@@ -9,11 +9,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
-import dynamic from "next/dynamic";
-import Header from "@/components/Header";
-
-const Footer = dynamic(() => import("@/components/Footer"));
+import tokscriptLogo from "../../assets/images/icons/logo.png";
 
 const THEME = {
   bg: "#0d0d0d",
@@ -113,10 +111,9 @@ export default function SignInPage() {
 
   return (
     <>
-      <Header />
       <main
         style={{
-          minHeight: "calc(100vh - 80px)",
+          minHeight: "100vh",
           background: THEME.bg,
           display: "flex",
           flexDirection: "column",
@@ -126,6 +123,21 @@ export default function SignInPage() {
         }}
       >
         <div style={{ width: "100%", maxWidth: 420 }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}>
+            <Link
+              href="/"
+              aria-label="TokScript home"
+              style={{ display: "inline-flex" }}
+            >
+              <Image
+                src={tokscriptLogo}
+                alt="TokScript"
+                height={40}
+                style={{ height: 40, width: "auto", display: "block" }}
+                priority
+              />
+            </Link>
+          </div>
           <div
             style={{
               background: THEME.cardBg,
@@ -153,7 +165,7 @@ export default function SignInPage() {
                 color: THEME.muted,
               }}
             >
-              Sign in to your Tokscript account
+              Sign in to your TokScript account
             </p>
 
             <button
@@ -292,7 +304,11 @@ export default function SignInPage() {
 
             <p style={{ textAlign: "center", marginTop: 24, fontSize: 14, color: THEME.muted }}>
               Don&apos;t have an account?{" "}
-              <Link href="/sign-up" style={{ color: THEME.accent, fontWeight: 500, textDecoration: "none" }}>
+              <Link
+                href="/sign-up"
+                className="auth-inline-link"
+                style={{ color: THEME.accent, fontWeight: 500, textDecoration: "none" }}
+              >
                 Sign up
               </Link>
             </p>
@@ -305,7 +321,6 @@ export default function SignInPage() {
           </p>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

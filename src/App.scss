@@ -22285,4 +22285,25 @@ a.tk-getstarted-btn {
   }
 }
 
+/* Auth pages (/signin + /sign-up): on tablet + mobile flatten the inline
+   teal links (Terms of Service, Privacy Policy, Sign in, Sign up) so the
+   sentence reads uniformly in the surrounding muted grey instead of
+   breaking into colored link fragments. Desktop keeps the teal accent. */
+@media (max-width: 1024px) {
+  .auth-inline-link {
+    color: inherit !important;
+    font-weight: inherit !important;
+    text-decoration: inherit !important;
+  }
+}
+
+/* Auth top bar — hide the "Don't have an account?" / "Already have an
+   account?" prompt text on narrow viewports so the pill doesn't overflow.
+   The cross-link button stays visible. */
+@media (max-width: 640px) {
+  .auth-topbar-prompt {
+    display: none !important;
+  }
+}
+
 
