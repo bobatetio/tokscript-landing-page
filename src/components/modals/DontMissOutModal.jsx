@@ -211,52 +211,44 @@ function GoogleG() {
   );
 }
 
-function getCarouselFrames(t) {
+function getCarouselFrames(t, isMobile) {
   const tr = t?.dontMissOutModal?.carousel || {};
-  // Final hero images live in public/figma-rows/ as "Modal image 1.png"
-  // through "Modal image 5.png". Prefix with NEXT_PUBLIC_BASE_PATH so
-  // static-export builds (gh-pages) resolve to /tokscript-landing-page/...
+  // Two image sets — Modal 2 image X.png (taller, landscape upgrade
+  // modal) for desktop, Modal image X.png (shorter, original) for
+  // mobile. Mobile branch also drops the in-image caption (see
+  // CarouselFrame + the mobile media query in modal.scss).
   const BP = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  const set = isMobile ? "Modal%20image" : "Modal%202%20image";
   return [
     {
       key: "modal-1",
-      image: `${BP}/figma-rows/Modal%20image%201.png`,
+      image: `${BP}/figma-rows/${set}%201.png`,
       label: tr.frame1Label || "Bulk transcribe up to 50 videos at once",
-      sub:
-        tr.frame1Sub ||
-        "Drop a batch of TikTok, Instagram, or YouTube links and let TokScript handle the rest.",
+      sub: tr.frame1Sub || "Drop up to 50 video links. Get transcripts back in seconds.",
     },
     {
       key: "modal-2",
-      image: `${BP}/figma-rows/Modal%20image%202.png`,
+      image: `${BP}/figma-rows/${set}%202.png`,
       label: tr.frame2Label || "AI-powered content audits",
-      sub:
-        tr.frame2Sub ||
-        "Pipe any creator's catalog into Claude or ChatGPT and surface what actually works.",
+      sub: tr.frame2Sub || "Pipe any creator's full catalog directly into Claude or ChatGPT.",
     },
     {
       key: "modal-3",
-      image: `${BP}/figma-rows/Modal%20image%203.png`,
+      image: `${BP}/figma-rows/${set}%203.png`,
       label: tr.frame3Label || "Your personal transcript library",
-      sub:
-        tr.frame3Sub ||
-        "Every video you've ever transcribed, searchable by source, length, or keyword.",
+      sub: tr.frame3Sub || "Every transcript you've ever pulled, fully searchable in one place.",
     },
     {
       key: "modal-4",
-      image: `${BP}/figma-rows/Modal%20image%204.png`,
+      image: `${BP}/figma-rows/${set}%204.png`,
       label: tr.frame4Label || "Transcribe from the address bar",
-      sub:
-        tr.frame4Sub ||
-        "Prefix any TikTok URL with tokscript.com to pull a transcript in one click.",
+      sub: tr.frame4Sub || "Prefix any TikTok video URL with tokscript.com to instantly transcribe it.",
     },
     {
       key: "modal-5",
-      image: `${BP}/figma-rows/Modal%20image%205.png`,
+      image: `${BP}/figma-rows/${set}%205.png`,
       label: tr.frame5Label || "Scrape and analyze straight from TikTok",
-      sub:
-        tr.frame5Sub ||
-        "The Chrome extension grabs transcripts and engagement data without leaving the page.",
+      sub: tr.frame5Sub || "Quickly grab transcripts and engagement data without ever leaving TikTok.",
     },
   ];
 }
@@ -301,6 +293,51 @@ function CarouselFrame({ frame }) {
           display: "block",
         }}
       />
+      {frame.sub && (
+        <>
+          {/* Bottom gradient overlay so the caption reads cleanly against
+              the image regardless of its dominant color. */}
+          <div
+            className="carousel-caption-gradient"
+            aria-hidden
+            style={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: "40%",
+              background:
+                "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.78) 100%)",
+              pointerEvents: "none",
+            }}
+          />
+          <div
+            className="carousel-caption-inset"
+            style={{
+              position: "absolute",
+              left: 16,
+              right: 16,
+              bottom: 14,
+              textAlign: "center",
+              color: "#ffffff",
+              fontSize: 13,
+              fontWeight: 500,
+              lineHeight: 1.35,
+              letterSpacing: "-0.005em",
+              textShadow: "0 1px 2px rgba(0,0,0,0.5)",
+              // Hard 2-line cap regardless of copy length. If a future
+              // translation balloons the string it gets clamped instead
+              // of overflowing onto a third line.
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
+          >
+            {frame.sub}
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -1015,8 +1052,11 @@ function AuthInput({ icon, type = "text", placeholder, value, onChange, autoComp
   );
 }
 
-function DashboardAuthForm({ mode, onSwitchMode }) {
-  // Local form state — visual only, no backend calls.
+function DashboardAuthForm({ mode, onSwitchMode, onAuthSuccess }) {
+  // Local form state. Visual UI from the dashboard's auth pages, but
+  // submission also fires onAuthSuccess(email, mode) so the modal's
+  // parent can hydrate the mock signed-in user (mockCreateAccount /
+  // mockSignIn) and advance the flow. No real backend wired up.
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -1037,7 +1077,7 @@ function DashboardAuthForm({ mode, onSwitchMode }) {
   };
   const strength = isSignup ? passwordStrength(password) : null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     if (isSignup) {
@@ -1063,10 +1103,23 @@ function DashboardAuthForm({ mode, onSwitchMode }) {
         return;
       }
     }
-    // Visual-only submission — flash the loading state, then reset. Real
-    // auth lives on the dashboard; the landing modal doesn't wire to it.
+    // Validation passed. If a parent supplied onAuthSuccess, hand the
+    // email + mode upward so the modal can hydrate a mock user and
+    // continue its flow. Fall back to the previous visual-only flash
+    // when there's no callback (e.g. standalone preview).
     setLoading(true);
-    setTimeout(() => setLoading(false), 1200);
+    try {
+      if (typeof onAuthSuccess === "function") {
+        const maybePromise = onAuthSuccess(email, mode);
+        if (maybePromise && typeof maybePromise.then === "function") {
+          await maybePromise;
+        }
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -1479,6 +1532,104 @@ function DashboardAuthForm({ mode, onSwitchMode }) {
   );
 }
 
+// ── Upgrade landscape cards ──────────────────────────────────────────────
+// Renders the 3-card upgrade view shown to a signed-in free user. Each
+// card is a horizontal split: left half carries the tier name + badge +
+// price + CTA; right half hosts the full PricingCategoryList (all 10
+// buckets) which scrolls internally if the expanded list exceeds the
+// card's height — the card itself stays a fixed size.
+//
+// Sits in the right column of the modal where DashboardAuthForm renders
+// for guest users — so the signed-in user gets pitch on the left + the
+// landscape upgrade cards on the right in one view, no separate
+// tier-selection step transition needed.
+function UpgradeLandscapeCard({ tier, name, badge, badgeStyle, price, period, tagline, ctaLabel, ctaHref, ctaIcon, featured }) {
+  return (
+    <div className={`ulc-card${featured ? " ulc-card-featured" : ""}`}>
+      <div className="ulc-card-left">
+        <div className="ulc-card-head">
+          <span className="ulc-tier-name">{name}</span>
+          <span className={`ulc-badge${badgeStyle ? ` ulc-badge-${badgeStyle}` : ""}`}>
+            {badge}
+          </span>
+        </div>
+        <div className="ulc-price-row">
+          <span className="ulc-price-main">{price}</span>
+          <span className="ulc-price-period">{period}</span>
+        </div>
+        <p className="ulc-tagline">{tagline}</p>
+        <a
+          href={ctaHref}
+          className={`ulc-cta${featured ? " ulc-cta-primary" : ""}`}
+          target={ctaHref?.startsWith("http") ? "_blank" : undefined}
+          rel={ctaHref?.startsWith("http") ? "noopener noreferrer" : undefined}
+        >
+          {ctaLabel}
+          {ctaIcon}
+        </a>
+      </div>
+      <div className="ulc-card-right">
+        <PricingCategoryList tier={tier} />
+      </div>
+    </div>
+  );
+}
+
+function UpgradeLandscapeCards({ t, email }) {
+  const tiers = useMemo(() => getTiers(t, email), [t, email]);
+  const monthly = tiers.find((tx) => tx.key === "monthly");
+  const annual = tiers.find((tx) => tx.key === "annual");
+  const lifetime = tiers.find((tx) => tx.key === "lifetime");
+
+  return (
+    <div className="ulc-stack">
+      {monthly && (
+        <UpgradeLandscapeCard
+          tier="monthly"
+          name="Monthly"
+          badge="Flexible"
+          price={monthly.price}
+          period="per month"
+          tagline="Full power, flexible billing"
+          ctaLabel="Get Monthly"
+          ctaHref={monthly.href}
+        />
+      )}
+      {annual && (
+        <UpgradeLandscapeCard
+          tier="annual"
+          name="Annual"
+          badge={(
+            <>
+              <Crown size={12} strokeWidth={2.5} /> Recommended
+            </>
+          )}
+          badgeStyle="gold"
+          price={annual.price}
+          period="per year"
+          tagline="Best value for serious creators"
+          ctaLabel="Get Annual · Save $81"
+          ctaIcon={<ArrowRight size={16} strokeWidth={2.5} />}
+          ctaHref={annual.href}
+          featured
+        />
+      )}
+      {lifetime && (
+        <UpgradeLandscapeCard
+          tier="lifetime"
+          name="Lifetime"
+          badge="Best Value"
+          price={lifetime.price}
+          period="forever"
+          tagline="Pay Once. Use Forever."
+          ctaLabel="Get Lifetime"
+          ctaHref={lifetime.href}
+        />
+      )}
+    </div>
+  );
+}
+
 function StepOne({
   t,
   email,
@@ -1496,8 +1647,9 @@ function StepOne({
   onMobileTierConfirm,
   isMobile,
   initialAuthMode = "signup",
+  onAuthSuccess,
 }) {
-  const frames = useMemo(() => getCarouselFrames(t), [t]);
+  const frames = useMemo(() => getCarouselFrames(t, isMobile), [t, isMobile]);
   const pills = useMemo(() => getFeaturePills(t), [t]);
   const [activeIdx, setActiveIdx] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -1516,15 +1668,21 @@ function StepOne({
 
   return (
     <>
-      {/* ── Left: visual pitch ─────────────────────────────────────── */}
+      {/* ── Left: visual pitch ──────────────────────────────────────
+          Pitch lives inside its own card-style container — subtle
+          surface bg, 18px radius, 14px margin inside the modal.
+          No border stroke this time: the bg alone separates the
+          frame from the modal background. */}
       <div
         className="dont-miss-pitch"
         style={{
           flex: "1 1 0",
           minWidth: 0,
-          // Trimmed top/bottom padding so the modal reads tighter now
-          // that the pill-shaped features row is gone.
-          padding: "22px 28px 18px",
+          margin: "14px 7px 14px 14px",
+          padding: "22px 24px 18px",
+          background: "rgba(255,255,255,0.03)",
+          border: "none",
+          borderRadius: 18,
           display: "flex",
           flexDirection: "column",
           gap: 12,
@@ -1636,20 +1794,6 @@ function StepOne({
               />
             ))}
           </div>
-          <div
-            className="carousel-caption"
-            style={{
-              marginTop: 6,
-              textAlign: "center",
-              color: "#ffffff",
-              fontSize: 13,
-              fontWeight: 400,
-              lineHeight: 1.35,
-              letterSpacing: "-0.005em",
-            }}
-          >
-            {frames[activeIdx].sub}
-          </div>
         </div>
 
         {/* ── Mobile-only paywall (Figma redesign). Gated to mobile by the
@@ -1668,14 +1812,16 @@ function StepOne({
         {/* Pill-shaped feature row removed per design — the carousel +
             stats now carry the trust signal on their own. */}
 
-        {/* Stats row */}
+        {/* Avatar trust band — pinned to the bottom of the pitch panel
+            via marginTop: auto so it always sits at the panel's base
+            regardless of how tall the carousel/caption above grow. */}
         <div
           className="dont-miss-stats"
           style={{
             display: "flex",
             alignItems: "center",
             gap: 10,
-            marginTop: 18,
+            marginTop: "auto",
             paddingTop: 18,
             borderTop: `1px solid ${T.pitchBorder}`,
           }}
@@ -1705,7 +1851,7 @@ function StepOne({
               lineHeight: 1.5,
             }}
           >
-            {t?.dontMissOutModal?.stats || "41K+ Users · 2.6M+ Transcripts · 4.2★ Rating"}
+            {t?.dontMissOutModal?.stats || "41K+ Users · 4.2★ Rating"}
           </span>
         </div>
 
@@ -1722,12 +1868,22 @@ function StepOne({
             button on the right panel is the only primary CTA now. */}
       </div>
 
-      {/* ── Right: Ported dashboard auth form (sign-up / log-in toggle).
-          Visual UI only — submits are no-ops; real auth happens on the
-          dashboard app. The same panel slot the previous Create Your
-          Account form occupied; styling now mirrors the dashboard's
-          dark-mode auth card. ── */}
-      <DashboardAuthForm mode={authMode} onSwitchMode={setAuthMode} />
+      {/* ── Right: two render paths.
+          • Guests → ported dashboard auth form (sign-up / log-in toggle).
+            Submitting fires onAuthSuccess so the modal's parent hydrates
+            a mock user and advances the flow.
+          • Signed-in returning free users → the new landscape upgrade
+            cards (Monthly / Annual / Lifetime). Each card has its own
+            CTA so no separate tier-selection step is needed. ── */}
+      {!user ? (
+        <DashboardAuthForm
+          mode={authMode}
+          onSwitchMode={setAuthMode}
+          onAuthSuccess={onAuthSuccess}
+        />
+      ) : (
+        <UpgradeLandscapeCards t={t} email={user.email || email} />
+      )}
     </>
   );
 }
@@ -2497,6 +2653,31 @@ export default function DontMissOutModal({
     setStep("tiers");
   };
 
+  // Submit handler for the ported DashboardAuthForm. Receives the
+  // email + mode straight from the form (its internal state) so we
+  // don't need to keep the parent's `email` state in lock-step with
+  // the form. Drives the same mock auth → localStorage → setUser →
+  // step transition that handleContinue did for the original form.
+  const handleAuthSuccess = async (formEmail, mode) => {
+    setEmail(formEmail);
+    saveSignupProgress(formEmail);
+    const u =
+      mode === "login"
+        ? await mockSignIn(formEmail)
+        : await mockCreateAccount(formEmail);
+    setUser(u);
+    if (u.plan && u.plan !== "free") {
+      // Returning paid user: close + flash toast.
+      clearSignupProgress();
+      setSuccessToast(
+        `${t?.dontMissOutModal?.welcomeBack || "Welcome back,"} ${u.email}.`
+      );
+      setTimeout(() => onHide(), 1500);
+      return;
+    }
+    setStep("tiers");
+  };
+
   const handleTierSelect = (tier) => {
     // Clear progress when the user picks any tier so the marker doesn't stick
     // around forever. For paid plans (target=_blank), clearing on click is OK
@@ -2509,6 +2690,7 @@ export default function DontMissOutModal({
       show={show}
       onHide={onHide}
       size="lg"
+      centered
       className={`dont-miss-out-modal-v3 dont-miss-step-${step}`}
       backdropClassName="dont-miss-backdrop"
       aria-labelledby="contained-modal-title-vcenter"
@@ -2675,6 +2857,7 @@ export default function DontMissOutModal({
               onMobileTierConfirm={handleMobileTierConfirm}
               isMobile={isMobile}
               initialAuthMode={initialAuthMode}
+              onAuthSuccess={handleAuthSuccess}
             />
           )}
 

@@ -290,8 +290,11 @@ body .dont-miss-backdrop,
 
     /* PricingCategoryList rendered inside the modal — tighter horizontal
        margins so the bucket rows align with the modal's content padding,
-       and compressed vertical rhythm so the buckets sit closer together
-       on the cramped mobile sheet. */
+       compressed vertical rhythm so the buckets sit closer together on
+       the cramped mobile sheet. No internal scroll: the features area
+       flows naturally so the pitch (carousel + big stats + trust band)
+       above scrolls together with the features. Only the sticky
+       .paywall-panel below stays pinned. */
     .paywall-features {
       margin: 0 -2px;
 
@@ -2108,3 +2111,305 @@ body .dont-miss-backdrop,
     color: #9ca3af;
   }
 }
+
+/* ── Upgrade landscape cards ─────────────────────────────────────────────
+   Replaces DashboardAuthForm in the right column of DontMissOutModal when
+   a signed-in free user opens it. Three cards stacked vertically; each
+   card is a horizontal split (price + CTA on the left, expandable bucket
+   list on the right). Matches the Figma upgrade design. */
+.ulc-stack {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 14px 14px 14px 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  z-index: 2;
+  // Internal scroll so a tall card stack doesn't blow past the modal
+  // viewport. Hide the rail; mouse + touch scroll still work.
+  overflow-y: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { width: 0; height: 0; }
+}
+
+.ulc-stack-title {
+  margin: 0 0 4px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: $inter;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+
+.ulc-card {
+  display: flex;
+  align-items: stretch;
+  background: rgba(255, 255, 255, 0.03);
+  // No visible stroke on Monthly / Lifetime — only the featured card
+  // gets the travelling teal stroke applied via ::after below.
+  border: 1px solid transparent;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+}
+
+.ulc-card-featured {
+  background:
+    radial-gradient(circle at 0% 50%, rgba(0, 184, 178, 0.18) 0%, transparent 60%),
+    rgba(0, 184, 178, 0.08);
+  border-color: transparent;
+  box-shadow: 0 8px 24px -10px rgba(0, 184, 178, 0.25);
+  z-index: 1;
+
+  // Travelling teal stroke — ports the .pc-card-recommended treatment.
+  // Conic-gradient revolves around the card via the --pc-stroke-angle
+  // custom property; CSS mask trick hides the inner fill so only a 1px
+  // perimeter glows. Animation lives on the @property /
+  // @keyframes pair defined above the home pricing card rules.
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    padding: 1px;
+    pointer-events: none;
+    z-index: 2;
+    background: conic-gradient(
+      from var(--pc-stroke-angle, 0deg),
+      transparent 0deg,
+      transparent 75deg,
+      rgba(0, 184, 178, 0.12) 82deg,
+      rgba(0, 184, 178, 0.4) 90deg,
+      rgba(0, 184, 178, 0.6) 96deg,
+      rgba(0, 184, 178, 0.7) 100deg,
+      rgba(0, 184, 178, 0.6) 104deg,
+      rgba(0, 184, 178, 0.4) 110deg,
+      rgba(0, 184, 178, 0.12) 118deg,
+      transparent 125deg,
+      transparent 360deg
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    animation: pc-stroke-rotate 4s linear infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ulc-card-featured::after { animation: none; }
+}
+
+.ulc-card-left {
+  flex: 0 0 50%;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 18px;
+  gap: 8px;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ulc-card-featured .ulc-card-left {
+  border-right-color: rgba(0, 184, 178, 0.18);
+}
+
+.ulc-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ulc-tier-name {
+  font-family: $inter;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #00b8b2;
+}
+
+.ulc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-family: $inter;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  white-space: nowrap;
+}
+
+.ulc-badge-gold {
+  background: linear-gradient(135deg, #f5cf76 0%, #d4a843 100%);
+  color: #2a1a00;
+  border-color: rgba(245, 207, 118, 0.5);
+  box-shadow: 0 0 12px rgba(245, 207, 118, 0.35);
+
+  svg {
+    color: #2a1a00;
+    stroke: #2a1a00;
+  }
+}
+
+.ulc-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.ulc-price-main {
+  font-family: $inter;
+  font-size: 30px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.ulc-price-period {
+  font-family: $inter;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+}
+
+.ulc-tagline {
+  margin: 0;
+  font-family: $inter;
+  font-size: 12.5px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.4;
+}
+
+.ulc-cta {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-family: $inter;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 150ms ease, color 150ms ease,
+    border-color 150ms ease, transform 80ms ease;
+
+  // Every card's CTA shares the same hover treatment: invert to a
+  // white surface with black text (and a matching white border) so
+  // the button reads as the primary action regardless of which tier.
+  &:hover {
+    background: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+  }
+  &:hover svg { color: #000000; }
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+.ulc-cta-primary {
+  background: linear-gradient(180deg, #00d4cc 0%, #00b8b2 100%);
+  border-color: rgba(0, 212, 204, 0.6);
+  color: #ffffff;
+  box-shadow: 0 6px 16px -6px rgba(0, 184, 178, 0.5);
+
+  &:hover {
+    background: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+  }
+}
+
+.ulc-card-right {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 8px 14px;
+  display: flex;
+  flex-direction: column;
+
+  // Scroll the bucket list INSIDE the card. The card now renders all
+  // 10 buckets — vertical scroll happens locally so each card stays a
+  // fixed height while its full list is still reachable. Scrollbar is
+  // hidden visually but mouse wheel + touch still work. Doesn't affect
+  // any other card or the modal layout.
+  .pc-category-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    gap: 0;
+    &::-webkit-scrollbar { width: 0; height: 0; display: none; }
+  }
+  .pc-cat-group:not(:last-child) {
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+    padding-bottom: 0;
+  }
+  .pc-cat-header {
+    padding: 6px 0;
+  }
+}
+
+.dont-miss-out-modal-v3 {
+  // When the right column is the upgrade landscape cards (signed-in
+  // free user), the modal-dialog needs to expand to fit the wider
+  // horizontal cards. The standard signup view stays at the default
+  // lg size; only the upgrade view widens.
+  .modal-dialog:has(.ulc-stack) {
+    // Sized to hug the actual upgrade-view content (360px pitch +
+    // 620px cards stack + ~28px gap/margins ≈ 1010px) so the modal
+    // doesn't leave empty space to the right of the cards.
+    @media screen and (min-width: 1060px) {
+      max-width: 1020px;
+    }
+    @media screen and (min-width: 1024px) and (max-width: 1059px) {
+      max-width: calc(100vw - 32px);
+    }
+  }
+
+  // Balance the two columns inside the 1080px dialog: pitch panel
+  // ~360px (carousel + big stats + trust band still fit), landscape
+  // cards take the rest (~700px).
+  .dont-miss-shell:has(.ulc-stack) .dont-miss-pitch {
+    flex: 0 0 360px !important;
+    max-width: 360px;
+  }
+  @media (max-width: 1000px) {
+    .dont-miss-shell:has(.ulc-stack) .dont-miss-pitch {
+      flex: 0 0 320px !important;
+      max-width: 320px;
+    }
+  }
+
+  // Lock the shell to its viewport cap on the upgrade view — no page
+  // scroll on the modal itself. The cards stack handles its own
+  // vertical scroll if needed (each card already scrolls internally).
+  // Also trims the shell height from 78vh → 70vh so the modal feels
+  // tighter on the upgrade view.
+  .dont-miss-shell:has(.ulc-stack) {
+    overflow-y: hidden !important;
+    max-height: 70vh !important;
+  }
+}
+

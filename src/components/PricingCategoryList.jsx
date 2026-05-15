@@ -36,7 +36,7 @@ const BUCKET_ICONS = {
   direct: Zap,
 };
 
-export default function PricingCategoryList({ tier }) {
+export default function PricingCategoryList({ tier, bucketKeys, labelOverrides }) {
   // Track which buckets are expanded — keyed by category.key.
   // Default: all collapsed (matches the pricing-mockup-13.html behavior).
   const [expanded, setExpanded] = useState({});
@@ -44,9 +44,19 @@ export default function PricingCategoryList({ tier }) {
   const toggle = (key) =>
     setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
 
+  // Optional `bucketKeys` filter: render only the listed bucket keys, in
+  // the order given. When omitted, every bucket from PRICING_CATEGORIES
+  // is shown. Used by the upgrade-modal landscape cards to render a
+  // curated 5-bucket subset instead of all 10.
+  const categories = bucketKeys
+    ? bucketKeys
+        .map((k) => PRICING_CATEGORIES.find((c) => c.key === k))
+        .filter(Boolean)
+    : PRICING_CATEGORIES;
+
   return (
     <div className="pc-category-list">
-      {PRICING_CATEGORIES.map((category) => {
+      {categories.map((category) => {
         // Skip the entire bucket if it's gated to specific tiers (e.g. the
         // Direct Access bucket on Lifetime only).
         if (category.onlyForTiers && !category.onlyForTiers.includes(tier)) {
@@ -56,7 +66,11 @@ export default function PricingCategoryList({ tier }) {
         const hasAccess = category.features.some((f) =>
           f.tiers.includes(tier)
         );
-        const label = category.label ?? category.tierLabels?.[tier] ?? category.key;
+        const label =
+          (labelOverrides && labelOverrides[category.key]) ??
+          category.label ??
+          category.tierLabels?.[tier] ??
+          category.key;
         const isHighlighted = category.key === "mcp" && tier !== "free";
         const isFreeTranscripts = tier === "free" && category.key === "transcripts";
         const isExpanded = !!expanded[category.key];
