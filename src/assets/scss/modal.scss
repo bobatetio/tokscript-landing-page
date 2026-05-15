@@ -56,6 +56,14 @@ body .dont-miss-backdrop,
   }
 }
 
+// Desktop default for the auth card's terms-of-service line: single
+// line. The mobile media query inside .dont-miss-out-modal-v3 below
+// switches it back to normal wrap so the sentence can break onto two
+// lines when the card is narrower.
+.auth-terms-line {
+  white-space: nowrap;
+}
+
 .dont-miss-out-modal-v3 {
   padding-left: 0 !important;
 
@@ -114,14 +122,16 @@ body .dont-miss-backdrop,
       margin-inline: 10px;
     }
   }
-  // Tier-selection step. Cap the modal so the dialog matches the visible
-  // card grid (3 or 4 cards) — no dead space to the right of the cards.
+  // Tier-selection step. Widened so each of the 4 portrait pricing
+  // cards stretches to ~307px. Math: 1320px dialog − 44px wrapper
+  // padding − 48px (3×16 gap) = 1228px for the grid; ÷ 4 ≈ 307px
+  // per card. Matches the .pc-grid max-width cap so the grid fills
+  // edge-to-edge. !important defends against Bootstrap's --bs-modal-width
+  // variable being applied later in the cascade.
   &.dont-miss-step-tiers .modal-dialog {
     @media screen and (min-width: 1080px) {
-      max-width: 1040px;
-    }
-    @media screen and (min-width: 1024px) and (max-width: 1079px) {
-      max-width: calc(100vw - 48px);
+      max-width: 1320px !important;
+      width: calc(100vw - 48px);
     }
   }
   .modal-content {
@@ -162,6 +172,38 @@ body .dont-miss-backdrop,
       display: none !important;
     }
 
+    // Also hide the in-image caption (and its gradient overlay) on
+    // mobile — the daily-limit-reached modal shouldn't carry the
+    // descriptor copy that the desktop carousel paints onto each frame.
+    .carousel-caption-inset,
+    .carousel-caption-gradient {
+      display: none !important;
+    }
+
+    // The pitch panel's card-style frame (bg + radius + outer margin)
+    // is a desktop-only treatment. On mobile the pitch sits flush in
+    // the modal sheet with no surface of its own.
+    .dont-miss-pitch {
+      background: transparent !important;
+      border-radius: 0 !important;
+      margin: 0 !important;
+    }
+
+    // UpgradeLandscapeCards is desktop-only and is no longer rendered
+    // on mobile (the JSX returns null in StepOne for isMobile + user
+    // truthy). Kept as a defensive belt rule in case any future render
+    // path re-mounts it on mobile.
+    .ulc-stack {
+      display: none !important;
+    }
+
+    // Auth-card terms line ("I agree to the Terms of Service and
+    // Privacy Policy") is single-line on desktop but allowed to wrap
+    // to two lines on mobile where the card is narrower.
+    .auth-terms-line {
+      white-space: normal !important;
+    }
+
     // Carousel keeps the dark fade + text caption visible on mobile so
     // the label + sub line read on top of each frame.
     .modal-content {
@@ -170,9 +212,11 @@ body .dont-miss-backdrop,
       // Fixed height (not max-height) so percentage heights inside resolve
       // and the sticky .paywall-panel always pins to this box's bottom.
       // overflow-y:auto makes modal-content the scroll container — the
-      // sticky panel then computes against the visible 64vh modal box, so
-      // the CTA + sign-in are always visible without scrolling.
-      height: 80vh !important;
+      // sticky panel then computes against the visible modal box, so the
+      // CTA + sign-in are always visible without scrolling.
+      // Height bumped to 92vh per request — gives the pitch + features
+      // maximum vertical room before the sticky panel.
+      height: 92vh !important;
       overflow-x: hidden !important;
       overflow-y: auto !important;
       // Hide the scrollbar gutter — the modal scrolls via swipe on mobile,
@@ -267,9 +311,14 @@ body .dont-miss-backdrop,
     .dont-miss-mobile-sub {
       margin: 4px 0 0;
       color: rgba(255, 255, 255, 0.6);
-      font-size: 13px;
+      // Sized to fit "Sign in or create an account to keep going." on a
+      // single line at typical mobile widths (≥360px). Slightly tighter
+      // letter-spacing too so the longer guest copy clears edge-to-edge.
+      font-size: 12px;
       line-height: 1.45;
       font-weight: 400;
+      white-space: nowrap;
+      letter-spacing: -0.005em;
     }
 
     // ── Figma mobile-paywall body (checklist + dark gradient panel) ────────
@@ -366,18 +415,21 @@ body .dont-miss-backdrop,
 
     .paywall-tier-row {
       display: flex;
-      gap: 6px;
-      // Horizontal scroll if all 4 cards don't fit; Lifetime peeks off the
-      // right edge as a scroll affordance, matching the Figma.
-      overflow-x: auto;
+      gap: 8px;
+      // Chips spread to fill the row equally — gives the upgrade-to-pro
+      // 3-chip layout much wider cards than the previous fixed 80px.
+      // The 4-chip guest layout still fits comfortably on a typical
+      // mobile width since 4 × ~85px + gaps ≈ 360px.
+      overflow-x: hidden;
       scrollbar-width: none;
       padding-top: 8px; // room for the SAVE $81 ribbon
       &::-webkit-scrollbar { display: none; }
     }
     .paywall-tier {
       position: relative;
-      flex: 0 0 auto;
-      width: 80px;
+      // flex: 1 → each chip claims an equal share of the row width.
+      flex: 1 1 0;
+      min-width: 0;
       height: 64px;
       // Asymmetric vertical padding: extra top-padding nudges the label
       // down a few pixels from the card's top edge while space-between
@@ -2385,6 +2437,28 @@ body .dont-miss-backdrop,
     }
     @media screen and (min-width: 1024px) and (max-width: 1059px) {
       max-width: calc(100vw - 32px);
+    }
+  }
+
+  // Daily-limit-reached modal (guest desktop, no .ulc-stack present).
+  // Modal width: 14 (outer-l) + 400 (pitch) + 14 (gap) + 360 (form) +
+  // 14 (outer-r) = 802px; rounded up to 810px so the layout doesn't
+  // strain at the edges.
+  .modal-dialog:not(:has(.ulc-stack)) {
+    @media screen and (min-width: 768px) {
+      max-width: 810px;
+    }
+  }
+
+  // Daily-limit-reached pitch panel: wider left column. Scoped to the
+  // same selector so the upgrade view's pitch isn't touched. Right
+  // margin bumped to 14px so the gap between the two panels matches
+  // the 14px outer padding (pitch right 14 + form left 0 = 14 = outer).
+  .dont-miss-shell:not(:has(.ulc-stack)) .dont-miss-pitch {
+    @media screen and (min-width: 768px) {
+      flex: 0 0 400px !important;
+      max-width: 400px;
+      margin-right: 14px !important;
     }
   }
 

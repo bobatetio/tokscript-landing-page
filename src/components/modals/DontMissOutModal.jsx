@@ -889,21 +889,19 @@ function PwToggle({ showPw, setShowPw }) {
    4-tier picker panel + white "Subscribe to ..." CTA + sign-in line that
    replace the pills + intro CTA on mobile. Display is gated to mobile by
    the parent CSS rule on `.dont-miss-mobile-paywall`. */
-function MobilePaywallV2({ t, selectedTier, setSelectedTier, onConfirm }) {
+function MobilePaywallV2({ t, selectedTier, setSelectedTier, onConfirm, user }) {
   const tr = t?.dontMissOutModal?.mobilePaywall || {};
-  // Mirror the pricing cards: one row per pricing-card bucket, with a check
-  // if the currently-selected tier has access to anything in that bucket,
-  // an X otherwise. Selecting a different tier card below updates this list
-  // live, so users can see exactly what each plan includes.
   const checklistTier = selectedTier || "annual";
-  // Note: `checklist` array removed — PricingCategoryList now renders
-  // the full pricing-card structure for `checklistTier` directly.
-  const tiers = [
+  // Free tier is only shown to guests — a signed-in user already has
+  // an account, so the upgrade-to-pro mobile modal omits the Free
+  // chip and only lists the paid tiers.
+  const allTiers = [
     { key: "free", label: "FREE", price: "$0", period: "/forever", ctaPrice: "$0/forever" },
     { key: "monthly", label: "MONTHLY", price: "$10", period: "/month", ctaPrice: "$10/month" },
     { key: "annual", label: "ANNUAL", price: "$39", period: "/year", featured: true, ribbon: "SAVE $81", ctaPrice: "$39/year" },
     { key: "lifetime", label: "LIFETIME", price: "$199", period: "/forever", ctaPrice: "$199 once" },
   ];
+  const tiers = user ? allTiers.filter((tx) => tx.key !== "free") : allTiers;
   const sel = tiers.find((tt) => tt.key === selectedTier) || tiers[2];
   const ctaText =
     sel.key === "free"
@@ -953,13 +951,15 @@ function MobilePaywallV2({ t, selectedTier, setSelectedTier, onConfirm }) {
           {ctaText}
         </button>
 
-        <p className="paywall-signin">
-          {tr.haveAccount || "Already have an account?"}{" "}
-          <Link href="/app/login" className="paywall-signin-link">
-            {tr.signIn || "Sign In"}
-          </Link>{" "}
-          {tr.toContinue || "to continue"}
-        </p>
+        {!user && (
+          <p className="paywall-signin">
+            {tr.haveAccount || "Already have an account?"}{" "}
+            <Link href="/app/login" className="paywall-signin-link">
+              {tr.signIn || "Sign In"}
+            </Link>{" "}
+            {tr.toContinue || "to continue"}
+          </p>
+        )}
       </div>
     </div>
   );
@@ -1124,11 +1124,14 @@ function DashboardAuthForm({ mode, onSwitchMode, onAuthSuccess }) {
 
   return (
     <div
+      className="dont-miss-form"
       style={{
         // Replaces the previous .dont-miss-form panel: same overall slot
         // dimensions in the modal layout, but the inner card now mirrors
         // the dashboard's auth card visuals (cardBg + 1px border + 16px
-        // radius).
+        // radius). Keeps the .dont-miss-form className so the existing
+        // mobile-intro step rule (which hides this panel until the user
+        // taps Continue) still applies.
         width: 360,
         flexShrink: 0,
         margin: "14px 14px 14px 0",
@@ -1144,6 +1147,10 @@ function DashboardAuthForm({ mode, onSwitchMode, onAuthSuccess }) {
       <div
         style={{
           width: "100%",
+          // Stretch the auth card to fill the form-panel wrapper, which
+          // itself fills the modal shell via flex. Result: the form
+          // card always matches the pitch panel's height edge-for-edge.
+          flex: "1 1 auto",
           background: AUTH_THEME.cardBg,
           border: `1px solid ${AUTH_THEME.border}`,
           borderRadius: 16,
@@ -1433,13 +1440,42 @@ function DashboardAuthForm({ mode, onSwitchMode, onAuthSuccess }) {
                   </svg>
                 )}
               </span>
-              <span style={{ fontSize: 11.5, lineHeight: 1.45, color: AUTH_THEME.muted }}>
+              <span
+                className="auth-terms-line"
+                style={{
+                  fontSize: 11,
+                  lineHeight: 1.45,
+                  color: AUTH_THEME.muted,
+                  // Desktop: enforce single-line via SCSS rule on
+                  // .auth-terms-line. Mobile (≤760px): the SCSS rule
+                  // overrides back to normal wrap so the sentence can
+                  // break onto two lines when the card is narrower.
+                }}
+              >
                 I agree to the{" "}
-                <span style={{ color: AUTH_THEME.accent, cursor: "pointer" }}>
+                <span
+                  style={{
+                    color: AUTH_THEME.accent,
+                    cursor: "pointer",
+                    // Explicit inheritance so global anchor / link rules
+                    // can't bump the size of the highlighted phrases.
+                    fontSize: "inherit",
+                    fontWeight: "inherit",
+                    lineHeight: "inherit",
+                  }}
+                >
                   Terms of Service
                 </span>{" "}
                 and{" "}
-                <span style={{ color: AUTH_THEME.accent, cursor: "pointer" }}>
+                <span
+                  style={{
+                    color: AUTH_THEME.accent,
+                    cursor: "pointer",
+                    fontSize: "inherit",
+                    fontWeight: "inherit",
+                    lineHeight: "inherit",
+                  }}
+                >
                   Privacy Policy
                 </span>
               </span>
@@ -1518,11 +1554,31 @@ function DashboardAuthForm({ mode, onSwitchMode, onAuthSuccess }) {
           }}
         >
           By signing in you agree to our{" "}
-          <span style={{ textDecoration: "underline", cursor: "pointer" }}>
+          <span
+            style={{
+              textDecoration: "underline",
+              cursor: "pointer",
+              // Force inheritance so global anchor/link rules can't
+              // bump the size of the highlighted phrases.
+              fontSize: "inherit",
+              fontWeight: "inherit",
+              lineHeight: "inherit",
+              color: "inherit",
+            }}
+          >
             Terms of Service
           </span>{" "}
           and{" "}
-          <span style={{ textDecoration: "underline", cursor: "pointer" }}>
+          <span
+            style={{
+              textDecoration: "underline",
+              cursor: "pointer",
+              fontSize: "inherit",
+              fontWeight: "inherit",
+              lineHeight: "inherit",
+              color: "inherit",
+            }}
+          >
             Privacy Policy
           </span>
           .
@@ -1644,6 +1700,7 @@ function StepOne({
   selectedTier,
   setSelectedTier,
   user,
+  onBack,
   onMobileTierConfirm,
   isMobile,
   initialAuthMode = "signup",
@@ -1690,6 +1747,34 @@ function StepOne({
           zIndex: 2,
         }}
       >
+        {/* Back chip — rendered when the parent passes onBack (currently
+            used by the post-signup upgrade view to let the user return
+            to the sign-up form). Hidden when no onBack is provided so
+            the standard guest + returning-free flows stay unchanged. */}
+        {onBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            style={{
+              alignSelf: "flex-start",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              padding: "5px 10px",
+              borderRadius: 999,
+              background: "rgba(255,255,255,0.06)",
+              border: `1px solid ${T.formBorder}`,
+              color: T.pitchMuted,
+              fontSize: 11.5,
+              fontWeight: 600,
+              cursor: "pointer",
+              marginBottom: 2,
+            }}
+          >
+            <ArrowLeft size={12} />
+            {t?.dontMissOutModal?.back || "Back"}
+          </button>
+        )}
         <div className="dont-miss-desktop-title">
           <span
             style={{
@@ -1741,7 +1826,7 @@ function StepOne({
               ? t?.dontMissOutModal?.freePaywallSub ||
                 "Unlock Everything With A Paid Plan."
               : t?.dontMissOutModal?.guestPaywallSub ||
-                "Create An Account To Keep Going."}
+                "Sign in or create an account to keep going."}
           </p>
         </div>
 
@@ -1762,7 +1847,7 @@ function StepOne({
               ? t?.dontMissOutModal?.freePaywallSub ||
                 "Unlock Everything With A Paid Plan."
               : t?.dontMissOutModal?.guestPaywallSub ||
-                "Create An Account To Keep Going."}
+                "Sign in or create an account to keep going."}
           </p>
         </div>
 
@@ -1806,6 +1891,7 @@ function StepOne({
             selectedTier={selectedTier}
             setSelectedTier={setSelectedTier}
             onConfirm={onMobileTierConfirm}
+            user={user}
           />
         )}
 
@@ -1881,9 +1967,9 @@ function StepOne({
           onSwitchMode={setAuthMode}
           onAuthSuccess={onAuthSuccess}
         />
-      ) : (
+      ) : !isMobile ? (
         <UpgradeLandscapeCards t={t} email={user.email || email} />
-      )}
+      ) : null}
     </>
   );
 }
@@ -2654,10 +2740,15 @@ export default function DontMissOutModal({
   };
 
   // Submit handler for the ported DashboardAuthForm. Receives the
-  // email + mode straight from the form (its internal state) so we
-  // don't need to keep the parent's `email` state in lock-step with
-  // the form. Drives the same mock auth → localStorage → setUser →
-  // step transition that handleContinue did for the original form.
+  // email + mode straight from the form (its internal state) and
+  // hydrates a mock user (mockCreateAccount for signup, mockSignIn
+  // for login). After setUser:
+  //   • Paid user → flash welcome toast, close the modal.
+  //   • Free user (new signup OR returning free) → stay on StepOne.
+  //     The right column auto-flips from DashboardAuthForm to
+  //     UpgradeLandscapeCards because `user` is now truthy, so the
+  //     guest is taken straight into the upgrade-to-pro view with no
+  //     extra step transition.
   const handleAuthSuccess = async (formEmail, mode) => {
     setEmail(formEmail);
     saveSignupProgress(formEmail);
@@ -2675,6 +2766,11 @@ export default function DontMissOutModal({
       setTimeout(() => onHide(), 1500);
       return;
     }
+    // Free user (new signup or returning free) → transition to the
+    // upgrade-to-pro view via the "tiers" step. The parent render now
+    // routes that step to StepOne with an onBack chip (instead of the
+    // old StepTwo 4-card portrait grid) so the user lands on the same
+    // pitch + UpgradeLandscapeCards layout as a returning free user.
     setStep("tiers");
   };
 
@@ -2818,16 +2914,19 @@ export default function DontMissOutModal({
             </a>
           )}
 
-          {/* Mobile 3-step flow: intro (pitch + Get Full Access) → signup
-              (email/password form) → tiers (plan selection). Desktop renders
-              the same 2-step flow it always did. The contextual-paywall +
-              email-check components stay defined in the file but are not used
-              in this simpler flow. */}
+          {/* TWO DISTINCT FLOWS share this slot:
+              1. Daily-limit-reached → signup → "Pick Your Plan" (StepTwo
+                 with the portrait 4-tier grid and a back button). This is
+                 what guests who just created an account see.
+              2. Upgrade-to-pro (returning signed-in free user) → StepOne
+                 renders pitch + UpgradeLandscapeCards on its own. That
+                 path never hits step === "tiers".
+              The two views are intentionally different surfaces. */}
           {step === "tiers" ? (
             <StepTwo
               t={t}
               email={email}
-              onBack={() => setStep(isMobile ? "signup" : "signup")}
+              onBack={() => setStep("signup")}
               onTierSelect={handleTierSelect}
               user={user}
               trigger={entryTrigger}
@@ -2837,9 +2936,6 @@ export default function DontMissOutModal({
               wasSignedInOnOpen={wasSignedInOnOpen}
             />
           ) : (
-            // intro (mobile pitch) and signup (form) both render StepOne. SCSS
-            // rules hide the form on mobile-intro and hide the pitch on
-            // mobile-signup; desktop shows both panels side-by-side.
             <StepOne
               t={t}
               email={email}
