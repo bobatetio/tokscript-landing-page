@@ -2007,9 +2007,19 @@
 .privacy-page,
 .terms-page {
   .inner-page {
-    background: $body_bg_color;
+    // Light-ray hero background — same asset the home-page banner uses.
+    // Mobile swaps to the lighter-weight mobile asset below.
+    background-image: url("./assets/images/light-ray-bg-img.webp");
+    background-color: $body_bg_color;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
     min-height: calc(100vh - 82px);
     padding: 60px 0;
+
+    @media screen and (max-width: 767px) {
+      background-image: url("./assets/images/light-ray-bg-img-mobile.webp");
+    }
 
     .page-wrapper {
       .heading-wrapper {
@@ -22304,6 +22314,29 @@ a.tk-getstarted-btn {
   .auth-topbar-prompt {
     display: none !important;
   }
+}
+
+/* Shared brand eyebrow pill — used as the heading tag on legal pages
+   (Terms of Service, Privacy Policy, Legal). Mirrors the `.vt-pill`
+   treatment from the home-page platform section but lives at the root
+   scope so any page can pick it up. Dark pill, teal→white border
+   gradient, plain white text. */
+.tk-brand-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  color: #ffffff;
+  background:
+    linear-gradient(#0d0d0d, #0d0d0d) padding-box,
+    linear-gradient(135deg, #00b8b2, rgba(255, 255, 255, 0.12)) border-box;
+  border: 0.5px solid transparent;
+  text-decoration: none;
 }
 
 

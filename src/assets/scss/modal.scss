@@ -134,6 +134,16 @@ body .dont-miss-backdrop,
       width: calc(100vw - 48px);
     }
   }
+  // 3-card upgrade view (returning signed-in free user — FREE card hidden).
+  // Narrower dialog: 44px wrapper + 32px gap (2×16) + 3×280 = 916px;
+  // rounded to 980px for breathing room. Source-order wins over the 4-card
+  // rule above.
+  &.dont-miss-step-tiers .modal-dialog:has(.pc-grid--three) {
+    @media screen and (min-width: 1080px) {
+      max-width: 980px !important;
+      width: calc(100vw - 48px);
+    }
+  }
   .modal-content {
     background: transparent;
     border: 0;
@@ -214,9 +224,9 @@ body .dont-miss-backdrop,
       // overflow-y:auto makes modal-content the scroll container — the
       // sticky panel then computes against the visible modal box, so the
       // CTA + sign-in are always visible without scrolling.
-      // Height bumped to 92vh per request — gives the pitch + features
-      // maximum vertical room before the sticky panel.
-      height: 92vh !important;
+      // Trimmed from 92vh → 82vh so the modal feels tighter; pitch +
+      // features still have enough vertical room before the sticky panel.
+      height: 82vh !important;
       overflow-x: hidden !important;
       overflow-y: auto !important;
       // Hide the scrollbar gutter — the modal scrolls via swipe on mobile,
@@ -319,6 +329,13 @@ body .dont-miss-backdrop,
       font-weight: 400;
       white-space: nowrap;
       letter-spacing: -0.005em;
+
+      // Feature-lock subcopy is longer ("Upgrade to a paid plan to unlock
+      // this feature.") — allow wrapping to two lines.
+      &.dont-miss-mobile-sub--wrap {
+        white-space: normal;
+        text-wrap: balance;
+      }
     }
 
     // ── Figma mobile-paywall body (checklist + dark gradient panel) ────────
@@ -2164,11 +2181,10 @@ body .dont-miss-backdrop,
   }
 }
 
-/* ── Upgrade landscape cards ─────────────────────────────────────────────
-   Replaces DashboardAuthForm in the right column of DontMissOutModal when
-   a signed-in free user opens it. Three cards stacked vertically; each
-   card is a horizontal split (price + CTA on the left, expandable bucket
-   list on the right). Matches the Figma upgrade design. */
+
+
+/* ── Upgrade landscape cards (legacy — no longer used; kept for any
+   downstream consumer that still references .ulc-*) ─────────────────── */
 .ulc-stack {
   flex: 1 1 0;
   min-width: 0;
@@ -2440,11 +2456,19 @@ body .dont-miss-backdrop,
     }
   }
 
-  // Daily-limit-reached modal (guest desktop, no .ulc-stack present).
-  // Modal width: 14 (outer-l) + 400 (pitch) + 14 (gap) + 360 (form) +
-  // 14 (outer-r) = 802px; rounded up to 810px so the layout doesn't
-  // strain at the edges.
-  .modal-dialog:not(:has(.ulc-stack)) {
+  // Upgrade slim view (desktop signed-in free user). Narrow centered
+  // dialog — content is a headline + three bare plan tiles in a row.
+  .modal-dialog:has(.tk-upgrade-slim) {
+    @media screen and (min-width: 768px) {
+      max-width: 720px !important;
+    }
+  }
+
+  // Daily-limit-reached modal (guest desktop, no .ulc-stack, no
+  // .tk-upgrade-slim). Modal width: 14 (outer-l) + 400 (pitch) + 14
+  // (gap) + 360 (form) + 14 (outer-r) = 802px; rounded up to 810px so
+  // the layout doesn't strain at the edges.
+  .modal-dialog:not(:has(.ulc-stack)):not(:has(.tk-upgrade-slim)) {
     @media screen and (min-width: 768px) {
       max-width: 810px;
     }

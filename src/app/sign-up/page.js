@@ -396,13 +396,21 @@ export default function SignUpPage() {
                 </span>
                 <span style={{ fontSize: 12, lineHeight: 1.5, color: THEME.muted }}>
                   I agree to the{" "}
-                  <span className="auth-inline-link" style={{ color: THEME.accent, cursor: "pointer" }}>
+                  <Link
+                    href="/terms"
+                    className="auth-inline-link"
+                    style={{ color: THEME.accent, textDecoration: "none" }}
+                  >
                     Terms of Service
-                  </span>{" "}
+                  </Link>{" "}
                   and{" "}
-                  <span className="auth-inline-link" style={{ color: THEME.accent, cursor: "pointer" }}>
+                  <Link
+                    href="/privacy"
+                    className="auth-inline-link"
+                    style={{ color: THEME.accent, textDecoration: "none" }}
+                  >
                     Privacy Policy
-                  </span>
+                  </Link>
                 </span>
               </label>
 

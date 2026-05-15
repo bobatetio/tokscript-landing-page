@@ -26,9 +26,7 @@ export default function Privacy() {
         <div className="container">
           <div className="page-wrapper">
             <div className="heading-wrapper">
-              <div className="badge-wrapper gradient-border d-inline-flex">
-                <strong className="text-gradient w-600">PRIVACY POLICY</strong>
-              </div>
+              <span className="tk-brand-eyebrow">PRIVACY POLICY</span>
               <h1>Privacy Policy</h1>
               <p>Last updated: January 2025</p>
             </div>

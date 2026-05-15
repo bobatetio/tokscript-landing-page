@@ -1705,7 +1705,13 @@ function StepOne({
   isMobile,
   initialAuthMode = "signup",
   onAuthSuccess,
+  trigger,
 }) {
+  // Pitch-panel headline differs by why the modal opened. "paid-feature" =
+  // user clicked a paid-only feature (download/AI tool); anything else =
+  // daily limit. Crossed with whether the user is signed in, that's 4
+  // variants. Accepts "feature" as a shorthand alias.
+  const isFeatureLock = trigger === "paid-feature" || trigger === "feature";
   const frames = useMemo(() => getCarouselFrames(t, isMobile), [t, isMobile]);
   const pills = useMemo(() => getFeaturePills(t), [t]);
   const [activeIdx, setActiveIdx] = useState(0);
@@ -1722,6 +1728,14 @@ function StepOne({
     }, 5000);
     return () => clearInterval(id);
   }, [paused, frames.length]);
+
+  // Desktop signed-in free user → focused upgrade modal (best-UX pattern):
+  // status chip → neutral title → one hero card (Annual, the recommended
+  // plan) with the lowest /month framing → two quiet alternatives below
+  // → small trust line. No pitch, no carousel, no feature list.
+  // Desktop signed-in users no longer hit StepOne — the modal effect routes
+  // them straight to step="tiers" so StepTwo (the 4-card grid) renders as the
+  // upgrade-to-pro surface with isFreeUserUpgrading copy + Free card hidden.
 
   return (
     <>
@@ -1793,9 +1807,11 @@ function StepOne({
               marginBottom: 12,
             }}
           >
-            {user
-              ? t?.dontMissOutModal?.freeEyebrow || "Upgrade"
-              : t?.dontMissOutModal?.eyebrow || "Daily Limit Reached"}
+            {isFeatureLock
+              ? t?.dontMissOutModal?.featureEyebrow || "Paid Feature"
+              : user
+                ? t?.dontMissOutModal?.freeEyebrow || "Upgrade"
+                : t?.dontMissOutModal?.eyebrow || "Daily Limit Reached"}
           </span>
           <h2
             className="dont-miss-h2"
@@ -1809,10 +1825,16 @@ function StepOne({
               whiteSpace: "normal",
             }}
           >
-            {user
-              ? t?.dontMissOutModal?.freeTitle || "Upgrade To Pro."
-              : t?.dontMissOutModal?.title ||
-                "You've Used Your 3 Free Transcripts Today."}
+            {isFeatureLock
+              ? user
+                ? t?.dontMissOutModal?.featureUpgradeTitle ||
+                  "Unlock This Feature."
+                : t?.dontMissOutModal?.featureSignupTitle ||
+                  "Sign Up To Unlock This."
+              : user
+                ? t?.dontMissOutModal?.freeTitle || "Upgrade To Pro."
+                : t?.dontMissOutModal?.title ||
+                  "You've Used Your 3 Free Transcripts Today."}
           </h2>
           <p
             style={{
@@ -1822,11 +1844,17 @@ function StepOne({
               lineHeight: 1.45,
             }}
           >
-            {user
-              ? t?.dontMissOutModal?.freePaywallSub ||
-                "Unlock Everything With A Paid Plan."
-              : t?.dontMissOutModal?.guestPaywallSub ||
-                "Sign in or create an account to keep going."}
+            {isFeatureLock
+              ? user
+                ? t?.dontMissOutModal?.featureUpgradeSub ||
+                  "This is a paid feature. Pick a plan to use it."
+                : t?.dontMissOutModal?.featureSignupSub ||
+                  "This feature is part of our paid plans. Create an account and pick a plan to use it."
+              : user
+                ? t?.dontMissOutModal?.freePaywallSub ||
+                  "Unlock Everything With A Paid Plan."
+                : t?.dontMissOutModal?.guestPaywallSub ||
+                  "Sign in or create an account to keep going."}
           </p>
         </div>
 
@@ -1835,19 +1863,35 @@ function StepOne({
             Matches the Figma guest-paywall design (white→teal gradient on h2). */}
         <div className="dont-miss-mobile-header">
           <h2 className="dont-miss-mobile-h2">
-            {user
-              ? t?.dontMissOutModal?.freeTitleMobile ||
-                t?.dontMissOutModal?.freeTitle ||
-                "Upgrade To Pro."
-              : t?.dontMissOutModal?.titleMobile ||
-                "You've Used Your 3 Free Guest Transcripts."}
+            {isFeatureLock
+              ? user
+                ? t?.dontMissOutModal?.featureUpgradeTitle ||
+                  "Unlock This Feature."
+                : t?.dontMissOutModal?.featureSignupTitle ||
+                  "Sign Up To Unlock This."
+              : user
+                ? t?.dontMissOutModal?.freeTitleMobile ||
+                  t?.dontMissOutModal?.freeTitle ||
+                  "Upgrade To Pro."
+                : t?.dontMissOutModal?.titleMobile ||
+                  "You've Used Your 3 Free Guest Transcripts."}
           </h2>
-          <p className="dont-miss-mobile-sub">
-            {user
-              ? t?.dontMissOutModal?.freePaywallSub ||
-                "Unlock Everything With A Paid Plan."
-              : t?.dontMissOutModal?.guestPaywallSub ||
-                "Sign in or create an account to keep going."}
+          <p
+            className={`dont-miss-mobile-sub${
+              isFeatureLock ? " dont-miss-mobile-sub--wrap" : ""
+            }`}
+          >
+            {isFeatureLock
+              ? user
+                ? t?.dontMissOutModal?.featureUpgradeSubMobile ||
+                  "Upgrade to a paid plan to unlock this feature."
+                : t?.dontMissOutModal?.featureSignupSubMobile ||
+                  "Sign up for a paid plan to unlock this feature."
+              : user
+                ? t?.dontMissOutModal?.freePaywallSub ||
+                  "Unlock Everything With A Paid Plan."
+                : t?.dontMissOutModal?.guestPaywallSub ||
+                  "Sign in or create an account to keep going."}
           </p>
         </div>
 
@@ -2235,6 +2279,45 @@ function StepTwo({
   const isFreeUserUpgrading =
     !!user && user.plan === "free" && wasSignedInOnOpen;
 
+  // Trigger context for copy. Two distinct WHYs the modal opens:
+  //   - "paid-feature" → user clicked a paid-only feature (download, AI
+  //     tools, export, etc.) and needs to upgrade to use it
+  //   - anything else ("daily-limit", "general", undefined) → user hit a
+  //     usage limit (daily transcripts, etc.)
+  // Combined with isFreeUserUpgrading, this produces 4 copy variants.
+  // Callers pass `trigger="paid-feature"` for locked-feature clicks; the
+  // shorthand `"feature"` is also accepted. Otherwise the limit copy is
+  // the safe default.
+  const isFeatureLock = trigger === "paid-feature" || trigger === "feature";
+
+  const dm = t?.dontMissOutModal || {};
+  let titleCopy;
+  let subCopy;
+  if (isFreeUserUpgrading) {
+    if (isFeatureLock) {
+      titleCopy = dm.featureUpgradeTitle || "Unlock This Feature.";
+      subCopy =
+        dm.featureUpgradeSub ||
+        "This is a paid feature. Pick a plan to use it.";
+    } else {
+      titleCopy = dm.freeUpgradeTitle || "Upgrade To Keep Transcribing.";
+      subCopy =
+        dm.freeUpgradeSub ||
+        "You’ve used today’s free transcripts. Pick a plan for unlimited access.";
+    }
+  } else {
+    if (isFeatureLock) {
+      titleCopy = dm.featureSignupTitle || "Sign Up To Unlock This.";
+      subCopy =
+        dm.featureSignupSub ||
+        "This feature is part of our paid plans. Create an account and pick a plan to use it.";
+    } else {
+      titleCopy = dm.tiersTitle || "Pick Your Plan To Continue.";
+      subCopy =
+        dm.tiersSubtitle || "Start Free, Or Unlock Everything From Day One.";
+    }
+  }
+
   const choose = (tierKey) => {
     onTierSelect?.({ key: tierKey });
     if (typeof window !== "undefined") {
@@ -2256,31 +2339,36 @@ function StepTwo({
         zIndex: 2,
       }}
     >
-      <button
-        type="button"
-        onClick={onBack}
-        style={{
-          alignSelf: "flex-start",
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 6,
-          padding: "5px 10px",
-          borderRadius: 999,
-          background: "rgba(255,255,255,0.06)",
-          border: `1px solid ${T.formBorder}`,
-          color: T.pitchMuted,
-          fontSize: 11.5,
-          fontWeight: 600,
-          cursor: "pointer",
-        }}
-      >
-        <ArrowLeft size={12} />
-        {t?.dontMissOutModal?.back || "Back"}
-      </button>
+      {/* Hide Back when the user landed on StepTwo directly (returning
+          signed-in user → no prior signup step to return to). */}
+      {!isFreeUserUpgrading && (
+        <button
+          type="button"
+          onClick={onBack}
+          style={{
+            alignSelf: "flex-start",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            padding: "5px 10px",
+            borderRadius: 999,
+            background: "rgba(255,255,255,0.06)",
+            border: `1px solid ${T.formBorder}`,
+            color: T.pitchMuted,
+            fontSize: 11.5,
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+        >
+          <ArrowLeft size={12} />
+          {t?.dontMissOutModal?.back || "Back"}
+        </button>
+      )}
 
       <div style={{ textAlign: "center" }}>
-        {/* Free user upgrade context: 'Pay To Upgrade'. Otherwise (guest who
-            completed sign-up form, or paid user opening modal): generic 'Pick Your Plan'. */}
+        {/* Copy varies on two axes: (isFreeUserUpgrading) × (isFeatureLock).
+            Resolved upstream into titleCopy / subCopy so the JSX stays
+            single-purpose. See `dm.feature*` translation keys for overrides. */}
         <h2
           style={{
             margin: 0,
@@ -2290,9 +2378,7 @@ function StepTwo({
             letterSpacing: "-0.015em",
           }}
         >
-          {isFreeUserUpgrading
-            ? t?.dontMissOutModal?.freeUpgradeTitle || "Pay To Upgrade."
-            : t?.dontMissOutModal?.tiersTitle || "Pick Your Plan To Continue."}
+          {titleCopy}
         </h2>
         <p
           style={{
@@ -2302,11 +2388,7 @@ function StepTwo({
             lineHeight: 1.5,
           }}
         >
-          {isFreeUserUpgrading
-            ? t?.dontMissOutModal?.freeUpgradeSub ||
-              "Pick A Plan To Continue Using TokScript."
-            : t?.dontMissOutModal?.tiersSubtitle ||
-              "Start Free, Or Unlock Everything From Day One."}
+          {subCopy}
         </p>
         {user?.email && (
           <p
@@ -2489,40 +2571,41 @@ function StepTwo({
         </div>
       </div>
 
-      <p
-        style={{
-          position: "sticky",
-          bottom: 0,
-          // Negative horizontal margin pulls the bg to the shell edges so the
-          // sticky strip covers cards that scroll behind it. Top padding
-          // creates a soft fade-out band; bottom padding is the visible
-          // breathing room beneath the text.
-          margin: "0 -22px 0",
-          padding: "18px 22px 16px",
-          textAlign: "center",
-          color: T.pitchMuted,
-          fontSize: 11.5,
-          lineHeight: 1.5,
-          background: `linear-gradient(180deg, rgba(11,11,18,0) 0%, ${T.outerBg} 30%, ${T.outerBg} 100%)`,
-          zIndex: 3,
-        }}
-      >
-        {t?.dontMissOutModal?.tiersFooter ||
-          "All Plans Include Cancel-Anytime and A 7-Day Refund Guarantee."}{" "}
-        <a
-          href={signinHref}
+      {/* Cancel/refund + Sign-in footer: only shown to guests in the signup
+          flow. For a signed-in user upgrading, the line is redundant (no
+          Sign In needed) and the modal ends cleanly at the card grid. */}
+      {!isFreeUserUpgrading && (
+        <p
           style={{
-            color: T.accent,
-            textDecoration: "none",
-            fontSize: "inherit",
-            fontWeight: "inherit",
-            fontFamily: "inherit",
-            lineHeight: "inherit",
+            position: "sticky",
+            bottom: 0,
+            margin: "0 -22px 0",
+            padding: "18px 22px 16px",
+            textAlign: "center",
+            color: T.pitchMuted,
+            fontSize: 11.5,
+            lineHeight: 1.5,
+            background: `linear-gradient(180deg, rgba(11,11,18,0) 0%, ${T.outerBg} 30%, ${T.outerBg} 100%)`,
+            zIndex: 3,
           }}
         >
-          {t?.dontMissOutModal?.signIn || "Sign In"}
-        </a>
-      </p>
+          {t?.dontMissOutModal?.tiersFooter ||
+            "All Plans Include Cancel-Anytime and A 7-Day Refund Guarantee."}{" "}
+          <a
+            href={signinHref}
+            style={{
+              color: T.accent,
+              textDecoration: "none",
+              fontSize: "inherit",
+              fontWeight: "inherit",
+              fontFamily: "inherit",
+              lineHeight: "inherit",
+            }}
+          >
+            {t?.dontMissOutModal?.signIn || "Sign In"}
+          </a>
+        </p>
+      )}
     </div>
   );
 }
@@ -2531,6 +2614,14 @@ export default function DontMissOutModal({
   show,
   onHide,
   t,
+  // `trigger` drives the StepTwo headline + subtitle. Two recognised values:
+  //   "feature" → user clicked a paid-only feature (download, AI tools,
+  //     export, etc.). Copy: "Unlock This Feature." / "Sign Up To Unlock This."
+  //   anything else (default "general") → user hit a usage limit (daily
+  //     transcripts, etc.). Copy: "Upgrade To Keep Transcribing." /
+  //     "Pick Your Plan To Continue."
+  // Combined with whether the user is a returning free signed-in user,
+  // this produces four copy variants — see StepTwo for the matrix.
   trigger = "general",
   // Header-triggered opens use this to pre-select the sign-in or
   // sign-up form inside the ported DashboardAuthForm. Defaults to
@@ -2605,11 +2696,11 @@ export default function DontMissOutModal({
     setSuccessToast("");
     setPendingEmail("");
     if (signedInUser?.email) {
-      // Signed-in user (free or paid) → first see the "Upgrade To Pro" pitch
-      // screen (carousel + value props + Get Full Access CTA), then on
-      // Continue → tier selection. No form panel for them; that's hidden
-      // via JSX conditional inside StepOne.
-      setStep("intro");
+      // Signed-in user:
+      //   - Mobile → "intro" (mobile paywall layout in StepOne)
+      //   - Desktop → "tiers" directly (StepTwo 4-card grid is the upgrade
+      //     surface; no intro carousel step in between)
+      setStep(isMobile ? "intro" : "tiers");
     } else {
       // Guest: same pitch screen but with the daily-limit copy, and the
       // Create-Your-Account form on the right (or as step 2 on mobile).
@@ -2954,6 +3045,7 @@ export default function DontMissOutModal({
               isMobile={isMobile}
               initialAuthMode={initialAuthMode}
               onAuthSuccess={handleAuthSuccess}
+              trigger={entryTrigger}
             />
           )}
 

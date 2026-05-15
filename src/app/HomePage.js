@@ -1299,14 +1299,20 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                       onItemClick={handleBulkItemClick}
                       isProcessing={isBulkProcessing}
                       processingUrls={processingUrls}
-                      upgrade={() => setDontMissOutModalShow(true)}
+                      upgrade={() => {
+                        setModalTrigger("paid-feature");
+                        setDontMissOutModalShow(true);
+                      }}
                     />
                   </div>
                 )}
                 {videoData && !bulkData && (
                   <TranscriptResult
                     videoData={videoData}
-                    upgrade={() => setDontMissOutModalShow(true)}
+                    upgrade={() => {
+                      setModalTrigger("paid-feature");
+                      setDontMissOutModalShow(true);
+                    }}
                   />
                 )}
               </div>

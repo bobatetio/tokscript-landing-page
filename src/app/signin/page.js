@@ -232,19 +232,16 @@ export default function SignInPage() {
               <div>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
                   <label style={{ fontSize: 14, fontWeight: 500, color: THEME.text }}>Password</label>
-                  <button
-                    type="button"
+                  <Link
+                    href="/forgot-password"
                     style={{
-                      background: "none",
-                      border: "none",
                       color: THEME.accent,
                       fontSize: 12,
-                      cursor: "pointer",
-                      padding: 0,
+                      textDecoration: "none",
                     }}
                   >
                     Forgot password?
-                  </button>
+                  </Link>
                 </div>
                 <AuthInput
                   icon={<Lock size={16} />}
@@ -316,8 +313,14 @@ export default function SignInPage() {
 
           <p style={{ textAlign: "center", marginTop: 20, fontSize: 12, lineHeight: 1.5, color: THEME.muted }}>
             By signing in you agree to our{" "}
-            <span style={{ textDecoration: "underline", cursor: "pointer" }}>Terms of Service</span> and{" "}
-            <span style={{ textDecoration: "underline", cursor: "pointer" }}>Privacy Policy</span>.
+            <Link href="/terms" style={{ textDecoration: "underline", color: "inherit" }}>
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" style={{ textDecoration: "underline", color: "inherit" }}>
+              Privacy Policy
+            </Link>
+            .
           </p>
         </div>
       </main>
