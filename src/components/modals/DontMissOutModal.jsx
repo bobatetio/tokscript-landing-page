@@ -211,44 +211,58 @@ function GoogleG() {
   );
 }
 
-function getCarouselFrames(t, isMobile) {
+function getCarouselFrames(t, isMobile, user, trigger) {
   const tr = t?.dontMissOutModal?.carousel || {};
-  // Two image sets — Modal 2 image X.png (taller, landscape upgrade
-  // modal) for desktop, Modal image X.png (shorter, original) for
-  // mobile. Mobile branch also drops the in-image caption (see
-  // CarouselFrame + the mobile media query in modal.scss).
   const BP = process.env.NEXT_PUBLIC_BASE_PATH || "";
-  const set = isMobile ? "Modal%20image" : "Modal%202%20image";
+  // Image source decision tree:
+  //   - Upgrade view ("You've Hit Your Free Limit." signed-in desktop)
+  //     → "Modal 3 image X.png"
+  //   - Paid-feature lock → tall "Modal 2 image X.png"
+  //   - Daily-limit reached / general → short "Modal image X.png"
+  // "Upgrade modal" treatment fires for any desktop signed-in user OR
+  // any paid-feature lock (signed-in or guest). Both surfaces share the
+  // same Modal 3 image carousel + mini cards + features list layout.
+  const isUpgradeView = (!!user || isFeatureLock) && !isMobile;
+  const isFeatureLock = trigger === "paid-feature" || trigger === "feature";
+  const imgFor = (idx, n) => {
+    if (isUpgradeView) {
+      return `${BP}/figma-rows/Modal%203%20image%20${n}.png`;
+    }
+    if (isFeatureLock) {
+      return `${BP}/figma-rows/Modal%202%20image%20${n}.png`;
+    }
+    return `${BP}/figma-rows/Modal%20image%20${n}.png`;
+  };
   return [
     {
       key: "modal-1",
-      image: `${BP}/figma-rows/${set}%201.png`,
+      image: imgFor(0, 1),
       label: tr.frame1Label || "Bulk transcribe up to 50 videos at once",
-      sub: tr.frame1Sub || "Drop up to 50 video links. Get transcripts back in seconds.",
+      sub: tr.frame1Sub || "Drop 50 video links, get transcripts back in seconds.",
     },
     {
       key: "modal-2",
-      image: `${BP}/figma-rows/${set}%202.png`,
+      image: imgFor(1, 2),
       label: tr.frame2Label || "AI-powered content audits",
-      sub: tr.frame2Sub || "Pipe any creator's full catalog directly into Claude or ChatGPT.",
+      sub: tr.frame2Sub || "Pipe any creator's catalog into Claude or ChatGPT.",
     },
     {
       key: "modal-3",
-      image: `${BP}/figma-rows/${set}%203.png`,
+      image: imgFor(2, 3),
       label: tr.frame3Label || "Your personal transcript library",
-      sub: tr.frame3Sub || "Every transcript you've ever pulled, fully searchable in one place.",
+      sub: tr.frame3Sub || "Every transcript you've pulled, searchable in one place.",
     },
     {
       key: "modal-4",
-      image: `${BP}/figma-rows/${set}%204.png`,
+      image: imgFor(3, 4),
       label: tr.frame4Label || "Transcribe from the address bar",
-      sub: tr.frame4Sub || "Prefix any TikTok video URL with tokscript.com to instantly transcribe it.",
+      sub: tr.frame4Sub || "Prefix any URL with tokscript.com to transcribe instantly.",
     },
     {
       key: "modal-5",
-      image: `${BP}/figma-rows/${set}%205.png`,
+      image: imgFor(4, 5),
       label: tr.frame5Label || "Scrape and analyze straight from TikTok",
-      sub: tr.frame5Sub || "Quickly grab transcripts and engagement data without ever leaving TikTok.",
+      sub: tr.frame5Sub || "Grab transcripts and data without leaving TikTok.",
     },
   ];
 }
@@ -325,13 +339,11 @@ function CarouselFrame({ frame }) {
               lineHeight: 1.35,
               letterSpacing: "-0.005em",
               textShadow: "0 1px 2px rgba(0,0,0,0.5)",
-              // Hard 2-line cap regardless of copy length. If a future
-              // translation balloons the string it gets clamped instead
-              // of overflowing onto a third line.
-              display: "-webkit-box",
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
+              // Strict one-line cap. Longer copy gets ellipsised instead
+              // of wrapping. Keeps the in-image caption a tidy single row.
+              whiteSpace: "nowrap",
               overflow: "hidden",
+              textOverflow: "ellipsis",
             }}
           >
             {frame.sub}
@@ -1132,9 +1144,12 @@ function DashboardAuthForm({ mode, onSwitchMode, onAuthSuccess }) {
         // radius). Keeps the .dont-miss-form className so the existing
         // mobile-intro step rule (which hides this panel until the user
         // taps Continue) still applies.
-        width: 360,
+        width: 420,
         flexShrink: 0,
-        margin: "14px 14px 14px 0",
+        // margin-left: auto absorbs any leftover flex space onto the left
+        // side of the form, so the form's right margin (14px) matches the
+        // top + bottom margins (14px) against the modal edge.
+        margin: "14px 14px 14px auto",
         padding: 0,
         background: "transparent",
         border: "none",
@@ -1150,14 +1165,18 @@ function DashboardAuthForm({ mode, onSwitchMode, onAuthSuccess }) {
           // Stretch the auth card to fill the form-panel wrapper, which
           // itself fills the modal shell via flex. Result: the form
           // card always matches the pitch panel's height edge-for-edge.
-          flex: "1 1 auto",
+          flex: "1 1 0",
+          minHeight: 0,
+          // Scroll the form's contents inside the card if they exceed
+          // the visible card height (smaller viewports etc.).
+          overflowY: "auto",
           background: AUTH_THEME.cardBg,
           border: `1px solid ${AUTH_THEME.border}`,
           borderRadius: 16,
-          padding: 24,
+          padding: "20px 20px 18px",
           display: "flex",
           flexDirection: "column",
-          gap: 16,
+          gap: 12,
         }}
       >
         <div style={{ textAlign: "center" }}>
@@ -1194,7 +1213,7 @@ function DashboardAuthForm({ mode, onSwitchMode, onAuthSuccess }) {
             alignItems: "center",
             justifyContent: "center",
             gap: 10,
-            padding: "10px 12px",
+            padding: "8px 12px",
             borderRadius: 12,
             background: AUTH_THEME.inputBg,
             border: `1px solid ${AUTH_THEME.border}`,
@@ -1686,6 +1705,121 @@ function UpgradeLandscapeCards({ t, email }) {
   );
 }
 
+// ── MiniPlanCards ───────────────────────────────────────────────────────
+// Horizontal row of 3 plan cards (Monthly / Annual / Lifetime). Matches
+// Figma node 804:329 "Overlay+Border": subtle white top-gradient, gray
+// eyebrow top-left, pill badge top-right, large price + period middle,
+// tagline bottom. A single Continue button below the row routes the user
+// to checkout for the selected tier.
+function MiniPlanCard({ name, badge, price, period, tagline, selected, onSelect, featured }) {
+  return (
+    <button
+      type="button"
+      className={`mpc-card${selected ? " is-selected" : ""}${featured ? " is-featured" : ""}`}
+      onClick={onSelect}
+      aria-pressed={selected}
+    >
+      <span className="mpc-head">
+        <span className="mpc-name">{name}</span>
+        {badge && (
+          <span className="mpc-badge">
+            {featured && (
+              <Crown size={11} strokeWidth={2.5} aria-hidden />
+            )}
+            {badge}
+          </span>
+        )}
+      </span>
+      <span className="mpc-price">
+        <span className="mpc-price-main">{price}</span>
+        <span className="mpc-price-period">{period}</span>
+      </span>
+      {tagline && <span className="mpc-tagline">{tagline}</span>}
+    </button>
+  );
+}
+
+function MiniPlanCards({ t, email, selected, onSelect }) {
+  const tiers = useMemo(() => getTiers(t, email), [t, email]);
+  const monthly = tiers.find((tx) => tx.key === "monthly");
+  const annual = tiers.find((tx) => tx.key === "annual");
+  const lifetime = tiers.find((tx) => tx.key === "lifetime");
+  const selectedTier = tiers.find((tx) => tx.key === selected) || annual;
+
+  const handleContinue = () => {
+    if (!selectedTier?.href) return;
+    if (selectedTier.external) {
+      window.open(selectedTier.href, "_blank", "noopener,noreferrer");
+    } else {
+      window.location.href = selectedTier.href;
+    }
+  };
+
+  // Tier objects already carry a CTA like "Get Annual, Save $81" /
+  // "Get Lifetime, Save $269". Use that directly so the savings amount
+  // shows in the Continue button.
+  const ctaLabel = selectedTier?.cta || "Continue to checkout";
+
+  return (
+    <div className="mpc-block">
+      <div className="mpc-row">
+        <MiniPlanCard
+          name="Free"
+          badge="Forever"
+          price="$0"
+          period="forever"
+          tagline="For trying the basics"
+          selected={selected === "free"}
+          onSelect={() => onSelect("free")}
+        />
+        {monthly && (
+          <MiniPlanCard
+            name="Monthly"
+            badge="Flexible"
+            price={monthly.price}
+            period="/month"
+            tagline="Flexible billing"
+            selected={selected === "monthly"}
+            onSelect={() => onSelect("monthly")}
+          />
+        )}
+        {annual && (
+          <MiniPlanCard
+            name="Annual"
+            badge="Value"
+            price={annual.price}
+            period="/year"
+            tagline="Save $81 yearly"
+            selected={selected === "annual"}
+            onSelect={() => onSelect("annual")}
+            featured
+          />
+        )}
+        {lifetime && (
+          <MiniPlanCard
+            name="Lifetime"
+            badge="Best Value"
+            price={lifetime.price}
+            period="once"
+            tagline="Pay once, forever"
+            selected={selected === "lifetime"}
+            onSelect={() => onSelect("lifetime")}
+          />
+        )}
+      </div>
+      <button
+        type="button"
+        className="mpc-continue"
+        onClick={handleContinue}
+        disabled={!selectedTier?.href}
+      >
+        {ctaLabel}
+        <ArrowRight size={16} strokeWidth={2.5} />
+      </button>
+    </div>
+  );
+}
+
 function StepOne({
   t,
   email,
@@ -1712,7 +1846,10 @@ function StepOne({
   // daily limit. Crossed with whether the user is signed in, that's 4
   // variants. Accepts "feature" as a shorthand alias.
   const isFeatureLock = trigger === "paid-feature" || trigger === "feature";
-  const frames = useMemo(() => getCarouselFrames(t, isMobile), [t, isMobile]);
+  const frames = useMemo(
+    () => getCarouselFrames(t, isMobile, user, trigger),
+    [t, isMobile, user, trigger],
+  );
   const pills = useMemo(() => getFeaturePills(t), [t]);
   const [activeIdx, setActiveIdx] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -1720,6 +1857,10 @@ function StepOne({
   // from the modal's initialAuthMode prop so header-triggered opens
   // preselect the right form (Log In → "login", Get Started → "signup").
   const [authMode, setAuthMode] = useState(initialAuthMode);
+  // Plan tier the signed-in upgrade view is showing features for. Set by
+  // the MiniPlanCards row in the left pitch panel; the right column's
+  // PricingCategoryList re-renders to match. Annual is the default.
+  const [planTier, setPlanTier] = useState("annual");
 
   useEffect(() => {
     if (paused) return;
@@ -1729,13 +1870,9 @@ function StepOne({
     return () => clearInterval(id);
   }, [paused, frames.length]);
 
-  // Desktop signed-in free user → focused upgrade modal (best-UX pattern):
-  // status chip → neutral title → one hero card (Annual, the recommended
-  // plan) with the lowest /month framing → two quiet alternatives below
-  // → small trust line. No pitch, no carousel, no feature list.
-  // Desktop signed-in users no longer hit StepOne — the modal effect routes
-  // them straight to step="tiers" so StepTwo (the 4-card grid) renders as the
-  // upgrade-to-pro surface with isFreeUserUpgrading copy + Free card hidden.
+  // Desktop signed-in user → left pitch (carousel + MiniPlanCards) + right
+  // PricingCategoryList for the selected tier. Guest still gets pitch +
+  // DashboardAuthForm.
 
   return (
     <>
@@ -1751,9 +1888,9 @@ function StepOne({
           minWidth: 0,
           margin: "14px 7px 14px 14px",
           padding: "22px 24px 18px",
-          background: "rgba(255,255,255,0.03)",
+          background: "transparent",
           border: "none",
-          borderRadius: 18,
+          borderRadius: 0,
           display: "flex",
           flexDirection: "column",
           gap: 12,
@@ -1790,38 +1927,39 @@ function StepOne({
           </button>
         )}
         <div className="dont-miss-desktop-title">
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 6,
-              padding: "5px 11px",
-              borderRadius: 999,
-              background: T.accentSoft,
-              border: `1px solid rgba(0,212,204,0.30)`,
-              color: T.accent,
-              fontSize: 11,
-              fontWeight: 700,
-              letterSpacing: "0.04em",
-              textTransform: "uppercase",
-              marginBottom: 12,
-            }}
-          >
-            {isFeatureLock
-              ? t?.dontMissOutModal?.featureEyebrow || "Paid Feature"
-              : user
-                ? t?.dontMissOutModal?.freeEyebrow || "Upgrade"
-                : t?.dontMissOutModal?.eyebrow || "Daily Limit Reached"}
-          </span>
+          {/* Eyebrow pill: only shown on the daily-limit guest view.
+              Hidden for the signed-in upgrade view and the paid-feature
+              lock modal. */}
+          {!user && !isFeatureLock && (
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "5px 11px",
+                borderRadius: 999,
+                background: T.accentSoft,
+                border: `1px solid rgba(0,212,204,0.30)`,
+                color: T.accent,
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.04em",
+                textTransform: "uppercase",
+                marginBottom: 12,
+              }}
+            >
+              {t?.dontMissOutModal?.eyebrow || "Daily Limit Reached"}
+            </span>
+          )}
           <h2
             className="dont-miss-h2"
             style={{
               margin: 0,
               color: T.pitchText,
-              fontSize: 30,
+              fontSize: 26,
               fontWeight: 700,
-              lineHeight: 1.18,
-              letterSpacing: "-0.015em",
+              lineHeight: 1.2,
+              letterSpacing: "-0.014em",
               whiteSpace: "normal",
             }}
           >
@@ -1829,10 +1967,11 @@ function StepOne({
               ? user
                 ? t?.dontMissOutModal?.featureUpgradeTitle ||
                   "Unlock This Feature."
-                : t?.dontMissOutModal?.featureSignupTitle ||
-                  "Sign Up To Unlock This."
+                : t?.dontMissOutModal?.freeTitle ||
+                  "You've Hit Your Free Limit."
               : user
-                ? t?.dontMissOutModal?.freeTitle || "Upgrade To Pro."
+                ? t?.dontMissOutModal?.freeTitle ||
+                  "You've Hit Your Free Limit."
                 : t?.dontMissOutModal?.title ||
                   "You've Used Your 3 Free Transcripts Today."}
           </h2>
@@ -1848,11 +1987,11 @@ function StepOne({
               ? user
                 ? t?.dontMissOutModal?.featureUpgradeSub ||
                   "This is a paid feature. Pick a plan to use it."
-                : t?.dontMissOutModal?.featureSignupSub ||
-                  "This feature is part of our paid plans. Create an account and pick a plan to use it."
+                : t?.dontMissOutModal?.freePaywallSub ||
+                  "Upgrade Today And Get Unlimited Plus More."
               : user
                 ? t?.dontMissOutModal?.freePaywallSub ||
-                  "Unlock Everything With A Paid Plan."
+                  "Upgrade Today And Get Unlimited Plus More."
                 : t?.dontMissOutModal?.guestPaywallSub ||
                   "Sign in or create an account to keep going."}
           </p>
@@ -1867,12 +2006,13 @@ function StepOne({
               ? user
                 ? t?.dontMissOutModal?.featureUpgradeTitle ||
                   "Unlock This Feature."
-                : t?.dontMissOutModal?.featureSignupTitle ||
-                  "Sign Up To Unlock This."
+                : t?.dontMissOutModal?.freeTitleMobile ||
+                  t?.dontMissOutModal?.freeTitle ||
+                  "You've Hit Your Free Limit."
               : user
                 ? t?.dontMissOutModal?.freeTitleMobile ||
                   t?.dontMissOutModal?.freeTitle ||
-                  "Upgrade To Pro."
+                  "You've Hit Your Free Limit."
                 : t?.dontMissOutModal?.titleMobile ||
                   "You've Used Your 3 Free Guest Transcripts."}
           </h2>
@@ -1885,11 +2025,11 @@ function StepOne({
               ? user
                 ? t?.dontMissOutModal?.featureUpgradeSubMobile ||
                   "Upgrade to a paid plan to unlock this feature."
-                : t?.dontMissOutModal?.featureSignupSubMobile ||
-                  "Sign up for a paid plan to unlock this feature."
+                : t?.dontMissOutModal?.freePaywallSub ||
+                  "Upgrade Today And Get Unlimited Plus More."
               : user
                 ? t?.dontMissOutModal?.freePaywallSub ||
-                  "Unlock Everything With A Paid Plan."
+                  "Upgrade Today And Get Unlimited Plus More."
                 : t?.dontMissOutModal?.guestPaywallSub ||
                   "Sign in or create an account to keep going."}
           </p>
@@ -1923,7 +2063,25 @@ function StepOne({
               />
             ))}
           </div>
+          {!isMobile && frames[activeIdx].sub && (
+            <p className="dont-miss-carousel-caption">
+              {frames[activeIdx].sub}
+            </p>
+          )}
         </div>
+
+        {/* Upgrade-style modal (signed-in user OR guest+paid-feature): mini
+            pricing cards under the carousel, clicking one drives the
+            PricingCategoryList in the right column. Desktop-only — mobile
+            uses MobilePaywallV2 below. */}
+        {(user || isFeatureLock) && !isMobile && (
+          <MiniPlanCards
+            t={t}
+            email={user?.email || email}
+            selected={planTier}
+            onSelect={setPlanTier}
+          />
+        )}
 
         {/* ── Mobile-only paywall (Figma redesign). Gated to mobile by the
             isMobile prop so the embedded PricingCategoryList doesn't render
@@ -2005,14 +2163,21 @@ function StepOne({
           • Signed-in returning free users → the new landscape upgrade
             cards (Monthly / Annual / Lifetime). Each card has its own
             CTA so no separate tier-selection step is needed. ── */}
-      {!user ? (
+      {!user && !isFeatureLock ? (
+        // Guest hitting daily-limit (or general signup) → signup form.
         <DashboardAuthForm
           mode={authMode}
           onSwitchMode={setAuthMode}
           onAuthSuccess={onAuthSuccess}
         />
       ) : !isMobile ? (
-        <UpgradeLandscapeCards t={t} email={user.email || email} />
+        // Upgrade-style modal (signed-in user OR guest paid-feature lock):
+        // right column hosts the PricingCategoryList for the selected tier.
+        // .ulc-stack className kept so the modal-width rules fire.
+        <div className="ulc-stack ulc-features-only">
+          <h3 className="ulc-features-heading">Everything this plan includes:</h3>
+          <PricingCategoryList tier={planTier} />
+        </div>
       ) : null}
     </>
   );
@@ -2307,10 +2472,12 @@ function StepTwo({
     }
   } else {
     if (isFeatureLock) {
-      titleCopy = dm.featureSignupTitle || "Sign Up To Unlock This.";
+      // Guest paid-feature lock now mirrors the "You've Hit Your Free
+      // Limit" upgrade copy + layout (replaces the previous
+      // "Sign Up To Unlock This." treatment).
+      titleCopy = dm.freeTitle || "You've Hit Your Free Limit.";
       subCopy =
-        dm.featureSignupSub ||
-        "This feature is part of our paid plans. Create an account and pick a plan to use it.";
+        dm.freePaywallSub || "Upgrade Today And Get Unlimited Plus More.";
     } else {
       titleCopy = dm.tiersTitle || "Pick Your Plan To Continue.";
       subCopy =
@@ -2339,31 +2506,27 @@ function StepTwo({
         zIndex: 2,
       }}
     >
-      {/* Hide Back when the user landed on StepTwo directly (returning
-          signed-in user → no prior signup step to return to). */}
-      {!isFreeUserUpgrading && (
-        <button
-          type="button"
-          onClick={onBack}
-          style={{
-            alignSelf: "flex-start",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 6,
-            padding: "5px 10px",
-            borderRadius: 999,
-            background: "rgba(255,255,255,0.06)",
-            border: `1px solid ${T.formBorder}`,
-            color: T.pitchMuted,
-            fontSize: 11.5,
-            fontWeight: 600,
-            cursor: "pointer",
-          }}
-        >
-          <ArrowLeft size={12} />
-          {t?.dontMissOutModal?.back || "Back"}
-        </button>
-      )}
+      <button
+        type="button"
+        onClick={onBack}
+        style={{
+          alignSelf: "flex-start",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          padding: "5px 10px",
+          borderRadius: 999,
+          background: "rgba(255,255,255,0.06)",
+          border: `1px solid ${T.formBorder}`,
+          color: T.pitchMuted,
+          fontSize: 11.5,
+          fontWeight: 600,
+          cursor: "pointer",
+        }}
+      >
+        <ArrowLeft size={12} />
+        {t?.dontMissOutModal?.back || "Back"}
+      </button>
 
       <div style={{ textAlign: "center" }}>
         {/* Copy varies on two axes: (isFreeUserUpgrading) × (isFeatureLock).
@@ -2571,41 +2734,7 @@ function StepTwo({
         </div>
       </div>
 
-      {/* Cancel/refund + Sign-in footer: only shown to guests in the signup
-          flow. For a signed-in user upgrading, the line is redundant (no
-          Sign In needed) and the modal ends cleanly at the card grid. */}
-      {!isFreeUserUpgrading && (
-        <p
-          style={{
-            position: "sticky",
-            bottom: 0,
-            margin: "0 -22px 0",
-            padding: "18px 22px 16px",
-            textAlign: "center",
-            color: T.pitchMuted,
-            fontSize: 11.5,
-            lineHeight: 1.5,
-            background: `linear-gradient(180deg, rgba(11,11,18,0) 0%, ${T.outerBg} 30%, ${T.outerBg} 100%)`,
-            zIndex: 3,
-          }}
-        >
-          {t?.dontMissOutModal?.tiersFooter ||
-            "All Plans Include Cancel-Anytime and A 7-Day Refund Guarantee."}{" "}
-          <a
-            href={signinHref}
-            style={{
-              color: T.accent,
-              textDecoration: "none",
-              fontSize: "inherit",
-              fontWeight: "inherit",
-              fontFamily: "inherit",
-              lineHeight: "inherit",
-            }}
-          >
-            {t?.dontMissOutModal?.signIn || "Sign In"}
-          </a>
-        </p>
-      )}
+      {/* Cancel/refund + Sign-in footer removed per UX call. */}
     </div>
   );
 }
@@ -2638,7 +2767,9 @@ export default function DontMissOutModal({
   const [step, setStep] = useState("signup");
   // Entry-context for trigger-aware copy + tier visibility rules.
   // "daily-limit" | "translation-limit" | "paid-feature" | "general"
-  const [entryTrigger] = useState(trigger);
+  // Synced with the `trigger` prop on every open (see show-effect below)
+  // so re-opening the modal for a different reason swaps copy correctly.
+  const [entryTrigger, setEntryTrigger] = useState(trigger);
   // Paid-feature trigger optionally carries which feature(s) — set by caller
   // via the trigger prop in a future extension; for now we just key off the
   // trigger kind for copy variations.
@@ -2678,6 +2809,10 @@ export default function DontMissOutModal({
   // On every open: hydrate user state + saved Step 1 progress, decide step.
   useEffect(() => {
     if (!show) return;
+    // Refresh entryTrigger from the latest `trigger` prop so each open
+    // picks up the current trigger (paid-feature, daily-limit, etc.) —
+    // not the value frozen on the modal's first mount.
+    setEntryTrigger(trigger);
     // Hydrate signed-in user (if any) from localStorage.
     let signedInUser = null;
     if (typeof window !== "undefined") {
@@ -2696,11 +2831,10 @@ export default function DontMissOutModal({
     setSuccessToast("");
     setPendingEmail("");
     if (signedInUser?.email) {
-      // Signed-in user:
-      //   - Mobile → "intro" (mobile paywall layout in StepOne)
-      //   - Desktop → "tiers" directly (StepTwo 4-card grid is the upgrade
-      //     surface; no intro carousel step in between)
-      setStep(isMobile ? "intro" : "tiers");
+      // Signed-in user → StepOne. Desktop renders pitch panel + the
+      // UpgradeLandscapeCards stack (3 horizontal plan cards with embedded
+      // feature checklists). Mobile renders the mobile paywall layout.
+      setStep("intro");
     } else {
       // Guest: same pitch screen but with the daily-limit copy, and the
       // Create-Your-Account form on the right (or as step 2 on mobile).
@@ -2896,18 +3030,14 @@ export default function DontMissOutModal({
             display: "flex",
             background: T.outerBg,
             // Match the .modal-content radius exactly so the modal reads
-            // with the same curve on all four corners (was previously
-            // 20 inside a 24 outer, which made the top edge appear more
-            // rounded than the bottom).
+            // with the same curve on all four corners.
             borderRadius: 20,
-            // Let the shell scroll internally instead of clipping card content
-            // when the modal hits its viewport cap. Horizontal stays clipped so
-            // the bg image + glows respect the rounded corners.
-            overflowX: "hidden",
-            overflowY: "auto",
-            // Trimmed from 90vh → 78vh so the desktop modal feels tighter.
-            // The internal panels still scroll if content exceeds.
-            maxHeight: "78vh",
+            // Fixed shell height keeps the left + right panels visually
+            // equal regardless of which has more content. Each panel
+            // handles its own internal scroll; the shell itself doesn't
+            // scroll (overflow: hidden).
+            overflow: "hidden",
+            height: "72vh",
             minHeight: 0,
           }}
         >
@@ -2954,28 +3084,8 @@ export default function DontMissOutModal({
             }}
           />
 
-          <button
-            onClick={onHide}
-            aria-label={t?.dontMissOutModal?.closeAlt || "Close"}
-            style={{
-              position: "absolute",
-              top: 18,
-              right: 18,
-              width: 30,
-              height: 30,
-              borderRadius: "50%",
-              background: "rgba(255,255,255,0.06)",
-              border: `1px solid ${T.formBorder}`,
-              color: T.pitchText,
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              zIndex: 5,
-            }}
-          >
-            <X size={14} />
-          </button>
+          {/* External close (X) button removed — modal closes via the
+              backdrop click or the Esc key. */}
 
           {/* In-app browser banner (Instagram/TikTok/etc). Suggests opening
               the page in a real browser for the best signup experience. */}

@@ -87,33 +87,16 @@ export default function ForgotPasswordPage() {
           >
             {!sent ? (
               <>
-                <div style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}>
-                  <div
-                    style={{
-                      width: 44,
-                      height: 44,
-                      borderRadius: 12,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      background:
-                        "linear-gradient(135deg, #00F2EA 0%, #00b8b3 100%)",
-                    }}
-                  >
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="white"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <rect x="2" y="4" width="20" height="16" rx="2" />
-                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                    </svg>
-                  </div>
+                <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
+                  {/* Plain <img> on purpose: Next.js Image optimizer is
+                      fussy about query strings on local paths, and a 65 KB
+                      static icon doesn't need optimization. */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/figma-rows/email.png?v=20260515b`}
+                    alt=""
+                    style={{ height: 64, width: "auto", display: "block" }}
+                  />
                 </div>
 
                 <h1
@@ -136,7 +119,7 @@ export default function ForgotPasswordPage() {
                     color: THEME.muted,
                   }}
                 >
-                  No worries — enter your email and we&apos;ll send you a reset link.
+                  Enter your email and we&apos;ll send you a reset link.
                 </p>
 
                 {error && (
