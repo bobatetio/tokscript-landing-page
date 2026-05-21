@@ -17433,7 +17433,9 @@ section h2 + p,
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      /* cover so the image fills the frame edge-to-edge, matching the
+         hover video exactly (no letterboxing on off-ratio images). */
+      object-fit: cover;
       object-position: center;
       display: block;
       pointer-events: none;
@@ -17500,6 +17502,7 @@ section h2 + p,
   .vt-currency-amount { text-align: right; }
   .vt-currency-value { font: 700 17px/1.2 Inter, sans-serif; }
   .vt-currency-conv { font: 400 12px/1.2 Inter, sans-serif; color: rgba(6,9,26,0.55); margin-top: 2px; }
+
 
   /* Tablet */
   @media (max-width: 1023px) {
@@ -19878,7 +19881,9 @@ $ds-font: "Inter", system-ui, sans-serif;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  /* cover so the static image fills the frame exactly like the hover
+     video — the two must overlap perfectly at the same width/height. */
+  object-fit: cover;
   object-position: center;
   display: block;
   pointer-events: none;
@@ -19888,7 +19893,6 @@ $ds-font: "Inter", system-ui, sans-serif;
   opacity: 0;
   transition: opacity 0.35s ease;
   background: #000;
-  object-fit: cover;
 }
 .vh-thumb:hover .vh-thumb-video,
 .vh-thumb:focus-within .vh-thumb-video {

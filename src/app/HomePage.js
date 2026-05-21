@@ -1713,6 +1713,29 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                 </div>
               </div>
             </div>
+
+            {/* 9. Cloud Storage — text-card LEFT, visual RIGHT */}
+            <div className="vt-row">
+              <div className="vt-text">
+                <div className="vt-text-inner">
+                  <h3 className="vt-row-title">Cloud Storage</h3>
+                  <p className="vt-row-body">Store all your video transcripts securely in the cloud with enterprise-grade encryption. Instantly sync and access your files across every device. Anytime, anywhere, with automatic cloud backup and unmatched reliability.</p>
+                  <ul className="vt-list">
+                    <li>Secure cloud storage with encryption</li>
+                    <li>Cross-device automatic sync</li>
+                    <li>Access from anywhere, anytime</li>
+                    <li>Enterprise-grade reliability</li>
+                  </ul>
+                  <Link href="/pricing" className="vt-cta">Get Started now</Link>
+                </div>
+              </div>
+              <div className="vt-visual">
+                <VideoHoverThumb
+                  src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/figma-rows/Cloud%20Storage.png?v=3`}
+                  alt="Cloud Storage"
+                />
+              </div>
+            </div>
           </div>
         </section>
         )}
