@@ -1,5 +1,8 @@
 # LEARNING.md — TokScript Landing Page
 
+## Global CSS Gotchas
+- **`section h2:not(.ctap-title):not(.hero-title)` rule has `!important`** on font-size (`max(24px, min(5vw, 40px))`), font-weight (800), letter-spacing, color, and line-height. It will override any inline `style={{ fontSize }}` on an `<h2>` whose ancestor is a `<section>`. If you need a small custom h2 (e.g., inside a form panel), wrap in `<div>` instead of `<section>`, or give the h2 the `hero-title`/`ctap-title` class to escape the selector. Discovered while building /signin and /sign-up pages — Welcome Back was rendering at 40px/800 despite inline 13px/700.
+
 ## Copy & Content Rules
 - **NEVER use em dashes (—) in any copy.** Em dashes are an obvious AI writing tell. Replace with commas, semicolons, colons, or periods depending on context. This applies to all content: social posts, email templates, video scripts, page copy, FAQ answers, etc.
 - En dashes (–) should also be avoided for the same reason.

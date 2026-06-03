@@ -18205,10 +18205,13 @@ $ds-font: "Inter", system-ui, sans-serif;
   align-items: stretch;
 }
 /* When only 3 tiers render (Monthly / Annual / Lifetime — Free hidden for
-   returning signed-in users) drop to 3 columns so the cards fill the row. */
+   signed-in users) drop to 3 columns so the cards fill the row. Wider
+   max-width gives each card noticeably more horizontal room than the
+   default 4-column layout. */
 .pc-grid--three {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  max-width: 1000px;
+  max-width: 1200px;
+  justify-content: center;
 }
 .pc-card-wrapper { display: flex; }
 
@@ -20575,11 +20578,9 @@ $ds-font: "Inter", system-ui, sans-serif;
   text-transform: uppercase;
   color: #00b8b2 !important;
   white-space: nowrap;
-  background:
-    linear-gradient(#0a0a0a, #0a0a0a) padding-box,
-    linear-gradient(135deg, rgba(0, 184, 178, 0.65), rgba(0, 184, 178, 0.15)) border-box;
-  border: 1px solid transparent;
-  box-shadow: 0 0 24px rgba(0, 184, 178, 0.08);
+  background: transparent !important;
+  border: 1px solid rgba(0, 184, 178, 0.5) !important;
+  box-shadow: none !important;
 
   svg {
     color: #00b8b2;

@@ -19,19 +19,20 @@
 //      is what's left over (12%) — at 40px blur, that's enough to render the
 //      page as colored noise rather than legible content.
 //   3. body-prefixed selectors guarantee we beat Bootstrap's var-driven rule.
+// Backdrop: translucent dark so the page behind is dimmed but still
+// faintly visible. Default modal click-to-dismiss + scroll-lock behavior
+// is preserved (no pointer-events override).
 body .modal-backdrop.dont-miss-backdrop,
 body .dont-miss-backdrop.modal-backdrop,
 body .dont-miss-backdrop,
 .modal-backdrop.dont-miss-backdrop.show,
 .dont-miss-backdrop.modal-backdrop.show,
 .dont-miss-backdrop.show {
-  background-color: rgba(0, 0, 0, 0.88) !important;
+  background-color: rgba(0, 0, 0, 0.55) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
   opacity: 1 !important;
-  -webkit-backdrop-filter: blur(40px) saturate(110%) !important;
-  backdrop-filter: blur(40px) saturate(110%) !important;
 }
-// Belt-and-braces: also force-set on the fade state in case Bootstrap's
-// transition leaves it on .fade temporarily.
 .dont-miss-backdrop.modal-backdrop.fade {
   opacity: 1 !important;
 }
@@ -2268,35 +2269,29 @@ body .dont-miss-backdrop,
 .mpc-block {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 22px;
+  gap: 14px;
+  margin-top: 20px;
   // Fills the pitch column content area — same width as the carousel
   // image above so the cards + CTA line up edge-to-edge with the image.
   width: 100%;
   align-self: stretch;
 }
 .mpc-row {
-  // Horizontal flex row with fixed-width cards. When the row exceeds the
-  // pitch column's content area, it scrolls left/right inside the panel.
+  // Horizontal flex row with flexible cards. All 4 cards (Free / Monthly /
+  // Annual / Lifetime) share row width equally. Negative left/right
+  // margins bleed past the pitch column's inner padding so the cards
+  // gain a few extra pixels without widening the column, title, image,
+  // or CTA below.
   display: flex;
   flex-wrap: nowrap;
-  gap: 10px;
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: visible;
-  padding-bottom: 8px;
-  scrollbar-width: thin;
-  &::-webkit-scrollbar { height: 6px; }
-  &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.20);
-    border-radius: 999px;
-  }
-  // Uniform card width — all 4 cards (Free / Monthly / Annual / Lifetime)
-  // share the same dimensions. Row overflows the pitch panel and scrolls.
+  gap: 6px;
+  width: auto;
+  margin-left: -10px;
+  margin-right: -14px;
   > * {
-    flex: 0 0 158px;
-    width: 158px;
-    min-width: 158px;
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto;
   }
 }
 /* ── Mini plan card */
@@ -2307,7 +2302,7 @@ body .dont-miss-backdrop,
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 16px 14px 14px;
+  padding: 14px 12px 12px;
   border-radius: 7px;
   background: rgba(255, 255, 255, 0.03);
   border: none;
@@ -2316,6 +2311,7 @@ body .dont-miss-backdrop,
   overflow: hidden;
   transition: background 150ms ease, box-shadow 150ms ease;
   width: 100%;
+  min-width: 0;
 
   // Subtle top-down gradient overlay (white → transparent) per Figma.
   &::before {

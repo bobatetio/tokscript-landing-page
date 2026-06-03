@@ -3,6 +3,7 @@
 import "@/assets/scss/modal.scss";
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 import {
   X,
@@ -222,8 +223,8 @@ function getCarouselFrames(t, isMobile, user, trigger) {
   // "Upgrade modal" treatment fires for any desktop signed-in user OR
   // any paid-feature lock (signed-in or guest). Both surfaces share the
   // same Modal 3 image carousel + mini cards + features list layout.
-  const isUpgradeView = (!!user || isFeatureLock) && !isMobile;
   const isFeatureLock = trigger === "paid-feature" || trigger === "feature";
+  const isUpgradeView = (!!user || isFeatureLock) && !isMobile;
   const imgFor = (idx, n) => {
     if (isUpgradeView) {
       return `${BP}/figma-rows/Modal%203%20image%20${n}.png`;
@@ -1115,20 +1116,24 @@ function DashboardAuthForm({ mode, onSwitchMode, onAuthSuccess }) {
         return;
       }
     }
-    // Validation passed. If a parent supplied onAuthSuccess, hand the
-    // email + mode upward so the modal can hydrate a mock user and
-    // continue its flow. Fall back to the previous visual-only flash
-    // when there's no callback (e.g. standalone preview).
+    // Validation passed. Hand email/password/mode upward so the modal's
+    // parent can call the real auth API. Surface any server error
+    // returned from the call so the form shows it inline.
     setLoading(true);
     try {
       if (typeof onAuthSuccess === "function") {
-        const maybePromise = onAuthSuccess(email, mode);
+        const maybePromise = onAuthSuccess(email, password, mode);
         if (maybePromise && typeof maybePromise.then === "function") {
           await maybePromise;
         }
       } else {
         await new Promise((resolve) => setTimeout(resolve, 1200));
       }
+    } catch (err) {
+      setError(
+        (err && err.message) ||
+          "Something went wrong. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -1739,7 +1744,7 @@ function MiniPlanCard({ name, badge, price, period, tagline, selected, onSelect,
   );
 }
 
-function MiniPlanCards({ t, email, selected, onSelect }) {
+function MiniPlanCards({ t, email, selected, onSelect, hideFree }) {
   const tiers = useMemo(() => getTiers(t, email), [t, email]);
   const monthly = tiers.find((tx) => tx.key === "monthly");
   const annual = tiers.find((tx) => tx.key === "annual");
@@ -1763,15 +1768,17 @@ function MiniPlanCards({ t, email, selected, onSelect }) {
   return (
     <div className="mpc-block">
       <div className="mpc-row">
-        <MiniPlanCard
-          name="Free"
-          badge="Forever"
-          price="$0"
-          period="forever"
-          tagline="For trying the basics"
-          selected={selected === "free"}
-          onSelect={() => onSelect("free")}
-        />
+        {!hideFree && (
+          <MiniPlanCard
+            name="Free"
+            badge="Forever"
+            price="$0"
+            period="forever"
+            tagline="For trying the basics"
+            selected={selected === "free"}
+            onSelect={() => onSelect("free")}
+          />
+        )}
         {monthly && (
           <MiniPlanCard
             name="Monthly"
@@ -1840,12 +1847,17 @@ function StepOne({
   initialAuthMode = "signup",
   onAuthSuccess,
   trigger,
+  initialTier,
+  wasSignedInOnOpen,
 }) {
   // Pitch-panel headline differs by why the modal opened. "paid-feature" =
   // user clicked a paid-only feature (download/AI tool); anything else =
   // daily limit. Crossed with whether the user is signed in, that's 4
   // variants. Accepts "feature" as a shorthand alias.
   const isFeatureLock = trigger === "paid-feature" || trigger === "feature";
+  // True when the user signed up DURING this modal session. Drives a
+  // welcoming copy variant instead of the upgrade-pressure headlines.
+  const isNewSignup = !!user && !wasSignedInOnOpen;
   const frames = useMemo(
     () => getCarouselFrames(t, isMobile, user, trigger),
     [t, isMobile, user, trigger],
@@ -1859,8 +1871,13 @@ function StepOne({
   const [authMode, setAuthMode] = useState(initialAuthMode);
   // Plan tier the signed-in upgrade view is showing features for. Set by
   // the MiniPlanCards row in the left pitch panel; the right column's
-  // PricingCategoryList re-renders to match. Annual is the default.
-  const [planTier, setPlanTier] = useState("annual");
+  // PricingCategoryList re-renders to match. Seeded from the pricing
+  // card the user clicked (`initialTier`); falls back to annual.
+  const [planTier, setPlanTier] = useState(initialTier || "annual");
+
+  useEffect(() => {
+    if (initialTier) setPlanTier(initialTier);
+  }, [initialTier]);
 
   useEffect(() => {
     if (paused) return;
@@ -1963,7 +1980,10 @@ function StepOne({
               whiteSpace: "normal",
             }}
           >
-            {isFeatureLock
+            {isNewSignup
+              ? t?.dontMissOutModal?.welcomeTitle ||
+                "You're In. Welcome To TokScript."
+              : isFeatureLock
               ? user
                 ? t?.dontMissOutModal?.featureUpgradeTitle ||
                   "Unlock This Feature."
@@ -1983,7 +2003,10 @@ function StepOne({
               lineHeight: 1.45,
             }}
           >
-            {isFeatureLock
+            {isNewSignup
+              ? t?.dontMissOutModal?.welcomeSub ||
+                "Pick a plan to unlock the full toolkit, you can change or cancel anytime."
+              : isFeatureLock
               ? user
                 ? t?.dontMissOutModal?.featureUpgradeSub ||
                   "This is a paid feature. Pick a plan to use it."
@@ -2002,7 +2025,10 @@ function StepOne({
             Matches the Figma guest-paywall design (white→teal gradient on h2). */}
         <div className="dont-miss-mobile-header">
           <h2 className="dont-miss-mobile-h2">
-            {isFeatureLock
+            {isNewSignup
+              ? t?.dontMissOutModal?.welcomeTitle ||
+                "You're In. Welcome To TokScript."
+              : isFeatureLock
               ? user
                 ? t?.dontMissOutModal?.featureUpgradeTitle ||
                   "Unlock This Feature."
@@ -2018,10 +2044,13 @@ function StepOne({
           </h2>
           <p
             className={`dont-miss-mobile-sub${
-              isFeatureLock ? " dont-miss-mobile-sub--wrap" : ""
+              isFeatureLock || isNewSignup ? " dont-miss-mobile-sub--wrap" : ""
             }`}
           >
-            {isFeatureLock
+            {isNewSignup
+              ? t?.dontMissOutModal?.welcomeSub ||
+                "Pick a plan to unlock the full toolkit, you can change or cancel anytime."
+              : isFeatureLock
               ? user
                 ? t?.dontMissOutModal?.featureUpgradeSubMobile ||
                   "Upgrade to a paid plan to unlock this feature."
@@ -2080,6 +2109,7 @@ function StepOne({
             email={user?.email || email}
             selected={planTier}
             onSelect={setPlanTier}
+            hideFree={!!user}
           />
         )}
 
@@ -2438,11 +2468,14 @@ function StepTwo({
   //     already have an account, so only paid upgrades make sense.
   //   - Pure guest (no user at all) → show Free (this branch normally doesn't
   //     reach StepTwo, but kept for safety).
-  const hideFree = !!user && wasSignedInOnOpen;
+  // Signed-in users (new OR returning) never see the Free card here.
+  const hideFree = !!user;
   // 'Pay To Upgrade' headline only fires for returning signed-in free users.
-  // New signups see the generic 'Pick Your Plan' copy.
+  // New signups see the welcoming copy instead.
   const isFreeUserUpgrading =
     !!user && user.plan === "free" && wasSignedInOnOpen;
+  // True when this user just created an account during the modal session.
+  const isNewSignup = !!user && !wasSignedInOnOpen;
 
   // Trigger context for copy. Two distinct WHYs the modal opens:
   //   - "paid-feature" → user clicked a paid-only feature (download, AI
@@ -2458,7 +2491,12 @@ function StepTwo({
   const dm = t?.dontMissOutModal || {};
   let titleCopy;
   let subCopy;
-  if (isFreeUserUpgrading) {
+  if (isNewSignup) {
+    titleCopy = dm.welcomeTitle || "You're In. Welcome To TokScript.";
+    subCopy =
+      dm.welcomeSub ||
+      "Pick a plan to unlock the full toolkit, you can change or cancel anytime.";
+  } else if (isFreeUserUpgrading) {
     if (isFeatureLock) {
       titleCopy = dm.featureUpgradeTitle || "Unlock This Feature.";
       subCopy =
@@ -2757,6 +2795,13 @@ export default function DontMissOutModal({
   // "signup" — same as the in-modal default — so existing callers
   // (daily-limit, paid-feature, etc.) don't need to pass anything.
   initialAuthMode = "signup",
+  // Pricing card the user clicked before opening the modal. Pre-selects
+  // the matching tier in MiniPlanCards / mobile tier picker. Accepts
+  // "free" | "monthly" | "annual" | "lifetime".
+  initialTier,
+  // Called after a successful in-modal auth so the caller can redirect
+  // (e.g., to Lemon Squeezy checkout for the picked plan).
+  onAuthSuccess,
 }) {
   // step values:
   //   Mobile flow:
@@ -2784,7 +2829,13 @@ export default function DontMissOutModal({
   const [showPw, setShowPw] = useState(false);
   // Mobile flow: tier is chosen on the intro screen, then form submission
   // routes the user directly to checkout/sign-up based on this value.
-  const [selectedTier, setSelectedTier] = useState("annual");
+  const [selectedTier, setSelectedTier] = useState(initialTier || "annual");
+
+  // Keep selectedTier in sync when the modal re-opens with a different
+  // initialTier (different pricing card clicked between opens).
+  useEffect(() => {
+    if (show && initialTier) setSelectedTier(initialTier);
+  }, [show, initialTier]);
   // Detect a signed-in user from localStorage so we can skip the signup form
   // on mobile (sign-in screen-out).
   const [user, setUser] = useState(null);
@@ -2974,29 +3025,71 @@ export default function DontMissOutModal({
   //     UpgradeLandscapeCards because `user` is now truthy, so the
   //     guest is taken straight into the upgrade-to-pro view with no
   //     extra step transition.
-  const handleAuthSuccess = async (formEmail, mode) => {
+  const handleAuthSuccess = async (formEmail, formPassword, mode) => {
     setEmail(formEmail);
     saveSignupProgress(formEmail);
-    const u =
-      mode === "login"
-        ? await mockSignIn(formEmail)
-        : await mockCreateAccount(formEmail);
-    setUser(u);
-    if (u.plan && u.plan !== "free") {
-      // Returning paid user: close + flash toast.
-      clearSignupProgress();
-      setSuccessToast(
-        `${t?.dontMissOutModal?.welcomeBack || "Welcome back,"} ${u.email}.`
+    try {
+      // For signup, register first, then auto-login (mirrors CheckoutOverlay).
+      if (mode === "signup") {
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
+          {
+            name: formEmail.split("@")[0],
+            email: formEmail,
+            password: formPassword,
+          },
+        );
+      }
+      const loginRes = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+        { email: formEmail, password: formPassword },
       );
-      setTimeout(() => onHide(), 1500);
-      return;
+      if (!loginRes?.data?.tokens || !loginRes?.data?.user) {
+        throw new Error("Unexpected response from server.");
+      }
+      const { accessToken, refreshToken } = loginRes.data.tokens;
+      const u = loginRes.data.user;
+      try {
+        window.localStorage.setItem("authToken", accessToken);
+        window.localStorage.setItem("refreshToken", refreshToken);
+        window.localStorage.setItem("user", JSON.stringify(u));
+      } catch (_) {}
+      setUser(u);
+      // The user just authenticated via THIS modal's form, so override
+      // wasSignedInOnOpen — they are by definition a fresh signup/login
+      // for the purpose of welcome copy. Without this, a leftover
+      // localStorage user from a prior session would suppress the
+      // welcoming view (isNewSignup would be false).
+      setWasSignedInOnOpen(false);
+
+      // Returning paid user: hand off to the parent (e.g. pricing page
+      // redirects to Lemon Squeezy checkout). Fall back to a toast +
+      // close when no callback is provided.
+      if (u.plan && u.plan !== "free") {
+        clearSignupProgress();
+        if (typeof onAuthSuccess === "function") {
+          onAuthSuccess(u);
+          return;
+        }
+        setSuccessToast(
+          `${t?.dontMissOutModal?.welcomeBack || "Welcome back,"} ${u.email}.`
+        );
+        setTimeout(() => onHide(), 1500);
+        return;
+      }
+      // Free user (new signup or returning free) → transition to the
+      // tier picker. New signups see the welcoming copy via isNewSignup.
+      setStep("tiers");
+    } catch (err) {
+      // Re-throw with a clean message so DashboardAuthForm shows it.
+      throw new Error(
+        err?.response?.data?.message ||
+          err?.message ||
+          (mode === "signup"
+            ? "Could not create account. Please try again."
+            : "Invalid email or password. Please try again."),
+      );
     }
-    // Free user (new signup or returning free) → transition to the
-    // upgrade-to-pro view via the "tiers" step. The parent render now
-    // routes that step to StepOne with an onBack chip (instead of the
-    // old StepTwo 4-card portrait grid) so the user lands on the same
-    // pitch + UpgradeLandscapeCards layout as a returning free user.
-    setStep("tiers");
   };
 
   const handleTierSelect = (tier) => {
@@ -3156,6 +3249,8 @@ export default function DontMissOutModal({
               initialAuthMode={initialAuthMode}
               onAuthSuccess={handleAuthSuccess}
               trigger={entryTrigger}
+              initialTier={initialTier}
+              wasSignedInOnOpen={wasSignedInOnOpen}
             />
           )}
 

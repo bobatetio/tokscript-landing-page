@@ -361,6 +361,19 @@ export default function PricingPage({ initialProductsData }) {
   const [activeCompareTier, setActiveCompareTier] = useState("annual");
   const [openFaq, setOpenFaq] = useState(null);
   const [dontMissOutModalShow, setDontMissOutModalShow] = useState(false);
+  // Which pricing card was clicked when the modal was opened. Passed as
+  // initialTier to DontMissOutModal so the modal's MiniPlanCards row
+  // pre-selects the same tier (Free / Monthly / Annual / Lifetime).
+  const [modalInitialTier, setModalInitialTier] = useState("annual");
+
+  // Detect tier key from a Lemon Squeezy product's title.
+  const tierKeyFromProduct = (product) => {
+    const title = (product?.attributes?.name_simple || product?.title || "").toLowerCase();
+    if (title.includes("lifetime")) return "lifetime";
+    if (title.includes("annual") || title.includes("yearly") || title.includes("year")) return "annual";
+    if (title.includes("month")) return "monthly";
+    return "annual";
+  };
   const [productsData, setProductsData] = useState(initialProductsData);
   const [loadingStates, setLoadingStates] = useState({});
 
@@ -469,67 +482,38 @@ export default function PricingPage({ initialProductsData }) {
   // Enhanced checkout handler with authentication check
   const handleCheckout = async (product) => {
     const buyUrl = `https://tokscript.lemonsqueezy.com/checkout/buy/${product?.attributes?.slug}`;
-    // Check if user is logged in
-    if (!user || !token) {
-      // Open checkout overlay instead of redirecting
-      setPendingCheckoutUrl(buyUrl);
-      setPendingPlan({
-        name: product?.attributes?.name_simple || "Pro Plan",
-        price: product?.attributes?.price
-          ? `$${product?.attributes?.price / 100}`
-          : "$39",
-        period: product?.attributes?.interval?.toLowerCase()?.includes("year")
-          ? "/year"
-          : "/month",
-        badge: product?.attributes?.interval?.toLowerCase()?.includes("year")
-          ? "Save $81/year"
-          : null,
-        features: [
-          "Viral Hook Generator",
-          "Viral Script Generator",
-          "Unlimited transcripts",
-          "Unlimited Translations",
-          "Bulk Import (50 Videos)",
-          "HD Video Downloads",
-          "Chrome Extension Pro",
-          "All Export Formats",
-          "Priority Support",
-          "Commercial Use",
-        ],
-        buttonText: "Continue to Checkout",
-      });
-      setCheckoutOverlayShow(true);
-      return;
-    }
-
-    const productId = product?.id || "monthly";
-    setLoadingStates((prevState) => ({
-      ...prevState,
-      [productId]: true,
-    }));
-
-    try {
-      // Option 2: Direct LemonSqueezy URL (primary method)
-      const checkoutUrl =
-        buyUrl +
-        `?checkout[email]=${encodeURIComponent(
-          user.email,
-        )}&checkout[name]=${encodeURIComponent(
-          user.name || user.email,
-        )}&checkout[custom][user_id]=${user?.id || user._id}` +
-        (aff ? `&aff=${aff}` : "");
-
-      console.log("Redirecting to checkout:", checkoutUrl);
-      window.location.href = checkoutUrl;
-    } catch (error) {
-      console.error("Checkout error:", error);
-      toast.error("Unable to initiate checkout. Please try again.");
-    } finally {
-      setLoadingStates((prevState) => ({
-        ...prevState,
-        [productId]: false,
-      }));
-    }
+    // Always open the pricing modal — for guests (so they can sign up
+    // first) AND for signed-in users (so they can review/switch tier
+    // before checkout). Modal already hides the Free card for any
+    // signed-in user via hideFree={!!user}.
+    setPendingCheckoutUrl(buyUrl);
+    setPendingPlan({
+      name: product?.attributes?.name_simple || "Pro Plan",
+      price: product?.attributes?.price
+        ? `$${product?.attributes?.price / 100}`
+        : "$39",
+      period: product?.attributes?.interval?.toLowerCase()?.includes("year")
+        ? "/year"
+        : "/month",
+      badge: product?.attributes?.interval?.toLowerCase()?.includes("year")
+        ? "Save $81/year"
+        : null,
+      features: [
+        "Viral Hook Generator",
+        "Viral Script Generator",
+        "Unlimited transcripts",
+        "Unlimited Translations",
+        "Bulk Import (50 Videos)",
+        "HD Video Downloads",
+        "Chrome Extension Pro",
+        "All Export Formats",
+        "Priority Support",
+        "Commercial Use",
+      ],
+      buttonText: "Continue to Checkout",
+    });
+    setModalInitialTier(tierKeyFromProduct(product));
+    setDontMissOutModalShow(true);
   };
 
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -686,7 +670,6 @@ export default function PricingPage({ initialProductsData }) {
             the 84px headline read as a faint ghost. */}
         <div className="hero-section pricing-hero">
           <div className="pricing-hero-eyebrow">
-            <Sparkles size={13} strokeWidth={0} fill="currentColor" aria-hidden="true" />
             Used By 41,000+ Creators
           </div>
 
@@ -740,14 +723,16 @@ export default function PricingPage({ initialProductsData }) {
         {/* Mobile Tabs */}
   <div className="mobile-tabs">
     <div className="tab-container">
-      <button
-        className={`tab-btn ${
-          activeTab === "free" ? "active" : "inactive"
-        }`}
-        onClick={() => setActiveTab("free")}
-      >
-        Free
-      </button>
+      {!user && (
+        <button
+          className={`tab-btn ${
+            activeTab === "free" ? "active" : "inactive"
+          }`}
+          onClick={() => setActiveTab("free")}
+        >
+          Free
+        </button>
+      )}
       <button
         className={`tab-btn ${
           activeTab === "monthly" ? "active" : "inactive"
@@ -775,9 +760,13 @@ export default function PricingPage({ initialProductsData }) {
     </div>
   </div>
 
-  {/* Pricing Grid — glass card style */}
-  <div className="pc-grid">
-                  {/* Free */}
+  {/* Pricing Grid — glass card style. Three-column variant when Free
+      is hidden (any signed-in user) so the remaining 3 cards fill the
+      row at a wider per-card width. */}
+  <div className={`pc-grid${user ? " pc-grid--three" : ""}`}>
+                  {/* Free — hidden for any signed-in user (free or paid).
+                      Guests still see the full 4-card lineup. */}
+                  {!user && (
                   <div className={`pc-card-wrapper ${activeTab === "free" ? "active" : ""}`}>
                     <div className="pc-card">
                       <div className="pc-header">
@@ -814,7 +803,8 @@ export default function PricingPage({ initialProductsData }) {
                                   ],
                                   buttonText: "Create Free Account",
                                 });
-                                setCheckoutOverlayShow(true);
+                                setModalInitialTier("free");
+                                setDontMissOutModalShow(true);
                               }}
                               className="pc-cta d-none d-md-flex"
                             >
@@ -828,7 +818,7 @@ export default function PricingPage({ initialProductsData }) {
                             </a>
                           </>
                         ) : (
-                          <button onClick={() => setDontMissOutModalShow(true)} className="pc-cta">Get Started</button>
+                          <button onClick={() => { setModalInitialTier("free"); setDontMissOutModalShow(true); }} className="pc-cta">Get Started</button>
                         )}
                       </div>
                       <div className="pc-body">
@@ -836,6 +826,7 @@ export default function PricingPage({ initialProductsData }) {
                       </div>
                     </div>
                   </div>
+                  )}
                   {/* Monthly */}
                   <div className={`pc-card-wrapper ${activeTab === "monthly" ? "active" : ""}`}>
                     <div className="pc-card">
@@ -1053,17 +1044,25 @@ export default function PricingPage({ initialProductsData }) {
                                 className="pc-cta d-none d-md-flex"
                                 onClick={() => {
                                   const lifetimePlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"));
-                                  if (lifetimePlan) handleCheckout(lifetimePlan);
+                                  if (lifetimePlan) {
+                                    handleCheckout(lifetimePlan);
+                                  } else {
+                                    setModalInitialTier("lifetime");
+                                    setDontMissOutModalShow(true);
+                                  }
                                 }}
                               >
                                 Get Lifetime
                               </button>
-                              <a
-                                href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.buyUrl}`}
+                              <button
                                 className="pc-cta d-flex d-md-none"
+                                onClick={() => {
+                                  setModalInitialTier("lifetime");
+                                  setDontMissOutModalShow(true);
+                                }}
                               >
                                 Get Lifetime
-                              </a>
+                              </button>
                             </>
                           )
                         ) : (
@@ -1072,17 +1071,25 @@ export default function PricingPage({ initialProductsData }) {
                               className="pc-cta d-none d-md-flex"
                               onClick={() => {
                                 const lifetimePlan = allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"));
-                                if (lifetimePlan) handleCheckout(lifetimePlan);
+                                if (lifetimePlan) {
+                                  handleCheckout(lifetimePlan);
+                                } else {
+                                  setModalInitialTier("lifetime");
+                                  setDontMissOutModalShow(true);
+                                }
                               }}
                             >
                               Get Lifetime
                             </button>
-                            <a
-                              href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/sign-up?returnUrl=${allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.buyUrl}`}
+                            <button
                               className="pc-cta d-flex d-md-none"
+                              onClick={() => {
+                                setModalInitialTier("lifetime");
+                                setDontMissOutModalShow(true);
+                              }}
                             >
                               Get Lifetime
-                            </a>
+                            </button>
                           </>
                         )}
                       </div>
@@ -1366,7 +1373,8 @@ export default function PricingPage({ initialProductsData }) {
                           ],
                           buttonText: "Get Annual",
                         });
-                        setCheckoutOverlayShow(true);
+                        setModalInitialTier("annual");
+                        setDontMissOutModalShow(true);
                       }
                     }}
                     className="cx-signup-btn"
@@ -1411,6 +1419,22 @@ export default function PricingPage({ initialProductsData }) {
       <DontMissOutModal
         show={dontMissOutModalShow}
         onHide={handleDontMissOutModalClose}
+        trigger="paid-feature"
+        initialTier={modalInitialTier}
+        onAuthSuccess={(authenticatedUser) => {
+          setUser(authenticatedUser);
+          setToken(localStorage.getItem("authToken"));
+          setProfile(authenticatedUser);
+          if (pendingCheckoutUrl) {
+            const checkoutUrl =
+              pendingCheckoutUrl +
+              `?checkout[email]=${encodeURIComponent(authenticatedUser.email)}` +
+              `&checkout[name]=${encodeURIComponent(authenticatedUser.name || authenticatedUser.email)}` +
+              `&checkout[custom][user_id]=${authenticatedUser?.id || authenticatedUser._id}` +
+              (aff ? `&aff=${aff}` : "");
+            window.location.href = checkoutUrl;
+          }
+        }}
       />
 
       {/* Checkout Overlay for auth */}

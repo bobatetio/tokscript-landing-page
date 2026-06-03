@@ -1,32 +1,43 @@
 "use client";
 
-// Sign-up page — ported verbatim (UI only) from the v3 dashboard's
-// SignUpPage component (/Users/bob/Documents/tokscript/tokscriptv3-dashboard/
-// src/app/components/SignUpPage.tsx). Tailwind utility classes from the
-// original are expanded to inline styles so the landing-site bundle
-// (which doesn't ship Tailwind) renders identically. Dark-mode only.
-// Submits are no-ops; real auth lives on the dashboard.
+// Full-page sign-up — modal contents flattened onto the page directly,
+// no panel cards. A minimal auth top-bar (logo + "Already have an
+// account? Sign In") replaces the full site nav. Submits are no-op;
+// real auth lives on the dashboard. Element sizes mirror the modal
+// exactly — only spacing is adjusted for the full-page layout.
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import axios from "axios";
+import { Eye, EyeOff, Mail, Lock, ArrowRight } from "lucide-react";
 import tokscriptLogo from "../../assets/images/icons/logo.png";
 
-const THEME = {
-  bg: "#0d0d0d",
-  cardBg: "#141414",
-  border: "#262626",
-  text: "#ffffff",
-  muted: "#888888",
-  inputBg: "#0d0d0d",
-  accent: "#00F2EA",
-  submitBg: "#ffffff",
-  submitText: "#111111",
-  submitHoverBg: "#e8e8e8",
+const T = {
+  outerBg: "#0d0d0d",
+  formText: "#ffffff",
+  formMuted: "#9ca3af",
+  formBorder: "rgba(255,255,255,0.10)",
+  formInputBg: "#1c1c1c",
+  formCtaBg: "#ffffff",
+  formCtaText: "#0d0d0d",
+  pitchText: "#ffffff",
+  pitchMuted: "#9ca3af",
+  pitchBorder: "rgba(255,255,255,0.08)",
+  accent: "#00d4cc",
+  accentSoft: "rgba(0,212,204,0.14)",
 };
 
-function GoogleSvg() {
+const BP = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const FRAMES = [
+  { key: "f1", image: `${BP}/figma-rows/Modal%20image%201.png`, caption: "Bulk transcribe up to 50 videos at once, drop the links in and get full transcripts back in seconds." },
+  { key: "f2", image: `${BP}/figma-rows/Modal%20image%202.png`, caption: "Run AI-powered content audits by piping any creator's catalog straight into Claude or ChatGPT." },
+  { key: "f3", image: `${BP}/figma-rows/Modal%20image%203.png`, caption: "Build a personal transcript library where every script you've pulled is searchable in one place." },
+  { key: "f4", image: `${BP}/figma-rows/Modal%20image%204.png`, caption: "Transcribe from the address bar by prefixing any video URL with tokscript.com for instant scripts." },
+  { key: "f5", image: `${BP}/figma-rows/Modal%20image%205.png`, caption: "Scrape and analyze straight from TikTok, grabbing transcripts and post data without leaving the app." },
+];
+
+function GoogleG() {
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
       <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4" />
@@ -37,56 +48,76 @@ function GoogleSvg() {
   );
 }
 
-function AuthInput({ icon, type = "text", placeholder, value, onChange, autoComplete, trailing, borderOverride }) {
+function FormField({ label, icon, type = "text", placeholder, value, onChange, autoComplete, trailing, name }) {
   return (
-    <div style={{ position: "relative" }}>
-      <span
-        aria-hidden
+    <div>
+      <label
         style={{
-          position: "absolute",
-          left: 12,
-          top: "50%",
-          transform: "translateY(-50%)",
-          color: THEME.muted,
-          display: "inline-flex",
-          alignItems: "center",
+          display: "block",
+          color: T.formText,
+          fontSize: 11,
+          fontWeight: 600,
+          letterSpacing: "0.06em",
+          textTransform: "uppercase",
+          marginBottom: 6,
         }}
       >
-        {icon}
-      </span>
-      <input
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        autoComplete={autoComplete}
+        {label}
+      </label>
+      <div
         style={{
-          width: "100%",
-          padding: trailing ? "12px 40px 12px 40px" : "12px 16px 12px 40px",
-          borderRadius: 12,
-          border: `1px solid ${borderOverride || THEME.border}`,
-          background: THEME.inputBg,
-          color: THEME.text,
-          fontSize: 14,
-          outline: "none",
-          fontFamily: "inherit",
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          padding: "9px 12px",
+          borderRadius: 10,
+          background: T.formInputBg,
+          border: `1px solid ${T.formBorder}`,
         }}
-      />
-      {trailing && (
-        <span
+      >
+        <span style={{ color: T.formMuted, display: "inline-flex" }}>{icon}</span>
+        <input
+          name={name}
+          type={type}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          autoComplete={autoComplete}
+          className="auth-input"
           style={{
-            position: "absolute",
-            right: 12,
-            top: "50%",
-            transform: "translateY(-50%)",
-            color: THEME.muted,
-            display: "inline-flex",
-            alignItems: "center",
+            flex: 1,
+            background: "transparent",
+            border: "none",
+            outline: "none",
+            color: T.formText,
+            fontSize: 13,
+            minWidth: 0,
           }}
-        >
-          {trailing}
-        </span>
-      )}
+        />
+        {trailing}
+      </div>
+    </div>
+  );
+}
+
+function CarouselFrame({ frame }) {
+  return (
+    <div
+      key={frame.key}
+      style={{
+        position: "relative",
+        width: "100%",
+        overflow: "hidden",
+        animation: "authFadeIn 360ms ease-out",
+        borderRadius: 12,
+      }}
+    >
+      <img
+        src={frame.image}
+        alt=""
+        loading="lazy"
+        style={{ width: "100%", height: "auto", display: "block" }}
+      />
     </div>
   );
 }
@@ -94,367 +125,384 @@ function AuthInput({ icon, type = "text", placeholder, value, onChange, autoComp
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
+  const [showPw, setShowPw] = useState(false);
   const [agreed, setAgreed] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
 
-  const passwordStrength = (pw) => {
-    if (!pw) return null;
-    if (pw.length < 6) return { label: "Weak", color: "#ef4444", width: "33%" };
-    if (pw.length < 10 || !/[A-Z]/.test(pw) || !/[0-9]/.test(pw))
-      return { label: "Fair", color: "#f59e0b", width: "66%" };
-    return { label: "Strong", color: "#22c55e", width: "100%" };
-  };
-  const strength = passwordStrength(password);
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => setActiveIdx((i) => (i + 1) % FRAMES.length), 3500);
+    return () => clearInterval(id);
+  }, [paused]);
 
-  const handleSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if (!email || !password || !confirmPassword) {
-      setError("Please fill in all fields.");
-      return;
-    }
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters.");
-      return;
-    }
-    if (!agreed) {
-      setError("Please accept the terms to continue.");
-      return;
-    }
+    if (!email || !password) return setError("Please fill in all fields.");
+    if (password.length < 8) return setError("Password must be at least 8 characters.");
+    if (!agreed) return setError("Please accept the terms to continue.");
     setLoading(true);
-    setTimeout(() => setLoading(false), 1400);
+    try {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
+        { name: email.split("@")[0], email, password },
+      );
+      // Auto-login after register
+      const loginRes = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+        { email, password },
+      );
+      if (loginRes.data?.tokens && loginRes.data?.user) {
+        const { accessToken, refreshToken } = loginRes.data.tokens;
+        localStorage.setItem("authToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        localStorage.setItem("user", JSON.stringify(loginRes.data.user));
+        const next =
+          typeof window !== "undefined" &&
+          new URLSearchParams(window.location.search).get("next");
+        window.location.href = next || "/";
+        return;
+      }
+      setError("Account created. Please sign in.");
+    } catch (err) {
+      setError(
+        err?.response?.data?.message ||
+          "Something went wrong. Please try again.",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const BP = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  const onGoogleAuth = () => {
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google/simple`;
+  };
 
   return (
-    <>
-      <main
-        style={{
-          minHeight: "100vh",
-          background: THEME.bg,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "60px 16px",
-        }}
-      >
-        <div style={{ width: "100%", maxWidth: 440 }}>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}>
-            <Link
-              href="/"
-              aria-label="TokScript home"
-              style={{ display: "inline-flex" }}
+    <main className="auth-page">
+      <style>{`
+        @keyframes authFadeIn {
+          from { opacity: 0; transform: translateY(4px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .auth-page {
+          min-height: 100vh;
+          background: ${T.outerBg};
+          color: ${T.pitchText};
+          display: flex;
+          flex-direction: column;
+        }
+        .auth-topbar {
+          display: flex; align-items: center; justify-content: space-between;
+          padding: 18px 36px;
+          border-bottom: 1px solid ${T.pitchBorder};
+          flex-shrink: 0;
+        }
+        .auth-topbar-right {
+          display: flex; align-items: center; gap: 12px;
+        }
+        .auth-topbar-prompt {
+          color: ${T.pitchMuted}; font-size: 13;
+        }
+        .auth-topbar-link {
+          padding: 8px 16px;
+          border-radius: 10px;
+          border: 1px solid ${T.formBorder};
+          color: ${T.formText};
+          font-size: 13px;
+          font-weight: 600;
+          text-decoration: none;
+          background: transparent;
+          transition: background .15s, border-color .15s;
+        }
+        .auth-topbar-link:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.18); }
+        .auth-body {
+          flex: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 48px 24px 56px;
+          width: 100%;
+        }
+        .auth-pitch {
+          display: flex; flex-direction: column; gap: 14px;
+          min-width: 0;
+          max-width: 560px;
+          flex: 1 1 auto;
+          align-items: flex-start;
+          text-align: left;
+        }
+        .auth-form {
+          display: flex; flex-direction: column; gap: 10px;
+          min-width: 0;
+          width: 100%;
+          max-width: 360px;
+          flex: 0 0 360px;
+          background: #161616;
+          border: 1px solid rgba(255,255,255,0.10);
+          border-radius: 16px;
+          padding: 20px 20px;
+          text-align: center;
+          align-items: center;
+        }
+        .auth-form > * { width: 100%; }
+        .auth-form .auth-input { text-align: left; }
+        .auth-form label { text-align: left; }
+        .auth-footer {
+          display: flex; align-items: center; justify-content: center;
+          gap: 10px;
+          padding: 18px 24px 28px;
+          border-top: 1px solid ${T.pitchBorder};
+          flex-shrink: 0;
+        }
+        @media (max-width: 960px) {
+          .auth-topbar { padding: 14px 18px; }
+          .auth-body {
+            flex-direction: column;
+            gap: 32px;
+            padding: 24px 18px 40px;
+          }
+          .auth-pitch, .auth-form { max-width: none; flex: 1 1 auto; }
+          .auth-form { padding: 20px 18px; border-radius: 14px; }
+          .auth-footer { padding: 16px 18px 22px; }
+        }
+      `}</style>
+
+      {/* Minimal auth top bar — logo + (prompt) + auth-switch button */}
+      <div className="auth-topbar">
+        <Link href="/" aria-label="TokScript home" style={{ display: "inline-flex" }}>
+          <Image src={tokscriptLogo} alt="TokScript" height={32} style={{ height: 32, width: "auto", display: "block" }} priority />
+        </Link>
+        <div className="auth-topbar-right">
+          <span className="auth-topbar-prompt" style={{ fontSize: 13, color: T.pitchMuted }}>
+            Already have an account?
+          </span>
+          <Link href="/signin" className="auth-topbar-link">Log In</Link>
+        </div>
+      </div>
+
+      <div className="auth-body">
+        {/* ── Form column (flat, no card) ── */}
+        <div className="auth-form" role="region" aria-label="Create your account">
+          <div>
+            <h2
+              style={{
+                margin: 0,
+                color: T.formText,
+                fontSize: 22,
+                fontWeight: 700,
+                letterSpacing: "-0.015em",
+                lineHeight: 1.2,
+              }}
             >
-              <Image
-                src={tokscriptLogo}
-                alt="TokScript"
-                height={40}
-                style={{ height: 40, width: "auto", display: "block" }}
-                priority
-              />
-            </Link>
+              Create Your Account
+            </h2>
+            <p style={{ margin: "8px 0 0", color: T.formMuted, fontSize: 14, lineHeight: 1.45 }}>
+              One account. Pick your plan next.
+            </p>
           </div>
-          <div
+
+          <button
+            type="button"
+            onClick={onGoogleAuth}
             style={{
-              background: THEME.cardBg,
-              border: `1px solid ${THEME.border}`,
-              borderRadius: 16,
-              padding: 32,
+              width: "100%",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              padding: "9px 12px",
+              borderRadius: 10,
+              background: T.formInputBg,
+              border: `1px solid ${T.formBorder}`,
+              color: T.formText,
+              fontSize: 13,
+              fontWeight: 500,
+              cursor: "pointer",
             }}
           >
-            <h1
+            <GoogleG />
+            Continue With Google
+          </button>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 10, color: T.formMuted, fontSize: 11 }}>
+            <span style={{ flex: 1, height: 1, background: T.formBorder }} />
+            or
+            <span style={{ flex: 1, height: 1, background: T.formBorder }} />
+          </div>
+
+          {error && (
+            <div
+              role="alert"
               style={{
-                textAlign: "center",
-                margin: "0 0 4px",
-                fontSize: "1.35rem",
-                fontWeight: 700,
-                color: THEME.text,
+                padding: "10px 14px",
+                borderRadius: 12,
+                background: "rgba(239,68,68,0.10)",
+                border: "1px solid rgba(239,68,68,0.30)",
+                color: "#fca5a5",
+                fontSize: 13,
               }}
             >
-              Create your account
-            </h1>
-            <p
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <FormField
+              label="Email"
+              icon={<Mail size={16} />}
+              type="email"
+              name="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+            />
+            <FormField
+              label="Password"
+              icon={<Lock size={16} />}
+              type={showPw ? "text" : "password"}
+              name="password"
+              placeholder="Min. 8 characters"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="new-password"
+              trailing={
+                <button
+                  type="button"
+                  onClick={() => setShowPw((v) => !v)}
+                  tabIndex={-1}
+                  aria-label={showPw ? "Hide password" : "Show password"}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: T.formMuted,
+                    cursor: "pointer",
+                    display: "inline-flex",
+                    padding: 0,
+                  }}
+                >
+                  {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              }
+            />
+
+            <label
               style={{
-                textAlign: "center",
-                margin: "0 0 28px",
-                fontSize: 14,
-                color: THEME.muted,
+                display: "flex",
+                alignItems: "flex-start",
+                gap: 10,
+                cursor: "pointer",
+                userSelect: "none",
+                marginTop: 2,
               }}
             >
-              Start transcribing for free, no credit card required
-            </p>
+              <input
+                type="checkbox"
+                checked={agreed}
+                onChange={(e) => setAgreed(e.target.checked)}
+                style={{
+                  position: "absolute",
+                  width: 1, height: 1, padding: 0, margin: -1,
+                  overflow: "hidden", clip: "rect(0,0,0,0)", border: 0,
+                }}
+              />
+              <span
+                aria-hidden
+                style={{
+                  width: 16, height: 16, borderRadius: 4,
+                  display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  background: agreed ? T.accent : "transparent",
+                  border: `1px solid ${agreed ? T.accent : T.formBorder}`,
+                  flexShrink: 0, marginTop: 2,
+                }}
+              >
+                {agreed && (
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden>
+                    <path d="M1 4L3.5 6.5L9 1" stroke="#0d0d0d" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                )}
+              </span>
+              <span style={{ fontSize: 12, lineHeight: 1.5, color: T.formMuted }}>
+                I agree to the{" "}
+                <Link
+                  href="/terms"
+                  style={{
+                    color: "inherit",
+                    fontSize: "inherit",
+                    fontWeight: "inherit",
+                    fontFamily: "inherit",
+                    textDecoration: "underline",
+                  }}
+                >
+                  Terms of Service
+                </Link>{" "}
+                and{" "}
+                <Link
+                  href="/privacy"
+                  style={{
+                    color: "inherit",
+                    fontSize: "inherit",
+                    fontWeight: "inherit",
+                    fontFamily: "inherit",
+                    textDecoration: "underline",
+                  }}
+                >
+                  Privacy Policy
+                </Link>
+              </span>
+            </label>
 
             <button
-              type="button"
+              type="submit"
+              disabled={loading}
               style={{
-                width: "100%",
+                marginTop: 2,
+                padding: "10px 14px",
+                borderRadius: 10,
+                background: T.formCtaBg,
+                border: "none",
+                color: T.formCtaText,
+                fontSize: 13,
+                fontWeight: 700,
+                cursor: loading ? "default" : "pointer",
+                opacity: loading ? 0.6 : 1,
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: 10,
-                padding: "10px 12px",
-                borderRadius: 12,
-                background: THEME.inputBg,
-                border: `1px solid ${THEME.border}`,
-                color: THEME.text,
-                fontSize: 14,
-                fontWeight: 500,
-                cursor: "pointer",
-                marginBottom: 24,
+                gap: 8,
               }}
             >
-              <GoogleSvg />
-              Sign up with Google
+              {loading ? "Creating account…" : "Continue"}
+              <ArrowRight size={14} />
             </button>
-
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
-              <span style={{ flex: 1, height: 1, background: THEME.border }} />
-              <span style={{ color: THEME.muted, fontSize: 12 }}>or</span>
-              <span style={{ flex: 1, height: 1, background: THEME.border }} />
-            </div>
-
-            {error && (
-              <div
-                role="alert"
-                style={{
-                  padding: "12px 16px",
-                  borderRadius: 12,
-                  background: "rgba(239,68,68,0.10)",
-                  border: "1px solid rgba(239,68,68,0.30)",
-                  color: "#fca5a5",
-                  fontSize: 13,
-                  marginBottom: 16,
-                }}
-              >
-                {error}
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              <div>
-                <label style={{ display: "block", fontSize: 14, fontWeight: 500, color: THEME.text, marginBottom: 6 }}>
-                  Email
-                </label>
-                <AuthInput
-                  icon={<Mail size={16} />}
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  autoComplete="email"
-                />
-              </div>
-
-              <div>
-                <label style={{ display: "block", fontSize: 14, fontWeight: 500, color: THEME.text, marginBottom: 6 }}>
-                  Password
-                </label>
-                <AuthInput
-                  icon={<Lock size={16} />}
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Min. 8 characters"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  autoComplete="new-password"
-                  trailing={
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword((v) => !v)}
-                      tabIndex={-1}
-                      aria-label={showPassword ? "Hide password" : "Show password"}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        color: THEME.muted,
-                        cursor: "pointer",
-                        padding: 0,
-                        display: "inline-flex",
-                      }}
-                    >
-                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                    </button>
-                  }
-                />
-                {strength && (
-                  <div style={{ marginTop: 8 }}>
-                    <div style={{ height: 4, borderRadius: 999, background: THEME.border, overflow: "hidden" }}>
-                      <div
-                        style={{
-                          height: "100%",
-                          width: strength.width,
-                          background: strength.color,
-                          borderRadius: 999,
-                          transition: "width 300ms ease",
-                        }}
-                      />
-                    </div>
-                    <p style={{ margin: "4px 0 0", fontSize: 12, color: strength.color }}>{strength.label}</p>
-                  </div>
-                )}
-              </div>
-
-              <div>
-                <label style={{ display: "block", fontSize: 14, fontWeight: 500, color: THEME.text, marginBottom: 6 }}>
-                  Confirm password
-                </label>
-                <AuthInput
-                  icon={<Lock size={16} />}
-                  type={showConfirm ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  autoComplete="new-password"
-                  borderOverride={
-                    confirmPassword && confirmPassword !== password
-                      ? "#ef4444"
-                      : confirmPassword && confirmPassword === password
-                      ? "#22c55e"
-                      : undefined
-                  }
-                  trailing={
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirm((v) => !v)}
-                      tabIndex={-1}
-                      aria-label={showConfirm ? "Hide password" : "Show password"}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        color: THEME.muted,
-                        cursor: "pointer",
-                        padding: 0,
-                        display: "inline-flex",
-                      }}
-                    >
-                      {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
-                    </button>
-                  }
-                />
-              </div>
-
-              <label
-                style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: 10,
-                  cursor: "pointer",
-                  userSelect: "none",
-                  marginTop: 2,
-                }}
-              >
-                <input
-                  type="checkbox"
-                  checked={agreed}
-                  onChange={(e) => setAgreed(e.target.checked)}
-                  style={{
-                    position: "absolute",
-                    width: 1,
-                    height: 1,
-                    padding: 0,
-                    margin: -1,
-                    overflow: "hidden",
-                    clip: "rect(0,0,0,0)",
-                    border: 0,
-                  }}
-                />
-                <span
-                  onClick={() => setAgreed((v) => !v)}
-                  style={{
-                    width: 16,
-                    height: 16,
-                    borderRadius: 4,
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    background: agreed ? THEME.accent : "transparent",
-                    border: `1px solid ${agreed ? THEME.accent : THEME.border}`,
-                    flexShrink: 0,
-                    marginTop: 2,
-                  }}
-                >
-                  {agreed && (
-                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden>
-                      <path
-                        d="M1 4L3.5 6.5L9 1"
-                        stroke="#0d0d0d"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  )}
-                </span>
-                <span style={{ fontSize: 12, lineHeight: 1.5, color: THEME.muted }}>
-                  I agree to the{" "}
-                  <Link
-                    href="/terms"
-                    className="auth-inline-link"
-                    style={{ color: THEME.accent, textDecoration: "none" }}
-                  >
-                    Terms of Service
-                  </Link>{" "}
-                  and{" "}
-                  <Link
-                    href="/privacy"
-                    className="auth-inline-link"
-                    style={{ color: THEME.accent, textDecoration: "none" }}
-                  >
-                    Privacy Policy
-                  </Link>
-                </span>
-              </label>
-
-              <button
-                type="submit"
-                disabled={loading}
-                style={{
-                  width: "100%",
-                  padding: "12px 16px",
-                  borderRadius: 12,
-                  border: "none",
-                  background: THEME.submitBg,
-                  color: THEME.submitText,
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: loading ? "default" : "pointer",
-                  opacity: loading ? 0.6 : 1,
-                  marginTop: 4,
-                  transition: "background 150ms ease",
-                }}
-                onMouseEnter={(e) => {
-                  if (!loading) e.currentTarget.style.background = THEME.submitHoverBg;
-                }}
-                onMouseLeave={(e) => {
-                  if (!loading) e.currentTarget.style.background = THEME.submitBg;
-                }}
-              >
-                {loading ? "Creating account…" : "Create account"}
-              </button>
-            </form>
-
-            <p style={{ textAlign: "center", marginTop: 24, fontSize: 14, color: THEME.muted }}>
-              Already have an account?{" "}
-              <Link
-                href="/signin"
-                className="auth-inline-link"
-                style={{ color: THEME.accent, fontWeight: 500, textDecoration: "none" }}
-              >
-                Sign in
-              </Link>
-            </p>
-          </div>
+          </form>
         </div>
-      </main>
-    </>
+      </div>
+
+      <footer className="auth-footer">
+        <div style={{ display: "inline-flex", flexShrink: 0 }}>
+          {[12, 33, 51, 64].map((id, i) => (
+            <img
+              key={id}
+              src={`https://i.pravatar.cc/64?img=${id}`}
+              alt=""
+              aria-hidden
+              style={{
+                width: 26, height: 26, borderRadius: "50%", objectFit: "cover",
+                border: `2px solid ${T.outerBg}`,
+                marginLeft: i === 0 ? 0 : -8,
+              }}
+            />
+          ))}
+        </div>
+        <span style={{ color: T.pitchMuted, fontSize: 12, lineHeight: 1.5 }}>
+          41K+ Users · 2.6M+ Transcripts · 4.2★ Rating
+        </span>
+      </footer>
+    </main>
   );
 }
