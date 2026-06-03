@@ -30,8 +30,19 @@ import {
   Bot,
 } from "lucide-react";
 
+import dynamic from "next/dynamic";
+
 import { features } from "@/data/features";
 import LanguageSwitcher from "./LanguageSwitcher";
+
+// Dynamic import — DontMissOutModal pulls in heavy assets (carousel
+// frames, Bootstrap modal). Defer until the upgrade button is actually
+// clicked. SSR off so localStorage / IntersectionObserver inside the
+// modal don't break server rendering.
+const DontMissOutModal = dynamic(
+  () => import("@/components/modals/DontMissOutModal"),
+  { ssr: false },
+);
 
 // Clean, minimal outline icons like Ferndesk
 const FeatureIcons = {
@@ -78,6 +89,9 @@ export default function Header({ t }) {
   const mcpTimeoutRef = React.useRef(null);
   const wrapperRef = useRef(null);
   const [spacerHeight, setSpacerHeight] = useState(0);
+  // Controls the Upgrade modal triggered by the "Upgrade My Plan" badge
+  // in the right-side nav for signed-in free users.
+  const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
 
   // Measure header+banner height for spacer
   useEffect(() => {
@@ -404,13 +418,18 @@ export default function Header({ t }) {
         <>
           {(user?.plan || "free").toLowerCase() === "free" ? (
             <>
-              <Link
-                href="/upgrade"
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setUpgradeModalOpen(true);
+                }}
                 className={`badge-wrapper green-gradient normal w-500`}
+                role="button"
               >
                 <Image src={lighteningIcon} alt="" />
                 {t?.header?.nav?.upgradePlan || "Upgrade My Plan"}
-              </Link>
+              </a>
             </>
           ) : (
             <>
@@ -898,6 +917,16 @@ export default function Header({ t }) {
         )}
       </div>
       <div style={{ height: spacerHeight }} />
+
+      {/* Upgrade modal — wired to the "Upgrade My Plan" badge for
+          signed-in free users. trigger="paid-feature" gives the
+          modal the upgrade-view layout (carousel + MiniPlanCards). */}
+      <DontMissOutModal
+        show={upgradeModalOpen}
+        onHide={() => setUpgradeModalOpen(false)}
+        trigger="nav-upgrade"
+        initialTier="annual"
+      />
     </>
   );
 }

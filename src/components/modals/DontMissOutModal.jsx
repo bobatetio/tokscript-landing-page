@@ -216,21 +216,14 @@ function getCarouselFrames(t, isMobile, user, trigger) {
   const tr = t?.dontMissOutModal?.carousel || {};
   const BP = process.env.NEXT_PUBLIC_BASE_PATH || "";
   // Image source decision tree:
-  //   - Upgrade view ("You've Hit Your Free Limit." signed-in desktop)
-  //     → "Modal 3 image X.png"
-  //   - Paid-feature lock → tall "Modal 2 image X.png"
-  //   - Daily-limit reached / general → short "Modal image X.png"
-  // "Upgrade modal" treatment fires for any desktop signed-in user OR
-  // any paid-feature lock (signed-in or guest). Both surfaces share the
-  // same Modal 3 image carousel + mini cards + features list layout.
+  //   - Signed-in user on desktop (upgrade view) → wide "Modal 3 image X.png"
+  //   - Everything else (guest pricing-card click, daily-limit,
+  //     mobile, etc.) → short landscape "Modal image X.png"
   const isFeatureLock = trigger === "paid-feature" || trigger === "feature";
-  const isUpgradeView = (!!user || isFeatureLock) && !isMobile;
+  const isUpgradeView = !!user && !isMobile;
   const imgFor = (idx, n) => {
     if (isUpgradeView) {
       return `${BP}/figma-rows/Modal%203%20image%20${n}.png`;
-    }
-    if (isFeatureLock) {
-      return `${BP}/figma-rows/Modal%202%20image%20${n}.png`;
     }
     return `${BP}/figma-rows/Modal%20image%20${n}.png`;
   };
@@ -1065,7 +1058,7 @@ function AuthInput({ icon, type = "text", placeholder, value, onChange, autoComp
   );
 }
 
-function DashboardAuthForm({ mode, onSwitchMode, onAuthSuccess }) {
+function DashboardAuthForm({ mode, onSwitchMode, onAuthSuccess, submitLabel }) {
   // Local form state. Visual UI from the dashboard's auth pages, but
   // submission also fires onAuthSuccess(email, mode) so the modal's
   // parent can hydrate the mock signed-in user (mockCreateAccount /
@@ -1438,7 +1431,7 @@ function DashboardAuthForm({ mode, onSwitchMode, onAuthSuccess }) {
                 }}
               />
               <span
-                onClick={() => setAgreed((v) => !v)}
+                aria-hidden
                 style={{
                   width: 16,
                   height: 16,
@@ -1532,11 +1525,13 @@ function DashboardAuthForm({ mode, onSwitchMode, onAuthSuccess }) {
           >
             {loading
               ? isSignup
-                ? "Creating account…"
-                : "Signing in…"
+                ? "Signing up…"
+                : "Logging in…"
+              : submitLabel
+              ? submitLabel
               : isSignup
-              ? "Create account"
-              : "Log in"}
+              ? "Sign Up"
+              : "Log In"}
           </button>
         </form>
 
@@ -1855,9 +1850,22 @@ function StepOne({
   // daily limit. Crossed with whether the user is signed in, that's 4
   // variants. Accepts "feature" as a shorthand alias.
   const isFeatureLock = trigger === "paid-feature" || trigger === "feature";
+  // True when the modal was opened from the header's "Upgrade My Plan"
+  // badge — a deliberate upgrade intent, not a paywall or limit hit.
+  const isNavUpgrade = trigger === "nav-upgrade";
   // True when the user signed up DURING this modal session. Drives a
   // welcoming copy variant instead of the upgrade-pressure headlines.
   const isNewSignup = !!user && !wasSignedInOnOpen;
+  // True when a guest clicked a pricing card — they need to auth
+  // before checkout. Copy + form CTA flip to reflect that.
+  const isCheckoutAuth = !user && isFeatureLock;
+  // True for ANY signed-in user heading to checkout from a pricing
+  // card click — covers both:
+  //   - Brand-new signup that just authed in this modal session
+  //   - Returning signed-in (free or paid) user
+  // Headline becomes "Continue to Checkout"; the preselected
+  // MiniPlanCard + its Lemon Squeezy CTA do the rest.
+  const isPostAuthCheckout = !!user && isFeatureLock;
   const frames = useMemo(
     () => getCarouselFrames(t, isMobile, user, trigger),
     [t, isMobile, user, trigger],
@@ -1980,7 +1988,16 @@ function StepOne({
               whiteSpace: "normal",
             }}
           >
-            {isNewSignup
+            {isPostAuthCheckout
+              ? t?.dontMissOutModal?.postAuthCheckoutTitle ||
+                "Continue To Checkout."
+              : isCheckoutAuth
+              ? t?.dontMissOutModal?.checkoutAuthTitle ||
+                "Sign In To Enjoy TokScript."
+              : isNavUpgrade
+              ? t?.dontMissOutModal?.navUpgradeTitle ||
+                "Ready To Upgrade Your Plan?"
+              : isNewSignup
               ? t?.dontMissOutModal?.welcomeTitle ||
                 "You're In. Welcome To TokScript."
               : isFeatureLock
@@ -2003,7 +2020,16 @@ function StepOne({
               lineHeight: 1.45,
             }}
           >
-            {isNewSignup
+            {isPostAuthCheckout
+              ? t?.dontMissOutModal?.postAuthCheckoutSub ||
+                "Your plan is ready, confirm to head to checkout."
+              : isCheckoutAuth
+              ? t?.dontMissOutModal?.checkoutAuthSub ||
+                "Create your account or log in to continue to checkout."
+              : isNavUpgrade
+              ? t?.dontMissOutModal?.navUpgradeSub ||
+                "Pick the plan that fits how you work, change or cancel anytime."
+              : isNewSignup
               ? t?.dontMissOutModal?.welcomeSub ||
                 "Pick a plan to unlock the full toolkit, you can change or cancel anytime."
               : isFeatureLock
@@ -2025,7 +2051,16 @@ function StepOne({
             Matches the Figma guest-paywall design (white→teal gradient on h2). */}
         <div className="dont-miss-mobile-header">
           <h2 className="dont-miss-mobile-h2">
-            {isNewSignup
+            {isPostAuthCheckout
+              ? t?.dontMissOutModal?.postAuthCheckoutTitle ||
+                "Continue To Checkout."
+              : isCheckoutAuth
+              ? t?.dontMissOutModal?.checkoutAuthTitle ||
+                "Sign In To Enjoy TokScript."
+              : isNavUpgrade
+              ? t?.dontMissOutModal?.navUpgradeTitle ||
+                "Ready To Upgrade Your Plan?"
+              : isNewSignup
               ? t?.dontMissOutModal?.welcomeTitle ||
                 "You're In. Welcome To TokScript."
               : isFeatureLock
@@ -2044,10 +2079,19 @@ function StepOne({
           </h2>
           <p
             className={`dont-miss-mobile-sub${
-              isFeatureLock || isNewSignup ? " dont-miss-mobile-sub--wrap" : ""
+              isFeatureLock || isNewSignup || isNavUpgrade || isCheckoutAuth || isPostAuthCheckout ? " dont-miss-mobile-sub--wrap" : ""
             }`}
           >
-            {isNewSignup
+            {isPostAuthCheckout
+              ? t?.dontMissOutModal?.postAuthCheckoutSub ||
+                "Your plan is ready, confirm to head to checkout."
+              : isCheckoutAuth
+              ? t?.dontMissOutModal?.checkoutAuthSub ||
+                "Create your account or log in to continue to checkout."
+              : isNavUpgrade
+              ? t?.dontMissOutModal?.navUpgradeSub ||
+                "Pick the plan that fits how you work, change or cancel anytime."
+              : isNewSignup
               ? t?.dontMissOutModal?.welcomeSub ||
                 "Pick a plan to unlock the full toolkit, you can change or cancel anytime."
               : isFeatureLock
@@ -2103,13 +2147,20 @@ function StepOne({
             pricing cards under the carousel, clicking one drives the
             PricingCategoryList in the right column. Desktop-only — mobile
             uses MobilePaywallV2 below. */}
-        {(user || isFeatureLock) && !isMobile && (
+        {/* MiniPlanCards row at the bottom of the left pitch panel —
+            only for signed-in users on desktop. Free card visibility:
+              - Returning signed-in user (wasSignedInOnOpen=true) →
+                hide Free; they already have an account, only paid
+                upgrades make sense.
+              - Brand-new signup (wasSignedInOnOpen=false, user exists
+                now) → show Free as a valid first choice. */}
+        {user && !isMobile && (
           <MiniPlanCards
             t={t}
             email={user?.email || email}
             selected={planTier}
             onSelect={setPlanTier}
-            hideFree={!!user}
+            hideFree={wasSignedInOnOpen}
           />
         )}
 
@@ -2193,8 +2244,11 @@ function StepOne({
           • Signed-in returning free users → the new landscape upgrade
             cards (Monthly / Annual / Lifetime). Each card has its own
             CTA so no separate tier-selection step is needed. ── */}
-      {!user && !isFeatureLock ? (
-        // Guest hitting daily-limit (or general signup) → signup form.
+      {!user ? (
+        // Any guest (daily-limit, general signup, OR paid-feature/
+        // pricing-card click) → signup/login form so they can create
+        // an account first. The form's default CTA shows "Sign Up" /
+        // "Log In" based on the current mode.
         <DashboardAuthForm
           mode={authMode}
           onSwitchMode={setAuthMode}
@@ -2468,8 +2522,10 @@ function StepTwo({
   //     already have an account, so only paid upgrades make sense.
   //   - Pure guest (no user at all) → show Free (this branch normally doesn't
   //     reach StepTwo, but kept for safety).
-  // Signed-in users (new OR returning) never see the Free card here.
-  const hideFree = !!user;
+  // Free visibility:
+  //   - Returning signed-in user (wasSignedInOnOpen=true) → hide Free
+  //   - New signup or guest (wasSignedInOnOpen=false) → show Free
+  const hideFree = wasSignedInOnOpen;
   // 'Pay To Upgrade' headline only fires for returning signed-in free users.
   // New signups see the welcoming copy instead.
   const isFreeUserUpgrading =
@@ -2487,11 +2543,25 @@ function StepTwo({
   // shorthand `"feature"` is also accepted. Otherwise the limit copy is
   // the safe default.
   const isFeatureLock = trigger === "paid-feature" || trigger === "feature";
+  const isNavUpgrade = trigger === "nav-upgrade";
+  // Pricing-card click flow for any signed-in user (new signup OR
+  // returning) → checkout-flow copy + tier already preselected.
+  const isPostAuthCheckout = !!user && isFeatureLock;
 
   const dm = t?.dontMissOutModal || {};
   let titleCopy;
   let subCopy;
-  if (isNewSignup) {
+  if (isPostAuthCheckout) {
+    titleCopy = dm.postAuthCheckoutTitle || "Continue To Checkout.";
+    subCopy =
+      dm.postAuthCheckoutSub ||
+      "Your plan is ready, confirm to head to checkout.";
+  } else if (isNavUpgrade) {
+    titleCopy = dm.navUpgradeTitle || "Ready To Upgrade Your Plan?";
+    subCopy =
+      dm.navUpgradeSub ||
+      "Pick the plan that fits how you work, change or cancel anytime.";
+  } else if (isNewSignup) {
     titleCopy = dm.welcomeTitle || "You're In. Welcome To TokScript.";
     subCopy =
       dm.welcomeSub ||
@@ -3077,9 +3147,18 @@ export default function DontMissOutModal({
         setTimeout(() => onHide(), 1500);
         return;
       }
-      // Free user (new signup or returning free) → transition to the
-      // tier picker. New signups see the welcoming copy via isNewSignup.
-      setStep("tiers");
+      // Free user (new signup or returning free) → next view depends
+      // on entry path. Pricing-card click (isFeatureLock) stays in
+      // StepOne so the upgrade view renders with the clicked tier
+      // preselected and the Lemon Squeezy CTA — they only need to
+      // confirm "Continue to Checkout", not re-pick a tier in a
+      // separate portrait grid. Other entry paths (daily-limit,
+      // welcome) keep the existing tier picker.
+      if (trigger === "paid-feature" || trigger === "feature") {
+        setStep("signup");
+      } else {
+        setStep("tiers");
+      }
     } catch (err) {
       // Re-throw with a clean message so DashboardAuthForm shows it.
       throw new Error(
