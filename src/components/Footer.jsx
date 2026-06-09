@@ -110,6 +110,16 @@ const Footer = ({ t }) => {
               <div className="link-detail">
                 <Link href={`/legal`}>{t?.footer?.product?.legal || "Legal"}</Link>
               </div>
+              <span className="footer-col-subtitle">Compare</span>
+              <div className="link-detail">
+                <Link href="/tokscript-vs-tokscribe">vs TokScribe</Link>
+              </div>
+              <div className="link-detail">
+                <Link href="/tokscript-vs-getthisscript">vs GetThisScript</Link>
+              </div>
+              <div className="link-detail">
+                <Link href="/tokscript-vs-transkriptor">vs Transkriptor</Link>
+              </div>
             </div>
           </div>
           <div className="col-md-2 col-12">
