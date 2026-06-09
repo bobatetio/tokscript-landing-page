@@ -41,6 +41,10 @@ export default function sitemap() {
     { url: `${baseUrl}/integration`, lastModified: '2026-03-07' },
     { url: `${baseUrl}/contact`, lastModified: '2026-03-07' },
     { url: `${baseUrl}/about-us`, lastModified: '2026-03-07' },
+    // Competitor comparison pages
+    { url: `${baseUrl}/tokscript-vs-tokscribe`, lastModified: '2026-06-08' },
+    { url: `${baseUrl}/tokscript-vs-getthisscript`, lastModified: '2026-06-09' },
+    { url: `${baseUrl}/tokscript-vs-transkriptor`, lastModified: '2026-06-09' },
     // Legal pages
     // { url: `${baseUrl}/legal`, lastModified: '2026-03-07' },
     // { url: `${baseUrl}/terms`, lastModified: '2026-03-07' },
