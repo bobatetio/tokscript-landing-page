@@ -14,6 +14,7 @@ import { getAiPromptUrls } from "../lib/aiPrompts";
 
 const Footer = ({ t }) => {
   const [user, setUser] = useState(null);
+  const [compareOpen, setCompareOpen] = useState(false);
   useEffect(() => {
     // Check if user data exists in localStorage
     const userData = localStorage.getItem("user");
@@ -90,6 +91,26 @@ const Footer = ({ t }) => {
                   {t?.footer?.generators?.youtube || "YouTube Transcript Generator"}
                 </Link>
               </div>
+              <div className="link-detail">
+                <Link href="/bulk-tiktok-transcript-generator">
+                  {t?.footer?.generators?.bulkTiktok || "Bulk TikTok Transcript Downloader"}
+                </Link>
+              </div>
+              <div className="link-detail">
+                <Link href="/bulk-instagram-transcript-generator">
+                  {t?.footer?.generators?.bulkInstagram || "Bulk Instagram Transcript Downloader"}
+                </Link>
+              </div>
+              <div className="link-detail">
+                <Link href="/bulk-youtube-transcript-generator">
+                  {t?.footer?.generators?.bulkYoutube || "Bulk YouTube Transcript Downloader"}
+                </Link>
+              </div>
+              <div className="link-detail">
+                <Link href="/tiktok-collection-transcriber">
+                  {t?.footer?.generators?.tiktokCollection || "TikTok Collection Transcriber"}
+                </Link>
+              </div>
             </div>
           </div>
           <div className="col-md-3 col-12 mb-4 mb-md-0">
@@ -110,16 +131,31 @@ const Footer = ({ t }) => {
               <div className="link-detail">
                 <Link href={`/legal`}>{t?.footer?.product?.legal || "Legal"}</Link>
               </div>
-              <span className="footer-col-subtitle">Compare</span>
-              <div className="link-detail">
-                <Link href="/tokscript-vs-tokscribe">vs TokScribe</Link>
+              <div className="link-detail footer-compare-toggle" onClick={() => setCompareOpen(v => !v)}>
+                <button type="button" className="footer-compare-btn">
+                  Compare
+                  <svg
+                    width="10" height="6" viewBox="0 0 10 6" fill="none"
+                    aria-hidden="true"
+                    style={{ transform: compareOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}
+                  >
+                    <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
               </div>
-              <div className="link-detail">
-                <Link href="/tokscript-vs-getthisscript">vs GetThisScript</Link>
-              </div>
-              <div className="link-detail">
-                <Link href="/tokscript-vs-transkriptor">vs Transkriptor</Link>
-              </div>
+              {compareOpen && (
+                <>
+                  <div className="link-detail link-detail--sub">
+                    <Link href="/tokscript-vs-tokscribe">vs TokScribe</Link>
+                  </div>
+                  <div className="link-detail link-detail--sub">
+                    <Link href="/tokscript-vs-getthisscript">vs GetThisScript</Link>
+                  </div>
+                  <div className="link-detail link-detail--sub">
+                    <Link href="/tokscript-vs-transkriptor">vs Transkriptor</Link>
+                  </div>
+                </>
+              )}
             </div>
           </div>
           <div className="col-md-2 col-12">

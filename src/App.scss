@@ -16973,7 +16973,7 @@
   h3,
   &__heading {
     font-size: clamp(24px, 5vw, 40px) !important;
-    font-weight: 800 !important;
+    font-weight: 600 !important;
     letter-spacing: -1.4px !important;
     line-height: 1.12 !important;
     color: #fff !important;
@@ -17029,7 +17029,7 @@
     margin: 0 0 20px !important;
   }
   p {
-    font-size: 19px !important;
+    font-size: clamp(14px, 3.5vw, 16px) !important;
     color: rgba(255, 255, 255, 0.8) !important;
     line-height: 1.65 !important;
     max-width: 580px !important;
@@ -17058,7 +17058,7 @@
 /* All other section headings (use generic descendant selectors) */
 section h2:not(.ctap-title):not(.hero-title) {
   font-size: clamp(24px, 5vw, 40px) !important;
-  font-weight: 800 !important;
+  font-weight: 600 !important;
   letter-spacing: -1.4px !important;
   line-height: 1.12 !important;
   color: #fff !important;
@@ -17096,7 +17096,7 @@ section h2 + p,
     margin-bottom: 56px;
     h2 {
       font-size: clamp(28px, 5vw, 48px) !important;
-      font-weight: 800 !important;
+      font-weight: 600 !important;
       letter-spacing: -1.6px !important;
       line-height: 1.1 !important;
       color: #fff !important;
@@ -17119,7 +17119,7 @@ section h2 + p,
     margin: 0 !important;
     h3 {
       font-size: clamp(22px, 3.4vw, 32px) !important;
-      font-weight: 800 !important;
+      font-weight: 600 !important;
       letter-spacing: -0.8px !important;
       line-height: 1.15 !important;
       color: #fff !important;
@@ -18100,7 +18100,7 @@ $ds-font: "Inter", system-ui, sans-serif;
   .title span {
     font-family: $ds-font !important;
     font-size: clamp(32px, 3.6vw, 44px) !important;
-    font-weight: 800 !important;
+    font-weight: 600 !important;
     line-height: 1.1 !important;
     letter-spacing: -1px !important;
     @media screen and (max-width: 767px) {
@@ -18124,7 +18124,7 @@ $ds-font: "Inter", system-ui, sans-serif;
   h2 {
     font-family: $ds-font !important;
     font-size: clamp(28px, 4vw, 48px) !important;
-    font-weight: 800 !important;
+    font-weight: 600 !important;
     line-height: 1.1 !important;
     letter-spacing: -1.4px !important;
     margin: 0 0 18px !important;
@@ -20963,7 +20963,7 @@ $ds-font: "Inter", system-ui, sans-serif;
 .pricing-page-new .pricing-compare h2.pricing-compare-headline {
   margin: 0 !important;
   font-family: $inter !important;
-  font-weight: 800 !important;
+  font-weight: 600 !important;
   font-size: clamp(28px, 4vw, 44px) !important;
   line-height: 1.15 !important;
   letter-spacing: -0.03em !important;
@@ -22344,4 +22344,1174 @@ a.tk-getstarted-btn {
   text-decoration: none;
 }
 
+/* ─────────────────────────────────────────────────────────────────
+   Compare page — blog-post article layout (vs-bp-*)
+   Single-column readable article on dark theme with hero, body
+   paragraphs, comparison tables, images, FAQ accordion, final CTA.
+   ───────────────────────────────────────────────────────────────── */
+.vs-bp {
+  background: #0a0a0a;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 0 0 96px;
+  font-family: $inter, system-ui, sans-serif;
+  /* Explicit overflow:visible so position:sticky descendants are not
+     broken by any inherited overflow:hidden from parent layouts. */
+  overflow: visible;
+}
+.vs-bp .vs-bp-layout {
+  padding: 0 24px;
+  overflow: visible;
+}
+
+/* THE STICKY BLOCKER: globals.css sets `html, body { overflow-x: hidden }`
+   which creates a scroll containing block, making position:sticky
+   descendants stick to that container instead of the viewport (so
+   they don't appear to stick at all). `overflow-x: clip` gives the
+   same horizontal clipping WITHOUT creating a scroll context, so
+   sticky binds to the viewport again. */
+html:has(.vs-bp),
+body:has(.vs-bp) {
+  overflow-x: clip !important;
+  overflow-y: visible !important;
+}
+/* ── Hero (full-width, sits outside the 2-column grid) ── */
+.vs-bp-hero {
+  position: relative;
+  width: 100%;
+  margin-bottom: 64px;
+  padding: 0;
+  background: transparent;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.vs-bp-hero-inner {
+  max-width: 1120px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.vs-bp-hero .vs-bp-eyebrow {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.vs-bp-hero .vs-bp-h1 {
+  font-size: clamp(32px, 4vw, 50px);
+}
+.vs-bp-hero .vs-bp-lead {
+  max-width: 820px;
+}
+
+/* ── MCP-style hero variant ── borrows the background treatment from
+   /mcp (flare glow anchored to the bottom edge) AND the homepage
+   light-ray background. Body content stays LEFT-aligned with the
+   original eyebrow chip + h1 + lead + meta row. */
+.vs-bp-hero--mcp {
+  position: relative;
+  overflow: hidden;
+  padding: 40px 24px 80px;
+  margin-bottom: 40px;
+  background-color: #0a0a0a;
+  background-image: none;
+}
+/* Light-ray bg pinned to the bottom via a pseudo-element so we can
+   mask its top edge to fade into the page bg (no hard demarcation). */
+.vs-bp-hero--mcp::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("./assets/images/light-ray-bg-img.webp");
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.4) 25%,
+    rgba(0, 0, 0, 0.85) 55%,
+    #000 75%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.4) 25%,
+    rgba(0, 0, 0, 0.85) 55%,
+    #000 75%
+  );
+}
+@media (max-width: 767px) {
+  .vs-bp-hero--mcp {
+    padding: 24px 16px 64px;
+  }
+  .vs-bp-hero--mcp::before {
+    background-image: url("./assets/images/light-ray-bg-img-mobile.webp");
+  }
+}
+.vs-bp-hero--mcp .vs-bp-hero-inner {
+  position: relative;
+  z-index: 2;
+  text-align: left;
+  align-items: flex-start;
+  gap: 22px;
+}
+.vs-bp-hero--mcp .vs-bp-h1 {
+  max-width: 1100px;
+}
+.vs-bp-hero--mcp .vs-bp-lead {
+  max-width: 1000px;
+}
+
+/* Flare — sits at the bottom of the hero, behind the section divider.
+   No blend mode (was making it disappear into the light-ray bg).
+   Brightness filter amplifies the glow so it reads against the
+   already-bright bottom of the light-ray background. */
+.vs-bp-hero-flare {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100vw;
+  max-width: none;
+  height: 320px;
+  pointer-events: none;
+  z-index: 1;
+  filter: brightness(1.4) saturate(1.1);
+  /* Fade the TOP of the flare into the page bg so there's no hard
+     edge / clear demarcation where the image ends. */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.25) 18%,
+    rgba(0, 0, 0, 0.75) 45%,
+    #000 70%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.25) 18%,
+    rgba(0, 0, 0, 0.75) 45%,
+    #000 70%
+  );
+}
+.vs-bp-hero-flare img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: bottom center;
+}
+@media (max-width: 767px) {
+  .vs-bp-hero-flare {
+    height: 180px;
+    width: 100vw;
+  }
+}
+
+/* MCP-style pill badge above the h1 — small, dark, with a teal
+   accent icon. */
+.vs-bp-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 14px 0 10px;
+  background: #202223;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffffff;
+  position: relative;
+  z-index: 2;
+  align-self: center;
+}
+.vs-bp-hero-badge svg { color: #00d9b4; }
+
+/* Meta row stays left-aligned inside the MCP-style hero */
+.vs-bp-hero--mcp .vs-bp-meta {
+  margin-top: 12px;
+  position: relative;
+  z-index: 2;
+  max-width: 1080px;
+  width: 100%;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+@media (max-width: 767px) {
+  .vs-bp-hero--mcp { padding-top: 24px; }
+  .vs-bp-hero-flare {
+    height: 220px;
+  }
+  .vs-bp-hero--mcp .vs-bp-h1 br { display: none; }
+}
+
+/* Meta block — NO frame, two stacked inline rows:
+   1) Written by Michael Sanchez · Published · Last updated
+   2) Summarize with [logo pills] */
+.vs-bp-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 6px;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+.vs-bp-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 32px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+.vs-bp-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.vs-bp-meta-item:not(.vs-bp-meta-item--author) {
+  /* Title-on-top stack: eyebrow row 1, value row 2 */
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.vs-bp-meta-eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+.vs-bp-meta-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: transparent;
+  color: #06091a;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.vs-bp-meta-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.vs-bp-meta-author-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  line-height: 1.3;
+}
+.vs-bp-meta-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+}
+.vs-bp-meta-date-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+/* Share + Chrome extension on the right of the WRITTEN BY row */
+.vs-bp-share {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+.vs-bp-share-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+}
+.vs-bp-share-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.vs-bp-share-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  color: #ffffff;
+  text-decoration: none !important;
+  opacity: 0.85;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.vs-bp-share-icon:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+.vs-bp-share-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.vs-bp-chrome-cta,
+.vs-bp-chrome-cta:link,
+.vs-bp-chrome-cta:visited,
+a.vs-bp-chrome-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 16px 0 8px;
+  border-radius: 12px;
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.4);
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+.vs-bp-chrome-cta span,
+a.vs-bp-chrome-cta span {
+  color: #000000 !important;
+  font-weight: 600 !important;
+}
+.vs-bp-chrome-cta:hover {
+  background: #f3f3f3 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.45);
+}
+.vs-bp-chrome-cta img {
+  width: 26px;
+  height: 26px;
+  display: block;
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .vs-bp-share { margin-left: 0; }
+}
+@media (max-width: 600px) {
+  .vs-bp-chrome-cta { width: 100%; justify-content: center; }
+}
+.vs-bp-meta-row--ai {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+.vs-bp-meta-ai-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+.vs-bp-ai-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.vs-bp-ai-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: rgba(13, 13, 13, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff !important;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none !important;
+  backdrop-filter: blur(6px);
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    transform 0.15s ease;
+}
+.vs-bp-ai-btn:hover {
+  background: rgba(26, 26, 26, 0.65);
+  border-color: rgba(255, 255, 255, 0.24);
+  transform: translateY(-1px);
+}
+.vs-bp-ai-btn svg { flex-shrink: 0; }
+.vs-bp-ai-btn--chatgpt svg { color: #10a37f; }
+.vs-bp-ai-btn--perplexity svg { color: #20b8cd; }
+.vs-bp-ai-btn--claude svg { color: #d97757; }
+.vs-bp-ai-btn--grok svg { color: #ffffff; }
+
+/* Stats card override scoped to the compare hero */
+.vs-bp-stats-headline {
+  margin: 24px 0 0;
+  text-align: center;
+  font-style: italic;
+  font-weight: 700;
+  color: #fff;
+  font-size: clamp(14px, 1.4vw, 17px);
+  line-height: 1.4;
+}
+.vs-bp-stats-card {
+  margin-top: 12px !important;
+}
+
+/* Two-column layout STARTS HERE (after the hero). Flex instead of
+   grid so sticky behavior is consistent across browsers and the
+   sidebar can size to its content while the article fills the rest. */
+.vs-bp-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 56px;
+}
+.vs-bp-toc {
+  flex: 0 0 340px;
+  width: 340px;
+}
+.vs-bp-article {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+/* ── Sticky left side panel ── three stacked blocks:
+   1) WRITTEN BY (avatar + name + role)
+   2) TABLE OF CONTENTS (plain text list, active item in teal)
+   3) SUMMARIZE WITH AI (2x2 grid of AI buttons) */
+.vs-bp-toc {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  /* top + max-height are set inline (style={{top, maxHeight}}) from
+     a ResizeObserver that watches the fixed page header, so the panel
+     reacts to the affiliate banner showing / dismissing. The 96px
+     fallback applies before the JS runs. */
+  top: 96px;
+  align-self: start !important;
+  z-index: 5;
+  height: -moz-max-content;
+  height: max-content;
+  transition: top 0.2s ease, max-height 0.2s ease;
+}
+/* Shorter sidebar card; the TOC list inside scrolls independently so
+   the WRITTEN BY block at top and SUMMARIZE WITH AI block at bottom
+   stay visible regardless of list length. */
+.vs-bp-toc-inner {
+  height: 100%;
+  overflow: hidden;
+}
+.vs-bp-toc-block--toc {
+  min-height: 0;
+}
+.vs-bp-toc-block--toc .vs-bp-toc-list {
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+.vs-bp-toc-block--toc .vs-bp-toc-list::-webkit-scrollbar {
+  width: 6px;
+}
+.vs-bp-toc-block--toc .vs-bp-toc-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 3px;
+}
+.vs-bp-toc-block--toc .vs-bp-toc-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.vs-bp-toc-inner {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+
+/* Section block */
+.vs-bp-toc-block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.vs-bp-toc-block + .vs-bp-toc-block {
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Section labels (WRITTEN BY / TABLE OF CONTENTS / SUMMARIZE WITH AI) */
+.vs-bp-toc-section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+.vs-bp-toc-section-label--ai svg { color: #00d9b4; }
+
+/* WRITTEN BY block */
+.vs-bp-toc-author-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.vs-bp-toc-author-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: #1a1a1a;
+}
+.vs-bp-toc-author-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.vs-bp-toc-author-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.25;
+  min-width: 0;
+}
+.vs-bp-toc-author-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+}
+.vs-bp-toc-author-role {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* TABLE OF CONTENTS list — plain text, no rail. Active in teal. */
+.vs-bp-toc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.vs-bp-toc-link {
+  display: block;
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none !important;
+  transition: color 0.15s ease;
+}
+.vs-bp-toc-link:hover {
+  color: #ffffff;
+}
+.vs-bp-toc-link.is-active {
+  color: #00d9b4;
+  font-weight: 600;
+}
+
+/* SUMMARIZE WITH AI grid (2x2) */
+.vs-bp-toc-ai-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.vs-bp-toc-ai-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: #ffffff !important;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none !important;
+  text-align: center;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    transform 0.15s ease;
+}
+.vs-bp-toc-ai-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+.vs-bp-toc-ai-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.vs-bp-toc-ai-icon--chatgpt svg { color: #ffffff; }
+.vs-bp-toc-ai-icon--perplexity svg { color: #20b8cd; }
+.vs-bp-toc-ai-icon--claude svg { color: #d97757; }
+.vs-bp-toc-ai-icon--grok svg { color: #ffffff; }
+
+/* Anchored sections need scroll-margin so headings don't tuck under
+   the sticky page header. */
+.vs-bp-section { scroll-margin-top: 96px; }
+
+/* Push the footer CTA further down from the article body. */
+.vs-bp-final-cta-wrap {
+  margin-top: 96px;
+}
+@media (max-width: 600px) {
+  .vs-bp-final-cta-wrap { margin-top: 56px; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 1023px) {
+  .vs-bp-layout {
+    grid-template-columns: minmax(0, 760px);
+    justify-content: center;
+  }
+  .vs-bp-toc { display: none; }
+  .vs-bp-meta {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .vs-bp-meta-author,
+  .vs-bp-meta-dates {
+    padding-right: 0;
+    border-right: none;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+@media (max-width: 600px) {
+  .vs-bp-meta-dates {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .vs-bp-ai-btn span {
+    display: none;
+  }
+  .vs-bp-ai-btn {
+    width: 36px;
+    padding: 0;
+    justify-content: center;
+  }
+}
+
+/* ── Hero ── */
+.vs-bp-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  text-align: left;
+}
+.vs-bp-eyebrow {
+  margin: 0;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+.vs-bp-eyebrow-sep,
+.vs-bp-trust-sep {
+  color: rgba(255, 255, 255, 0.3);
+}
+.vs-bp-h1 {
+  margin: 0;
+  font-size: clamp(32px, 4.4vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: #ffffff;
+}
+.vs-bp-lead {
+  margin: 0;
+  font-size: clamp(17px, 1.6vw, 19px);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.75);
+}
+.vs-bp-trust {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  align-self: flex-start;
+}
+.vs-bp-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+.vs-bp-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 22px;
+  background: #ffffff;
+  color: #0a0a0a !important;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 999px;
+  text-decoration: none !important;
+  transition: opacity 0.2s ease;
+}
+.vs-bp-cta-primary:hover { opacity: 0.88; }
+.vs-bp-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 18px;
+  background: transparent;
+  color: #ffffff !important;
+  font-size: 15px;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  text-decoration: none !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.vs-bp-cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.32);
+}
+.vs-bp-micro {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Figures ── */
+.vs-bp-figure {
+  margin: 0;
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #111;
+}
+.vs-bp-figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+.vs-bp-figure--hero {
+  aspect-ratio: 16 / 9;
+}
+.vs-bp-figure--hero img {
+  height: 100%;
+  object-fit: cover;
+}
+/* Video figure (YouTube embed) — 16:9 frame, iframe fills it. */
+.vs-bp-figure--video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+}
+.vs-bp-figure--video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* ── Body typography ── */
+.vs-bp-paragraph {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.78);
+}
+.vs-bp-paragraph strong,
+.vs-bp-paragraph em,
+.vs-bp-paragraph span,
+.vs-bp-paragraph a {
+  font-size: inherit;
+  line-height: inherit;
+  font-family: inherit;
+}
+.vs-bp-paragraph strong { color: #ffffff; font-weight: 700; }
+.vs-bp-paragraph em { font-style: normal; }
+.vs-bp-paragraph--tldr {
+  padding: 18px 22px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+}
+
+/* ── Sections ── */
+.vs-bp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.vs-bp-h2 {
+  margin: 0;
+  font-size: clamp(26px, 2.8vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: #ffffff;
+}
+.vs-bp-h3 {
+  margin: 8px 0 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+}
+.vs-bp-sub {
+  margin: -8px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ── Comparison tables ── redesigned for predictable column
+   alignment + cleaner readability. Each row is a clear 3-column
+   grid: feature label | TokScript value | TokScribe value. */
+.vs-bp-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+  box-shadow: 0 20px 40px -28px rgba(0, 0, 0, 0.5);
+}
+.vs-bp-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* Column widths — feature label gets ~38%, the two product columns
+   split the rest equally so icons + text always align. */
+.vs-bp-table col.vs-bp-col-feat,
+.vs-bp-table th:nth-child(1),
+.vs-bp-table td:nth-child(1) { width: 38%; }
+.vs-bp-table col.vs-bp-col-us,
+.vs-bp-table th:nth-child(2),
+.vs-bp-table td:nth-child(2) { width: 31%; }
+.vs-bp-table col.vs-bp-col-them,
+.vs-bp-table th:nth-child(3),
+.vs-bp-table td:nth-child(3) { width: 31%; }
+
+/* Header row — slightly elevated background; TokScript column gets
+   a subtle teal tint to signal it's the recommended product. */
+.vs-bp-table thead th {
+  text-align: left;
+  padding: 16px 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  vertical-align: middle;
+}
+.vs-bp-table thead th:nth-child(2) {
+  color: #ffffff;
+  background: rgba(0, 217, 180, 0.08);
+  border-left: 1px solid rgba(0, 217, 180, 0.18);
+  border-right: 1px solid rgba(0, 217, 180, 0.08);
+}
+.vs-bp-table thead th:nth-child(3) {
+  color: #ffffff;
+}
+
+/* Body rows — row-striped, vertically centered, each TokScript cell
+   keeps the subtle teal column wash so it reads as "the answer". */
+.vs-bp-table tbody th {
+  text-align: left;
+  padding: 18px 20px;
+  font-weight: 600;
+  color: #ffffff;
+  vertical-align: middle;
+  background: rgba(255, 255, 255, 0.015);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.vs-bp-table tbody td {
+  padding: 18px 20px;
+  vertical-align: middle;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: left;
+}
+.vs-bp-table tbody td:nth-child(2) {
+  background: rgba(0, 217, 180, 0.04);
+  border-left: 1px solid rgba(0, 217, 180, 0.12);
+  border-right: 1px solid rgba(0, 217, 180, 0.06);
+}
+.vs-bp-table tbody tr:first-child th,
+.vs-bp-table tbody tr:first-child td { border-top: none; }
+
+.vs-bp-th-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Yes/No values — no pill background; just the icon + text inline. */
+.vs-bp-yes,
+.vs-bp-no {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.4;
+  max-width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+}
+.vs-bp-yes { color: #ffffff; }
+.vs-bp-yes svg { color: #00d9b4; flex-shrink: 0; }
+.vs-bp-no { color: rgba(255, 255, 255, 0.6); }
+.vs-bp-no svg { color: rgba(255, 255, 255, 0.4); flex-shrink: 0; }
+
+/* Mobile — allow horizontal scroll; reduce padding so dense rows fit. */
+@media (max-width: 600px) {
+  .vs-bp-table {
+    font-size: 13px;
+    min-width: 540px;
+  }
+  .vs-bp-table thead th,
+  .vs-bp-table tbody th,
+  .vs-bp-table tbody td { padding: 12px 14px; }
+  .vs-bp-yes, .vs-bp-no { font-size: 13px; }
+}
+
+.vs-bp-footnote {
+  margin: 0;
+  font-size: 12px;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ── Reasons list ── */
+.vs-bp-reasons {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.vs-bp-reasons li {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.78);
+}
+.vs-bp-reasons li > div,
+.vs-bp-reasons li strong,
+.vs-bp-reasons li em,
+.vs-bp-reasons li span {
+  font-size: inherit;
+  line-height: inherit;
+  font-family: inherit;
+}
+.vs-bp-reasons li strong { color: #ffffff; font-weight: 700; }
+.vs-bp-reason-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(0, 217, 180, 0.14);
+  border: 1px solid rgba(0, 217, 180, 0.3);
+  color: #00d9b4;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ── Workflow case-study ── */
+.vs-bp-case {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.vs-bp-case-card {
+  padding: 22px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+}
+.vs-bp-case-card--us {
+  border-color: rgba(0, 217, 180, 0.35);
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(0, 217, 180, 0.08) 0%, transparent 60%),
+    rgba(255, 255, 255, 0.025);
+}
+.vs-bp-case-label {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+.vs-bp-case-card--us .vs-bp-case-label { color: #00d9b4; }
+.vs-bp-case-body {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ── FAQ accordion ── */
+.vs-bp-faq {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.vs-bp-faq-item {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 4px 18px;
+  transition: background-color 0.15s ease;
+}
+.vs-bp-faq-item[open] { background: rgba(255, 255, 255, 0.035); }
+.vs-bp-faq-q {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  user-select: none;
+}
+.vs-bp-faq-q::-webkit-details-marker { display: none; }
+.vs-bp-faq-icon {
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.6);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+.vs-bp-faq-item[open] .vs-bp-faq-icon { transform: rotate(45deg); }
+.vs-bp-faq-a {
+  padding: 0 0 16px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── Final CTA ── */
+.vs-bp-final-cta {
+  padding: 40px 32px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    radial-gradient(ellipse at 80% 0%, rgba(0, 217, 180, 0.10) 0%, transparent 55%),
+    radial-gradient(ellipse at 0% 100%, rgba(120, 100, 160, 0.10) 0%, transparent 55%),
+    #111;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.vs-bp-final-h {
+  margin: 0;
+  font-size: clamp(24px, 2.6vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  max-width: 520px;
+  line-height: 1.2;
+}
+.vs-bp-final-sub {
+  margin: 0;
+  max-width: 520px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.65);
+}
+.vs-bp-final-cta-btn { margin-top: 8px; }
+
+/* Mobile */
+@media (max-width: 720px) {
+  .vs-bp { padding: 32px 16px 64px; }
+  .vs-bp-article { gap: 40px; }
+  .vs-bp-case { grid-template-columns: 1fr; }
+  .vs-bp-reasons li { padding: 14px 16px; font-size: 15px; }
+  .vs-bp-final-cta { padding: 32px 20px; }
+  .vs-bp-table thead th,
+  .vs-bp-table tbody th,
+  .vs-bp-table tbody td { padding: 12px 14px; font-size: 13px; }
+}
 

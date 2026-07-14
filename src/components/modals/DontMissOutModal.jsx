@@ -1058,7 +1058,7 @@ function AuthInput({ icon, type = "text", placeholder, value, onChange, autoComp
   );
 }
 
-function DashboardAuthForm({ mode, onSwitchMode, onAuthSuccess, submitLabel }) {
+export function DashboardAuthForm({ mode, onSwitchMode, onAuthSuccess, submitLabel, signupTitle, loginTitle }) {
   // Local form state. Visual UI from the dashboard's auth pages, but
   // submission also fires onAuthSuccess(email, mode) so the modal's
   // parent can hydrate the mock signed-in user (mockCreateAccount /
@@ -1187,7 +1187,9 @@ function DashboardAuthForm({ mode, onSwitchMode, onAuthSuccess, submitLabel }) {
               letterSpacing: "-0.01em",
             }}
           >
-            {isSignup ? "Create your account" : "Welcome back"}
+            {isSignup
+              ? (signupTitle || "Create your account")
+              : (loginTitle || "Welcome back")}
           </h3>
           <p
             style={{
@@ -1844,6 +1846,8 @@ function StepOne({
   trigger,
   initialTier,
   wasSignedInOnOpen,
+  overrideTitle,
+  overrideSub,
 }) {
   // Pitch-panel headline differs by why the modal opened. "paid-feature" =
   // user clicked a paid-only feature (download/AI tool); anything else =
@@ -1988,7 +1992,7 @@ function StepOne({
               whiteSpace: "normal",
             }}
           >
-            {isPostAuthCheckout
+            {overrideTitle || (isPostAuthCheckout
               ? t?.dontMissOutModal?.postAuthCheckoutTitle ||
                 "Continue To Checkout."
               : isCheckoutAuth
@@ -2010,7 +2014,7 @@ function StepOne({
                 ? t?.dontMissOutModal?.freeTitle ||
                   "You've Hit Your Free Limit."
                 : t?.dontMissOutModal?.title ||
-                  "You've Used Your 3 Free Transcripts Today."}
+                  "You've Used Your 3 Free Transcripts Today.")}
           </h2>
           <p
             style={{
@@ -2020,7 +2024,7 @@ function StepOne({
               lineHeight: 1.45,
             }}
           >
-            {isPostAuthCheckout
+            {overrideSub || (isPostAuthCheckout
               ? t?.dontMissOutModal?.postAuthCheckoutSub ||
                 "Your plan is ready, confirm to head to checkout."
               : isCheckoutAuth
@@ -2042,7 +2046,7 @@ function StepOne({
                 ? t?.dontMissOutModal?.freePaywallSub ||
                   "Upgrade Today And Get Unlimited Plus More."
                 : t?.dontMissOutModal?.guestPaywallSub ||
-                  "Sign in or create an account to keep going."}
+                  "Sign in or create an account to keep going.")}
           </p>
         </div>
 
@@ -2164,11 +2168,11 @@ function StepOne({
           />
         )}
 
-        {/* ── Mobile-only paywall (Figma redesign). Gated to mobile by the
-            isMobile prop so the embedded PricingCategoryList doesn't render
-            (and so can't interact with) the desktop tree at all. The
-            sibling pitch + form panels render unchanged on desktop. */}
-        {isMobile && (
+        {/* ── Mobile-only paywall (tier picker + Subscribe + features).
+            Only renders for SIGNED-IN users — guests see the auth form
+            from the right column instead (made visible on mobile via
+            the CSS override so it stacks below the pitch carousel). */}
+        {isMobile && user && (
           <MobilePaywallV2
             t={t}
             selectedTier={selectedTier}
@@ -2224,14 +2228,17 @@ function StepOne({
           </span>
         </div>
 
-        {/* Mobile-only tier cards (3 horizontal mini-cards with ribbon, price,
-            period, sub-line, and selection radio). Hidden on desktop. */}
-        <MobileTierCards
-          t={t}
-          email={email}
-          selectedTier={selectedTier}
-          setSelectedTier={setSelectedTier}
-        />
+        {/* Mobile-only tier cards (horizontal mini-cards). Only shown
+            for SIGNED-IN users — guests need to create an account
+            first via the form below, then they get the tier picker. */}
+        {user && (
+          <MobileTierCards
+            t={t}
+            email={email}
+            selectedTier={selectedTier}
+            setSelectedTier={setSelectedTier}
+          />
+        )}
 
         {/* Intro CTA row removed — the form's "Get Full Access" submit
             button on the right panel is the only primary CTA now. */}
@@ -2872,6 +2879,11 @@ export default function DontMissOutModal({
   // Called after a successful in-modal auth so the caller can redirect
   // (e.g., to Lemon Squeezy checkout for the picked plan).
   onAuthSuccess,
+  // Optional copy overrides for the StepOne pitch title / subline. Used by the
+  // spent-allowance case so the popup can say "You've used today's free
+  // transcripts" without changing the modal's copy anywhere else.
+  overrideTitle,
+  overrideSub,
 }) {
   // step values:
   //   Mobile flow:
@@ -3196,7 +3208,7 @@ export default function DontMissOutModal({
           }
         `}</style>
         <div
-          className="dont-miss-shell"
+          className={`dont-miss-shell dont-miss-step-${step}${user ? " dont-miss-signed-in" : ""}`}
           style={{
             position: "relative",
             display: "flex",
@@ -3330,6 +3342,8 @@ export default function DontMissOutModal({
               trigger={entryTrigger}
               initialTier={initialTier}
               wasSignedInOnOpen={wasSignedInOnOpen}
+              overrideTitle={overrideTitle}
+              overrideSub={overrideSub}
             />
           )}
 

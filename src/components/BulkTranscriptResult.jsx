@@ -11,6 +11,7 @@ import {
   Copy,
   Languages,
   ChevronDown,
+  Lock,
 } from "lucide-react";
 
 import aiHooksIcon from "../assets/images/icons/hooks-icon.svg";
@@ -98,20 +99,58 @@ function StatusIcon({ status }) {
         Complete
       </span>
     );
-  if (status === "processing" || status === "pending")
+  // working: actively being fetched right now.
+  if (status === "processing")
     return (
       <span
         style={{
           display: "inline-flex",
           alignItems: "center",
           gap: 4,
-          color: T.muted,
+          color: T.text,
+          opacity: 0.85,
           fontSize: 11,
           fontWeight: 500,
         }}
       >
         <Clock size={11} />
-        In Progress…
+        In Progress
+      </span>
+    );
+  // waiting (deliverable 01): queued, not started. Must read as "coming", never as failed.
+  // AWAITING MICHAEL: exact label; "Queued" is a placeholder. AWAITING BOB: final treatment.
+  if (status === "pending")
+    return (
+      <span
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 5,
+          color: "#9ca3af",
+          fontSize: 11,
+          fontWeight: 500,
+        }}
+      >
+        <Clock size={11} />
+        Queued
+      </span>
+    );
+  // locked (deliverable 01, NEW): transcript withheld, identity stays fully visible.
+  // AWAITING MICHAEL: exact label; "Locked" is a placeholder. AWAITING BOB: final treatment.
+  if (status === "locked")
+    return (
+      <span
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 4,
+          color: T.accent,
+          fontSize: 11,
+          fontWeight: 600,
+        }}
+      >
+        <Lock size={11} />
+        Locked
       </span>
     );
   if (status === "unavailable" || status === "failed")
@@ -396,7 +435,8 @@ function formatDur(d) {
 
 function BulkListItem({ item, isSelected, onClick }) {
   const isComplete = item.status === "complete";
-  const isProcessing = item.status === "processing" || item.status === "pending";
+  const isLocked = item.status === "locked";
+  const isFailed = item.status === "unavailable" || item.status === "failed";
   return (
     <button
       onClick={onClick}
@@ -411,7 +451,9 @@ function BulkListItem({ item, isSelected, onClick }) {
         border: `1px solid ${isSelected ? "rgba(0,212,204,0.30)" : "transparent"}`,
         color: T.text,
         cursor: isComplete ? "pointer" : "default",
-        opacity: isComplete ? 1 : 0.7,
+        // Deliverable 01: only failed rows dim. Waiting and locked stay fully
+        // legible so a wall of them never reads as failure.
+        opacity: isFailed ? 0.6 : 1,
         textAlign: "left",
         width: "100%",
         transition: "background .15s, border-color .15s",
@@ -448,67 +490,49 @@ function BulkListItem({ item, isSelected, onClick }) {
         ) : (
           <Clock size={14} style={{ color: T.muted }} />
         )}
+        {isLocked && (
+          <span
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "rgba(0,0,0,0.38)",
+            }}
+          >
+            <Lock size={14} style={{ color: "#ffffff" }} />
+          </span>
+        )}
       </span>
       <span style={{ minWidth: 0, flex: 1 }}>
         <span
           style={{
-            display: "block",
+            // Clamp the title to at most two lines, truncating with an ellipsis.
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
             fontSize: 12,
             fontWeight: 600,
             color: T.text,
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
+            overflowWrap: "anywhere",
           }}
         >
           {item.title || item.sourceUrl || "Untitled video"}
         </span>
-        <span style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 3 }}>
-          {item.duration && (
+        <span style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 6 }}>
+          {item.duration > 0 && (
             <span style={{ color: T.muted, fontSize: 10.5 }}>
-              {formatDur(item.duration)} duration
+              {formatDur(item.duration)}
             </span>
           )}
           <StatusIcon status={item.status} />
         </span>
       </span>
-      {isComplete && (
-        <span
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            flexShrink: 0,
-          }}
-        >
-          <Image
-            src={copyLightIcon}
-            alt=""
-            width={14}
-            height={14}
-            style={{
-              width: 14,
-              height: 14,
-              objectFit: "contain",
-              filter: "brightness(0) invert(1)",
-              opacity: 0.7,
-            }}
-          />
-          <Image
-            src={uploadIcon}
-            alt=""
-            width={14}
-            height={14}
-            style={{
-              width: 14,
-              height: 14,
-              objectFit: "contain",
-              filter: "brightness(0) invert(1)",
-              opacity: 0.7,
-            }}
-          />
-        </span>
-      )}
+      {/* Deliverable 01: the row is a single selection target; copy/export live
+          in the detail pane (nesting real buttons in this <button> is invalid
+          HTML), so no dead per-row action icons here. */}
     </button>
   );
 }
@@ -552,9 +576,14 @@ export default function BulkTranscriptResult({
   const unavailable =
     (summary.unavailable || displayItems.filter((i) => i.status === "unavailable").length) +
     (summary.failed || displayItems.filter((i) => i.status === "failed").length);
+  // UX-54 decision: the lock gets its own filter pill, but only when there are
+  // locked rows, so a run with nothing locked (pasted 30 or fewer) never shows
+  // a fourth pill or any upsell furniture.
+  const locked = displayItems.filter((i) => i.status === "locked").length;
 
   const filteredItems = displayItems.filter((item) => {
     if (activeTab === "completed" && item.status !== "complete") return false;
+    if (activeTab === "locked" && item.status !== "locked") return false;
     if (
       activeTab === "unavailable" &&
       item.status !== "unavailable" &&
@@ -731,7 +760,7 @@ export default function BulkTranscriptResult({
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search transcripts..."
+                placeholder="Search these transcripts"
                 style={{
                   flex: 1,
                   background: "transparent",
@@ -749,20 +778,25 @@ export default function BulkTranscriptResult({
               />
             </div>
 
-            {/* Tabs */}
+            {/* Tabs. Labels stay whole (no ellipsis); if they cannot all fit,
+                the row scrolls sideways instead of truncating. */}
             <div
               style={{
                 display: "flex",
-                gap: 4,
+                gap: 2,
                 flexShrink: 0,
                 flexWrap: "nowrap",
                 width: "100%",
+                overflowX: "auto",
+                scrollbarWidth: "none",
               }}
             >
               {[
                 { id: "total", label: "Total", count: total },
                 { id: "completed", label: "Completed", count: completed },
                 { id: "unavailable", label: "Unavailable", count: unavailable },
+                // Fourth pill appears only when the run actually locked rows.
+                ...(locked > 0 ? [{ id: "locked", label: "Locked", count: locked }] : []),
               ].map((tab) => {
                 const isActive = activeTab === tab.id;
                 return (
@@ -770,17 +804,14 @@ export default function BulkTranscriptResult({
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     style={{
-                      flex: "1 1 0",
-                      minWidth: 0,
-                      padding: "5px 4px",
+                      flex: "0 0 auto",
+                      padding: "5px 8px",
                       borderRadius: 8,
                       background: isActive ? T.pill : "transparent",
                       border: `1px solid ${isActive ? T.pillBorder : "transparent"}`,
                       color: isActive ? T.text : T.muted,
                       fontSize: 11,
                       whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
                       fontWeight: 500,
                       cursor: "pointer",
                     }}
@@ -803,6 +834,7 @@ export default function BulkTranscriptResult({
                   background: "rgba(0,212,204,0.06)",
                   border: `1px solid rgba(0,212,204,0.20)`,
                   flexShrink: 0,
+                  marginBottom: 6,
                 }}
               >
                 <span
@@ -836,9 +868,10 @@ export default function BulkTranscriptResult({
                       display: "block",
                       color: T.muted,
                       fontSize: 11,
+                      marginTop: 4,
                     }}
                   >
-                    {isProcessing ? "Loading..." : "Ready"}
+                    {isProcessing ? "Loading" : "Ready"}
                   </span>
                 </span>
               </div>

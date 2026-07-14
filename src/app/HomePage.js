@@ -80,6 +80,7 @@ const VideoHoverThumb = dynamic(() => import("@/components/VideoHoverThumb"), { 
 const CounterComponent = dynamic(() => import("@/components/CounterComponent"));
 const LegalDisclaimer = dynamic(() => import("@/components/LegalDisclaimer"));
 const DontMissOutModal = dynamic(() => import("@/components/modals/DontMissOutModal"), { ssr: false });
+const BulkUpgradeWall = dynamic(() => import("@/components/BulkUpgradeWall"), { ssr: false });
 const CheckoutOverlay = dynamic(() => import("@/components/modals/CheckoutOverlay"), { ssr: false });
 const DemoPage = dynamic(() => import("@/components/modals/DemoPage"), { ssr: false });
 const ConfirmationModal = dynamic(() => import("@/components/modals/ConfirmationModal"), { ssr: false });
@@ -245,7 +246,7 @@ const LANGUAGES = [
 
 // Dev-only: build a synthetic bulk response so the bulk UI can be
 // iterated on locally without hitting the server-side rate limit.
-function buildMockBulkResponse(links) {
+function buildMockBulkResponse(links, opts = {}) {
   const sampleTranscript = [
     "WEBVTT",
     "",
@@ -278,21 +279,39 @@ function buildMockBulkResponse(links) {
     { title: "5 Morning Habits", duration: "210" },
     { title: "30-Minute Dinner Ideas", duration: "180" },
   ];
+  // Portrait (9:16) covers so they sit correctly in the vertical video tiles.
   const sampleCovers = [
-    "https://images.unsplash.com/photo-1565895405138-6c3a1555da6a?w=400&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1547592180-85f173990554?w=400&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=400&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=400&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1565895405138-6c3a1555da6a?w=200&h=356&fit=crop",
+    "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=200&h=356&fit=crop",
+    "https://images.unsplash.com/photo-1547592180-85f173990554?w=200&h=356&fit=crop",
+    "https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=200&h=356&fit=crop",
+    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200&h=356&fit=crop",
+    "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=200&h=356&fit=crop",
+    "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&h=356&fit=crop",
+    "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=200&h=356&fit=crop",
+    "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=200&h=356&fit=crop",
+    "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=200&h=356&fit=crop",
   ];
 
-  const items = (links || []).slice(0, 7).map((url, i) => {
+  // UX-54: the paste box accepts BULK_MAX links, the guest and free allowance is
+  // BULK_FREE_CAP. Config driven, never hardcoded at the call site. A full run of
+  // more than BULK_FREE_CAP links reads as open rows followed by locked ones;
+  // anyone who pastes BULK_FREE_CAP or fewer sees zero locked rows and no wall.
+  const capped = (links || []).slice(0, BULK_MAX);
+  const items = capped.map((url, i) => {
     const seed = seedTitles[i % seedTitles.length];
     let status = "complete";
     let transcript = sampleTranscript;
-    if (i === 2 || i === 3) {
+    // Paid: 50 in, 50 out. No locks, no failed rows, its own calm screen.
+    if (opts.allOpen) {
+      status = "complete";
+      transcript = sampleTranscript;
+    } else if (i >= BULK_FREE_CAP) {
+      // Locked: thumbnail and title stay fully visible, only the transcript is
+      // withheld. Never the dimmed broken look.
+      status = "locked";
+      transcript = null;
+    } else if (i === 2 || i === 3) {
       status = "processing";
       transcript = null;
     } else if (i === 4) {
@@ -387,6 +406,12 @@ function buildMockTikTokResponse(videoLink) {
 // Guest cap = 3/day · Free user cap = 5/day · Paid = no cap.
 const TS_DAILY_COUNT_KEY = "tokscript_daily_count";
 
+// UX-54: bulk config. The paste box accepts BULK_MAX links; the guest and free
+// allowance is BULK_FREE_CAP. Config driven, in one place, never a bare literal
+// scattered through the JSX.
+const BULK_MAX = 50;
+const BULK_FREE_CAP = 30;
+
 function getTodayKey() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -428,8 +453,23 @@ function isOverDailyLimit(user) {
   return getDailyTranscriptCount() >= getDailyLimitForUser(user);
 }
 
-export default function LandingPage({ platform = "tiktok" } = {}) {
+export default function LandingPage({ platform = "tiktok", heroReplacement } = {}) {
+  // When `heroReplacement` is provided (e.g. the collection page), it renders in
+  // place of the default hero, and every other section (MCP, how it works,
+  // features, testimonials, pricing, FAQ, footer) stays identical. This lets a
+  // custom-hero page reuse the full landing page without duplicating it.
   const copy = getPlatformCopy(platform);
+  // The bulk variants (bulkInstagram, bulkYoutube, bulkTiktok) inherit the same
+  // platform-family visuals (flare, marks, platform sections) as their base
+  // platform, so the SEO bulk pages look right per platform.
+  const basePlatform =
+    platform === "bulkInstagram"
+      ? "instagram"
+      : platform === "bulkYoutube"
+        ? "youtube"
+        : platform === "bulkTiktok"
+          ? "tiktok"
+          : platform;
   const [dontMissOutModalShow, setDontMissOutModalShow] = useState(false);
   // Context for the upgrade modal — drives which copy it shows.
   // "daily-limit" → guest hit 3/day · "free-limit" → free user hit 5/day · "general" default.
@@ -439,6 +479,11 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
   const [isLoading, setIsLoading] = useState(false);
   const [videoData, setVideoData] = useState(null);
   const [error, setError] = useState("");
+  // UX-54 / 02: spent-allowance is a separate, non-error state, so the paste box
+  // is never painted with the red `.has-error` treatment for an expected limit.
+  // It is surfaced through the paywall popup, not an inline notice.
+  // UX-54: paid calm view (50 open, no wall, no upsell furniture).
+  const [isPaidView, setIsPaidView] = useState(false);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
   const [productsData, setProductsData] = useState([]);
@@ -458,6 +503,62 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
   const [processingUrls, setProcessingUrls] = useState([]);
   const [selectedBulkItem, setSelectedBulkItem] = useState(null);
   const [selectedBulkIndex, setSelectedBulkIndex] = useState(null);
+  // UX-54 / 01b: end-of-run upgrade wall.
+  const [bulkWall, setBulkWall] = useState({ open: false, variant: "guest" });
+  // Fires once per finished run, only when locked rows exist and the visitor is
+  // not on a paid plan. Guest vs free get two different messages. Until the
+  // backend produces `locked` rows (deliverable 01) this stays dormant.
+  const bulkWallFiredRef = useRef(null);
+  useEffect(() => {
+    if (!bulkData || isBulkProcessing || isPaidView) return;
+    const items = bulkData?.transcript?.bulkItems || [];
+    const lockedCount = items.filter((i) => i.status === "locked").length;
+    if (lockedCount === 0) return;
+    const plan = user?.plan;
+    const isPaid = !!plan && plan !== "free";
+    if (isPaid) return;
+    // Only fire once for a given result set, so closing it does not re-open it.
+    const runKey = items.map((i) => i.sourceUrl || i.url || "").join("|");
+    if (bulkWallFiredRef.current === runKey) return;
+    bulkWallFiredRef.current = runKey;
+    setBulkWall({ open: true, variant: plan === "free" ? "free" : "guest" });
+  }, [bulkData, isBulkProcessing, user, isPaidView]);
+
+  // UX-54 review affordance: open any of the four moments directly by URL so
+  // each can be seen without pasting fifty links.
+  //   ?demo=locked      -> full run, 30 open + 20 locked, wall fires
+  //   ?demo=nolock      -> pasted 30 or fewer, zero locked, no wall
+  //   ?demo=paid        -> paid, 50 open, no wall, no upsell
+  //   ?demo=guest-spent -> returning guest whose one run is gone
+  //   ?demo=free-spent  -> returning free user whose daily run is gone
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const demo = new URLSearchParams(window.location.search).get("demo");
+    if (!demo) return;
+    const links = (n) =>
+      Array.from({ length: n }, (_, i) => `https://www.tiktok.com/@demo/video/${i + 1}`);
+    if (demo === "locked") {
+      setBulkData(buildMockBulkResponse(links(BULK_MAX)));
+    } else if (demo === "nolock") {
+      setBulkData(buildMockBulkResponse(links(BULK_FREE_CAP)));
+    } else if (demo === "paid") {
+      setIsPaidView(true);
+      setBulkData(buildMockBulkResponse(links(BULK_MAX), { allOpen: true }));
+    } else if (demo === "guest-spent") {
+      // Spent allowance shows the paywall popup, not an inline notice.
+      setModalTrigger("daily-limit");
+      setDontMissOutModalShow(true);
+    } else if (demo === "free-spent") {
+      // Free user who spent today's allowance: the popup shows the upgrade path.
+      try {
+        window.localStorage.setItem("user", JSON.stringify({ email: "you@example.com", plan: "free" }));
+      } catch (_) {}
+      setUser({ email: "you@example.com", plan: "free" });
+      setModalTrigger("free-limit");
+      setDontMissOutModalShow(true);
+    }
+  }, []);
+
   const processRef = useRef(null);
   const videoDetailRef = useRef(null);
   const router = useRouter();
@@ -628,6 +729,15 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
     return links;
   };
 
+  // UX-54 / 02: one place that flags a spent allowance. All three detection
+  // spots route through here so the state is consistent: open the paywall popup
+  // (guest sees sign-up, free sees the upgrade path), never set `error` (no red).
+  const flagAllowanceSpent = (u) => {
+    const isFree = u?.plan === "free";
+    setModalTrigger(isFree ? "free-limit" : "daily-limit");
+    setDontMissOutModalShow(true);
+  };
+
   // Handle the send button click with multiple link detection
   const handleSendClick = () => {
     const links = detectMultipleLinks(videoLink);
@@ -644,8 +754,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
       } catch (_) {}
     }
     if (isOverDailyLimit(localUser)) {
-      setModalTrigger(localUser?.plan === "free" ? "free-limit" : "daily-limit");
-      setDontMissOutModalShow(true);
+      flagAllowanceSpent(localUser);
       return;
     }
 
@@ -692,8 +801,8 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
     // Check localStorage first — blocks repeat attempts even if fingerprint/IP change
     try {
       if (localStorage.getItem('tokscript_bulk_used')) {
-        setDontMissOutModalShow(true);
-        setError("You have already used your free bulk processing. Sign up for unlimited access.");
+        // Spent allowance is not an error: calm notice + modal, no red input.
+        flagAllowanceSpent(user);
         return;
       }
     } catch (e) { /* localStorage unavailable */ }
@@ -748,10 +857,8 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
 
       if (!response.ok) {
         if (data.error === "bulk_already_used") {
-          setDontMissOutModalShow(true);
-          setError(
-            "You have already used your free bulk processing. Sign up for unlimited access.",
-          );
+          // Spent allowance is not an error: calm notice + modal, no red input.
+          flagAllowanceSpent(user);
         } else {
           setError(data.message || data.error || "Failed to process bulk URLs");
         }
@@ -1138,13 +1245,14 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
     <div className={`landing-page ${copy.accentClass}`}>
       <Header />
       <main className="inner-page">
+        {heroReplacement || (
         <div className="banner-section">
           <div className="banner-flare" aria-hidden="true">
             <img
               src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}${
-                platform === "instagram"
+                basePlatform === "instagram"
                   ? "/figma-rows/Instagram%20Flare.png"
-                  : platform === "youtube"
+                  : basePlatform === "youtube"
                     ? "/figma-rows/Youtube%20Flare.png"
                     : "/assets/chatgpt-hero-flare.png"
               }`}
@@ -1193,7 +1301,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                   disabled={isLoading}
                 >
                   {isLoading
-                    ? "Loading..."
+                    ? "Loading"
                     : videoLink.trim()
                       ? "Download"
                       : "Scan Videos"}
@@ -1254,7 +1362,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                     >
                       <FaSearch />
                       {(() => {
-                        if (isLoading || isBulkProcessing) return "Processing...";
+                        if (isLoading || isBulkProcessing) return "Processing";
                         const linkCount = videoLink
                           .split(/[\s,]+/)
                           .filter(Boolean).length;
@@ -1319,10 +1427,28 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
             </div>
           </div>
         </div>
-        {(platform === "instagram" || platform === "youtube") && (
+        )}
+        <section id="up-running" className="up-running-section">
+          <div className="ur-inner">
+            <div className="ur-header">
+              <span className="ur-pill">New · TokScript MCP</span>
+              <h2 className="ur-title">TokScript now lives inside Claude &amp; ChatGPT.</h2>
+              <p className="ur-sub">Connect TokScript to your AI in one click. Pull transcripts, download videos, and analyze creator libraries ,  all without leaving the conversation.</p>
+            </div>
+            <div className="ur-video">
+              <iframe
+                src="https://www.youtube.com/embed/5m37dBH-G_g?autoplay=1&mute=1&loop=1&playlist=5m37dBH-G_g&controls=0&rel=0&modestbranding=1&playsinline=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0"
+                allow="autoplay; encrypted-media"
+                title="TokScript MCP ,  works inside Claude and ChatGPT"
+              ></iframe>
+            </div>
+            <Link href="/mcp" className="ur-cta">Try it Free Today</Link>
+          </div>
+        </section>
+        {(basePlatform === "instagram" || basePlatform === "youtube") && (
           <div className="mcp-page">
             <section
-              id={platform === "instagram" ? "how-it-works-reels" : "how-it-works-shorts"}
+              id={basePlatform === "instagram" ? "how-it-works-reels" : "how-it-works-shorts"}
               className="hiw-platform-section"
               style={{ paddingTop: "36px", paddingBottom: "36px" }}
             >
@@ -1461,12 +1587,12 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                   <div className="hiw-header-content">
                     <div className="hiw-pill">How It Works</div>
                     <h2 className="hiw-h2">
-                      {platform === "instagram"
+                      {basePlatform === "instagram"
                         ? "How to Generate a Transcript from Instagram"
                         : "How to Transcribe YouTube Videos"}
                     </h2>
                     <p className="hiw-sub">
-                      {platform === "instagram"
+                      {basePlatform === "instagram"
                         ? "Getting your Instagram transcript takes three steps. No extensions, no software, and no Instagram Login required."
                         : "TokScript lets you generate a YouTube transcript in three steps. No extensions, no software, and no YouTube account required."}
                     </p>
@@ -1475,7 +1601,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
 
                 <div className="cx-hiw-cards-outer hiw-cards-outer">
                   <div className="hiw-cards-row">
-                    {(platform === "instagram"
+                    {(basePlatform === "instagram"
                       ? [
                           {
                             step: "Step 01",
@@ -1532,23 +1658,6 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
             </section>
           </div>
         )}
-        <section id="up-running" className="up-running-section">
-          <div className="ur-inner">
-            <div className="ur-header">
-              <span className="ur-pill">New · TokScript MCP</span>
-              <h2 className="ur-title">TokScript now lives inside Claude &amp; ChatGPT.</h2>
-              <p className="ur-sub">Connect TokScript to your AI in one click. Pull transcripts, download videos, and analyze creator libraries ,  all without leaving the conversation.</p>
-            </div>
-            <div className="ur-video">
-              <iframe
-                src="https://www.youtube.com/embed/5m37dBH-G_g?autoplay=1&mute=1&loop=1&playlist=5m37dBH-G_g&controls=0&rel=0&modestbranding=1&playsinline=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0"
-                allow="autoplay; encrypted-media"
-                title="TokScript MCP ,  works inside Claude and ChatGPT"
-              ></iframe>
-            </div>
-            <Link href="/mcp" className="ur-cta">Try it Free Today</Link>
-          </div>
-        </section>
         {platform !== "instagram" && platform !== "youtube" && (
         <section id="vt-platform" className="vt-platform-section">
           <div className="vt-platform-inner">
@@ -1573,14 +1682,14 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                 </div>
               </div>
               <div className="vt-visual">
-                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/01-bulk${platform === "tiktok" ? "" : "-" + platform}.png?v=20260501b`} alt="Bulk Importing" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/01-bulk${basePlatform === "tiktok" ? "" : "-" + basePlatform}.png?v=20260501b`} alt="Bulk Importing" />
               </div>
             </div>
 
             {/* 2. TokScript MCP — visual LEFT, text-card RIGHT (Figma 557:16010) */}
             <div className="vt-row vt-row-reverse">
               <div className="vt-visual">
-                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/02-mcp${platform === "tiktok" ? "" : "-" + platform}.png?v=20260501b`} alt="TokScript MCP" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/02-mcp${basePlatform === "tiktok" ? "" : "-" + basePlatform}.png?v=20260501b`} alt="TokScript MCP" />
               </div>
               <div className="vt-text">
                 <div className="vt-text-inner">
@@ -1613,14 +1722,14 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                 </div>
               </div>
               <div className="vt-visual">
-                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/03-collection${platform === "tiktok" ? "" : "-" + platform}.png?v=20260501b`} alt="TikTok Collection & Playlist Importing" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/03-collection${basePlatform === "tiktok" ? "" : "-" + basePlatform}.png?v=20260501b`} alt="TikTok Collection & Playlist Importing" />
               </div>
             </div>
 
             {/* 4. History & Bookmarking — visual LEFT, text-card RIGHT (Figma 558:17653) */}
             <div className="vt-row vt-row-reverse" id="history-bookmarking">
               <div className="vt-visual">
-                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/04-history${platform === "tiktok" ? "" : "-" + platform}.png?v=20260501b`} alt="History & Bookmarking" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/04-history${basePlatform === "tiktok" ? "" : "-" + basePlatform}.png?v=20260501b`} alt="History & Bookmarking" />
               </div>
               <div className="vt-text">
                 <div className="vt-text-inner">
@@ -1653,14 +1762,14 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                 </div>
               </div>
               <div className="vt-visual">
-                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/05-hd-video${platform === "tiktok" ? "" : "-" + platform}.png?v=20260501b`} alt="HD Video & Cover Image Downloads" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/05-hd-video${basePlatform === "tiktok" ? "" : "-" + basePlatform}.png?v=20260501b`} alt="HD Video & Cover Image Downloads" />
               </div>
             </div>
 
             {/* 6. Quick URL Download — visual LEFT, text-card RIGHT (Figma 558:26755) */}
             <div className="vt-row vt-row-reverse">
               <div className="vt-visual">
-                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/06-quick-url${platform === "tiktok" ? "" : "-" + platform}.png?v=20260501b`} alt="Quick URL Download" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/06-quick-url${basePlatform === "tiktok" ? "" : "-" + basePlatform}.png?v=20260501b`} alt="Quick URL Download" />
               </div>
               <div className="vt-text">
                 <div className="vt-text-inner">
@@ -1690,14 +1799,14 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                 </div>
               </div>
               <div className="vt-visual">
-                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/07-chrome${platform === "tiktok" ? "" : "-" + platform}.png?v=20260501b`} alt="Chrome Extension" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/07-chrome${basePlatform === "tiktok" ? "" : "-" + basePlatform}.png?v=20260501b`} alt="Chrome Extension" />
               </div>
             </div>
 
             {/* 8. AI Agents — visual LEFT, text-card RIGHT (Figma 558:31342) */}
             <div className="vt-row vt-row-reverse">
               <div className="vt-visual">
-                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/08-ai-agents${platform === "tiktok" ? "" : "-" + platform}.png?v=20260501b`} alt="AI Agents" />
+                <VideoHoverThumb src={`${process.env.NEXT_PUBLIC_BASE_PATH||""}/figma-rows/08-ai-agents${basePlatform === "tiktok" ? "" : "-" + basePlatform}.png?v=20260501b`} alt="AI Agents" />
               </div>
               <div className="vt-text">
                 <div className="vt-text-inner">
@@ -1747,21 +1856,21 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
             <div className="vt-platform-inner">
               <div className="vt-platform-header">
                 <span className="vt-pill">
-                  {platform === "instagram" ? "Built For Reels" : "Built For YouTube"}
+                  {basePlatform === "instagram" ? "Built For Reels" : "Built For YouTube"}
                 </span>
                 <h2 className="vt-h2">
-                  {platform === "instagram"
+                  {basePlatform === "instagram"
                     ? "Instagram Reels Transcript & Download Platform"
                     : "YouTube Shorts Transcript Generator"}
                 </h2>
                 <p className="vt-sub">
-                  {platform === "instagram"
+                  {basePlatform === "instagram"
                     ? "2.6M+ videos processed. Built specifically for IG content, not bolted onto a generic tool. TokScript converts any public Instagram Reel online into clean, accurate text in seconds. Purpose-built for how Reels content actually works. Paste a link, get the transcript, and use it for captions, scripts, competitor research, or AI workflows."
                     : "2.6M+ videos processed. Built specifically for YouTube Shorts transcripts, not a generic transcription tool that treats every video the same. Convert any public YouTube Short into clean, accurate text in seconds. Paste the YouTube link, get the full transcript, and put it to work: repurpose into scripts, research competitor YouTube Shorts, fuel AI workflows, or create captions without replaying a single video."}
                 </p>
               </div>
 
-              {(platform === "instagram"
+              {(basePlatform === "instagram"
                 ? [
                     {
                       title: "Bulk Instagram Transcript Import",
@@ -2070,7 +2179,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                       </div>
                       <div className="pc-cta-wrap">
                         {loading ? (
-                          <button disabled className="pc-cta">Loading...</button>
+                          <button disabled className="pc-cta">Loading</button>
                         ) : user ? (
                           profile?.plan == "pro" &&
                           profile?.subscription?.status === "active" &&
@@ -2088,7 +2197,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                               }}
                               className="pc-cta"
                             >
-                              {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.variantId] ? "Processing..." : "Upgrade"}
+                              {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("monthly"))?.variantId] ? "Processing" : "Upgrade"}
                             </button>
                           ) : (
                             <>
@@ -2157,7 +2266,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                       </div>
                       <div className="pc-cta-wrap">
                         {loading ? (
-                          <button disabled className="pc-cta pc-cta-primary">Loading...</button>
+                          <button disabled className="pc-cta pc-cta-primary">Loading</button>
                         ) : user ? (
                           profile?.plan == "pro" &&
                           profile?.subscription?.status === "active" &&
@@ -2175,7 +2284,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                               }}
                               className="pc-cta pc-cta-primary"
                             >
-                              {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.variantId] ? "Processing..." : "Upgrade"}
+                              {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("annual"))?.variantId] ? "Processing" : "Upgrade"}
                             </button>
                           ) : (
                             <>
@@ -2242,7 +2351,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                       </div>
                       <div className="pc-cta-wrap">
                         {loading ? (
-                          <button disabled className="pc-cta">Loading...</button>
+                          <button disabled className="pc-cta">Loading</button>
                         ) : user ? (
                           profile?.plan == "pro" &&
                           profile?.subscription?.status === "active" &&
@@ -2260,7 +2369,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                               }}
                               className="pc-cta"
                             >
-                              {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.variantId] ? "Processing..." : "Upgrade"}
+                              {loadingStates[allPlans.find((plan) => plan.title?.toLowerCase().includes("lifetime"))?.variantId] ? "Processing" : "Upgrade"}
                             </button>
                           ) : (
                             <>
@@ -2343,17 +2452,17 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
         </section>
         <HomeSocialProof />
         <BeforeAfter />
-        {platform === "instagram" || platform === "youtube" ? (
+        {basePlatform === "instagram" || basePlatform === "youtube" ? (
           <section className="ready-to-convert-section">
             <div className="container">
               <div className="inner-section">
                 <h3>
-                  {platform === "instagram"
+                  {basePlatform === "instagram"
                     ? "Ready to Convert Your First Reel?"
                     : "Ready to Convert Your YouTube Short?"}
                 </h3>
                 <p>
-                  {platform === "instagram"
+                  {basePlatform === "instagram"
                     ? "Paste any public Reel link above. Get the full text in seconds."
                     : "Paste a Shorts link. Get every spoken word back in text. Free."}
                 </p>
@@ -2375,7 +2484,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
         )}
         <FaqSection
           faqData={
-            platform === "instagram"
+            basePlatform === "instagram"
               ? [
                   { title: "What does a Reel transcript tool do?", content: "It converts the spoken audio inside an Instagram video into written text, automatically. Paste a public Reel link into TokScript and the full text is returned in seconds, with no manual typing, no audio editing, and no extra software required." },
                   { title: "How do I extract text from an Instagram Reel?", content: "Copy the Reel link using Instagram's share button. Paste it into the input field above. Click \"Scan Video.\" The transcript is ready in seconds. Download as TXT, XML, or PDF, or copy it to your clipboard directly." },
@@ -2390,7 +2499,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                   { title: "Can I use extracted text with AI writing tools?", content: "Yes. Copy or download any transcript and paste it into ChatGPT, Claude, Gemini, or any AI platform. TokScript's built-in AI agents handle hooks, script rewrites, and performance analysis." },
                   { title: "Does TokScript work with Instagram Reel ads?", content: "Yes. Any publicly viewable Reel, including paid promotions, can be transcribed. Media buyers use it to extract hook structures and CTAs from high-converting ads." },
                 ]
-              : platform === "youtube"
+              : basePlatform === "youtube"
               ? [
                   { title: "What is the best free YouTube transcript generator?", content: "TokScript is a free YouTube transcript generator working directly from any YouTube URL with no software, no login, and no file upload. It supports YouTube Shorts, standard videos, and bulk processing of up to 50 links at once." },
                   { title: "How do I generate a transcript from a YouTube video?", content: "Copy the YouTube video URL, paste it into TokScript, and click \"Generate Transcript.\" Your full YouTube transcript is ready in seconds and available to download as TXT, PDF, or XML." },
@@ -2412,7 +2521,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
         <div className="disclaimer-section">
           <div className="container">
             <div className="inner-section">
-              {platform === "instagram" ? (
+              {basePlatform === "instagram" ? (
                 <>
                   <div className="content">
                     <h4>About TokScript: Free Instagram Transcript Generator</h4>
@@ -2493,7 +2602,7 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
                     </p>
                   </div>
                 </>
-              ) : platform === "youtube" ? (
+              ) : basePlatform === "youtube" ? (
                 <>
                   <div className="content">
                     <h4>
@@ -2679,8 +2788,37 @@ export default function LandingPage({ platform = "tiktok" } = {}) {
           show={dontMissOutModalShow}
           onHide={handleDontMissOutModalClose}
           trigger={modalTrigger}
+          // Spent-allowance for a free user: override just this popup's title
+          // and subline so it names today's allowance and the daily reset.
+          overrideTitle={
+            modalTrigger === "free-limit"
+              ? "You've used today's free transcripts"
+              : undefined
+          }
+          overrideSub={
+            modalTrigger === "free-limit"
+              ? "Upgrade to keep going now, or they refresh tomorrow."
+              : undefined
+          }
         />
       )}
+      {isClient && bulkWall.open && (() => {
+        const items = bulkData?.transcript?.bulkItems || [];
+        const lockedCount = items.filter((i) => i.status === "locked").length;
+        const total = items.length;
+        return (
+          <BulkUpgradeWall
+            open
+            variant={bulkWall.variant}
+            openCount={total - lockedCount}
+            lockedCount={lockedCount}
+            total={total}
+            items={items}
+            onClose={() => setBulkWall((w) => ({ ...w, open: false }))}
+            onPrimary={() => setBulkWall((w) => ({ ...w, open: false }))}
+          />
+        );
+      })()}
       {showConfirmation && (
         <ConfirmationModal
           setShowConfirmation={setShowConfirmation}

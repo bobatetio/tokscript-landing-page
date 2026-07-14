@@ -23,6 +23,10 @@ export default function sitemap() {
     { url: `${baseUrl}/pricing`, lastModified: '2026-03-07' },
     { url: `${baseUrl}/instagram-transcript-generator`, lastModified: '2026-03-07' },
     { url: `${baseUrl}/youtube-transcript-generator`, lastModified: '2026-03-07' },
+    { url: `${baseUrl}/bulk-tiktok-transcript-generator`, lastModified: '2026-07-12' },
+    { url: `${baseUrl}/bulk-instagram-transcript-generator`, lastModified: '2026-07-14' },
+    { url: `${baseUrl}/bulk-youtube-transcript-generator`, lastModified: '2026-07-14' },
+    { url: `${baseUrl}/tiktok-collection-transcriber`, lastModified: '2026-07-12' },
     // Features hub + all sub-pages
     { url: `${baseUrl}/features`, lastModified: '2026-03-07' },
     // { url: `${baseUrl}/features/transcript-generator`, lastModified: '2026-03-07' },

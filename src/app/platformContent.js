@@ -148,6 +148,187 @@ export const PLATFORM_COPY = {
         "Stop replaying the same Shorts over and over trying to catch every line. Download the transcript, read it in full, and use TokScript's AI agents to rewrite it with your own voice and angle in minutes.",
     },
   },
+
+  // ── Bulk TikTok Transcripts page (UX-54 / deliverable 03) ──────────────────
+  // Provisional slug: bulk-tiktok-transcript-generator (AWAITING MICHAEL).
+  // Shared/approved strings kept verbatim; every new bulk-specific marketing
+  // string is left as an explicit "Michael writes it" placeholder, not invented.
+  bulkTiktok: {
+    // Example copy in place for review. Final wording is still Michael's call.
+    accentClass: "platform-tiktok",
+    heroPill: "AI Powered",
+    heroH1: (
+      <>
+        Bulk TikTok
+        <br />
+        Transcript Generator
+      </>
+    ),
+    heroSub:
+      "Paste up to 50 TikTok links at once and get a clean, accurate transcript for every single video in one run.",
+    inputPlaceholder: "Paste up to 50 video links here (or tiktok collection)",
+    bottomCopy:
+      "Download up to 50 videos (any platform) at the same time and entire TikTok collections",
+    statsCopy:
+      "More than 41,000 creators have transcribed over 2,600,000 videos with TokScript so far.",
+    pricingDailyFreeLine: "First 30 transcripts in every run are free",
+    bulk: {
+      body: "Drop in up to 50 TikTok, Instagram, or YouTube Shorts links and TokScript transcribes them all together, then hands you every transcript in one clean list.",
+      bullets: [
+        "Paste up to 50 video links and process the whole batch in one run",
+        "Works across TikTok, Instagram Reels, and YouTube Shorts in the same list",
+        "Export every transcript together or copy them one video at a time",
+        "The first 30 transcripts in every run are completely free to read",
+      ],
+    },
+    quickUrl: {
+      body: "Add tokscript.com in front of any TikTok link in your browser bar, press enter, and your transcript is ready in a few seconds.",
+      bullets: [
+        "Works on any public TikTok video link you paste",
+        "No account and no login required to get started",
+        "Runs straight from your browser address bar",
+        "Your finished transcript is ready in just seconds",
+      ],
+    },
+    agents: {
+      hook: "Paste any TikTok transcript and get twenty proven hooks back",
+      script: "Turn any viral TikTok into a full script written in your own voice",
+      explainer: "See exactly why a TikTok took off, broken down line by line",
+    },
+    whoH2: "Who uses the TokScript bulk TikTok transcriber",
+    whoSub:
+      "Anyone who works with a lot of short videos at once and needs the words out of them quickly.",
+    who: {
+      creators:
+        "Transcribe a whole batch of your own TikToks at once and repurpose every one into blog posts, newsletters, captions, and scripts without replaying a single video.",
+      researchers:
+        "Turn dozens of TikToks, tutorials, and lessons into searchable text in one pass, then build a reference library or a set of study notes you can actually search.",
+      marketers:
+        "Pull the copy out of fifty competitor ads at a time, compare the hooks side by side, and feed the strongest patterns straight into your own creative.",
+      ai:
+        "Send a full batch of TikTok transcripts straight into ChatGPT, Claude, or Gemini, the fastest way to get clean text into any AI workflow at scale.",
+      ugc:
+        "Stop scrubbing back and forth to catch every line, transcribe the whole set at once and rewrite each video in your own voice with our AI agents.",
+    },
+  },
+
+  bulkInstagram: {
+    // Example copy in place for review. Final wording is still Michael's call.
+    accentClass: "platform-instagram",
+    heroPill: "AI Powered",
+    heroH1: (
+      <>
+        Bulk Instagram Reels
+        <br />
+        Transcript Generator
+      </>
+    ),
+    heroSub:
+      "Paste up to 50 Instagram Reels links at once and get a clean, accurate transcript for every single video in one run.",
+    inputPlaceholder: "Paste up to 50 Instagram Reels links here (or any Reels URL)",
+    bottomCopy:
+      "Download up to 50 Reels (any platform) at the same time and entire Instagram libraries",
+    statsCopy:
+      "More than 41,000 creators have transcribed over 2,600,000 Reels with TokScript so far.",
+    pricingDailyFreeLine: "First 30 transcripts in every run are free",
+    bulk: {
+      body: "Drop in up to 50 Instagram Reels, TikTok, or YouTube Shorts links and TokScript transcribes them all together, then hands you every transcript in one clean list.",
+      bullets: [
+        "Paste up to 50 Reels links and process the whole batch in one run",
+        "Works across Instagram Reels, TikTok, and YouTube Shorts in the same list",
+        "Export every transcript together or copy them one Reel at a time",
+        "The first 30 transcripts in every run are completely free to read",
+      ],
+    },
+    quickUrl: {
+      body: "Add tokscript.com in front of any Instagram Reel link in your browser bar, press enter, and your transcript is ready in a few seconds.",
+      bullets: [
+        "Works on any public Instagram Reel link you paste",
+        "No account and no login required to get started",
+        "Runs straight from your browser address bar",
+        "Your finished transcript is ready in just seconds",
+      ],
+    },
+    agents: {
+      hook: "Paste any Instagram Reel transcript and get twenty proven hooks back",
+      script: "Turn any viral Reel into a full script written in your own voice",
+      explainer: "See exactly why a Reel took off, broken down line by line",
+    },
+    whoH2: "Who uses the TokScript bulk Instagram transcriber",
+    whoSub:
+      "Anyone who works with a lot of Reels at once and needs the words out of them quickly.",
+    who: {
+      creators:
+        "Transcribe a whole batch of your own Reels at once and repurpose every one into blog posts, newsletters, captions, and scripts without replaying a single video.",
+      researchers:
+        "Turn dozens of Reels, tutorials, and lessons into searchable text in one pass, then build a reference library or a set of study notes you can actually search.",
+      marketers:
+        "Pull the copy out of fifty competitor Reels at a time, compare the hooks side by side, and feed the strongest patterns straight into your own creative.",
+      ai:
+        "Send a full batch of Instagram Reel transcripts straight into ChatGPT, Claude, or Gemini, the fastest way to get clean text into any AI workflow at scale.",
+      ugc:
+        "Stop scrubbing back and forth to catch every line, transcribe the whole set at once and rewrite each Reel in your own voice with our AI agents.",
+    },
+  },
+
+  bulkYoutube: {
+    // Example copy in place for review. Final wording is still Michael's call.
+    accentClass: "platform-youtube",
+    heroPill: "AI Powered",
+    heroH1: (
+      <>
+        Bulk YouTube Shorts
+        <br />
+        Transcript Generator
+      </>
+    ),
+    heroSub:
+      "Paste up to 50 YouTube Shorts links at once and get a clean, accurate transcript for every single video in one run.",
+    inputPlaceholder: "Paste up to 50 YouTube Shorts links here (or any Short URL)",
+    bottomCopy:
+      "Download up to 50 Shorts (any platform) at the same time and entire YouTube channels",
+    statsCopy:
+      "More than 41,000 creators have transcribed over 2,600,000 Shorts with TokScript so far.",
+    pricingDailyFreeLine: "First 30 transcripts in every run are free",
+    bulk: {
+      body: "Drop in up to 50 YouTube Shorts, TikTok, or Instagram Reels links and TokScript transcribes them all together, then hands you every transcript in one clean list.",
+      bullets: [
+        "Paste up to 50 Shorts links and process the whole batch in one run",
+        "Works across YouTube Shorts, TikTok, and Instagram Reels in the same list",
+        "Export every transcript together or copy them one Short at a time",
+        "The first 30 transcripts in every run are completely free to read",
+      ],
+    },
+    quickUrl: {
+      body: "Add tokscript.com in front of any YouTube Short link in your browser bar, press enter, and your transcript is ready in a few seconds.",
+      bullets: [
+        "Works on any public YouTube Short link you paste",
+        "No account and no login required to get started",
+        "Runs straight from your browser address bar",
+        "Your finished transcript is ready in just seconds",
+      ],
+    },
+    agents: {
+      hook: "Paste any YouTube Shorts transcript and get twenty proven hooks back",
+      script: "Turn any viral Short into a full script written in your own voice",
+      explainer: "See exactly why a Short took off, broken down line by line",
+    },
+    whoH2: "Who uses the TokScript bulk YouTube transcriber",
+    whoSub:
+      "Anyone who works with a lot of Shorts at once and needs the words out of them quickly.",
+    who: {
+      creators:
+        "Transcribe a whole batch of your own Shorts at once and repurpose every one into blog posts, newsletters, captions, and scripts without replaying a single video.",
+      researchers:
+        "Turn dozens of Shorts, tutorials, and lessons into searchable text in one pass, then build a reference library or a set of study notes you can actually search.",
+      marketers:
+        "Pull the copy out of fifty competitor Shorts at a time, compare the hooks side by side, and feed the strongest patterns straight into your own creative.",
+      ai:
+        "Send a full batch of YouTube Shorts transcripts straight into ChatGPT, Claude, or Gemini, the fastest way to get clean text into any AI workflow at scale.",
+      ugc:
+        "Stop scrubbing back and forth to catch every line, transcribe the whole set at once and rewrite each Short in your own voice with our AI agents.",
+    },
+  },
 };
 
 export function getPlatformCopy(platform = "tiktok") {
